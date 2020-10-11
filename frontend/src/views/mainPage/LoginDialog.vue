@@ -1,6 +1,5 @@
 <template>
     <vs-dialog 
-        overflow-hidden
         v-model="userLoginActive"
         @close="loginDialogClosed()"
     >
@@ -16,6 +15,14 @@
                 v-model="xxx" 
                 label-placeholder="Email"
             >
+                <template v-if="validEmail" #message-success>
+                    Valid email
+                </template>
+
+                <template v-if="!validEmail && xxx !== ''" #message-danger>
+                    Invalid email
+                </template>
+
                 <template #icon>
                     @
                 </template>
@@ -28,7 +35,7 @@
                 v-model="xxx2" 
                 label-placeholder="Password"
                 @click-icon="hasVisiblePassword = !hasVisiblePassword">
-            >
+            >   
                 <template #icon>
                     <i 
                         v-if="!hasVisiblePassword"
@@ -71,6 +78,12 @@ export default {
         xxx: '',
         xxx2: '',
     }),
+
+    computed: {
+        validEmail() {
+          return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.xxx)
+        }
+    },
 
     methods: {
         async loginDialogClosed() {
