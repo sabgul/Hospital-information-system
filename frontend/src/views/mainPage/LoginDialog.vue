@@ -56,7 +56,7 @@
 
         <template #footer>
             <div class="footer-dialog">
-                <vs-button block>
+                <vs-button block @click="testt">
                 Sign In
                 </vs-button>
             </div>
@@ -102,6 +102,10 @@ export default {
             if(this.userType === 'Healthcare worker') {
                 await this.$store.commit('SET_HEALTHCARE_LOGIN');
             }
+        },
+
+        testt() {
+            this.$router.push('patients');
         }
     }
 }

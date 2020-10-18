@@ -1,10 +1,26 @@
 import Vue from 'vue';
-import VueRouter from 'vue-router';
-import { routes } from './routes';
+import Router from 'vue-router';
 
-Vue.use(VueRouter);
+Vue.use(Router);
 
-export const router = new VueRouter({
-  routes,
-  linkActiveClass: 'active',
+export default new Router({
+  mode: 'history',
+
+  routes: [
+    {
+      path: '/',
+      name: 'homepage',
+      component: () => import('@/views/mainPage/MainPage'),
+    },
+    {
+      path: '/patients',
+      name: 'patients',
+      component: () => import('@/views/patientsOverview/PatientsOverview'),
+    },
+    {
+      path: '/patientAdd',
+      name: 'patientAdd',
+      component: () => import('@/views/patientsOverview/PatientAdd'),
+    },
+  ]
 });

@@ -1,7 +1,5 @@
 <template>
   <div>
-    <side-bar/>
-
     <div class="main__content">
         <h1 class="patients__header">All patients</h1>
 
@@ -25,7 +23,7 @@
             <template #tbody>
                 <vs-tr
                     :key="i"
-                    v-for="(patient, i) in patients"
+                    v-for="(patient, i) in $vs.getPage(patients, page, max)"
                     :data="patient"
                 >
                     <vs-td>
@@ -41,60 +39,42 @@
                     </vs-td>
                 </vs-tr>
             </template>
+
+            <template #footer>
+                <vs-pagination v-model="page" :length="$vs.getLength(patients, max)" />
+            </template>
         </vs-table>
-
-        <h3>Add new patient</h3>
-            <vs-input 
-                v-model="newPatient.name" 
-                placeholder="Name"
-            />
-
-            <vs-input 
-                v-model="newPatient.mainDoctor" 
-                placeholder="Main Doctor Name"
-            />
-
-            <vs-button @click="createPatient">
-                Submit
-            </vs-button>
     </div>
   </div>
 </template>
 
 <script>
-import SideBar from '@/components/SideBar.vue';
+import PatientsService from "@/services/patientsService";
 
 export default {
     name: 'PatientsOverview',    
 
     components: {
-        SideBar,
     },
 
     data:() => ({
         patients: [],
-        newPatient: {
-            'name': '',
-            'mainDoctor': '',
-        },
+        page: 1,
+        max: 10,
     }),
 
     async created() {
-        var response = await fetch('http://localhost:8000/test/patients/');
-        this.patients = await response.json();
+        PatientsService.getAll()
+            .then(response => {
+            this.patients = response.data;
+            console.log(response.data);
+            })
+            .catch(e => {
+            console.log(e);
+            });
     },
 
     methods: {
-        async createPatient() {
-            var response = await fetch('http://localhost:8000/test/patients/', {
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(this.newPatient)
-            });
-            this.students.push(await response.json());
-        }
     },
 }
 </script>
@@ -111,5 +91,6 @@ export default {
     .patients__table {
         margin: 0 auto;
         width: 70%;
+        margin-top: 1em;
     }
 </style>
