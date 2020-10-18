@@ -1,20 +1,19 @@
 <template>
   <div id="app">
-    <top-nav-bar/>
-    <main-page/>
+    <patients-overview/>
   </div>
 </template>
 
 <script>
-import TopNavBar from '@/components/TopNavBar.vue';
-import MainPage from '@/views/mainPage/MainPage.vue';
+// import TopNavBar from '@/components/TopNavBar.vue';
+// import MainPage from '@/views/mainPage/MainPage.vue';
+import PatientsOverview from '@/views/patientsOverview/PatientsOverview.vue';
 
 export default {
   name: 'App',
 
   components: {
-    TopNavBar,
-    MainPage,
+    PatientsOverview,
   },
 }
 </script>
@@ -28,6 +27,7 @@ html, body {
 }
 
 #app {
+  background-color: #fafafa;
   font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
