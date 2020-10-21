@@ -4,6 +4,10 @@
         <h1 class="patients__header">All patients</h1>
 
         <vs-table striped class="patients__table">
+            <template #header>
+                <vs-input v-model="searchValue" border placeholder="Search" />
+            </template>
+
             <template #thead>
                 <vs-tr>
                     <vs-th>
@@ -23,7 +27,7 @@
             <template #tbody>
                 <vs-tr
                     :key="i"
-                    v-for="(patient, i) in $vs.getPage(patients, page, max)"
+                    v-for="(patient, i) in $vs.getPage($vs.getSearch(patients, searchValue), page, max)"
                     :data="patient"
                 >
                     <vs-td>
@@ -55,19 +59,21 @@ export default {
     name: 'PatientsOverview',    
 
     components: {
+        
     },
 
     data:() => ({
         patients: [],
         page: 1,
         max: 10,
+        searchValue: '',
     }),
 
     async created() {
         PatientsService.getAll()
             .then(response => {
             this.patients = response.data;
-            console.log(response.data);
+            // console.log(response.data);
             })
             .catch(e => {
             console.log(e);
