@@ -159,7 +159,7 @@ class TransactionRequest(models.Model):
     ]
 
     examination = models.ForeignKey(Examination, on_delete = models.CASCADE)
-    examinationAction = models.ForeignKey(ExaminationAction, on_delete = models.CASCADE)
+    examination_action = models.ForeignKey(ExaminationAction, on_delete = models.CASCADE)
 
     transaction_approver = models.ForeignKey(HealthcareWorker, on_delete = models.CASCADE)
 

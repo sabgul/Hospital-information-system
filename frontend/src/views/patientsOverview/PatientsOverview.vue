@@ -15,11 +15,15 @@
                     </vs-th>
 
                     <vs-th>
-                        Main Doctor
+                        Date of birth
                     </vs-th>
 
                     <vs-th>
-                        Id
+                        Email contact
+                    </vs-th>
+
+                    <vs-th>
+                        Main Doctor
                     </vs-th>
                 </vs-tr>
             </template>
@@ -35,11 +39,15 @@
                     </vs-td>
 
                     <vs-td>
-                        {{ patient.mainDoctor }}
+                        {{ patient.date_of_birth }}
                     </vs-td>
 
                     <vs-td>
-                        {{ patient.id }}
+                        {{ patient.email_field }}
+                    </vs-td>
+
+                    <vs-td>
+                        {{ patient.mainDoctor.name }}
                     </vs-td>
                 </vs-tr>
             </template>
@@ -73,7 +81,6 @@ export default {
         PatientsService.getAll()
             .then(response => {
             this.patients = response.data;
-            // console.log(response.data);
             })
             .catch(e => {
             console.log(e);

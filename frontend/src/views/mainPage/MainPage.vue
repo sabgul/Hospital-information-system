@@ -1,5 +1,6 @@
 <template>
     <div>
+        <top-nav-bar/>
         <div class="row">
         <div class="column left--part">
             <h1 class="headline">HospIS - best solution for your hospital</h1>
@@ -64,12 +65,14 @@
 
 <script>
 import LoginDialog from './LoginDialog.vue';
+import TopNavBar from '@/components/TopNavBar.vue';
 
 export default {
     name: 'MainPage',
     
     components: {
         LoginDialog,
+        TopNavBar,
     },
 
     methods: {

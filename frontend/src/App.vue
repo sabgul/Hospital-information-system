@@ -10,41 +10,89 @@
             <img src="./assets/hospital-logo.png" alt="Hospital logo">
         </template>
 
-        <vs-sidebar-item id="home">
-            <template #icon>
-              <i class='bx bx-home'></i>
-            </template>
+        <vs-sidebar-item>
             <router-link to="/">Home</router-link>
         </vs-sidebar-item>
 
-        <vs-sidebar-item id="market">
-            <template #icon>
-              <i class='bx bx-grid-alt'></i>
-            </template>
-            <router-link to="/patients">Patients</router-link>
+        <vs-sidebar-item>
+            <router-link to="/patient-detail">My profile</router-link>
         </vs-sidebar-item>
 
-        <vs-sidebar-item id="market">
-            <template #icon>
-              <i class='bx bx-grid-alt'></i>
-            </template>
-            <router-link to="/patientAdd">Add patient</router-link>
+        <vs-sidebar-item>
+            <router-link to="/health-concerns">My health concerns</router-link>
         </vs-sidebar-item>
 
-        <template #footer>
-            <vs-row justify="space-between">  
-              <vs-avatar>
-                  <img src="/avatars/avatar-5.png" alt="">
-              </vs-avatar>
+        <vs-sidebar-group>
+            <template #header>
+                <vs-sidebar-item arrow>
+                    Patient management
+                </vs-sidebar-item>
+            </template>
 
-              <vs-avatar badge-color="danger" badge-position="top-right">
-                  <i class='bx bx-bell' ></i>
+            <vs-sidebar-item>
+                <router-link to="/patients">Patients</router-link>
+            </vs-sidebar-item>
 
-                  <template #badge>
-                  28
-                  </template>
-              </vs-avatar>
-            </vs-row>
+            <vs-sidebar-item>
+                <router-link to="/patient-add">Add patient</router-link>
+            </vs-sidebar-item>
+        </vs-sidebar-group>
+
+        <vs-sidebar-group>
+            <template #header>
+                <vs-sidebar-item arrow>
+                    HC Worker Management
+                </vs-sidebar-item>
+            </template>
+
+            <vs-sidebar-item>
+                <router-link to="/examination-action-add">Add new Examination action</router-link>
+            </vs-sidebar-item>
+
+            <vs-sidebar-item>
+                <router-link to="/patients">Manage payment requests</router-link>
+            </vs-sidebar-item>
+        </vs-sidebar-group>
+
+        <vs-sidebar-group>
+            <template #header>
+                <vs-sidebar-item arrow>
+                    Admin management
+                </vs-sidebar-item>
+            </template>
+
+            <vs-sidebar-item>
+                <router-link to="/patients">Manage users</router-link>
+            </vs-sidebar-item>
+        </vs-sidebar-group>
+
+        <template #footer v-on:click="redirectToProfile()">
+            <vs-card type="5">
+                <template #title>
+                    <h3>Name and Surname</h3>
+                </template>
+
+                <template #img>
+                  <img src="./assets/user-illu.jpg" alt="" width="200" height="200">
+                </template>
+
+                <template #text>
+                  <p>
+                    Logged as [Patient | Doc | Admin | HC]
+                  </p>
+                </template>
+
+                <template #interactions>
+                  <vs-button class="btn-chat" shadow primary>
+                    <i class='bx bx-chat' ></i>
+                    <span class="span">
+                      Edit profile
+                    </span>
+                  </vs-button>
+                </template>
+            </vs-card>
+
+
         </template>
       </vs-sidebar>
     </div>
@@ -65,6 +113,12 @@ export default {
   data:() => ({
     active: 'home',
   }),
+
+  methods: {
+    redirectToProfile() {
+      // Vue.$router.push({ name: 'patientDetail' });
+    }
+  }
 }
 </script>
 
