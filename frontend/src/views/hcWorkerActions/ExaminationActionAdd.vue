@@ -13,6 +13,7 @@
             label="Name of action"
             placeholder="Type name of new action"
             class="input__items"
+            primary
         >
             <template #message-warn v-if="newAction.name.length === 0">
                 Required
@@ -23,6 +24,7 @@
             v-model="newAction.action_manager_id"
             class="input__items"
             label="Action manager"
+            color="primary"
         >   
             <template #message-warn v-if="newAction.action_manager_id === -1">
                 Required
@@ -45,7 +47,7 @@
             </template>
         </vs-switch>
 
-        <vs-button>
+        <vs-button @click="addNewExamination()">
             Submit
         </vs-button>
 
@@ -55,6 +57,7 @@
 
 
 <script>
+import ExaminationActionsService from "@/services/examinationActionsService";
 import HealthcareWorkersService from "@/services/healthcareWorkersService";
 
 export default {
@@ -84,20 +87,32 @@ export default {
     },
     
     methods: {
-        // async createPatient() {
-        //     var data = {
-        //         name: this.newPatient.name,
-        //         mainDoctor: this.newPatient.mainDoctor
-        //     };
+        async addNewExamination() {
+            var actionManager;
+            HealthcareWorkersService.get(this.newAction.action_manager_id)
+                .then(response => {
+                    actionManager = response.data;
+                    console.log(response.data);
+                })
+                .catch(e => {
+                    console.log(e);
+                });
 
-        //     PatientsService.create(data)
-        //         .then(response => {
-        //             console.log(response);
-        //         })
-        //         .catch(e => {
-        //             console.log(e);
-        //         });
-        // }
+            console.log(actionManager);
+            var data = {
+                name: this.newAction.name,
+                is_action_paid: this.newAction.is_action_paid,
+                action_manager: this.newAction.action_manager_id,
+            };
+
+            ExaminationActionsService.create(data)
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(e => {
+                    console.log(e);
+                });
+        }
     },
 }
 </script>
@@ -116,6 +131,7 @@ export default {
         position: absolute;
         right: 50px;
         bottom: 50px;
+        z-index: -1;
     }
 
     .switch {
