@@ -171,16 +171,42 @@ export default {
         },
 
         finalDeletion() {
+            const position = 'top-right';
+            const progress = 'auto';
+            const duration = '6000';
+
             ExaminationActionsService.delete(this.toDelete)
             .then(response => {
-                console.log(response);
+                var color = '';
+                response ? color = 'success' : color = 'success';
+
+                const noti = this.$vs.notification({
+                    duration,
+                    progress,
+                    color,
+                    position,
+                    title: 'Hooray!🎉',
+                    text: 'Examination action successfuly deleted.'
+                });
+                console.log(noti);
 
                 ExaminationActionsService.getAll()
                 .then(response => {
                     this.actions = response.data;
                 })
                 .catch(e => {
-                    console.log(e);
+                    var color = '';
+                    e ? color = 'success' : color = 'success';
+
+                    const noti = this.$vs.notification({
+                        duration,
+                        progress,
+                        color,
+                        position,
+                        title: 'Whoops!😓: ' + e.message,
+                        text: 'Action was not deleted. Try again later or contact support.'
+                    });
+                    console.log(noti);
                 });
             })
             .catch(e => {
@@ -199,7 +225,7 @@ export default {
         finalEdit() {
             ExaminationActionsService.update(this.newNameConst, this.toEdit)
             .then(response => {
-                console.log(response);
+                console.log(response); 
             })
             .catch(e => {
                 console.log(e);

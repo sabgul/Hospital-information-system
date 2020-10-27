@@ -30,14 +30,22 @@
           </template>
         </vs-tooltip>
 
-        <vs-sidebar-item>
-            <router-link to="/health-concerns">My health concerns</router-link>
-        </vs-sidebar-item>
+        <vs-sidebar-group>
+          <template #header>
+                <vs-sidebar-item arrow>
+                    For patient
+                </vs-sidebar-item>
+            </template>
 
+          <vs-sidebar-item>
+              <router-link to="/health-concerns">My health concerns</router-link>
+          </vs-sidebar-item>
+        </vs-sidebar-group>
+        
         <vs-sidebar-group>
             <template #header>
                 <vs-sidebar-item arrow>
-                    Patient management
+                    For doctor
                 </vs-sidebar-item>
             </template>
 
@@ -65,7 +73,7 @@
         <vs-sidebar-group>
             <template #header>
                 <vs-sidebar-item arrow>
-                    HC Worker Management
+                    For insurance worker
                 </vs-sidebar-item>
             </template>
 
@@ -91,7 +99,7 @@
 
             <vs-tooltip right>
               <vs-sidebar-item>
-                  <router-link to="/patients">Manage payment requests</router-link>
+                  <router-link to="/manage-requests">Manage payment requests</router-link>
               </vs-sidebar-item>
 
               <template #tooltip>
@@ -103,7 +111,7 @@
         <vs-sidebar-group>
             <template #header>
                 <vs-sidebar-item arrow>
-                    Admin management
+                    For admin
                 </vs-sidebar-item>
             </template>
 

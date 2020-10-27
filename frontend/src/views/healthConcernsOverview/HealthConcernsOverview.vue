@@ -3,14 +3,19 @@
         <div class="main__content">
             <h1 class="patients__header">My health concerns</h1>
 
-            <div v-for="concern in concerns" :key="concern.id">
-                <div class="concern__content">
-                    <h4>{{ concern.name }}</h4>
-                    <p>{{ concern.description }}</p>
-                    Supervised by: <span>{{ concern.doctor.name }}</span>
-                    <br>
-                    State: <span>{{ getState(concern.state) }}</span>
-                </div>
+            <p>
+                All your health concerns are shown in table below.<br>
+                To show more details about particular concern expand given table row.
+            </p>
+        </div>
+
+        <div v-for="concern in concerns" :key="concern.id">
+            <div class="concern__content">
+                <h4>{{ concern.name }}</h4>
+                <p>{{ concern.description }}</p>
+                Supervised by: <span>{{ concern.doctor.name }}</span>
+                <br>
+                State: <span>{{ getState(concern.state) }}</span>
             </div>
         </div>
     </div>
@@ -65,17 +70,26 @@ export default {
 </script>
 
 <style scoped>
+    h1 {
+        margin-top: 0.5em;
+        margin-bottom: 1em;
+    }
+
     .main__content {
-        padding: 20px 20px 20px 280px;
-        margin-left: 15%;
+        padding: 20px 20px 20px 25px;
+        margin-left: 25%;
         margin-right: 15%;
+        background-color: #fafafa;
+        border-radius: 10px;
     }
 
     .concern__content {
+        margin: 20px 0;
+        padding: 20px 20px 20px 25px;
+        margin-left: 25%;
+        margin-right: 15%;
         background-color: #fafafa;
         border-radius: 10px;
-        padding: 20px; 
-        margin: 20px 0;
     }
 
     .h4 {
