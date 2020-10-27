@@ -50,6 +50,10 @@
             </vs-sidebar-item>
 
             <vs-sidebar-item>
+                <router-link to="/examination-actions-overview">Examination actions overview</router-link>
+            </vs-sidebar-item>
+
+            <vs-sidebar-item>
                 <router-link to="/patients">Manage payment requests</router-link>
             </vs-sidebar-item>
         </vs-sidebar-group>

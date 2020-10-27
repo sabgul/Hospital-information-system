@@ -2,11 +2,11 @@ import http from "@/http-common";
 
 class ExaminationActionsService {
   getAll() {
-    return http.get("/examination-actions");
+    return http.get("/examination-actions/");
   }
 
   get(id) {
-    return http.get(`/examination-actions/${id}`);
+    return http.get(`/examination-actions/${id}/`);
   }
 
   create(data) {
@@ -14,11 +14,11 @@ class ExaminationActionsService {
   }
 
   update(id, data) {
-    return http.put(`/examination-actions/${id}`, data);
+    return http.put(`/examination-actions/${id}/`, data);
   }
 
   delete(id) {
-    return http.delete(`/examination-actions/${id}`);
+    return http.delete(`/examination-actions/${id}/`);
   }
 
   deleteAll() {

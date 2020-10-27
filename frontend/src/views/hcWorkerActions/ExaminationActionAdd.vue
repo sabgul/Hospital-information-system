@@ -1,6 +1,6 @@
 <template>
     <div class="main__content">
-        <h2>Add new examination action</h2>
+        <h1>Add new examination action</h1>
         <p>
             By adding new examination action, doctors can use them when examinating their patients. <br>
             Thanks to that, you will be able to track unpaid examinations of patients.
@@ -47,7 +47,10 @@
             </template>
         </vs-switch>
 
-        <vs-button @click="addNewExamination()">
+        <vs-button 
+            @click="addNewExamination()"
+            :disabled="newAction.name.length === 0 || newAction.action_manager_id === -1"
+        >
             Submit
         </vs-button>
 
@@ -88,17 +91,10 @@ export default {
     
     methods: {
         async addNewExamination() {
-            var actionManager;
-            HealthcareWorkersService.get(this.newAction.action_manager_id)
-                .then(response => {
-                    actionManager = response.data;
-                    console.log(response.data);
-                })
-                .catch(e => {
-                    console.log(e);
-                });
+            const position = 'top-right';
+            const progress = 'auto';
+            const duration = '6000';
 
-            console.log(actionManager);
             var data = {
                 name: this.newAction.name,
                 is_action_paid: this.newAction.is_action_paid,
@@ -107,10 +103,40 @@ export default {
 
             ExaminationActionsService.create(data)
                 .then(response => {
-                    console.log(response);
+                    var color = '';
+                    
+                    if(response) {
+                        color = 'success';
+                    }
+                    color = 'success';
+
+                    const noti = this.$vs.notification({
+                        duration,
+                        progress,
+                        color,
+                        position,
+                        title: 'Hooray!🎉',
+                        text: 'Examination action added to database.'
+                    });
+                    console.log(noti);
                 })
                 .catch(e => {
-                    console.log(e);
+                    var color = '';
+                    
+                    if(e) {
+                        color = 'danger';
+                    }
+                    color = 'danger';
+
+                    const noti = this.$vs.notification({
+                        duration,
+                        progress,
+                        color,
+                        position,
+                        title: 'Whoops!😓: ' + e.message,
+                        text: 'Examination with name `' + this.newAction.name + '` already exists in database.',
+                    });
+                    console.log(noti);
                 });
         }
     },
@@ -118,6 +144,11 @@ export default {
 </script>
 
 <style scoped>
+    h1 {
+        margin-top: 0.5em;
+        margin-bottom: 1em;
+    }
+
     .main__content {
         padding: 20px 20px 20px 25px;
         margin-left: 25%;

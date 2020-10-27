@@ -54,7 +54,12 @@ class ExaminationActionSerializer(ModelSerializer):
     class Meta:
         model = ExaminationAction
         fields = ['name', 'is_action_paid', 'action_manager']
-        depth = 1
+
+    # TODO: This is proper way for nested objects in GET method. Rework everywhere else 
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        response['action_manager'] = HealthcareWorkerSerializer(instance.action_manager).data
+        return response
 
 
 class ExaminationSerializer(ModelSerializer):

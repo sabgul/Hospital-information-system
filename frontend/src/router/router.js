@@ -27,11 +27,18 @@ export default new Router({
       name: 'patientDetail',
       component: () => import('@/views/patientDetail/PatientDetail'),
     },
+
+    {
+      path: '/examination-actions-overview',
+      name: 'examinationActionsOverview',
+      component: () => import('@/views/hcWorkerActions/ExaminationActionsOverview'),
+    },
     {
       path: '/examination-action-add',
       name: 'examinationActionAdd',
       component: () => import('@/views/hcWorkerActions/ExaminationActionAdd'),
     },
+
     {
       path: '/health-concerns',
       name: 'HealthConcerns',
