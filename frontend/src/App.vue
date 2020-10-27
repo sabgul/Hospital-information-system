@@ -10,13 +10,25 @@
             <img src="./assets/hospital-logo.png" alt="Hospital logo">
         </template>
 
-        <vs-sidebar-item>
-            <router-link to="/">Home</router-link>
-        </vs-sidebar-item>
+        <vs-tooltip right>
+          <vs-sidebar-item>
+              <router-link to="/">Home</router-link>
+          </vs-sidebar-item>
 
-        <vs-sidebar-item>
-            <router-link to="/patient-detail">My profile</router-link>
-        </vs-sidebar-item>
+          <template #tooltip>
+            Home
+          </template>
+        </vs-tooltip>
+
+        <vs-tooltip right>
+          <vs-sidebar-item>
+              <router-link to="/patient-detail">My profile</router-link>
+          </vs-sidebar-item>
+
+          <template #tooltip>
+            My Profile
+          </template>
+        </vs-tooltip>
 
         <vs-sidebar-item>
             <router-link to="/health-concerns">My health concerns</router-link>
@@ -29,13 +41,25 @@
                 </vs-sidebar-item>
             </template>
 
-            <vs-sidebar-item>
-                <router-link to="/patients">Patients</router-link>
-            </vs-sidebar-item>
+            <vs-tooltip right>
+              <vs-sidebar-item>
+                  <router-link to="/patients">Patients</router-link>
+              </vs-sidebar-item>
 
-            <vs-sidebar-item>
-                <router-link to="/patient-add">Add patient</router-link>
-            </vs-sidebar-item>
+              <template #tooltip>
+                My Profile
+              </template>
+            </vs-tooltip>
+
+            <vs-tooltip right>
+              <vs-sidebar-item>
+                  <router-link to="/patient-add">Add patient</router-link>
+              </vs-sidebar-item>
+
+              <template #tooltip>
+                  Add patient
+              </template>
+            </vs-tooltip>
         </vs-sidebar-group>
 
         <vs-sidebar-group>
@@ -45,17 +69,35 @@
                 </vs-sidebar-item>
             </template>
 
-            <vs-sidebar-item>
-                <router-link to="/examination-action-add">Add new Examination action</router-link>
-            </vs-sidebar-item>
+            <vs-tooltip right>
+              <vs-sidebar-item>
+                  <router-link to="/examination-action-add">Add new Examination action</router-link>
+              </vs-sidebar-item>
 
-            <vs-sidebar-item>
-                <router-link to="/examination-actions-overview">Examination actions overview</router-link>
-            </vs-sidebar-item>
+              <template #tooltip>
+                  Add new Examination action
+              </template>
+            </vs-tooltip>
 
-            <vs-sidebar-item>
-                <router-link to="/patients">Manage payment requests</router-link>
-            </vs-sidebar-item>
+            <vs-tooltip right>
+              <vs-sidebar-item>
+                  <router-link to="/examination-actions-overview">Examination actions overview</router-link>
+              </vs-sidebar-item>
+
+              <template #tooltip>
+                  Examination actions overview
+              </template>
+            </vs-tooltip>
+
+            <vs-tooltip right>
+              <vs-sidebar-item>
+                  <router-link to="/patients">Manage payment requests</router-link>
+              </vs-sidebar-item>
+
+              <template #tooltip>
+                  Manage payment requests
+              </template>
+            </vs-tooltip>
         </vs-sidebar-group>
 
         <vs-sidebar-group>
@@ -65,9 +107,15 @@
                 </vs-sidebar-item>
             </template>
 
-            <vs-sidebar-item>
-                <router-link to="/patients">Manage users</router-link>
-            </vs-sidebar-item>
+            <vs-tooltip right>
+              <vs-sidebar-item>
+                  <router-link to="/patients">Manage users</router-link>
+              </vs-sidebar-item>
+
+              <template #tooltip>
+                    Manage users
+              </template>
+            </vs-tooltip>
         </vs-sidebar-group>
 
         <template #footer v-on:click="redirectToProfile()">
