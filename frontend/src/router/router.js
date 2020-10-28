@@ -18,6 +18,12 @@ export default new Router({
       name: 'patients',
       component: () => import('@/views/patientsOverview/PatientsOverview'),
     },
+
+    {
+      path: '/doctors',
+      name: 'doctors',
+      component: () => import('@/views/doctorsOverview/DoctorsOverview'),
+    },
     // // //
 
         

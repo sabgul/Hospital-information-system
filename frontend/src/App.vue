@@ -161,7 +161,15 @@
               </template>
             </vs-tooltip>
         </vs-sidebar-group>
-        
+
+        <vs-sidebar-item>
+          <template #icon>
+            <box-icon type='solid' name='first-aid'></box-icon>
+          </template>
+
+          <router-link to="/doctors">Doctors</router-link>
+        </vs-sidebar-item>
+
         <template #footer v-on:click="redirectToProfile()">
             <div class="footer">
               <vs-card type="5">
@@ -258,5 +266,5 @@ box-icon {
   .footer {
       display: none;
   }
-}   
+}
 </style>
