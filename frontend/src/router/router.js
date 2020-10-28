@@ -61,5 +61,23 @@ export default new Router({
       component: () => import('@/views/transactionRequests/TransactionsManager'),
     },
     // // //
+
+
+    // Admin module
+    {
+      path: '/users-overview',
+      name: 'usersOverview',
+      component: () => import('@/views/usersManagement/UsersOverview'),
+    },
+    // // //
+
+    // Show profile
+    {
+      path: '/profile/:role/:id',
+      name: 'profile',
+      props: true,
+      component: () => import('@/views/usersManagement/UserProfile'),
+    }
+    // // //
   ]
 });

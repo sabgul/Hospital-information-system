@@ -9,65 +9,67 @@
             </p>
         </div>
 
-        <vs-table striped class="actions__table">
-            <template #header>
-                <vs-input v-model="searchValue" border placeholder="Search" />
-            </template>
+        <div class="main__content">
+            <vs-table striped class="actions__table">
+                <template #header>
+                    <vs-input v-model="searchValue" border placeholder="Search" />
+                </template>
 
-            <template #thead>
-                <vs-tr>
-                    <vs-th>
-                        Name of action
-                    </vs-th>
+                <template #thead>
+                    <vs-tr>
+                        <vs-th>
+                            Name of action
+                        </vs-th>
 
-                    <vs-th>
-                        Pricing
-                    </vs-th>
+                        <vs-th>
+                            Pricing
+                        </vs-th>
 
-                    <vs-th>
-                        Action manager
-                    </vs-th>
+                        <vs-th>
+                            Action manager
+                        </vs-th>
 
-                    <vs-th>
-                        Actions
-                    </vs-th>
-                    
-                </vs-tr>
-            </template>
+                        <vs-th>
+                            Actions
+                        </vs-th>
+                        
+                    </vs-tr>
+                </template>
 
-            <template #tbody>
-                <vs-tr
-                    :key="i"
-                    v-for="(action, i) in $vs.getPage($vs.getSearch(actions, searchValue), page, max)"
-                    :data="action"
-                >
-                    <vs-td>
-                        {{ action.name }}
-                    </vs-td>
+                <template #tbody>
+                    <vs-tr
+                        :key="i"
+                        v-for="(action, i) in $vs.getPage($vs.getSearch(actions, searchValue), page, max)"
+                        :data="action"
+                    >
+                        <vs-td>
+                            {{ action.name }}
+                        </vs-td>
 
-                    <vs-td>
-                        <b>{{ getPricingInfo(action.is_action_paid) }}</b>
-                    </vs-td>
+                        <vs-td>
+                            <b>{{ getPricingInfo(action.is_action_paid) }}</b>
+                        </vs-td>
 
-                    <vs-td>
-                        {{ action.action_manager.name }}
-                    </vs-td>
+                        <vs-td>
+                            {{ action.action_manager.name }}
+                        </vs-td>
 
-                    <vs-td>
-                        <vs-button @click="editAction(action.name, action.is_action_paid)">
-                            Edit
-                        </vs-button>
-                        <vs-button danger @click="deleteAction(action.name)">
-                            Delete
-                        </vs-button>
-                    </vs-td>
-                </vs-tr>
-            </template>
+                        <vs-td>
+                            <vs-button @click="editAction(action.name, action.is_action_paid)">
+                                Edit
+                            </vs-button>
+                            <vs-button danger @click="deleteAction(action.name)">
+                                Delete
+                            </vs-button>
+                        </vs-td>
+                    </vs-tr>
+                </template>
 
-            <template #footer>
-                <vs-pagination v-model="page" :length="$vs.getLength(actions, max)" />
-            </template>
-        </vs-table>
+                <template #footer>
+                    <vs-pagination v-model="page" :length="$vs.getLength(actions, max)" />
+                </template>
+            </vs-table>
+        </div>
 
         <vs-dialog width="300px" v-model="activeDelete">
             <template #header>
@@ -271,9 +273,14 @@ export default {
 
     .main__content {
         padding: 20px 20px 20px 25px;
+        margin-top: 20px;
         margin-left: 25%;
         margin-right: 15%;
-        background-color: #fafafa;
+        background-color: #ffffff;
+        box-shadow:
+            0 1.3px 20.1px rgba(0, 0, 0, 0.003),
+            0 4.2px 44.8px rgba(0, 0, 0, 0.003),
+            0 19px 76px rgba(0, 0, 0, 0.06);
         border-radius: 10px;
     }
 
@@ -287,8 +294,7 @@ export default {
 
     .actions__table {
         margin: 0 auto;
-        margin-left: 25%;
-        width: 60%;
+        width: 80%;
         margin-top: 1em;
     }
 

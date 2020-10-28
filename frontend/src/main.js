@@ -3,7 +3,7 @@ import App from '@/App.vue'
 import Vuesax from 'vuesax'
 import { store } from '@/store/store';
 import router from '@/router/router.js';
-
+// import 'boxicons'
 import 'vuesax/dist/vuesax.css' //Vuesax styles
 
 Vue.config.productionTip = false

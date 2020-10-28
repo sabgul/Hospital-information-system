@@ -12,6 +12,10 @@
 
         <vs-tooltip right>
           <vs-sidebar-item>
+              <template #icon>
+                <box-icon name='home' ></box-icon>
+              </template>
+
               <router-link to="/">Home</router-link>
           </vs-sidebar-item>
 
@@ -22,6 +26,10 @@
 
         <vs-tooltip right>
           <vs-sidebar-item>
+              <template #icon>
+                <box-icon name='user' ></box-icon>
+              </template>
+
               <router-link to="/patient-detail">My profile</router-link>
           </vs-sidebar-item>
 
@@ -38,6 +46,10 @@
             </template>
 
           <vs-sidebar-item>
+              <template #icon>
+                <box-icon type='solid' name='virus' ></box-icon>
+              </template>
+
               <router-link to="/health-concerns">My health concerns</router-link>
           </vs-sidebar-item>
         </vs-sidebar-group>
@@ -51,6 +63,10 @@
 
             <vs-tooltip right>
               <vs-sidebar-item>
+                  <template #icon>
+                    <box-icon type='solid' name='face-mask' ></box-icon>
+                  </template>
+
                   <router-link to="/patients">Patients</router-link>
               </vs-sidebar-item>
 
@@ -61,6 +77,10 @@
 
             <vs-tooltip right>
               <vs-sidebar-item>
+                  <template #icon>
+                    <box-icon name='user-plus'></box-icon>
+                  </template>
+
                   <router-link to="/patient-add">Add patient</router-link>
               </vs-sidebar-item>
 
@@ -79,6 +99,10 @@
 
             <vs-tooltip right>
               <vs-sidebar-item>
+                  <template #icon>
+                    <box-icon name='list-plus' ></box-icon>
+                  </template>
+
                   <router-link to="/examination-action-add">Add new Examination action</router-link>
               </vs-sidebar-item>
 
@@ -89,6 +113,10 @@
 
             <vs-tooltip right>
               <vs-sidebar-item>
+                  <template #icon>
+                    <box-icon name='list-ul' ></box-icon>
+                  </template>
+
                   <router-link to="/examination-actions-overview">Examination actions overview</router-link>
               </vs-sidebar-item>
 
@@ -99,6 +127,10 @@
 
             <vs-tooltip right>
               <vs-sidebar-item>
+                  <template #icon>
+                    <box-icon name='money' ></box-icon>
+                  </template>
+
                   <router-link to="/manage-requests">Manage payment requests</router-link>
               </vs-sidebar-item>
 
@@ -117,7 +149,11 @@
 
             <vs-tooltip right>
               <vs-sidebar-item>
-                  <router-link to="/patients">Manage users</router-link>
+                  <template #icon>
+                    <box-icon name='user-detail' type='solid' ></box-icon>
+                  </template>
+
+                  <router-link to="/users-overview">Manage users</router-link>
               </vs-sidebar-item>
 
               <template #tooltip>
@@ -157,8 +193,8 @@
       </vs-sidebar>
     </div>
 
-    <div>
-      <router-view class="content"/>
+    <div class="content">
+      <router-view />
     </div>
   </div>
 </template>
@@ -189,14 +225,18 @@ export default {
 html, body {
   font-family: 'Roboto', sans-serif;
   height: 100%;
+  background-color: #fafafa !important;
+
 }
 
 body {
   overflow: hidden;
+  height: 100%;
 }
 
 .content {
   max-height: 100vh;
+  background-color: #fafafa !important;
 }
 
 #app {
