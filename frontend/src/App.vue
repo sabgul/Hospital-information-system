@@ -161,34 +161,37 @@
               </template>
             </vs-tooltip>
         </vs-sidebar-group>
-
+        
         <template #footer v-on:click="redirectToProfile()">
-            <vs-card type="5">
-                <template #title>
-                    <h3>Name and Surname</h3>
-                </template>
+            <div class="footer">
+              <vs-card type="5">
+                  <template #title>
+                      <h3>Name and Surname</h3>
+                  </template>
 
-                <template #img>
-                  <img src="./assets/user-illu.jpg" alt="" width="200" height="200">
-                </template>
+                  <template #img>
+                    <img src="./assets/user-illu.jpg" alt="" width="200" height="200">
+                  </template>
 
-                <template #text>
-                  <p>
-                    Logged as [Patient | Doc | Admin | HC]
-                  </p>
-                </template>
+                  <template #text>
+                    <p>
+                      Logged as [Patient | Doc | Admin | HC]
+                    </p>
+                  </template>
 
-                <template #interactions>
-                  <vs-button class="btn-chat" shadow primary>
-                    <i class='bx bx-chat' ></i>
-                    <span class="span">
-                      Edit profile
-                    </span>
-                  </vs-button>
-                </template>
-            </vs-card>
+                  <template #interactions>
+                    <vs-tooltip>
+                            <vs-button>
+                                <box-icon name='comment-edit' animation='tada-hover' style="fill: #fbfbfb;"></box-icon>
+                            </vs-button>
 
-
+                            <template #tooltip>
+                                Edit profile
+                            </template>
+                        </vs-tooltip>
+                  </template>
+              </vs-card>
+            </div>
         </template>
       </vs-sidebar>
     </div>
@@ -234,6 +237,10 @@ body {
   height: 100%;
 }
 
+box-icon {
+  fill: #195bff;
+}
+
 .content {
   max-height: 100vh;
   background-color: #fafafa !important;
@@ -246,4 +253,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
+
+@media only screen and (max-width: 600px) {
+  .footer {
+      display: none;
+  }
+}   
 </style>

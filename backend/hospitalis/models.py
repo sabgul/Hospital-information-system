@@ -6,6 +6,12 @@ class Doctor(models.Model):
     name = models.CharField(max_length = 254)
     date_of_birth = models.DateField(max_length = 8, default = datetime.date.today)
     email_field = models.EmailField(max_length = 254, default = None)
+    phone_number = models.IntegerField(default = None)
+
+    specializes_in = models.CharField(max_length = 254, default = None)
+
+    user_active = models.BooleanField(default = True)
+    active_from = models.DateField(default = datetime.date.today)
 
     def __str__(self):
         return self.name
@@ -19,8 +25,12 @@ class Patient(models.Model):
     name = models.CharField(max_length = 254)
     date_of_birth = models.DateField(max_length = 8, default = datetime.date.today)
     email_field = models.EmailField(max_length = 254, default = None)
+    phone_number = models.IntegerField(default = None)
 
     mainDoctor = models.ForeignKey(Doctor, on_delete = models.CASCADE)
+
+    user_active = models.BooleanField(default = True)
+    active_from = models.DateField(default = datetime.date.today)
     
     def __str__(self):
         return self.name
@@ -33,6 +43,13 @@ class Patient(models.Model):
 class HealthcareWorker(models.Model):
     name = models.CharField(max_length = 254)
     date_of_birth = models.DateField(max_length = 8, default = datetime.date.today)
+    email_field = models.EmailField(max_length = 254, default = None)
+    phone_number = models.IntegerField(default = None)
+
+    works_for_company = models.CharField(max_length = 254, default = None)
+
+    user_active = models.BooleanField(default = True)
+    active_from = models.DateField(default = datetime.date.today)
 
     def __str__(self):
         return self.name

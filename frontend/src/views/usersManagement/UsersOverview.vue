@@ -72,17 +72,35 @@
                                 </div>
 
                                 <div class="expanded__item right">
-                                    <vs-button flat icon>
-                                        Send Email
-                                    </vs-button>
+                                    <vs-tooltip>
+                                        <vs-button icon>
+                                            <box-icon name='mail-send' animation='tada-hover'></box-icon>
+                                        </vs-button>
 
-                                    <vs-button warn>
-                                        Edit User
-                                    </vs-button>
+                                        <template #tooltip>
+                                            Send Email
+                                        </template>
+                                    </vs-tooltip>
 
-                                    <vs-button border danger>
-                                        Remove User
-                                    </vs-button>
+                                    <vs-tooltip>
+                                        <vs-button warn icon>
+                                            <box-icon name='comment-edit' animation='tada-hover'></box-icon>
+                                        </vs-button>
+
+                                        <template #tooltip>
+                                            Edit user
+                                        </template>
+                                    </vs-tooltip>
+
+                                    <vs-tooltip>
+                                        <vs-button danger icon>
+                                            <box-icon name='trash' animation='tada-hover'></box-icon>
+                                        </vs-button>
+
+                                        <template #tooltip>
+                                            Remove user
+                                        </template>
+                                    </vs-tooltip>
                                 </div>
                             </div>
                         </template>
@@ -119,7 +137,7 @@ export default {
     async created() {
         PatientsService.getAll()
         .then(response => {
-            response.data.forEach(pacient => this.users.push({userData: pacient, role: 'Pacient'}));
+            response.data.forEach(pacient => this.users.push({userData: pacient, role: 'Patient'}));
         })
         .catch(e => {
             console.log(e);
@@ -158,6 +176,10 @@ export default {
     h1 {
         margin-top: 0.5em;
         margin-bottom: 1em;
+    }
+
+    box-icon {
+        fill: #fbfbfb;
     }
 
     .main__content {
