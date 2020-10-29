@@ -397,15 +397,21 @@ export default {
 
     .left__filter__row {
         width: 200px;
+        margin-top: auto;
+        margin-bottom: 1em;
     }
 
     .right__filter__row {
         padding-left: 2em;
         flex-grow: 1;
+        margin-top: auto;
+        margin-bottom: 1em;
     }
 
     .filter__submit {
         margin-left: auto;
         order: 3;
+        margin-bottom: 1em;
+        margin-right: 1em;
     }
 </style>
