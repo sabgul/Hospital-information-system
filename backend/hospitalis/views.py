@@ -1,8 +1,9 @@
 from rest_framework.viewsets import ModelViewSet
+import django_filters
 
 from .models import Patient, Doctor, HealthcareWorker, HealthConcern, DoctorReport, DoctorReportCommentary, ExaminationRequest, ExaminationAction, Examination, TransactionRequest
 from .serializers import PatientSerializer, DoctorSerializer, HealthcareWorkerSerializer, HealthConcernSerializer, DoctorReportSerializer, DoctorReportCommentarySerializer, ExaminationRequestSerializer, ExaminationActionSerializer, ExaminationSerializer, TransactionRequestSerializer
-
+from .filters import ExaminationActionFilter
 
 class PatientsViewSet(ModelViewSet):
     queryset = Patient.objects.all()
@@ -42,6 +43,7 @@ class ExaminationRequestViewSet(ModelViewSet):
 class ExaminationActionViewSet(ModelViewSet):
     queryset = ExaminationAction.objects.all()
     serializer_class = ExaminationActionSerializer
+    filter_class = ExaminationActionFilter
 
 
 class ExaminationViewSet(ModelViewSet):

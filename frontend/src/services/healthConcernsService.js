@@ -2,11 +2,11 @@ import http from "@/http-common";
 
 class HealthConcernsService {
   getAll() {
-    return http.get("/health-concerns");
+    return http.get("/health-concerns/");
   }
 
   get(id) {
-    return http.get(`/health-concerns/${id}`);
+    return http.get(`/health-concerns/${id}/`);
   }
 
   create(data) {
@@ -14,15 +14,15 @@ class HealthConcernsService {
   }
 
   update(id, data) {
-    return http.put(`/health-concerns/${id}`, data);
+    return http.put(`/health-concerns/${id}/`, data);
   }
 
   delete(id) {
-    return http.delete(`/health-concerns/${id}`);
+    return http.delete(`/health-concerns/${id}/`);
   }
 
   deleteAll() {
-    return http.delete(`/health-concerns`);
+    return http.delete(`/health-concerns/`);
   }
 }
 

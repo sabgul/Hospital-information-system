@@ -10,6 +10,50 @@
         </div>
 
         <div class="main__content">
+            <h4>Filter results</h4>
+
+            <div class="wrapper">
+                <div class="left__filter__row">
+                    <vs-select 
+                        v-model="filter.action_manager"
+                        label="Action manager"
+                        color="primary"
+                    >   
+                        <vs-option v-for="worker in availableWorkers" :key="worker.id" label="worker.name" :value="worker.id">
+                            {{ worker.name }}
+                        </vs-option>
+                    </vs-select>
+                </div>
+
+                <div class="right__filter__row">
+                    <vs-select 
+                        v-model="filter.is_action_paid"
+                        label="Action pricing"
+                        color="primary"
+                    >   
+                        <vs-option value="true" label="Paid">
+                            Paid only
+                        </vs-option>
+
+                        <vs-option value="false" label="Free">
+                            Free only
+                        </vs-option>
+                    </vs-select>
+                </div>
+
+                <div class="filter__submit">
+                    <vs-button  @click="clearFilter()" style="padding: 3px 25px;" border>
+                        Clear filter
+                    </vs-button>
+
+                    <vs-button  @click="getFiltered()" style="padding: 3px 42px;">
+                        Filter
+                    </vs-button>
+                </div>
+            </div>
+        </div>
+
+        <div class="main__content">
             <vs-table striped class="actions__table">
                 <template #header>
                     <vs-input v-model="searchValue" border placeholder="Search" />
@@ -109,7 +153,7 @@
                     Paid
                 </template>
             </vs-switch>
-
+            
             <template #footer>
                 <div class="center">
                     <vs-button @click="finalEdit()" success>
@@ -124,6 +168,7 @@
 
 <script>
 import ExaminationActionsService from "@/services/examinationActionsService";
+import HealthcareWorkersService from "@/services/healthcareWorkersService";
 
 export default {
     name: 'ExaminationActionsOverview',    
@@ -135,7 +180,10 @@ export default {
         page: 1,
         max: 5,
         searchValue: '',
+
         actions: [],
+        availableWorkers: [],
+
         activeDelete: false,
         activeEdit: false,
         toDelete: '',
@@ -145,6 +193,11 @@ export default {
             action_manager: 1,
         },
         newNameConst: '',
+
+        filter: {
+            is_action_paid: -1,
+            action_manager: -1,
+        }
     }),
     
     async created() {
@@ -155,11 +208,39 @@ export default {
             .catch(e => {
                 console.log(e);
             });
+
+        HealthcareWorkersService.getAll()
+            .then(response => {
+                this.availableWorkers = response.data;
+            })
+            .catch(e => {
+                console.log(e);
+            });
     },
     
     methods: {
         getPricingInfo(value) {
             return value ? 'PAID' : 'FREE';
+        },
+
+        getFiltered() {
+            ExaminationActionsService.getFiltered(this.filter)
+                .then(response => {
+                    this.actions = response.data;
+                })
+        },
+
+        async clearFilter() {
+            this.filter.is_action_paid = -1;
+            this.filter.action_manager = -1;
+
+            ExaminationActionsService.getAll()
+            .then(response => {
+                this.actions = response.data;
+            })
+            .catch(e => {
+                console.log(e);
+            });
         },
 
         deleteAction(name) {
@@ -304,8 +385,27 @@ export default {
     }
 
     .switch {
-        width: 80px;
+        width: 100px;
         margin-left: 6px;
         margin-top: 16px;
+    }
+
+    .wrapper {
+        display: flex;
+        padding-top: 2em;
+    }
+
+    .left__filter__row {
+        width: 200px;
+    }
+
+    .right__filter__row {
+        padding-left: 2em;
+        flex-grow: 1;
+    }
+
+    .filter__submit {
+        margin-left: auto;
+        order: 3;
     }
 </style>
