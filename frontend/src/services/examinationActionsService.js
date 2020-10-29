@@ -6,12 +6,13 @@ class ExaminationActionsService {
   }
 
   getFiltered(filter) {
+    const is_action_paid_set = filter.is_action_paid === -1 ? false : true;
     const is_action_paid = filter.is_action_paid === 'true' ? 'true' : 'false';
     const action_manager = filter.action_manager;
 
     return http.get("/examination-actions/", {
       'params': {
-        'is_action_paid': is_action_paid,
+        ...(is_action_paid_set ? { 'is_action_paid': is_action_paid } : {}),
         ...(action_manager !== -1 ? { 'action_manager': action_manager } : {}),
       }
     })
