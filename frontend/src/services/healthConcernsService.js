@@ -5,6 +5,14 @@ class HealthConcernsService {
     return http.get("/health-concerns/");
   }
 
+  getAllByPatient(patientId) {
+    return http.get("/health-concerns/", {
+      'params': {
+        patient: patientId,
+      }
+    })
+  }
+
   get(id) {
     return http.get(`/health-concerns/${id}/`);
   }

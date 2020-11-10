@@ -137,7 +137,7 @@ export default {
     async created() {
         PatientsService.getAll()
         .then(response => {
-            response.data.forEach(pacient => this.users.push({userData: pacient, role: 'Patient'}));
+            response.data.forEach(patient => this.users.push({userData: patient, role: 'Patient'}));
         })
         .catch(e => {
             console.log(e);
@@ -196,9 +196,8 @@ export default {
     }
 
     .users__table {
-        margin: 0 auto;
-        width: 80%;
-        margin-top: 1em;
+      width: 80%;
+      margin: 1em auto 0;
     }
 
     .expanded__item {

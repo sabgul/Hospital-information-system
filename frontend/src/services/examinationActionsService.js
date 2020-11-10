@@ -5,6 +5,14 @@ class ExaminationActionsService {
     return http.get("/examination-actions/");
   }
 
+  getAllByWorker(workerId) {
+    return http.get("/examination-actions/", {
+      'params': {
+        action_manager: workerId,
+      }
+    })
+  }
+
   getFiltered(filter) {
     const is_action_paid_set = filter.is_action_paid === -1 ? false : true;
     const is_action_paid = filter.is_action_paid === 'true' ? 'true' : 'false';

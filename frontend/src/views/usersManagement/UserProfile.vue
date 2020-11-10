@@ -38,27 +38,21 @@
             class="main__content"
             v-if="role === 'doctor'"
         >
-            <h3>Specific details for Doctor</h3>
-            <p>TODO</p>
-            <p>{{ user }}</p>
+            <user-profile-doctor :doctor="user"/>
         </div>
 
         <div 
             class="main__content"
             v-if="role === 'patient'"
         >
-            <h3>Specific details for Patient</h3>
-            <p>TODO</p>
-            <p>{{ user }}</p>
+            <user-profile-patient :patient="user"/>
         </div>
 
         <div 
             class="main__content"
             v-if="role === 'health-insurance-worker'"
         >
-            <h3>Specific details for Health insurance worker</h3>
-            <p>TODO</p>
-            <p>{{ user }}</p>
+            <user-profile-hc-worker :worker="user"/>
         </div>
     </div>
 </template>
@@ -68,6 +62,9 @@
 import PatientsService from '@/services/patientsService.js';
 import DoctorsService from '@/services/doctorsService.js';
 import HealthcareWorkersService from '@/services/healthcareWorkersService.js';
+import UserProfileDoctor from "@/views/usersManagement/UserProfileDoctor";
+import UserProfileHcWorker from "@/views/usersManagement/UserProfileHcWorker";
+import UserProfilePatient from "@/views/usersManagement/UserProfilePatient";
 
 export default {
     name: 'UserProfile', 
@@ -79,7 +76,9 @@ export default {
     },
 
     components: {
-        
+        UserProfileDoctor,
+        UserProfileHcWorker,
+        UserProfilePatient,
     },
     
     data:() => ({

@@ -2,7 +2,15 @@ import http from "@/http-common";
 
 class PatientsService {
   getAll() {
-    return http.get("/patients");
+    return http.get("/patients/");
+  }
+
+  getAllByDoctor(doctorId) {
+    return http.get("/patients/", {
+      'params': {
+        'mainDoctor': doctorId,
+      }
+    })
   }
 
   get(id) {

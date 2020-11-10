@@ -168,11 +168,11 @@ class Examination(models.Model):
 # Ziadost o zaplatenie jedneho ukonu vramci lekarskeho vysetrenia
 class TransactionRequest(models.Model):
     PAID = 'PD'
-    UNPAIED = 'UD'
+    UNPAID = 'UD'
     FREE = 'FR'
     TRANSACTION_STATE = [
         (PAID, 'Paid'),
-        (UNPAIED, 'Unpaid'),
+        (UNPAID, 'Unpaid'),
         (FREE, 'Free'),
     ]
 

@@ -237,12 +237,11 @@ html, body {
   font-family: 'Roboto', sans-serif;
   height: 100%;
   background-color: #fafafa !important;
-
 }
 
 body {
-  overflow: hidden;
-  height: 100%;
+  /*overflow: hidden;*/
+  /*height: 100%;*/
 }
 
 box-icon {
