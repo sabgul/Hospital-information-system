@@ -16,7 +16,7 @@ class PatientSerializer(ModelSerializer):
 
     def to_representation(self, instance):
         response = super().to_representation(instance)
-        response['mainDoctor'] = HealthcareWorkerSerializer(instance.mainDoctor).data
+        response['mainDoctor'] = DoctorSerializer(instance.mainDoctor).data
         return response
 
 
@@ -30,7 +30,11 @@ class HealthConcernSerializer(ModelSerializer):
     class Meta:
         model = HealthConcern
         fields = '__all__'
-        depth = 1
+
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        response['patient'] = PatientSerializer(instance.patient).data
+        return response
 
 
 class DoctorReportSerializer(ModelSerializer):

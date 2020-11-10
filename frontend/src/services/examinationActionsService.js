@@ -14,7 +14,7 @@ class ExaminationActionsService {
   }
 
   getFiltered(filter) {
-    const is_action_paid_set = filter.is_action_paid === -1 ? false : true;
+    const is_action_paid_set = filter.is_action_paid !== -1;
     const is_action_paid = filter.is_action_paid === 'true' ? 'true' : 'false';
     const action_manager = filter.action_manager;
 
