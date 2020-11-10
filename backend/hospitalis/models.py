@@ -1,17 +1,18 @@
 from django.db import models
 import datetime
 
+
 # Create your models here.
 class Doctor(models.Model):
-    name = models.CharField(max_length = 254)
-    date_of_birth = models.DateField(max_length = 8, default = datetime.date.today)
-    email_field = models.EmailField(max_length = 254, default = None)
-    phone_number = models.IntegerField(default = None)
+    name = models.CharField(max_length=254)
+    date_of_birth = models.DateField(max_length=8, default=datetime.date.today, blank=True)
+    email_field = models.EmailField(max_length=254, default=None)
+    phone_number = models.CharField(max_length=32, blank=True)
 
-    specializes_in = models.CharField(max_length = 254, default = None)
+    specializes_in = models.CharField(max_length=254, default=None)
 
-    user_active = models.BooleanField(default = True)
-    active_from = models.DateField(default = datetime.date.today)
+    user_active = models.BooleanField(default=True)
+    active_from = models.DateField(default=datetime.date.today)
 
     def __str__(self):
         return self.name
@@ -22,16 +23,16 @@ class Doctor(models.Model):
 
 
 class Patient(models.Model):
-    name = models.CharField(max_length = 254)
-    date_of_birth = models.DateField(max_length = 8, default = datetime.date.today)
-    email_field = models.EmailField(max_length = 254, default = None)
-    phone_number = models.IntegerField(default = None)
+    name = models.CharField(max_length=254)
+    date_of_birth = models.DateField(max_length=8, default=datetime.date.today, blank=True)
+    email_field = models.EmailField(max_length=254, default=None)
+    phone_number = models.CharField(max_length=32, blank=True)
 
-    mainDoctor = models.ForeignKey(Doctor, on_delete = models.CASCADE)
+    mainDoctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
 
-    user_active = models.BooleanField(default = True)
-    active_from = models.DateField(default = datetime.date.today)
-    
+    user_active = models.BooleanField(default=True)
+    active_from = models.DateField(default=datetime.date.today)
+
     def __str__(self):
         return self.name
 
@@ -41,15 +42,15 @@ class Patient(models.Model):
 
 
 class HealthcareWorker(models.Model):
-    name = models.CharField(max_length = 254)
-    date_of_birth = models.DateField(max_length = 8, default = datetime.date.today)
-    email_field = models.EmailField(max_length = 254, default = None)
-    phone_number = models.IntegerField(default = None)
+    name = models.CharField(max_length=254)
+    date_of_birth = models.DateField(max_length=8, default=datetime.date.today, blank=True)
+    email_field = models.EmailField(max_length=254, default=None)
+    phone_number = models.CharField(max_length=32, blank=True)
 
-    works_for_company = models.CharField(max_length = 254, default = None)
+    works_for_company = models.CharField(max_length=254, default=None)
 
-    user_active = models.BooleanField(default = True)
-    active_from = models.DateField(default = datetime.date.today)
+    user_active = models.BooleanField(default=True)
+    active_from = models.DateField(default=datetime.date.today)
 
     def __str__(self):
         return self.name
@@ -73,14 +74,14 @@ class HealthConcern(models.Model):
         (ENDED, 'Ended'),
     ]
 
-    name = models.CharField(max_length = 254)
-    description = models.CharField(max_length = 2046)
-    patient = models.ForeignKey(Patient, on_delete = models.CASCADE)
-    doctor = models.ForeignKey(Doctor, on_delete = models.CASCADE)
+    name = models.CharField(max_length=254)
+    description = models.CharField(max_length=2046)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     state = models.CharField(
-        max_length = 2,
-        choices = CONCERN_STATE,
-        default = ONGOING,
+        max_length=2,
+        choices=CONCERN_STATE,
+        default=ONGOING,
     )
 
     class Meta:
@@ -90,10 +91,10 @@ class HealthConcern(models.Model):
 
 # Lekarska sprava
 class DoctorReport(models.Model):
-    created_by = models.ForeignKey(Doctor, on_delete = models.CASCADE)
-    about_concern = models.ForeignKey(HealthConcern, on_delete = models.CASCADE)
-    date_of_created = models.DateField(auto_now_add = True)
-    text = models.CharField(max_length = 2046)
+    created_by = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    about_concern = models.ForeignKey(HealthConcern, on_delete=models.CASCADE)
+    date_of_created = models.DateField(auto_now_add=True)
+    text = models.CharField(max_length=2046)
 
     class Meta:
         ordering = ['date_of_created']
@@ -102,12 +103,12 @@ class DoctorReport(models.Model):
 
 # Komentar k lekarskej sprave
 class DoctorReportCommentary(models.Model):
-    report = models.ForeignKey(DoctorReport, on_delete = models.CASCADE)
-    text = models.CharField(max_length = 2046)
+    report = models.ForeignKey(DoctorReport, on_delete=models.CASCADE)
+    text = models.CharField(max_length=2046)
 
     # class Meta:
-        # permission = [()]     TODO: permission group that can access this table will be specified here
-    
+    # permission = [()]     TODO: permission group that can access this table will be specified here
+
 
 # Ziadost o lekarske vysetrenie
 class ExaminationRequest(models.Model):
@@ -121,30 +122,30 @@ class ExaminationRequest(models.Model):
         (RESOLVED, 'Resolved'),
     ]
 
-    created_timestamp = models.DateTimeField(auto_now_add = True)
-    concern = models.ForeignKey(HealthConcern, on_delete = models.CASCADE)
-    created_by = models.ForeignKey(Doctor, on_delete = models.CASCADE)
+    created_timestamp = models.DateTimeField(auto_now_add=True)
+    concern = models.ForeignKey(HealthConcern, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     state = models.CharField(
-        max_length = 2,
-        choices = REQUEST_STATE,
-        default = PENDING,
+        max_length=2,
+        choices=REQUEST_STATE,
+        default=PENDING,
     )
 
     class Meta:
         ordering = ['created_timestamp']
         # permission = [()]     TODO: permission group that can access this table will be specified here
-    
+
 
 # Ukon vramci lekarskeho vysetrenia
 class ExaminationAction(models.Model):
-    name = models.CharField(max_length = 254, primary_key = True)   # To avoid having two similar actions in db
-    is_action_paid = models.BooleanField(default = False)
-    action_manager = models.ForeignKey(HealthcareWorker, on_delete = models.CASCADE)
+    name = models.CharField(max_length=254, primary_key=True)  # To avoid having two similar actions in db
+    is_action_paid = models.BooleanField(default=False)
+    action_manager = models.ForeignKey(HealthcareWorker, on_delete=models.CASCADE)
 
     def get_action_paid(self):
         if self.is_action_paid:
             return self.is_action_paid
-            
+
         return False
 
     class Meta:
@@ -155,8 +156,8 @@ class ExaminationAction(models.Model):
 # Lekarske vysetrenie
 class Examination(models.Model):
     date_of_examination = models.DateTimeField()
-    examinating_doctor = models.ForeignKey(Doctor, on_delete = models.CASCADE)
-    request_based_on = models.ForeignKey(ExaminationRequest, on_delete = models.CASCADE)
+    examinating_doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    request_based_on = models.ForeignKey(ExaminationRequest, on_delete=models.CASCADE)
     actions = models.ManyToManyField(ExaminationAction, through='TransactionRequest')
 
     class Meta:
@@ -175,18 +176,16 @@ class TransactionRequest(models.Model):
         (FREE, 'Free'),
     ]
 
-    examination = models.ForeignKey(Examination, on_delete = models.CASCADE)
-    examination_action = models.ForeignKey(ExaminationAction, on_delete = models.CASCADE)
+    examination = models.ForeignKey(Examination, on_delete=models.CASCADE)
+    examination_action = models.ForeignKey(ExaminationAction, on_delete=models.CASCADE)
 
-    transaction_approver = models.ForeignKey(HealthcareWorker, on_delete = models.CASCADE)
+    transaction_approver = models.ForeignKey(HealthcareWorker, on_delete=models.CASCADE)
 
     request_state = models.CharField(
-        max_length = 2,
-        choices = TRANSACTION_STATE,
-        default = FREE,
+        max_length=2,
+        choices=TRANSACTION_STATE,
+        default=FREE,
     )
 
     # class Meta:
-        # permission = [()]     TODO: permission group that can access this table will be specified here
-
-    
+    # permission = [()]     TODO: permission group that can access this table will be specified here
