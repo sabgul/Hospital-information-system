@@ -10,9 +10,16 @@
         </div>
 
         <div class="main__content">
-            <vs-table striped class="users__table">
+            <vs-table
+                striped
+                class="users__table"
+            >
                 <template #header>
-                    <vs-input v-model="searchValue" border placeholder="Search"/>
+                    <vs-input
+                        v-model="searchValue"
+                        border
+                        placeholder="Search"
+                    />
                 </template>
 
                 <template #thead>
@@ -42,7 +49,12 @@
                         :data="user"
                     >
                         <vs-td>
-                            <span @click="showUserProfile(user.userData.id, user.role)" class="redirect__profile">{{ user.userData.name }}</span>
+                            <span
+                                @click="showUserProfile(user.userData.id, user.role)"
+                                class="redirect__profile"
+                            >
+                                {{ user.userData.name }}
+                            </span>
                         </vs-td>
 
                         <vs-td>
@@ -60,12 +72,21 @@
                         <template #expand>
                             <div class="expanded__item">
                                 <div class="expanded__item">
-                                    <vs-avatar @click="showUserProfile(user.userData.id, user.role)" class="redirect__profile">
-                                        <img src="@/assets/user-illu.jpg" alt="">
+                                    <vs-avatar
+                                        @click="showUserProfile(user.userData.id, user.role)"
+                                        class="redirect__profile"
+                                    >
+                                        <img
+                                            src="@/assets/user-illu.jpg"
+                                            alt=""
+                                        >
                                     </vs-avatar>
 
                                     <b>
-                                        <span class="user__name redirect__profile" @click="showUserProfile(user.userData.id, user.role)">
+                                        <span
+                                            class="user__name redirect__profile"
+                                            @click="showUserProfile(user.userData.id, user.role)"
+                                        >
                                             {{ user.userData.name }}
                                         </span>
                                     </b>
@@ -74,7 +95,10 @@
                                 <div class="expanded__item right">
                                     <vs-tooltip>
                                         <vs-button icon>
-                                            <box-icon name='mail-send' animation='tada-hover'></box-icon>
+                                            <box-icon
+                                                name='mail-send'
+                                                animation='tada-hover'
+                                            />
                                         </vs-button>
 
                                         <template #tooltip>
@@ -84,7 +108,10 @@
 
                                     <vs-tooltip>
                                         <vs-button warn icon>
-                                            <box-icon name='comment-edit' animation='tada-hover'></box-icon>
+                                            <box-icon
+                                                name='comment-edit'
+                                                animation='tada-hover'
+                                            />
                                         </vs-button>
 
                                         <template #tooltip>
@@ -94,7 +121,10 @@
 
                                     <vs-tooltip>
                                         <vs-button danger icon>
-                                            <box-icon name='trash' animation='tada-hover'></box-icon>
+                                            <box-icon
+                                                name='trash'
+                                                animation='tada-hover'
+                                            />
                                         </vs-button>
 
                                         <template #tooltip>
@@ -108,7 +138,10 @@
                 </template>
         
                 <template #footer>
-                    <vs-pagination v-model="page" :length="$vs.getLength(users, max)" />
+                    <vs-pagination
+                        v-model="page"
+                        :length="$vs.getLength(users, max)"
+                    />
                 </template>
             </vs-table>
         </div> 
@@ -124,9 +157,6 @@ import HealthcareWorkersService from '@/services/healthcareWorkersService.js';
 export default {
     name: 'UsersOverview',    
 
-    components: {
-    },
-    
     data:() => ({
         users: [],
         page: 1,

@@ -7,6 +7,7 @@
     <br>
 
     <h5><b>Assigned patients:</b></h5>
+
     <patients-table :patients="assignedPatients"/>
   </div>
 </template>
@@ -32,12 +33,12 @@ export default {
 
   created() {
       PatientsService.getAllByDoctor(this.doctor.id)
-        .then(response => {
-            this.assignedPatients = response.data;
-        })
-        .catch(e => {
-            console.log(e);
-        });
+          .then(response => {
+              this.assignedPatients = response.data;
+          })
+          .catch(e => {
+              console.log(e);
+          });
   }
 }
 </script>

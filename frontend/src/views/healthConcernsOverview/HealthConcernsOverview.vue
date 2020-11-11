@@ -1,7 +1,9 @@
 <template>
     <div>
         <div class="main__content">
-            <h1 class="patients__header">My health concerns</h1>
+            <h1 class="patients__header">
+                My health concerns
+            </h1>
 
             <p>
                 All your health concerns are shown in table below.<br>
@@ -9,18 +11,28 @@
             </p>
         </div>
 
-        <div v-for="concern in concerns" :key="concern.id">
+        <div
+            v-for="concern in concerns"
+            :key="concern.id"
+        >
             <div class="concern__content">
-                <h4>{{ concern.name }}</h4>
-                <p>{{ concern.description }}</p>
+                <h4>
+                    {{ concern.name }}
+                </h4>
+
+                <p>
+                    {{ concern.description }}
+                </p>
+
                 Supervised by: <span>{{ concern.doctor.name }}</span>
+
                 <br>
+
                 State: <span>{{ getState(concern.state) }}</span>
             </div>
         </div>
     </div>
 </template>
-
 
 <script>
 import HealthConcernsService from '@/services/healthConcernsService.js';
@@ -28,9 +40,6 @@ import HealthConcernsService from '@/services/healthConcernsService.js';
 export default {
     name: 'HealthConcernsOverview',    
 
-    components: {
-    },
-    
     data:() => ({
         concerns: [],
     }),
@@ -63,7 +72,7 @@ export default {
                 return 'Ended';
             }
 
-            return 'Uknown state';
+            return 'Unknown state';
         }
     },
 }
@@ -89,11 +98,9 @@ export default {
     }
 
     .concern__content {
-        margin: 20px 0;
-        padding: 20px 20px 20px 25px;
-        margin-left: 25%;
-        margin-right: 15%;
-        background-color: #ffffff;
+      padding: 20px 20px 20px 25px;
+      margin: 20px 15% 20px 25%;
+      background-color: #ffffff;
         box-shadow:
             0 1.3px 20.1px rgba(0, 0, 0, 0.003),
             0 4.2px 44.8px rgba(0, 0, 0, 0.003),

@@ -1,6 +1,9 @@
 <template>
     <div class="main__content">
-        <h1>Add new patient</h1>
+        <h1>
+            Add new patient
+        </h1>
+
         <p>
             Create new patient in the database of patients.<br>
             Some of the basic patient information are necessary to state, but patient can manage his profile later.
@@ -15,7 +18,10 @@
             class="input__items"
             primary
         >
-            <template #message-warn v-if="newPatient.name.length === 0">
+            <template
+                #message-warn
+                v-if="newPatient.name.length === 0"
+            >
                 Required
             </template>
         </vs-input>
@@ -26,11 +32,19 @@
             label="Main doctor"
             color="primary"
         >
-            <template #message-warn v-if="newPatient.main_doctor_id === -1">
+            <template
+                #message-warn
+                v-if="newPatient.main_doctor_id === -1"
+            >
                 Required
             </template>
 
-            <vs-option v-for="doctor in availableDoctors" :key="doctor.id" :label="doctor.name" :value="doctor.id">
+            <vs-option
+                v-for="doctor in availableDoctors"
+                :key="doctor.id"
+                :label="doctor.name"
+                :value="doctor.id"
+            >
                 {{ doctor.name }}
             </vs-option>
         </vs-select>
@@ -41,8 +55,11 @@
             label="Date of birth"
             class="input__items"
         >
-          <template #message-warn v-if="!validDateOfBirth">
-                Required
+          <template
+              #message-warn
+              v-if="!validDateOfBirth"
+          >
+              Required
            </template>
         </vs-input>
 
@@ -51,15 +68,24 @@
             label="Email address"
             class="input__items"
         >
-            <template v-if="validEmail" #message-success>
+            <template
+                v-if="validEmail"
+                #message-success
+            >
                 Valid email
             </template>
 
-            <template v-if="!validEmail && newPatient.email_field !== ''" #message-danger>
+            <template
+                v-if="!validEmail && newPatient.email_field !== ''"
+                #message-danger
+            >
                 Invalid email
             </template>
 
-            <template #message-warn v-if="newPatient.email_field.length === 0">
+            <template
+                #message-warn
+                v-if="newPatient.email_field.length === 0"
+            >
                 Required
             </template>
         </vs-input>
@@ -69,11 +95,17 @@
           label="Phone number"
           class="input__items"
         >
-          <template v-if="validNumber" #message-success>
+          <template
+              v-if="validNumber"
+              #message-success
+          >
               Valid phone number
           </template>
 
-          <template v-if="!validNumber && newPatient.phone_number !== ''" #message-danger>
+          <template
+              v-if="!validNumber && newPatient.phone_number !== ''"
+              #message-danger
+          >
               Invalid phone number
           </template>
         </vs-input>
@@ -99,9 +131,6 @@ import DoctorsService from "@/services/doctorsService";
 export default {
     name: 'PatientAdd',    
 
-    components: {
-    },
-    
     data:() => ({
         newPatient: {
             'name': '',
@@ -223,20 +252,6 @@ export default {
             0 4.2px 44.8px rgba(0, 0, 0, 0.003),
             0 19px 76px rgba(0, 0, 0, 0.06);
         border-radius: 10px;
-    }
-
-    .background__img {
-        width: 30%;
-        position: absolute;
-        right: 50px;
-        bottom: 50px;
-        z-index: -1;
-    }
-
-    .switch {
-        width: 80px;
-        margin-left: 6px;
-        margin-top: 16px;
     }
 
     .input__items {

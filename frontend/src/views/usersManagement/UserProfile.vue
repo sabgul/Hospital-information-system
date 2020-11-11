@@ -17,23 +17,31 @@
             <div class="user__pic">
                 <vs-card type="2">
                     <template #img>
-                        <img src="@/assets/user-illu.jpg" alt="" style="cursor: default;">
+                        <img
+                            src="@/assets/user-illu.jpg"
+                            alt=""
+                            style="cursor: default;"
+                        >
                     </template>
 
                     <template #interactions>
                         <vs-tooltip>
                             <vs-button @click="redirectToEdit(user.id, role)">
-                                <box-icon name='comment-edit' animation='tada-hover'></box-icon>
+                                <box-icon
+                                    name='comment-edit'
+                                    animation='tada-hover'
+                                />
                             </vs-button>
 
                             <template #tooltip>
                                   Edit profile
                             </template>
                         </vs-tooltip>
-                  </template>
+                    </template>
                 </vs-card>
             </div>
         </div>
+
         <div 
             class="main__content"
             v-if="role === 'doctor'"
@@ -72,7 +80,6 @@ export default {
     props: {
         id: String, 
         role: String,
-        user: {},
     },
 
     components: {
@@ -80,11 +87,11 @@ export default {
         UserProfileHcWorker,
         UserProfilePatient,
     },
-    
-    data:() => ({
 
+    data:() => ({
+        user: {},
     }),
-    
+
     async created() {
         if(this.role === 'patient') {
             PatientsService.get(this.id)

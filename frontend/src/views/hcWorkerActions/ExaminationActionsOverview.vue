@@ -1,7 +1,9 @@
 <template>
     <div>
         <div class="main__content">
-            <h1>Examination actions overview</h1>
+            <h1>
+                Examination actions overview
+            </h1>
 
             <p>
                 You can see all examinations related to this hospital.<br>
@@ -10,7 +12,9 @@
         </div>
 
         <div class="main__content">
-            <h4>Filter results</h4>
+            <h4>
+                Filter results
+            </h4>
 
             <div class="wrapper">
                 <div class="left__filter__row">
@@ -19,7 +23,12 @@
                         label="Action manager"
                         color="primary"
                     >   
-                        <vs-option v-for="worker in availableWorkers" :key="worker.id" label="worker.name" :value="worker.id">
+                        <vs-option
+                            v-for="worker in availableWorkers"
+                            :key="worker.id"
+                            label="worker.name"
+                            :value="worker.id"
+                        >
                             {{ worker.name }}
                         </vs-option>
                     </vs-select>
@@ -31,22 +40,35 @@
                         label="Action pricing"
                         color="primary"
                     >   
-                        <vs-option value="true" label="Paid">
+                        <vs-option
+                            value="true"
+                            label="Paid"
+                        >
                             Paid only
                         </vs-option>
 
-                        <vs-option value="false" label="Free">
+                        <vs-option
+                            value="false"
+                            label="Free"
+                        >
                             Free only
                         </vs-option>
                     </vs-select>
                 </div>
 
                 <div class="filter__submit">
-                    <vs-button  @click="clearFilter()" style="padding: 3px 25px;" border>
+                    <vs-button
+                        @click="clearFilter()"
+                        style="padding: 3px 25px;"
+                        border
+                    >
                         Clear filter
                     </vs-button>
 
-                    <vs-button  @click="getFiltered()" style="padding: 3px 42px;">
+                    <vs-button
+                        @click="getFiltered()"
+                        style="padding: 3px 42px;"
+                    >
                         Filter
                     </vs-button>
                 </div>
@@ -54,9 +76,16 @@
         </div>
 
         <div class="main__content">
-            <vs-table striped class="actions__table">
+            <vs-table
+                striped
+                class="actions__table"
+            >
                 <template #header>
-                    <vs-input v-model="searchValue" border placeholder="Search" />
+                    <vs-input
+                        v-model="searchValue"
+                        border
+                        placeholder="Search"
+                    />
                 </template>
 
                 <template #thead>
@@ -102,7 +131,11 @@
                             <vs-button @click="editAction(action.name, action.is_action_paid)">
                                 Edit
                             </vs-button>
-                            <vs-button danger @click="deleteAction(action.name)">
+
+                            <vs-button
+                                danger
+                                @click="deleteAction(action.name)"
+                            >
                                 Delete
                             </vs-button>
                         </vs-td>
@@ -110,12 +143,18 @@
                 </template>
 
                 <template #footer>
-                    <vs-pagination v-model="page" :length="$vs.getLength(actions, max)" />
+                    <vs-pagination
+                        v-model="page"
+                        :length="$vs.getLength(actions, max)"
+                    />
                 </template>
             </vs-table>
         </div>
 
-        <vs-dialog width="300px" v-model="activeDelete">
+        <vs-dialog
+            width="300px"
+            v-model="activeDelete"
+        >
             <template #header>
             <h5>
                 Are you sure you want to remove <b>{{ toDelete }}</b> from database?
@@ -123,28 +162,43 @@
             </template>
 
             <template #footer>
-            <div class="center">
-                <vs-button @click="finalDeletion()" danger>
-                Yep, delete it
-                </vs-button>
+                <div class="center">
+                    <vs-button
+                        @click="finalDeletion()"
+                        danger
+                    >
+                        Yep, delete it
+                    </vs-button>
 
-                <vs-button @click="cancelDeletion()" transparent>
-                Abort mission
-                </vs-button>
-            </div>
+                    <vs-button
+                        @click="cancelDeletion()"
+                        transparent
+                    >
+                        Abort mission
+                    </vs-button>
+                </div>
             </template>
         </vs-dialog>
 
-        <vs-dialog width="500px" v-model="activeEdit">
+        <vs-dialog
+            width="500px"
+            v-model="activeEdit"
+        >
             <template #header>
                 <h5>
                     Editing action <b>{{ newNameConst }}</b>
                 </h5>
             </template>
 
-            <vs-input v-model="toEdit.name" label="Name"/>
+            <vs-input
+                v-model="toEdit.name"
+                label="Name"
+            />
 
-            <vs-switch v-model="toEdit.is_action_paid" class="switch">
+            <vs-switch
+                v-model="toEdit.is_action_paid"
+                class="switch"
+            >
                 <template #off>
                     Free
                 </template>
@@ -156,15 +210,17 @@
             
             <template #footer>
                 <div class="center">
-                    <vs-button @click="finalEdit()" success>
-                    Save
+                    <vs-button
+                        @click="finalEdit()"
+                        success
+                    >
+                        Save
                     </vs-button>
                 </div>
             </template>
         </vs-dialog>
     </div>
 </template>
-
 
 <script>
 import ExaminationActionsService from "@/services/examinationActionsService";
@@ -173,9 +229,6 @@ import HealthcareWorkersService from "@/services/healthcareWorkersService";
 export default {
     name: 'ExaminationActionsOverview',    
 
-    components: {
-    },
-    
     data:() => ({
         page: 1,
         max: 5,
@@ -269,7 +322,7 @@ export default {
                     color,
                     position,
                     title: 'Hooray!🎉',
-                    text: 'Examination action successfuly deleted.'
+                    text: 'Examination action successfully deleted.'
                 });
                 console.log(noti);
 
@@ -365,18 +418,9 @@ export default {
         border-radius: 10px;
     }
 
-    .background__img {
-        width: 30%;
-        position: absolute;
-        right: 50px;
-        bottom: 50px;
-        z-index: -1;
-    }
-
     .actions__table {
-        margin: 0 auto;
-        width: 80%;
-        margin-top: 1em;
+      width: 80%;
+      margin: 1em auto 0;
     }
 
     .center {

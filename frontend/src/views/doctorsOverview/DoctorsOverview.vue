@@ -1,11 +1,20 @@
 <template>
   <div>
     <div class="main__content">
-        <h1 class="doctors__header">All Doctors</h1>
+        <h1 class="doctors__header">
+          All Doctors
+        </h1>
 
-        <vs-table striped class="doctors__table">
+        <vs-table
+            striped
+            class="doctors__table"
+        >
             <template #header>
-                <vs-input v-model="searchValue" border placeholder="Search" />
+                <vs-input
+                    v-model="searchValue"
+                    border
+                    placeholder="Search"
+                />
             </template>
 
             <template #thead>
@@ -21,7 +30,6 @@
                     <vs-th>
                         Email contact
                     </vs-th>
-
                 </vs-tr>
             </template>
 
@@ -47,7 +55,10 @@
             </template>
 
             <template #footer>
-                <vs-pagination v-model="page" :length="$vs.getLength(doctors, max)" />
+                <vs-pagination
+                    v-model="page"
+                    :length="$vs.getLength(doctors, max)"
+                />
             </template>
         </vs-table>
     </div>
@@ -59,10 +70,6 @@ import DoctorsService from "@/services/doctorsService";
 
 export default {
     name: 'DoctorsOverview',
-
-    components: {
-        
-    },
 
     data:() => ({
         doctors: [],
@@ -80,9 +87,6 @@ export default {
             console.log(e);
             });
     },
-
-    methods: {
-    },
 }
 </script>
 
@@ -96,8 +100,7 @@ export default {
     }
 
     .doctors__table {
-        margin: 0 auto;
-        width: 70%;
-        margin-top: 1em;
+      width: 70%;
+      margin: 1em auto 0;
     }
 </style>

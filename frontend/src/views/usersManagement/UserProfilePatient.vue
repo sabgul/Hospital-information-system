@@ -3,20 +3,33 @@
     <h3>Specific details for Patient role</h3>
     <br>
     <h5>
-      <b>Main doctor: </b>
-      <span @click="redirectToDocProfile(patient.mainDoctor.id, 'doctor')" class="redirect__profile">{{ patient.mainDoctor.name }}</span>
+        <b>Main doctor: </b>
+
+        <span
+            @click="redirectToDocProfile(patient.mainDoctor.id, 'doctor')"
+            class="redirect__profile"
+        >
+            {{ patient.mainDoctor.name }}
+        </span>
     </h5>
 
     <br>
 
     <h5><b>Patient's health concerns:</b></h5>
 
-    <div v-for="concern in healthConcerns" :key="concern.id">
+    <div
+        v-for="concern in healthConcerns"
+        :key="concern.id"
+    >
         <div class="concern__content">
             <h4>{{ concern.name }}</h4>
+
             <p>{{ concern.description }}</p>
+
             Supervised by: <span>{{ concern.doctor.name }}</span>
+
             <br>
+
             State: <span>{{ getState(concern.state) }}</span>
         </div>
     </div>
@@ -30,9 +43,6 @@ import HealthConcernsService from "@/services/healthConcernsService";
 
 export default {
   name: "UserProfilePatient",
-
-  components: {
-  },
 
   data:() => ({
     healthConcerns: [],
@@ -83,9 +93,8 @@ export default {
 
 <style scoped>
     .concern__content {
-        margin: 20px 0;
         padding: 20px 20px 20px 25px;
-        margin-right: 15%;
+        margin: 20px 15% 20px 0;
         background-color: #ffffff;
         box-shadow:
             0 1.3px 20.1px rgba(0, 0, 0, 0.003),

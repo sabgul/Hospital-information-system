@@ -1,8 +1,11 @@
 <template>
     <div class="main__content">
-        <h1>Add new examination action</h1>
+        <h1>
+          Add new examination action
+        </h1>
+
         <p>
-            By adding new examination action, doctors can use them when examinating their patients. <br>
+            By adding new examination action, doctors can use them when examining their patients. <br>
             Thanks to that, you will be able to track unpaid examinations of patients.
         </p>
 
@@ -15,7 +18,10 @@
             class="input__items"
             primary
         >
-            <template #message-warn v-if="newAction.name.length === 0">
+            <template
+                #message-warn
+                v-if="newAction.name.length === 0"
+            >
                 Required
             </template>
         </vs-input>
@@ -26,10 +32,19 @@
             label="Action manager"
             color="primary"
         >   
-            <template #message-warn v-if="newAction.action_manager_id === -1">
+            <template
+                #message-warn
+                v-if="newAction.action_manager_id === -1"
+            >
                 Required
             </template>
-            <vs-option v-for="worker in availableWorkers" :key="worker.id" :label="worker.name" :value="worker.id">
+
+            <vs-option
+                v-for="worker in availableWorkers"
+                :key="worker.id"
+                :label="worker.name"
+                :value="worker.id"
+            >
                 {{ worker.name }}
             </vs-option>
         </vs-select>
@@ -54,7 +69,11 @@
             Submit
         </vs-button>
 
-        <img class="background__img" src="@/assets/add-action.svg" alt="">
+        <img
+            class="background__img"
+            src="@/assets/add-action.svg"
+            alt=""
+        >
     </div>
 </template>
 
@@ -66,16 +85,12 @@ import HealthcareWorkersService from "@/services/healthcareWorkersService";
 export default {
     name: 'ExaminationActionAdd',    
 
-    components: {
-    },
-    
     data:() => ({
         newAction: {
             name: '',
             is_action_paid: false,
             action_manager_id: -1,
         },
-
         availableWorkers: [],
     }),
     
@@ -90,12 +105,42 @@ export default {
     },
     
     methods: {
-        async addNewExamination() {
+        showSuccessMessage() {
+          const position = 'top-right';
+          const progress = 'auto';
+          const duration = '6000';
+          const color = 'success';
+
+          const noti = this.$vs.notification({
+                duration,
+                progress,
+                color,
+                position,
+                title: 'Hooray!🎉',
+                text: 'Examination action added to database.'
+            });
+            console.log(noti);
+        },
+
+        showErrorMessage(e) {
             const position = 'top-right';
             const progress = 'auto';
             const duration = '6000';
+            const color = 'danger';
 
-            var data = {
+            const noti = this.$vs.notification({
+                  duration,
+                  progress,
+                  color,
+                  position,
+                  title: 'Whoops!😓: ' + e.message,
+                  text: 'Examination with name `' + this.newAction.name + '` already exists in database.',
+              });
+              console.log(noti);
+        },
+
+        async addNewExamination() {
+            const data = {
                 name: this.newAction.name,
                 is_action_paid: this.newAction.is_action_paid,
                 action_manager: this.newAction.action_manager_id,
@@ -103,40 +148,11 @@ export default {
 
             ExaminationActionsService.create(data)
                 .then(response => {
-                    var color = '';
-                    
-                    if(response) {
-                        color = 'success';
-                    }
-                    color = 'success';
-
-                    const noti = this.$vs.notification({
-                        duration,
-                        progress,
-                        color,
-                        position,
-                        title: 'Hooray!🎉',
-                        text: 'Examination action added to database.'
-                    });
-                    console.log(noti);
+                    console.log(response);
+                    this.showSuccessMessage();
                 })
                 .catch(e => {
-                    var color = '';
-                    
-                    if(e) {
-                        color = 'danger';
-                    }
-                    color = 'danger';
-
-                    const noti = this.$vs.notification({
-                        duration,
-                        progress,
-                        color,
-                        position,
-                        title: 'Whoops!😓: ' + e.message,
-                        text: 'Examination with name `' + this.newAction.name + '` already exists in database.',
-                    });
-                    console.log(noti);
+                    this.showErrorMessage(e);
                 });
         }
     },

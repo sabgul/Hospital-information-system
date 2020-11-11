@@ -2,63 +2,74 @@
     <div>
         <top-nav-bar/>
         <div class="row">
-        <div class="column left--part">
-            <h1 class="headline">HospIS - best solution for your hospital</h1>
+            <div class="column left--part">
+                <h1 class="headline">
+                    HospIS - best solution for your hospital
+                </h1>
 
-            <div class="button--area">
-            <vs-button 
-                floating 
-                large
-                class="btn"
-                gradient
-                @click="setDoctorLoginActive()"
-            >
-                Doctor login
-            </vs-button>
-            
-            <login-dialog 
-                :userType="'Doctor'"
-                :userLoginActive="this.$store.state.doctorLoginActive"
-            />
+                <div class="button--area">
+                    <vs-button
+                        floating
+                        large
+                        class="btn"
+                        gradient
+                        @click="setDoctorLoginActive()"
+                    >
+                        Doctor login
+                    </vs-button>
 
-            <vs-button 
-                floating 
-                large
-                class="btn"
-                gradient
-                @click="setPatientLoginActive()"
-            >
-                Patient login
-            </vs-button>
+                    <login-dialog
+                        :userType="'Doctor'"
+                        :userLoginActive="this.$store.state.doctorLoginActive"
+                    />
 
-            <login-dialog 
-                :userType="'Patient'"  
-                :userLoginActive="this.$store.state.patientLoginActive" 
-            />
+                    <vs-button
+                        floating
+                        large
+                        class="btn"
+                        gradient
+                        @click="setPatientLoginActive()"
+                    >
+                        Patient login
+                    </vs-button>
 
-            <vs-button 
-                floating 
-                large
-                class="btn"
-                gradient
-                @click="setHealthcareLoginActive()"
-            >
-                Healthcare worker login
-            </vs-button>
+                    <login-dialog
+                        :userType="'Patient'"
+                        :userLoginActive="this.$store.state.patientLoginActive"
+                    />
 
-            <login-dialog 
-                :userType="'Healthcare worker'"
-                :userLoginActive="this.$store.state.healthcareLoginActive"
-            />
+                    <vs-button
+                        floating
+                        large
+                        class="btn"
+                        gradient
+                        @click="setHealthcareLoginActive()"
+                    >
+                        Healthcare worker login
+                    </vs-button>
+
+                    <login-dialog
+                        :userType="'Healthcare worker'"
+                        :userLoginActive="this.$store.state.healthcareLoginActive"
+                    />
+                </div>
             </div>
-        </div>
-        <div class="column">
-            <img class="home--illustration" src="@/assets/home-page.svg" alt="">
-        </div>
+
+            <div class="column">
+                <img
+                    class="home--illustration"
+                    src="@/assets/home-page.svg"
+                    alt=""
+                >
+            </div>
         </div>
 
         <div class="row">
-        <img class="home--wave" src="@/assets/wave.svg" alt="">
+            <img
+                class="home--wave"
+                src="@/assets/wave.svg"
+                alt=""
+            >
         </div>
     </div>
 </template>
@@ -140,8 +151,8 @@ export default {
     }
 
     @media only screen and (max-width: 1100px) {
-    .home--illustration {
-        display: none;
-    }
+        .home--illustration {
+            display: none;
+        }
     }
 </style>

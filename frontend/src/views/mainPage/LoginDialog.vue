@@ -15,11 +15,17 @@
                 v-model="xxx" 
                 label-placeholder="Email"
             >
-                <template v-if="validEmail" #message-success>
+                <template
+                    v-if="validEmail"
+                    #message-success
+                >
                     Valid email
                 </template>
 
-                <template v-if="!validEmail && xxx !== ''" #message-danger>
+                <template
+                    v-if="!validEmail && xxx !== ''"
+                    #message-danger
+                >
                     Invalid email
                 </template>
 
@@ -56,8 +62,11 @@
 
         <template #footer>
             <div class="footer-dialog">
-                <vs-button block @click="testt">
-                Sign In
+                <vs-button
+                    block
+                    @click="testt"
+                >
+                    Sign In
                 </vs-button>
             </div>
         </template>

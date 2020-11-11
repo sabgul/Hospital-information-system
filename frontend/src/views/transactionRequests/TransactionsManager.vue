@@ -18,9 +18,6 @@ import TransactionRequestsService from "@/services/transactionRequestsService";
 export default {
     name: 'TransactionsManager',    
 
-    components: {
-    },
-
     data:() => ({
         requests: [],
     }),
@@ -33,9 +30,6 @@ export default {
         .catch(e => {
             console.log(e);
         });
-    },
-
-    methods: {
     },
 }
 </script>

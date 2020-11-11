@@ -10,7 +10,11 @@
 
     <vs-table striped>
         <template #header>
-            <vs-input v-model="searchValue" border placeholder="Search"/>
+            <vs-input
+                v-model="searchValue"
+                border
+                placeholder="Search"
+            />
         </template>
 
         <template #thead>
@@ -42,7 +46,10 @@
         </template>
 
         <template #footer>
-            <vs-pagination v-model="page" :length="$vs.getLength(supervised_actions, max)" />
+            <vs-pagination
+                v-model="page"
+                :length="$vs.getLength(supervised_actions, max)"
+            />
         </template>
     </vs-table>
   </div>
