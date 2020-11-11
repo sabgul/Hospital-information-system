@@ -9,7 +9,7 @@ class Doctor(models.Model):
     email_field = models.EmailField(max_length=254, default=None)
     phone_number = models.CharField(max_length=32, blank=True)
 
-    specializes_in = models.CharField(max_length=254, default=None)
+    specializes_in = models.CharField(max_length=254, default=None, blank=True)
 
     user_active = models.BooleanField(default=True)
     active_from = models.DateField(default=datetime.date.today)
@@ -47,7 +47,7 @@ class HealthcareWorker(models.Model):
     email_field = models.EmailField(max_length=254, default=None)
     phone_number = models.CharField(max_length=32, blank=True)
 
-    works_for_company = models.CharField(max_length=254, default=None)
+    works_for_company = models.CharField(max_length=254, default=None, blank=True)
 
     user_active = models.BooleanField(default=True)
     active_from = models.DateField(default=datetime.date.today)

@@ -22,12 +22,12 @@
 
                     <template #interactions>
                         <vs-tooltip>
-                            <vs-button>
+                            <vs-button @click="redirectToEdit(user.id, role)">
                                 <box-icon name='comment-edit' animation='tada-hover'></box-icon>
                             </vs-button>
 
                             <template #tooltip>
-                                Edit profile
+                                  Edit profile
                             </template>
                         </vs-tooltip>
                   </template>
@@ -138,6 +138,10 @@ export default {
                 return m + ' months';
             }
             return age + ' years';
+        },
+
+        redirectToEdit(id, role) {
+          this.$router.push({ name: 'edit-profile', params: { id: id, role: role }});
         }
     },
 }

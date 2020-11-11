@@ -83,6 +83,15 @@ export default new Router({
       name: 'profile',
       props: true,
       component: () => import('@/views/usersManagement/UserProfile'),
+    },
+    // // //
+
+    // Edit profile
+    {
+      path: '/edit-profile/:role/:id',
+      name: 'edit-profile',
+      props: true,
+      component: () => import('@/views/general/EditProfile'),
     }
     // // //
   ]

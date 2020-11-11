@@ -279,7 +279,7 @@ export default {
                 })
                 .catch(e => {
                     var color = '';
-                    e ? color = 'success' : color = 'success';
+                    e ? color = 'danger' : color = 'danger';
 
                     const noti = this.$vs.notification({
                         duration,
