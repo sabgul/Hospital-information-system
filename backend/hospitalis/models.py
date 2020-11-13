@@ -75,7 +75,7 @@ class HealthConcern(models.Model):
     ]
 
     name = models.CharField(max_length=254)
-    description = models.CharField(max_length=2046)
+    description = models.CharField(max_length=2046, blank=True)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     state = models.CharField(

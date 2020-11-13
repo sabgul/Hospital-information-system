@@ -226,7 +226,7 @@ export default {
               name: this.newUserData.name,
               date_of_birth: this.formatDate(this.newUserData.date_of_birth),
               email_field: this.newUserData.email_field,
-              phone_number: this.newUserData.name,
+              phone_number: this.newUserData.phone_number,
               specializes_in: this.newUserData.specializes_in,
               user_active: true,
               active_from: this.formatDate(this.user.active_from)
@@ -248,7 +248,7 @@ export default {
               name: this.newUserData.name,
               date_of_birth: this.formatDate(this.newUserData.date_of_birth),
               email_field: this.newUserData.email_field,
-              phone_number: this.newUserData.name,
+              phone_number: this.newUserData.phone_number,
               user_active: true,
               active_from: this.formatDate(this.user.active_from),
               works_for_company: this.newUserData.works_for_company

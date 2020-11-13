@@ -107,7 +107,7 @@
                                     </vs-tooltip>
 
                                     <vs-tooltip>
-                                        <vs-button warn icon>
+                                        <vs-button warn icon @click="editUserProfile(user.userData.id, user.role)">
                                             <box-icon
                                                 name='comment-edit'
                                                 animation='tada-hover'
@@ -197,6 +197,10 @@ export default {
 
         showUserProfile(userId, role) {
             this.$router.push({ name: 'profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }})
+        },
+
+        editUserProfile(userId, role) {
+            this.$router.push({ name: 'edit-profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }})
         }
     },
 }

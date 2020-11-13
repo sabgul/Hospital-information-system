@@ -88,7 +88,35 @@
                   Add patient
               </template>
             </vs-tooltip>
-        </vs-sidebar-group>
+
+            <vs-tooltip right>
+                  <vs-sidebar-item>
+                      <template #icon>
+                        <box-icon type='solid' name='virus'></box-icon>
+                      </template>
+
+                      <router-link to="/assigned-health-concerns">Manage health concerns</router-link>
+                  </vs-sidebar-item>
+
+                  <template #tooltip>
+                      Manage health concerns
+                  </template>
+                </vs-tooltip>
+
+                <vs-tooltip right>
+                      <vs-sidebar-item>
+                          <template #icon>
+                            <box-icon name='plus'></box-icon>
+                          </template>
+
+                          <router-link to="/add-health-concern">Add health concern</router-link>
+                      </vs-sidebar-item>
+
+                      <template #tooltip>
+                          Add health concern
+                      </template>
+                </vs-tooltip>
+            </vs-sidebar-group>
 
         <vs-sidebar-group>
             <template #header>

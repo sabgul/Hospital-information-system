@@ -18,7 +18,6 @@ export default new Router({
       name: 'patients',
       component: () => import('@/views/patientsOverview/PatientsOverview'),
     },
-
     {
       path: '/doctors',
       name: 'doctors',
@@ -46,6 +45,16 @@ export default new Router({
       path: '/patient-detail',
       name: 'patientDetail',
       component: () => import('@/views/patientDetail/PatientDetail'),
+    },
+    {
+      path: '/assigned-health-concerns',
+      name: 'assignedHealthConcerns',
+      component: () => import('@/views/doctor/healthConcerns/ManagedHealthConcerns'),
+    },
+    {
+      path: '/add-health-concern',
+      name: 'addHealthConcern',
+      component: () => import('@/views/doctor/healthConcerns/AddHealthConcern'),
     },
     // // //
     

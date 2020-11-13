@@ -34,6 +34,8 @@ class HealthConcernSerializer(ModelSerializer):
     def to_representation(self, instance):
         response = super().to_representation(instance)
         response['patient'] = PatientSerializer(instance.patient).data
+        response['doctor'] = DoctorSerializer(instance.doctor).data
+
         return response
 
 

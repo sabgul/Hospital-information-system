@@ -69,6 +69,7 @@
 import DoctorsService from "@/services/doctorsService";
 
 export default {
+
     name: 'DoctorsOverview',
 
     data:() => ({
