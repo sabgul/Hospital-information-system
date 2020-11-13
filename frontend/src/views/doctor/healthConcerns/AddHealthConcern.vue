@@ -13,7 +13,7 @@
         <br>
 
       <div class="wrapper">
-        <div class="left__filter__row">
+        <div class="left__row">
             <vs-input
               v-model="newConcern.name"
               label="Name of health concern"
@@ -61,7 +61,7 @@
           </vs-select>
         </div>
 
-        <div class="right__filter__row">
+        <div class="right__row">
             <vs-input
                 v-model="newConcern.description"
                 label="Description"
@@ -101,6 +101,42 @@
           </vs-select>
         </div>
 
+        <div class="third__row">
+            <vs-select
+                v-model="newConcern.state"
+                label="Concern state"
+                color="primary"
+            >
+                <vs-option
+                    value="WT"
+                    label="Waiting for examination"
+                >
+                    Waiting for examination
+                </vs-option>
+
+                <vs-option
+                    value="ON"
+                    label="Ongoing"
+                >
+                    Ongoing
+                </vs-option>
+
+                <vs-option
+                    value="TL"
+                    label="Terminal"
+                >
+                    Terminal
+                </vs-option>
+
+                <vs-option
+                    value="ED"
+                    label="Ended"
+                >
+                    Ended
+                </vs-option>
+            </vs-select>
+        </div>
+
         <vs-button
             @click="addNewExamination()"
             :disabled=" newConcern.name.length === 0 ||
@@ -129,6 +165,7 @@ export default {
         newConcern: {
           name: '',
           description: '',
+          state: 'WT',
           patient: -1,
           doctor: -1, // TODO tu bude id current usera
         },
@@ -232,17 +269,24 @@ export default {
         padding-top: 2em;
     }
 
-    .left__filter__row {
+    .left__row {
         width: 200px;
         margin-top: auto;
         margin-bottom: 1em;
     }
 
-    .right__filter__row {
+    .right__row {
         padding-left: 2em;
         flex-grow: 1;
         margin-top: auto;
         margin-bottom: 1em;
+    }
+
+    .third__row {
+        padding-left: 0;
+        flex-grow: 2;
+        margin-top: auto;
+        margin-bottom: 3em;
     }
 
     .filter__submit {
