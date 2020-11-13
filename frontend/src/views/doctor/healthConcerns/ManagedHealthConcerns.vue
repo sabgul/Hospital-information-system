@@ -2,7 +2,7 @@
     <div>
         <div class="main__content">
             <h1 class="patients__header">
-                Overview of managed health concerns
+                Manage patients health concerns
             </h1>
 
             <p>
@@ -71,6 +71,7 @@
                             <vs-button
                                 danger
                                 class="buttons"
+                                @click="reassign(concern)"
                             >
                                 Assign to another doctor
                             </vs-button>
@@ -86,6 +87,7 @@
 
                     </vs-tr>
                 </template>
+
                 <template #footer>
                     <vs-pagination
                         v-model="page"
@@ -94,11 +96,51 @@
                 </template>
             </vs-table>
         </div>
+
+          <vs-dialog
+              width="500px"
+              v-model="activeAssign"
+          >
+              <template #header>
+                  <h5>
+                      Select new manager of <b>{{ toReassign.name }}</b>
+                  </h5>
+              </template>
+
+              <vs-select
+                  v-model="newDoc"
+                  class="popup__center"
+                  label="Doctor"
+                  placeholder="Choose a doctor"
+                  color="primary"
+                  >
+                      <vs-option
+                          v-for="doctor in availableDoctors"
+                          :key="doctor.id"
+                          :label="doctor.name"
+                          :value="doctor.id"
+                      >
+                          {{ doctor.name }}
+                      </vs-option>
+              </vs-select>
+
+              <template #footer>
+                  <div class="popup__right">
+                      <vs-button
+                          success
+                          @click="finishReassign()"
+                      >
+                          Save
+                      </vs-button>
+                  </div>
+              </template>
+          </vs-dialog>
     </div>
 </template>
 
 <script>
-import HealthConcernsService from '@/services/healthConcernsService.js';
+import HealthConcernsService from '@/services/healthConcernsService';
+import DoctorsService from '@/services/doctorsService';
 
 export default {
     name: 'ManagedHealthConcerns',
@@ -108,13 +150,26 @@ export default {
         max: 5,
         searchValue: '',
 
+        activeAssign: false,
+        toReassign: {},
+        newDoc: -1,
+
         concerns: [],
+        availableDoctors: [],
     }),
 
     async created() {
         HealthConcernsService.getAll()
             .then(response => {
             this.concerns = response.data;
+            })
+            .catch(e => {
+            console.log(e);
+            });
+
+        DoctorsService.getAll()
+            .then(response => {
+            this.availableDoctors = response.data;
             })
             .catch(e => {
             console.log(e);
@@ -140,7 +195,63 @@ export default {
             }
 
             return 'Unknown state';
-        }
+        },
+
+        reassign(concern) {
+            this.activeAssign = true;
+            this.toReassign = concern;
+            this.newDoc = concern.doctor.id;
+        },
+
+        finishReassign() {
+            const position = 'top-right';
+            const progress = 'auto';
+            const duration = '6000';
+
+            let newConcern = {...this.toReassign}
+            newConcern.doctor = this.newDoc;
+            newConcern.patient = this.toReassign.patient.id;
+
+          console.log(newConcern);
+
+            HealthConcernsService.update(this.toReassign.id, newConcern)
+            .then(response => {
+                var color = '';
+                response ? color = 'success' : color = 'success';
+
+                const noti = this.$vs.notification({
+                    duration,
+                    progress,
+                    color,
+                    position,
+                    title: 'Hooray!🎉',
+                    text: 'Manager of ' + newConcern.name + ' successfully changed.',
+                });
+                console.log(noti);
+
+                HealthConcernsService.getAll()
+                    .then(response => {
+                    this.concerns = response.data;
+                    })
+                    .catch(e => {
+                    console.log(e);
+                    });
+            })
+            .catch(e => {
+                var color = '';
+                    e ? color = 'danger' : color = 'danger';
+
+                    const noti = this.$vs.notification({
+                        duration,
+                        progress,
+                        color,
+                        position,
+                        title: 'Whoops!😓: ' + e.message,
+                        text: 'There was an error in changing the manager. Try again later or contact support.',
+                    });
+                    console.log(noti);
+            });
+        },
     },
 }
 </script>
@@ -177,5 +288,20 @@ export default {
       position: absolute;
       right: 10px;
       top: 0;
+    }
+
+    .popup__center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        padding-bottom: 4em;
+        width: 40%;
+        margin-top: 2em;
+    }
+
+    .popup__right {
+      position: absolute;
+      right: 1em;
+      bottom: 1em;
     }
 </style>
