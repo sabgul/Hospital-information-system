@@ -80,7 +80,11 @@
                         <template #expand>
                           <p><b>Description: </b>{{ concern.description }}</p>
 
-                          <vs-button class="right__part" border>
+                          <vs-button
+                              class="right__part"
+                              border
+                              @click="showConcernDetail(concern.id)"
+                          >
                                 Show more details
                             </vs-button>
                         </template>
@@ -195,6 +199,10 @@ export default {
             }
 
             return 'Unknown state';
+        },
+
+        showConcernDetail(concernId) {
+            this.$router.push({ name: 'healthConcernDetail', params: {id: concernId }})
         },
 
         reassign(concern) {

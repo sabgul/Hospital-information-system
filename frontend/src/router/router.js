@@ -56,6 +56,12 @@ export default new Router({
       name: 'addHealthConcern',
       component: () => import('@/views/doctor/healthConcerns/AddHealthConcern'),
     },
+    {
+      path: '/health-concern-detail/:id',
+      name: 'healthConcernDetail',
+      props: true,
+      component: () => import('@/components/ConcernDetail'),
+    },
     // // //
     
 
