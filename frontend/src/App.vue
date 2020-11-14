@@ -116,6 +116,20 @@
                           Add health concern
                       </template>
                 </vs-tooltip>
+
+                <vs-tooltip right>
+                      <vs-sidebar-item>
+                          <template #icon>
+                            <box-icon name='blanket'></box-icon>
+                          </template>
+
+                          <router-link to="/assigned-tickets">Manage assigned tickets</router-link>
+                      </vs-sidebar-item>
+
+                      <template #tooltip>
+                          Manage assigned tickets
+                      </template>
+                </vs-tooltip>
             </vs-sidebar-group>
 
         <vs-sidebar-group>

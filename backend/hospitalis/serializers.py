@@ -57,7 +57,13 @@ class ExaminationRequestSerializer(ModelSerializer):
     class Meta:
         model = ExaminationRequest
         fields = '__all__'
-        depth = 1
+    
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        response['concern'] = HealthConcernSerializer(instance.concern).data
+        response['created_by'] = DoctorSerializer(instance.created_by).data
+
+        return response
 
 
 class ExaminationActionSerializer(ModelSerializer):

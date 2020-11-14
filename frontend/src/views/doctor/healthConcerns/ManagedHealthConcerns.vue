@@ -64,7 +64,7 @@
                         </vs-td>
 
                         <vs-td>
-                            <vs-button class="buttons">
+                            <vs-button class="buttons" @click="redirectToNewRequest(concern.id)">
                                 New examination request
                             </vs-button>
 
@@ -78,8 +78,9 @@
                         </vs-td>
 
                         <template #expand>
+                          <div style="width: 80%;">
                           <p><b>Description: </b>{{ concern.description }}</p>
-
+                          </div>
                           <vs-button
                               class="right__part"
                               border
@@ -259,6 +260,10 @@ export default {
                     });
                     console.log(noti);
             });
+        },
+
+        redirectToNewRequest(healthConcernId) {
+            this.$router.push({ name: 'newExaminationRequest', params: {id: healthConcernId }});
         },
     },
 }
