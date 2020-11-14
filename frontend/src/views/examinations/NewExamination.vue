@@ -8,6 +8,10 @@
       </div>
 
       <div class="main__content">
+          <h3>Date of examination & actions</h3>
+
+          <br>
+
           <vs-input
               label="Date of examination"
               v-model="examinationDate"
@@ -21,10 +25,38 @@
               <h5>Examination actions made during this examination: </h5>
 
               <div
-                  v-for="action in chosenActions"
-                  v-bind:key="action.id"
+                  v-for="(action, index) in chosenActions"
+                  v-bind:key="index"
+                  class="action__within__examination"
               >
-                  <span>{{ action.name }}</span>
+                <div>
+                    <span><b>{{ action.name }}</b> <br> ({{getPricing(action.is_action_paid)}})</span>
+                </div>
+
+                <div class="buttons__action">
+                    <div style="display: inline-block">
+                       <vs-button
+                          icon
+                          danger
+                          @click="deleteAction(index)"
+                        >
+                            <box-icon name='trash' style="fill: #fff"/>
+                        </vs-button>
+                    </div>
+
+                  <div style="display: inline-block" v-if="action.is_action_paid">
+                       <vs-button
+                            icon
+                            border
+                            color="rgb(255,255,255)"
+                            @click="overpayQuery(action.name)"
+                        >
+                            <box-icon name='dollar-circle' style="fill: #fff"/>
+                            Ask Insurance company to overpay
+                        </vs-button>
+                    </div>
+
+                </div>
               </div>
 
               <vs-button
@@ -36,7 +68,35 @@
                   <box-icon name='message-square-add' type='solid' style="fill: #fff"/>
                   <span style="margin-left: 1em">Add new action</span>
               </vs-button>
+
+            <br>
+            <br>
+
+
           </div>
+      </div>
+
+      <div class="main__content">
+          <h3>Attached Doctor report</h3>
+
+          <br>
+
+          <h5>Author: <b>TODO...current user</b></h5>
+          <h5>About concern: <b>{{ examinationAboutTicket.concern.name }}</b></h5>
+          <h5>Based on ticket number <b>{{ examinationAboutTicket.id }}</b></h5>
+
+          <br>
+
+          <textarea
+              v-model="commentary"
+              placeholder="Add commentary about this report."
+          />
+      </div>
+
+      <div class="main__content">
+          <vs-button success>
+              Save
+          </vs-button>
       </div>
 
       <vs-dialog
@@ -83,6 +143,7 @@
 <script>
 import ExaminationRequestsService from "@/services/examinationRequestsService";
 import ExaminationActionsService from "@/services/examinationActionsService";
+import TransactionRequestsService from "@/services/transactionRequestsService";
 
 export default {
     name: "NewExamination",
@@ -97,6 +158,8 @@ export default {
 
         activeActionAdd: false,
         actionToAdd: '',
+
+        commentary: '',
 
         chosenActions: [],
         availableActions: [],
@@ -180,6 +243,26 @@ export default {
 
         getPricing(value) {
             return value ? 'PAID' : 'FREE';
+        },
+
+        deleteAction(index) {
+          this.chosenActions.splice(index, 1);
+        },
+
+        overpayQuery(name) {
+          const newRequest = {
+            examination_action: name,
+            request_state: 'UD'
+          }
+          console.log('imaaaa ')
+          TransactionRequestsService.create(newRequest)
+              .then(response => {
+                    console.log(response);
+                    this.successPopup();
+                })
+                .catch(e => {
+                    this.failPopup(e);
+                });
         }
     }
 }
@@ -227,8 +310,30 @@ export default {
     }
 
     .popup__right {
-      position: absolute;
-      right: 1em;
-      bottom: 1em;
+        position: absolute;
+        right: 1em;
+        bottom: 1em;
+    }
+
+    .action__within__examination {
+        background-color: #195bff;
+        opacity: 0.95;
+        color: white;
+        padding: 1em 2em;
+        border-radius: 10px;
+        margin-bottom: 0.5em;
+        display: flex;
+        justify-content:space-between;
+    }
+
+    .buttons__action {
+        right: 1em;
+        bottom: 1em;
+        display: inline-block;
+    }
+
+    textarea {
+      border-radius: 12px;
+      width: 60%;
     }
 </style>
