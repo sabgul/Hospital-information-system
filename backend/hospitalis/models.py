@@ -167,11 +167,11 @@ class Examination(models.Model):
 
 # Ziadost o zaplatenie jedneho ukonu vramci lekarskeho vysetrenia
 class TransactionRequest(models.Model):
-    PAID = 'PD'
+    OVERPAID = 'PD'
     UNPAID = 'UD'
     FREE = 'FR'
     TRANSACTION_STATE = [
-        (PAID, 'Paid'),
+        (OVERPAID, 'Paid'),
         (UNPAID, 'Unpaid'),
         (FREE, 'Free'),
     ]
@@ -179,7 +179,7 @@ class TransactionRequest(models.Model):
     examination = models.ForeignKey(Examination, on_delete=models.CASCADE)
     examination_action = models.ForeignKey(ExaminationAction, on_delete=models.CASCADE)
 
-    transaction_approver = models.ForeignKey(HealthcareWorker, on_delete=models.CASCADE)
+    # transaction_approver = models.ForeignKey(HealthcareWorker, on_delete=models.CASCADE)
 
     request_state = models.CharField(
         max_length=2,
