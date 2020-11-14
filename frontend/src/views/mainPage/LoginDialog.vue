@@ -10,29 +10,15 @@
     </template>
 
     <form action="#" v-on:submit.prevent="login">
-<!-- alternatively   @submit.prevent="login"-->
       <div class="con-form">
         <vs-input
             class="con-form-item"
-            v-model="user_email"
-            label-placeholder="Email"
+            v-model="username"
+            label-placeholder="Username"
         >
-          <template
-              v-if="validEmail"
-              #message-success
-          >
-            Valid email
-          </template>
-
-          <template
-              v-if="!validEmail && user_email !== ''"
-              #message-danger
-          >
-            Invalid email
-          </template>
 
           <template #icon>
-            @
+            <box-icon name='user'></box-icon>
           </template>
         </vs-input>
 
@@ -40,7 +26,7 @@
             class="con-form-item"
             type="password"
             :visiblePassword="hasVisiblePassword"
-            v-model="user_password"
+            v-model="password"
             label-placeholder="Password"
             @click-icon="hasVisiblePassword = !hasVisiblePassword">
           >
@@ -62,24 +48,21 @@
         </vs-input>
       </div>
 
-      <div class="form-control">
-        <vs-button type="submit" class="footer-dialog">Login</vs-button>
+      <!-- could not get 2 templates into a single form -->
+      <!--       <template #footer>-->
+      <div class="footer-dialog">
+        <vs-button
+            type="submit"
+            block
+
+        >
+          Sign In
+        </vs-button>
       </div>
+      <span v-if="invalid_credentials">Wrong credentials.</span>
+      <!--       </template>-->
 
-<!--      could not get 2 templates into a single form -->
-<!--      <template #footer>-->
-<!--        <div class="footer-dialog">-->
-<!--          <vs-button-->
-<!--              block-->
-<!--              -->
-<!--          >-->
-<!--            Sign In-->
-<!--          </vs-button>-->
-<!--        </div>-->
-<!--      </template>-->
-
-         </form>
-<!--    login -->
+    </form>
   </vs-dialog>
 </template>
 
@@ -94,15 +77,10 @@ export default {
 
   data: () => ({
     hasVisiblePassword: false,
-    user_email: '',
-    user_password: '',
+    username: '',
+    password: '',
+    invalid_credentials: false,
   }),
-
-  computed: {
-    validEmail() {
-      return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.user_email)
-    }
-  },
 
   methods: {
     async loginDialogClosed() {
@@ -124,16 +102,36 @@ export default {
     },
 
     login() {
-      console.log('login() ', this.user_email, this.user_password);
+      console.log(`login() "${this.username}" "${this.password}"`);
+      if (!this.username.length || !this.password.length) {
+        console.log('empty');
+        return;
+      }
 
-      this.$store.dispatch('retrieveToken', {
-        username: this.user_email,
-        password: this.user_password,
+      this.$store.dispatch('loginUser', {
+        username: this.username,
+        password: this.password
       })
-      .then(() => {
-          this.$router.push('patients')
-        })
+          .then(() => {
+            console.log('success')
+            this.invalid_credentials = false
+            this.$router.push('patients')
+          })
+          .catch(err => {
+            console.log(err)
+            this.invalid_credentials = true
+          })
+    },
+    register() {
+      this.$store.dispatch('registerUser', {
+        name: this.name,
+        email: this.email,
+        username: this.username,
+        password: this.password,
+        confirm: this.confirm
+      })
     }
+
   }
 }
 </script>

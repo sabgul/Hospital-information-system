@@ -10,7 +10,8 @@ export const store = new Vuex.Store({
             patientLoginActive: false,
             healthcareLoginActive: false,
             adminLoginActive: false,
-            token: localStorage.getItem('access_token') || null, // if exists: load, else: null, later set in retrieveToken.
+            access_token: localStorage.getItem('access_token') || null, // if exists: load, else: null, later set in retrieveToken.
+            refresh_token: localStorage.getItem('refresh_token') || null, // if exists: load, else: null, later set in retrieveToken.
         },
 
         mutations: {
@@ -29,31 +30,51 @@ export const store = new Vuex.Store({
             SET_HEALTHCARE_LOGIN(state) {
                 state.healthcareLoginActive = !state.healthcareLoginActive;
             },
-            retrieveToken(state, token) {
-                state.token = token
+            SET_ACCESS_TOKEN (state, access) {
+              localStorage.setItem('access_token', access)
+              state.access_token = access
+            },
+            SET_REFRESH_TOKEN (state, refresh) {
+              localStorage.setItem('refresh_token', refresh)
+              state.refresh_token = refresh
             },
         },
 
         actions: {
-            retrieveToken(context, credentials) {
-                http.post('/token/', {
-                    username: credentials.username,
-                    password: credentials.password,
+            loginUser(context, credentials) {
+                return new Promise((resolve, reject) => {
+                    http.post('/token/', {
+                        username: credentials.username,
+                        password: credentials.password
+                    })
+                        .then(response => {
+                            console.log('retrieveToken().then()', response);
+                            context.commit('SET_ACCESS_TOKEN', response.data.access)
+                            context.commit('SET_REFRESH_TOKEN', response.data.refresh)
+                            resolve()
+                        })
+                        .catch(error => {
+                            console.log(error)
+                            reject(error)  // propagate back to login dialog?
+                        })
                 })
-                    .then(response => {
-                        console.log('retrieveToken().then()', response);
-                        const token = response.data.access_token
-                        // where to store token:
-                        //      local storage (common)
-                        //          - can be stolen through XSS
-                        //      cookie
-                        //          - vulnerable to CSRFX
-                        localStorage.setItem('access_token', token)
-                        context.commit('retrieveToken', token)
+            },
+            registerUser(context, data) {
+                return new Promise((resolve, reject) => {
+                    http.post('/register/', {
+                        name: data.name,
+                        email: data.email,
+                        username: data.username,
+                        password: data.password,
+                        confirm: data.confirm
                     })
-                    .catch(error => {
-                        console.log(error)
-                    })
+                        .then(response => {
+                            resolve(response)
+                        })
+                        .catch(error => {
+                            reject(error)
+                        })
+                })
             },
         }
     })
