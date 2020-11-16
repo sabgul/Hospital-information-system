@@ -92,7 +92,6 @@ export default {
 </script>
 
 <style scoped>
-
     .doctors__header {
         margin-left: 15%;
     }

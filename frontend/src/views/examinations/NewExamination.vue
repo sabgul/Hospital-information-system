@@ -23,7 +23,7 @@
 
           <div class="actions">
               <h5>Examination actions made during this examination: </h5>
-
+              <span v-if="chosenActions.length === 0">No actions selected</span>
               <div
                   v-for="(action, index) in chosenActions"
                   v-bind:key="index"
@@ -34,16 +34,6 @@
                 </div>
 
                 <div class="buttons__action">
-                    <div style="display: inline-block">
-                       <vs-button
-                          icon
-                          danger
-                          @click="deleteAction(index)"
-                        >
-                            <box-icon name='trash' style="fill: #fff"/>
-                        </vs-button>
-                    </div>
-
                   <div style="display: inline-block" v-if="action.is_action_paid">
                        <vs-button
                             icon
@@ -52,10 +42,19 @@
                             @click="overpayQuery(action.name)"
                         >
                             <box-icon name='dollar-circle' style="fill: #fff"/>
-                            Ask Insurance company to overpay
+                            Ask Insurance company to cover this action
                         </vs-button>
                     </div>
 
+                    <div style="display: inline-block">
+                       <vs-button
+                          icon
+                          danger
+                          @click="deleteAction(index)"
+                       >
+                          <box-icon name='trash' style="fill: #fff"/>
+                       </vs-button>
+                    </div>
                 </div>
               </div>
 
@@ -77,7 +76,7 @@
       </div>
 
       <div class="main__content">
-          <h3>Attached Doctor report</h3>
+          <h3>Attach Doctor report</h3>
 
           <br>
 
@@ -87,14 +86,19 @@
 
           <br>
 
+          <h6>Description</h6>
           <textarea
-              v-model="commentary"
-              placeholder="Add commentary about this report."
+              v-model="description"
+              placeholder="Describe briefly this report.."
           />
       </div>
 
       <div class="main__content">
-          <vs-button success>
+          <vs-checkbox v-model="markTicketResolved" class="ticket__checkbox">
+            Mark ticket as resolved
+          </vs-checkbox>
+
+          <vs-button success @click="saveExamination()">
               Save
           </vs-button>
       </div>
@@ -144,8 +148,12 @@
 import ExaminationRequestsService from "@/services/examinationRequestsService";
 import ExaminationActionsService from "@/services/examinationActionsService";
 import TransactionRequestsService from "@/services/transactionRequestsService";
+import ExaminationsService from "@/services/examinationsService";
+import HealthConcernsService from "@/services/healthConcernsService";
+// import DoctorsReportsService from "@/services/doctorsReportsService";
 
 import NotificationsUtils from "@/utils/notificationsUtils";
+import DateUtils from "@/utils/dateUtils";
 
 export default {
     name: "NewExamination",
@@ -161,10 +169,12 @@ export default {
         activeActionAdd: false,
         actionToAdd: '',
 
-        commentary: '',
+        description: '',
 
         chosenActions: [],
         availableActions: [],
+
+        markTicketResolved: true,
     }),
 
     async created() {
@@ -218,19 +228,79 @@ export default {
         },
 
         overpayQuery(name) {
-          const newRequest = {
-            examination: 1,
-            examination_action: name,
-            request_state: 'UD'
+            const newRequest = {
+                examination: 1,
+                examination_action: name,
+                request_state: 'UD'
+            }
+
+            TransactionRequestsService.create(newRequest)
+                .then(response => {
+                      console.log(response);
+                      NotificationsUtils.successPopup('Request to cover this action was sent to insurance company.', this.$vs);
+                  })
+                  .catch(e => {
+                      NotificationsUtils.failPopup(e, this.$vs);
+                  });
+        },
+
+        async saveExamination() {
+          // adding new examination into DB
+          const newExamination = {
+            date_of_examination: DateUtils.getDateForBackend(this.examinationDate),
+            examinating_doctor: this.examinationAboutTicket.created_by.id,
+            request_based_on: this.examinationAboutTicket.id,
+            description: this.description,
+            actions: this.chosenActions.map(action => action.name),
           }
-          TransactionRequestsService.create(newRequest)
+
+          ExaminationsService.create(newExamination)
               .then(response => {
-                    console.log(response);
-                    NotificationsUtils.successPopup('Request to cover this action was sent to insurance company.', this.$vs);
-                })
-                .catch(e => {
-                    NotificationsUtils.failPopup(e, this.$vs);
-                });
+                  console.log(response);
+                  NotificationsUtils.successPopup('Examination created.', this.$vs);
+              })
+              .catch(e => {
+                  NotificationsUtils.failPopup(e, this.$vs);
+              });
+
+          // const newReport = {
+          //   created_by: this.examinationAboutTicket.created_by.id, // TODO current user
+          //   about_concern: this.examinationAboutTicket.concern.id,
+          //   text: this.description,
+          // }
+
+          // Ticket is set to be resolved
+          if(this.markTicketResolved) {
+            const newTicketData = {
+                concern: this.examinationAboutTicket.concern.id,
+                created_by: this.examinationAboutTicket.created_by.id,
+                state: 'RD'
+            };
+            ExaminationRequestsService.update(this.examinationAboutTicket.id, newTicketData)
+              .then(response => {
+                  console.log(response);
+              })
+              .catch(e => {
+                  NotificationsUtils.failPopup(e, this.$vs);
+              });
+          }
+
+          // state of concern is set to be Ongoing
+          const newConcern = {
+            name: this.examinationAboutTicket.concern.name,
+            description: this.examinationAboutTicket.concern.description,
+            state: 'ON',
+            patient: this.examinationAboutTicket.concern.patient.id,
+            doctor: this.examinationAboutTicket.concern.doctor.id
+          }
+
+          HealthConcernsService.update(this.examinationAboutTicket.concern.id, newConcern)
+              .then(response => {
+                  console.log(response);
+              })
+              .catch(e => {
+                  NotificationsUtils.failPopup(e, this.$vs);
+              });
         }
     }
 }
@@ -282,6 +352,10 @@ export default {
         display: inline-block;
     }
 
+    .ticket__checkbox {
+      float: left;
+      margin-right: 2em;
+    }
     textarea {
       border-radius: 12px;
       width: 60%;

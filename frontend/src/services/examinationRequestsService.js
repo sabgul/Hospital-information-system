@@ -5,6 +5,16 @@ class ExaminationRequestsService {
     return http.get("/examination-requests/");
   }
 
+  getFiltered(filter) {
+    const isStateSet = filter.state.length !== 0;
+
+    return http.get("/examination-requests/", {
+      'params': {
+        ...(isStateSet ? { 'state': filter.state } : {}),
+      }
+    })
+  }
+
   get(id) {
     return http.get(`/examination-requests/${id}/`);
   }

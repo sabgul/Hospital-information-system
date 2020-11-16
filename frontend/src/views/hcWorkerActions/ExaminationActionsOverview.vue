@@ -278,7 +278,7 @@ export default {
             return value ? 'PAID' : 'FREE';
         },
 
-        getFiltered() {
+        async getFiltered() {
             ExaminationActionsService.getFiltered(this.filter)
                 .then(response => {
                     this.actions = response.data;
@@ -308,7 +308,7 @@ export default {
             this.toDelete = '';
         },
 
-        finalDeletion() {
+        async finalDeletion() {
             ExaminationActionsService.delete(this.toDelete)
             .then(response => {
                 console.log(response);
@@ -335,7 +335,7 @@ export default {
             this.toEdit.is_action_paid = pricing;
         },
 
-        finalEdit() {
+        async finalEdit() {
             ExaminationActionsService.update(this.newNameConst, this.toEdit)
             .then(response => {
                 console.log(response); 
@@ -391,30 +391,5 @@ export default {
         width: 100px;
         margin-left: 6px;
         margin-top: 16px;
-    }
-
-    .wrapper {
-        display: flex;
-        padding-top: 2em;
-    }
-
-    .left__filter__row {
-        width: 200px;
-        margin-top: auto;
-        margin-bottom: 1em;
-    }
-
-    .right__filter__row {
-        padding-left: 2em;
-        flex-grow: 1;
-        margin-top: auto;
-        margin-bottom: 1em;
-    }
-
-    .filter__submit {
-        margin-left: auto;
-        order: 3;
-        margin-bottom: 1em;
-        margin-right: 1em;
     }
 </style>

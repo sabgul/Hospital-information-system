@@ -158,7 +158,8 @@ class Examination(models.Model):
     date_of_examination = models.DateField()
     examinating_doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     request_based_on = models.ForeignKey(ExaminationRequest, on_delete=models.CASCADE)
-    actions = models.ManyToManyField(ExaminationAction, through='TransactionRequest')
+    actions = models.ManyToManyField('ExaminationAction', blank=True)
+    description = models.CharField(max_length=2046, blank=True)
 
     class Meta:
         ordering = ['date_of_examination']

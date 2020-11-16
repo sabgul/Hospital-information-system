@@ -129,6 +129,7 @@ import PatientsService from "@/services/patientsService";
 import DoctorsService from "@/services/doctorsService";
 
 import NotificationsUtils from "@/utils/notificationsUtils";
+import DateUtils from "@/utils/dateUtils";
 
 export default {
     name: 'PatientAdd',    
@@ -174,7 +175,7 @@ export default {
             let data = {
                 name: this.newPatient.name,
                 mainDoctor: this.newPatient.main_doctor_id,
-                date_of_birth: this.formatDate(this.newPatient.date_of_birth),
+                date_of_birth: DateUtils.getDateForBackend(this.newPatient.date_of_birth),
                 email_field: this.newPatient.email_field,
                 phone_number: this.newPatient.phone_number
             };
@@ -191,14 +192,6 @@ export default {
                 .catch(e => {
                     NotificationsUtils.failPopup(e, this.$vs);
                 });
-        },
-
-        formatDate(date) {
-            const day = date.slice(8, 10);
-            const month = date.slice(5, 7);
-            const year = date.slice(0, 4);
-
-            return year + '-' + month + '-' + day
         },
     },
 }
