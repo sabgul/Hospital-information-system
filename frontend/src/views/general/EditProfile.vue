@@ -102,6 +102,8 @@ import PatientsService from "@/services/patientsService";
 import DoctorsService from "@/services/doctorsService";
 import HealthcareWorkersService from "@/services/healthcareWorkersService";
 
+import NotificationsUtils from "@/utils/notificationsUtils";
+
 export default {
     name: 'EditProfile',
 
@@ -184,40 +186,6 @@ export default {
           this.newUserData = {...this.user};
         },
 
-        successPopup() {
-          const position = 'top-right';
-          const progress = 'auto';
-          const duration = '6000';
-          const color = 'success';
-
-          const noti = this.$vs.notification({
-              duration,
-              progress,
-              color,
-              position,
-              title: 'Hooray!🎉',
-              text: 'User data successfully edited.'
-          });
-          console.log(noti);
-        },
-
-        failPopup(e) {
-          const position = 'top-right';
-          const progress = 'auto';
-          const duration = '6000';
-          var color = 'danger';
-
-          const noti = this.$vs.notification({
-              duration,
-              progress,
-              color,
-              position,
-              title: 'Whoops!😓: ' + e.message,
-              text: 'Profile was not edited properly. Try again later or contact support.'
-          });
-          console.log(noti);
-        },
-
         saveChanges() {
           let updatedInfo;
 
@@ -234,12 +202,12 @@ export default {
 
             DoctorsService.update(this.id, updatedInfo)
             .then(response => {
-              console.log(response);
-              this.successPopup();
-              this.user = {...updatedInfo};
+                console.log(response);
+                NotificationsUtils.successPopup('User data successfully edited.', this.$vs);
+                this.user = {...updatedInfo};
             })
             .catch(e => {
-              this.failPopup(e);
+                NotificationsUtils.failPopup(e, this.$vs);
             });
           }
 
@@ -256,12 +224,12 @@ export default {
 
             HealthcareWorkersService.update(this.id, updatedInfo)
             .then(response => {
-              console.log(response);
-              this.successPopup();
-              this.user = {...updatedInfo};
+                console.log(response);
+                NotificationsUtils.successPopup('User data successfully edited.', this.$vs);
+                this.user = {...updatedInfo};
             })
             .catch(e => {
-              this.failPopup(e);
+                NotificationsUtils.failPopup(e, this.$vs);
             });
           }
         }

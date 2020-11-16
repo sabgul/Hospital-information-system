@@ -145,6 +145,8 @@ import ExaminationRequestsService from "@/services/examinationRequestsService";
 import ExaminationActionsService from "@/services/examinationActionsService";
 import TransactionRequestsService from "@/services/transactionRequestsService";
 
+import NotificationsUtils from "@/utils/notificationsUtils";
+
 export default {
     name: "NewExamination",
 
@@ -196,48 +198,14 @@ export default {
             this.activeActionAdd = true;
         },
 
-        successPopup() {
-          const position = 'top-right';
-          const progress = 'auto';
-          const duration = '6000';
-          const color = 'success';
-
-          const noti = this.$vs.notification({
-              duration,
-              progress,
-              color,
-              position,
-              title: 'Hooray!🎉',
-              text: 'Examination action added into list of actions for given examination.'
-          });
-          console.log(noti);
-        },
-
-        failPopup(e) {
-          const position = 'top-right';
-          const progress = 'auto';
-          const duration = '6000';
-          var color = 'danger';
-
-          const noti = this.$vs.notification({
-              duration,
-              progress,
-              color,
-              position,
-              title: 'Whoops!😓: ' + e.message,
-              text: 'Try again later or contact support.'
-          });
-          console.log(noti);
-        },
-
         addActionFinal() {
             ExaminationActionsService.get(this.actionToAdd)
                 .then(response => {
                     this.chosenActions.push(response.data);
-                    this.successPopup();
+                    NotificationsUtils.successPopup('Action successfully added into examination.', this.$vs);
                 })
                 .catch(e => {
-                    this.failPopup(e);
+                    NotificationsUtils.failPopup(e, this.$vs);
                 });
         },
 
@@ -251,17 +219,17 @@ export default {
 
         overpayQuery(name) {
           const newRequest = {
+            examination: 1,
             examination_action: name,
             request_state: 'UD'
           }
-          console.log('imaaaa ')
           TransactionRequestsService.create(newRequest)
               .then(response => {
                     console.log(response);
-                    this.successPopup();
+                    NotificationsUtils.successPopup('Request to cover this action was sent to insurance company.', this.$vs);
                 })
                 .catch(e => {
-                    this.failPopup(e);
+                    NotificationsUtils.failPopup(e, this.$vs);
                 });
         }
     }

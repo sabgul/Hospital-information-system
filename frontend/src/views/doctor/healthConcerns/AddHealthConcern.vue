@@ -158,6 +158,8 @@ import HealthConcernsService from "@/services/healthConcernsService";
 import PatientsService from "@/services/patientsService";
 import DoctorsService from "@/services/doctorsService";
 
+import NotificationsUtils from "@/utils/notificationsUtils";
+
 export default {
     name: 'AddHealthConcern',
 
@@ -192,48 +194,14 @@ export default {
     },
 
     methods: {
-        showSuccessMessage() {
-          const position = 'top-right';
-          const progress = 'auto';
-          const duration = '6000';
-          const color = 'success';
-
-          const noti = this.$vs.notification({
-                duration,
-                progress,
-                color,
-                position,
-                title: 'Hooray!🎉',
-                text: 'Health concern added to database.'
-            });
-            console.log(noti);
-        },
-
-        showErrorMessage(e) {
-            const position = 'top-right';
-            const progress = 'auto';
-            const duration = '6000';
-            const color = 'danger';
-
-            const noti = this.$vs.notification({
-                  duration,
-                  progress,
-                  color,
-                  position,
-                  title: 'Whoops!😓: ' + e.message,
-                  text: 'Something went wrong. Try again later of contact support.',
-              });
-              console.log(noti);
-        },
-
         async addNewExamination() {
             HealthConcernsService.create(this.newConcern)
                 .then(response => {
                     console.log(response);
-                    this.showSuccessMessage();
+                    NotificationsUtils.successPopup('Health concern added to database.', this.$vs);
                 })
                 .catch(e => {
-                    this.showErrorMessage(e);
+                    NotificationsUtils.failPopup(e, this.$vs);
                 });
         }
     },

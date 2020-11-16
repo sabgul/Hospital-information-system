@@ -147,6 +147,8 @@
 import HealthConcernsService from '@/services/healthConcernsService';
 import DoctorsService from '@/services/doctorsService';
 
+import NotificationsUtils from "@/utils/notificationsUtils";
+
 export default {
     name: 'ManagedHealthConcerns',
 
@@ -213,30 +215,14 @@ export default {
         },
 
         finishReassign() {
-            const position = 'top-right';
-            const progress = 'auto';
-            const duration = '6000';
-
             let newConcern = {...this.toReassign}
             newConcern.doctor = this.newDoc;
             newConcern.patient = this.toReassign.patient.id;
 
-          console.log(newConcern);
-
             HealthConcernsService.update(this.toReassign.id, newConcern)
             .then(response => {
-                var color = '';
-                response ? color = 'success' : color = 'success';
-
-                const noti = this.$vs.notification({
-                    duration,
-                    progress,
-                    color,
-                    position,
-                    title: 'Hooray!🎉',
-                    text: 'Manager of ' + newConcern.name + ' successfully changed.',
-                });
-                console.log(noti);
+                console.log(response);
+                NotificationsUtils.successPopup('Manager of ' + newConcern.name + ' successfully changed.', this.$vs);
 
                 HealthConcernsService.getAll()
                     .then(response => {
@@ -247,18 +233,7 @@ export default {
                     });
             })
             .catch(e => {
-                var color = '';
-                    e ? color = 'danger' : color = 'danger';
-
-                    const noti = this.$vs.notification({
-                        duration,
-                        progress,
-                        color,
-                        position,
-                        title: 'Whoops!😓: ' + e.message,
-                        text: 'There was an error in changing the manager. Try again later or contact support.',
-                    });
-                    console.log(noti);
+                NotificationsUtils.failPopup(e, this.$vs);
             });
         },
 

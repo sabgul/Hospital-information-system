@@ -226,6 +226,8 @@
 import ExaminationActionsService from "@/services/examinationActionsService";
 import HealthcareWorkersService from "@/services/healthcareWorkersService";
 
+import NotificationsUtils from "@/utils/notificationsUtils";
+
 export default {
     name: 'ExaminationActionsOverview',    
 
@@ -307,46 +309,21 @@ export default {
         },
 
         finalDeletion() {
-            const position = 'top-right';
-            const progress = 'auto';
-            const duration = '6000';
-
             ExaminationActionsService.delete(this.toDelete)
             .then(response => {
-                var color = '';
-                response ? color = 'success' : color = 'success';
-
-                const noti = this.$vs.notification({
-                    duration,
-                    progress,
-                    color,
-                    position,
-                    title: 'Hooray!🎉',
-                    text: 'Examination action successfully deleted.'
-                });
-                console.log(noti);
+                console.log(response);
+                NotificationsUtils.successPopup('Examination action successfully deleted.', this.$vs);
 
                 ExaminationActionsService.getAll()
                 .then(response => {
                     this.actions = response.data;
                 })
                 .catch(e => {
-                    var color = '';
-                    e ? color = 'danger' : color = 'danger';
-
-                    const noti = this.$vs.notification({
-                        duration,
-                        progress,
-                        color,
-                        position,
-                        title: 'Whoops!😓: ' + e.message,
-                        text: 'Action was not deleted. Try again later or contact support.'
-                    });
-                    console.log(noti);
+                    NotificationsUtils.failPopup(e);
                 });
             })
             .catch(e => {
-                console.log(e);
+                NotificationsUtils.failPopup(e);
             });         
             this.activeDelete = false;
         },

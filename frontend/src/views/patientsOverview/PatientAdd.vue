@@ -128,6 +128,8 @@
 import PatientsService from "@/services/patientsService";
 import DoctorsService from "@/services/doctorsService";
 
+import NotificationsUtils from "@/utils/notificationsUtils";
+
 export default {
     name: 'PatientAdd',    
 
@@ -169,11 +171,7 @@ export default {
 
     methods: {
         async createPatient() {
-            const position = 'top-right';
-            const progress = 'auto';
-            const duration = '6000';
-
-            var data = {
+            let data = {
                 name: this.newPatient.name,
                 mainDoctor: this.newPatient.main_doctor_id,
                 date_of_birth: this.formatDate(this.newPatient.date_of_birth),
@@ -182,45 +180,16 @@ export default {
             };
 
             if(data.date_of_birth === '') {
-              data.date_of_birth = null;
-            }
+                data.date_of_birth = null;
+              }
 
             PatientsService.create(data)
                 .then(response => {
-                    var color = '';
-
-                    if(response) {
-                        color = 'success';
-                    }
-                    color = 'success';
-
-                    const noti = this.$vs.notification({
-                        duration,
-                        progress,
-                        color,
-                        position,
-                        title: 'Hooray!🎉',
-                        text: 'New patient was added to the database.'
-                    });
-                    console.log(noti);
+                    console.log(response);
+                    NotificationsUtils.successPopup('New patient was added to the database.', this.$vs);
                 })
                 .catch(e => {
-                    var color = '';
-
-                    if(e) {
-                        color = 'danger';
-                    }
-                    color = 'danger';
-
-                    const noti = this.$vs.notification({
-                        duration,
-                        progress,
-                        color,
-                        position,
-                        title: 'Whoops!😓: ' + e.message,
-                        text: 'Something went wrong. Please try again later or contact support.',
-                    });
-                    console.log(noti);
+                    NotificationsUtils.failPopup(e, this.$vs);
                 });
         },
 

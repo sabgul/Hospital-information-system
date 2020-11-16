@@ -55,6 +55,8 @@ import HealthConcernsService from "@/services/healthConcernsService";
 import DoctorsService from "@/services/doctorsService";
 import ExaminationRequestsService from "@/services/examinationRequestsService";
 
+import NotificationsUtils from "@/utils/notificationsUtils";
+
 export default {
     name: 'NewExaminationRequest',
 
@@ -88,40 +90,6 @@ export default {
     },
 
     methods: {
-        showSuccessMessage() {
-          const position = 'top-right';
-          const progress = 'auto';
-          const duration = '6000';
-          const color = 'success';
-
-          const noti = this.$vs.notification({
-                duration,
-                progress,
-                color,
-                position,
-                title: 'Hooray!🎉',
-                text: 'New ticket was successfully created.'
-            });
-            console.log(noti);
-        },
-
-        showErrorMessage(e) {
-            const position = 'top-right';
-            const progress = 'auto';
-            const duration = '6000';
-            const color = 'danger';
-
-            const noti = this.$vs.notification({
-                  duration,
-                  progress,
-                  color,
-                  position,
-                  title: 'Whoops!😓: ' + e.message,
-                  text: 'Something went wrong. Try again later of contact support.',
-              });
-              console.log(noti);
-        },
-
         async addNewExamination() {
             const newTicket = {
               state: 'PD',
@@ -133,10 +101,10 @@ export default {
             ExaminationRequestsService.create(newTicket)
                 .then(response => {
                     console.log(response);
-                    this.showSuccessMessage();
+                    NotificationsUtils.successPopup('Examination request was successfully added into database.', this.$vs);
                 })
                 .catch(e => {
-                    this.showErrorMessage(e);
+                    NotificationsUtils.failPopup(e, this.$vs);
                 });
         }
     },

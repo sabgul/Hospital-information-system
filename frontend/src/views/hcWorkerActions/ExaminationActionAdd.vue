@@ -82,6 +82,8 @@
 import ExaminationActionsService from "@/services/examinationActionsService";
 import HealthcareWorkersService from "@/services/healthcareWorkersService";
 
+import NotificationsUtils from "@/utils/notificationsUtils";
+
 export default {
     name: 'ExaminationActionAdd',    
 
@@ -105,40 +107,6 @@ export default {
     },
     
     methods: {
-        showSuccessMessage() {
-          const position = 'top-right';
-          const progress = 'auto';
-          const duration = '6000';
-          const color = 'success';
-
-          const noti = this.$vs.notification({
-                duration,
-                progress,
-                color,
-                position,
-                title: 'Hooray!🎉',
-                text: 'Examination action added to database.'
-            });
-            console.log(noti);
-        },
-
-        showErrorMessage(e) {
-            const position = 'top-right';
-            const progress = 'auto';
-            const duration = '6000';
-            const color = 'danger';
-
-            const noti = this.$vs.notification({
-                  duration,
-                  progress,
-                  color,
-                  position,
-                  title: 'Whoops!😓: ' + e.message,
-                  text: 'Examination with name `' + this.newAction.name + '` already exists in database.',
-              });
-              console.log(noti);
-        },
-
         async addNewExamination() {
             const data = {
                 name: this.newAction.name,
@@ -149,10 +117,10 @@ export default {
             ExaminationActionsService.create(data)
                 .then(response => {
                     console.log(response);
-                    this.showSuccessMessage();
+                    NotificationsUtils.successPopup('Examination action added to database.', this.$vs);
                 })
                 .catch(e => {
-                    this.showErrorMessage(e);
+                    NotificationsUtils.failPopup(e, this.$vs);
                 });
         }
     },
