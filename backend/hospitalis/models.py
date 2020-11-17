@@ -75,7 +75,7 @@ class HealthConcern(models.Model):
     ]
 
     name = models.CharField(max_length=254)
-    description = models.CharField(max_length=2046)
+    description = models.CharField(max_length=2046, blank=True)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     state = models.CharField(
@@ -155,10 +155,12 @@ class ExaminationAction(models.Model):
 
 # Lekarske vysetrenie
 class Examination(models.Model):
-    date_of_examination = models.DateTimeField()
+    date_of_examination = models.DateField()
     examinating_doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     request_based_on = models.ForeignKey(ExaminationRequest, on_delete=models.CASCADE)
-    actions = models.ManyToManyField(ExaminationAction, through='TransactionRequest')
+    concern = models.ForeignKey(HealthConcern, on_delete=models.CASCADE)
+    actions = models.ManyToManyField('ExaminationAction', blank=True)
+    description = models.CharField(max_length=2046, blank=True)
 
     class Meta:
         ordering = ['date_of_examination']
@@ -167,11 +169,11 @@ class Examination(models.Model):
 
 # Ziadost o zaplatenie jedneho ukonu vramci lekarskeho vysetrenia
 class TransactionRequest(models.Model):
-    PAID = 'PD'
+    OVERPAID = 'PD'
     UNPAID = 'UD'
     FREE = 'FR'
     TRANSACTION_STATE = [
-        (PAID, 'Paid'),
+        (OVERPAID, 'Paid'),
         (UNPAID, 'Unpaid'),
         (FREE, 'Free'),
     ]
@@ -179,7 +181,7 @@ class TransactionRequest(models.Model):
     examination = models.ForeignKey(Examination, on_delete=models.CASCADE)
     examination_action = models.ForeignKey(ExaminationAction, on_delete=models.CASCADE)
 
-    transaction_approver = models.ForeignKey(HealthcareWorker, on_delete=models.CASCADE)
+    # transaction_approver = models.ForeignKey(HealthcareWorker, on_delete=models.CASCADE)
 
     request_state = models.CharField(
         max_length=2,

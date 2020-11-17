@@ -50,7 +50,7 @@
                 <box-icon type='solid' name='virus' ></box-icon>
               </template>
 
-              <router-link to="/health-concerns">My health concerns</router-link>
+              <router-link to="/my-health-concerns">My health concerns</router-link>
           </vs-sidebar-item>
         </vs-sidebar-group>
         
@@ -78,7 +78,7 @@
             <vs-tooltip right>
               <vs-sidebar-item>
                   <template #icon>
-                    <box-icon name='user-plus'></box-icon>
+                    <box-icon name='user-plus'/>
                   </template>
 
                   <router-link to="/patient-add">Add patient</router-link>
@@ -87,6 +87,34 @@
               <template #tooltip>
                   Add patient
               </template>
+            </vs-tooltip>
+
+            <vs-tooltip right>
+                <vs-sidebar-item>
+                    <template #icon>
+                      <box-icon type='solid' name='virus'/>
+                    </template>
+
+                    <router-link to="/health-concerns">Health concerns</router-link>
+                </vs-sidebar-item>
+
+                <template #tooltip>
+                    Health concerns
+                </template>
+            </vs-tooltip>
+
+            <vs-tooltip right>
+                  <vs-sidebar-item>
+                      <template #icon>
+                        <box-icon name='blanket'></box-icon>
+                      </template>
+
+                      <router-link to="/assigned-tickets">Manage assigned tickets</router-link>
+                  </vs-sidebar-item>
+
+                  <template #tooltip>
+                      Manage assigned tickets
+                  </template>
             </vs-tooltip>
         </vs-sidebar-group>
 

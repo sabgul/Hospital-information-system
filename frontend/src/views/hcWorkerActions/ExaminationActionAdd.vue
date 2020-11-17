@@ -82,6 +82,8 @@
 import ExaminationActionsService from "@/services/examinationActionsService";
 import HealthcareWorkersService from "@/services/healthcareWorkersService";
 
+import NotificationsUtils from "@/utils/notificationsUtils";
+
 export default {
     name: 'ExaminationActionAdd',    
 
@@ -105,40 +107,6 @@ export default {
     },
     
     methods: {
-        showSuccessMessage() {
-          const position = 'top-right';
-          const progress = 'auto';
-          const duration = '6000';
-          const color = 'success';
-
-          const noti = this.$vs.notification({
-                duration,
-                progress,
-                color,
-                position,
-                title: 'Hooray!🎉',
-                text: 'Examination action added to database.'
-            });
-            console.log(noti);
-        },
-
-        showErrorMessage(e) {
-            const position = 'top-right';
-            const progress = 'auto';
-            const duration = '6000';
-            const color = 'danger';
-
-            const noti = this.$vs.notification({
-                  duration,
-                  progress,
-                  color,
-                  position,
-                  title: 'Whoops!😓: ' + e.message,
-                  text: 'Examination with name `' + this.newAction.name + '` already exists in database.',
-              });
-              console.log(noti);
-        },
-
         async addNewExamination() {
             const data = {
                 name: this.newAction.name,
@@ -149,10 +117,10 @@ export default {
             ExaminationActionsService.create(data)
                 .then(response => {
                     console.log(response);
-                    this.showSuccessMessage();
+                    NotificationsUtils.successPopup('Examination action added to database.', this.$vs);
                 })
                 .catch(e => {
-                    this.showErrorMessage(e);
+                    NotificationsUtils.failPopup(e, this.$vs);
                 });
         }
     },
@@ -160,24 +128,6 @@ export default {
 </script>
 
 <style scoped>
-    h1 {
-        margin-top: 0.5em;
-        margin-bottom: 1em;
-    }
-
-    .main__content {
-        padding: 20px 20px 20px 25px;
-        margin-top: 20px;
-        margin-left: 25%;
-        margin-right: 15%;
-        background-color: #ffffff;
-        box-shadow:
-            0 1.3px 20.1px rgba(0, 0, 0, 0.003),
-            0 4.2px 44.8px rgba(0, 0, 0, 0.003),
-            0 19px 76px rgba(0, 0, 0, 0.06);
-        border-radius: 10px;
-    }
-
     .background__img {
         width: 30%;
         position: absolute;

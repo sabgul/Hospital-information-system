@@ -1,0 +1,85 @@
+h1 {
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+}
+
+.main__content {
+    padding: 20px 20px 20px 25px;
+    margin-top: 20px;
+    margin-left: 25%;
+    margin-right: 15%;
+    background-color: #ffffff;
+    box-shadow:
+        0 1.3px 20.1px rgba(0, 0, 0, 0.003),
+        0 4.2px 44.8px rgba(0, 0, 0, 0.003),
+        0 19px 76px rgba(0, 0, 0, 0.06);
+    border-radius: 10px;
+}
+
+.wrapper {
+    display: flex;
+    padding-top: 2em;
+}
+
+.first__row {
+    width: 200px;
+    margin-top: auto;
+    margin-bottom: 1em;
+}
+
+.second__row {
+    padding-left: 2em;
+    flex-grow: 1;
+    margin-top: auto;
+    margin-bottom: 1em;
+}
+
+.third__row {
+    padding-left: 0;
+    flex-grow: 2;
+    margin-top: auto;
+    margin-bottom: 3em;
+}
+
+.filter__submit {
+    margin-left: auto;
+    order: 3;
+    margin-top: 5em;
+    margin-right: 1em;
+    height: 4em;
+    width: 8em;
+}
+
+.popup__center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 4em;
+    width: 40%;
+    margin-top: 2em;
+}
+
+.popup__right {
+  position: absolute;
+  right: 1em;
+  bottom: 1em;
+}
+
+
+
+
+
+
+
+.left__filter__row {
+    width: 200px;
+    margin-top: auto;
+    margin-bottom: 1em;
+}
+
+.right__filter__row {
+    padding-left: 2em;
+    flex-grow: 1;
+    margin-top: auto;
+    margin-bottom: 1em;
+}

@@ -226,6 +226,8 @@
 import ExaminationActionsService from "@/services/examinationActionsService";
 import HealthcareWorkersService from "@/services/healthcareWorkersService";
 
+import NotificationsUtils from "@/utils/notificationsUtils";
+
 export default {
     name: 'ExaminationActionsOverview',    
 
@@ -276,7 +278,7 @@ export default {
             return value ? 'PAID' : 'FREE';
         },
 
-        getFiltered() {
+        async getFiltered() {
             ExaminationActionsService.getFiltered(this.filter)
                 .then(response => {
                     this.actions = response.data;
@@ -306,47 +308,22 @@ export default {
             this.toDelete = '';
         },
 
-        finalDeletion() {
-            const position = 'top-right';
-            const progress = 'auto';
-            const duration = '6000';
-
+        async finalDeletion() {
             ExaminationActionsService.delete(this.toDelete)
             .then(response => {
-                var color = '';
-                response ? color = 'success' : color = 'success';
-
-                const noti = this.$vs.notification({
-                    duration,
-                    progress,
-                    color,
-                    position,
-                    title: 'Hooray!🎉',
-                    text: 'Examination action successfully deleted.'
-                });
-                console.log(noti);
+                console.log(response);
+                NotificationsUtils.successPopup('Examination action successfully deleted.', this.$vs);
 
                 ExaminationActionsService.getAll()
                 .then(response => {
                     this.actions = response.data;
                 })
                 .catch(e => {
-                    var color = '';
-                    e ? color = 'danger' : color = 'danger';
-
-                    const noti = this.$vs.notification({
-                        duration,
-                        progress,
-                        color,
-                        position,
-                        title: 'Whoops!😓: ' + e.message,
-                        text: 'Action was not deleted. Try again later or contact support.'
-                    });
-                    console.log(noti);
+                    NotificationsUtils.failPopup(e);
                 });
             })
             .catch(e => {
-                console.log(e);
+                NotificationsUtils.failPopup(e);
             });         
             this.activeDelete = false;
         },
@@ -358,7 +335,7 @@ export default {
             this.toEdit.is_action_paid = pricing;
         },
 
-        finalEdit() {
+        async finalEdit() {
             ExaminationActionsService.update(this.newNameConst, this.toEdit)
             .then(response => {
                 console.log(response); 
@@ -400,24 +377,6 @@ export default {
 </script>
 
 <style scoped>
-    h1 {
-        margin-top: 0.5em;
-        margin-bottom: 1em;
-    }
-
-    .main__content {
-        padding: 20px 20px 20px 25px;
-        margin-top: 20px;
-        margin-left: 25%;
-        margin-right: 15%;
-        background-color: #ffffff;
-        box-shadow:
-            0 1.3px 20.1px rgba(0, 0, 0, 0.003),
-            0 4.2px 44.8px rgba(0, 0, 0, 0.003),
-            0 19px 76px rgba(0, 0, 0, 0.06);
-        border-radius: 10px;
-    }
-
     .actions__table {
       width: 80%;
       margin: 1em auto 0;
@@ -432,30 +391,5 @@ export default {
         width: 100px;
         margin-left: 6px;
         margin-top: 16px;
-    }
-
-    .wrapper {
-        display: flex;
-        padding-top: 2em;
-    }
-
-    .left__filter__row {
-        width: 200px;
-        margin-top: auto;
-        margin-bottom: 1em;
-    }
-
-    .right__filter__row {
-        padding-left: 2em;
-        flex-grow: 1;
-        margin-top: auto;
-        margin-bottom: 1em;
-    }
-
-    .filter__submit {
-        margin-left: auto;
-        order: 3;
-        margin-bottom: 1em;
-        margin-right: 1em;
     }
 </style>

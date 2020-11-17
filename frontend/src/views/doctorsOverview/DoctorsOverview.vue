@@ -69,6 +69,7 @@
 import DoctorsService from "@/services/doctorsService";
 
 export default {
+
     name: 'DoctorsOverview',
 
     data:() => ({
@@ -91,10 +92,6 @@ export default {
 </script>
 
 <style scoped>
-    .main__content {
-        padding: 20px 20px 20px 280px;
-    }
-
     .doctors__header {
         margin-left: 15%;
     }
