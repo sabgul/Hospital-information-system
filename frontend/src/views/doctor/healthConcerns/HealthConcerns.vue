@@ -1,18 +1,180 @@
 <template>
-    <div>
-        <div class="main__content">
-            <h1 class="patients__header">
-                Manage patients health concerns
-            </h1>
+  <div>
+    <div class="main__content">
+                <h1>
+          Health concerns
+        </h1>
+    </div>
 
-            <p>
-                All health concerns of your patients are shown in table below.<br>
-                To show more details about particular concern expand given table row.
-            </p>
-        </div>
+    <div class="main__content">
+        <br>
 
-        <div class="main__content">
-            <vs-table
+        <h4>Add health concern</h4>
+
+        <br>
+
+        <p>
+            If you were contacted with your patient who told you about his new health concern, <br>
+            add the information here. <br>
+            <b>If its a new patient, create an account for him first <span>here</span>!</b>
+        </p>
+
+        <br>
+
+      <div class="wrapper">
+          <div class="first__row">
+              <vs-input
+                  v-model="newConcern.name"
+                  label="Name of health concern"
+                  placeholder="Type name"
+                  class="input__items"
+                  primary
+              >
+                <template
+                  #message-warn
+                  v-if="newConcern.name.length === 0"
+                >
+                  Required field
+                </template>
+
+                <template
+                  #message-danger
+                  v-if="newConcern.name.length > 250"
+                >
+                 Too many characters
+                </template>
+              </vs-input>
+
+              <vs-select
+                v-model="newConcern.patient"
+                class="input__items"
+                label="Patient"
+                placeholder="Choose a patient"
+                color="primary"
+              >
+                  <template
+                    #message-warn
+                    v-if="newConcern.patient === -1"
+                  >
+                      Required field
+                  </template>
+
+                  <vs-option
+                    v-for="patient in availablePatients"
+                    :key="patient.id"
+                    :label="patient.name"
+                    :value="patient.id"
+                  >
+                    {{ patient.name }}
+                  </vs-option>
+              </vs-select>
+          </div>
+
+          <div class="second__row">
+              <vs-input
+                  v-model="newConcern.description"
+                  label="Description"
+                  placeholder="Briefly describe given concern"
+                  class="input__items"
+              >
+                <template
+                    #message-danger
+                    v-if="newConcern.description.length > 2000"
+                >
+                    Too many characters
+                </template>
+              </vs-input>
+
+              <vs-select
+                v-model="newConcern.doctor"
+                class="input__items"
+                label="Doctor"
+                placeholder="Choose a doctor"
+                color="primary"
+              >
+                <template
+                    #message-warn
+                    v-if="newConcern.doctor === -1"
+                >
+                    Required field
+                </template>
+
+                <vs-option
+                    v-for="doctor in availableDoctors"
+                    :key="doctor.id"
+                    :label="doctor.name"
+                    :value="doctor.id"
+                >
+                    {{ doctor.name }}
+                </vs-option>
+              </vs-select>
+          </div>
+
+          <div class="third__row">
+              <vs-select
+                v-model="newConcern.state"
+                label="Concern state"
+                color="primary"
+              >
+                <vs-option
+                    value="WT"
+                    label="Waiting for examination"
+                >
+                    Waiting for examination
+                </vs-option>
+
+                <vs-option
+                    value="ON"
+                    label="Ongoing"
+                >
+                    Ongoing
+                </vs-option>
+
+                <vs-option
+                    value="TL"
+                    label="Terminal"
+                >
+                    Terminal
+                </vs-option>
+
+                <vs-option
+                    value="ED"
+                    label="Ended"
+                >
+                    Ended
+                </vs-option>
+              </vs-select>
+          </div>
+
+          <vs-button
+            @click="addNewExamination()"
+            :disabled=" newConcern.name.length === 0 ||
+                        newConcern.name.length > 250 ||
+                        newConcern.doctor === -1 ||
+                        newConcern.patient === -1 ||
+                        newConcern.description.length > 2000"
+            class="filter__submit"
+        >
+            Submit
+        </vs-button>
+      </div>
+
+    </div>
+
+    <div class="main__content">
+        <br>
+
+        <h4>Health concerns overview</h4>
+
+        <br>
+
+        <p>
+           TODO text
+        </p>
+
+        <br>
+
+        <vs-table
                 striped
                 class="actions__table"
             >
@@ -100,9 +262,9 @@
                     />
                 </template>
             </vs-table>
-        </div>
+    </div>
 
-          <vs-dialog
+    <vs-dialog
               width="500px"
               v-model="activeAssign"
           >
@@ -140,35 +302,45 @@
                   </div>
               </template>
           </vs-dialog>
-    </div>
+   </div>
 </template>
 
 <script>
-import HealthConcernsService from '@/services/healthConcernsService';
-import DoctorsService from '@/services/doctorsService';
-
+import PatientsService from "@/services/patientsService";
+import DoctorsService from "@/services/doctorsService";
+import HealthConcernsService from "@/services/healthConcernsService";
 import NotificationsUtils from "@/utils/notificationsUtils";
 
 export default {
-    name: 'ManagedHealthConcerns',
+    name: "HealthConcerns",
 
     data:() => ({
+        searchValue: '',
         page: 1,
         max: 5,
-        searchValue: '',
 
         activeAssign: false,
         toReassign: {},
         newDoc: -1,
 
-        concerns: [],
+        newConcern: {
+          name: '',
+          description: '',
+          state: 'WT',
+          patient: -1,
+          doctor: -1, // TODO tu bude id current usera
+        },
+
+        availablePatients: [],
         availableDoctors: [],
+
+        concerns: [],
     }),
 
     async created() {
-        HealthConcernsService.getAll()
+        PatientsService.getAll()
             .then(response => {
-            this.concerns = response.data;
+            this.availablePatients = response.data;
             })
             .catch(e => {
             console.log(e);
@@ -181,9 +353,28 @@ export default {
             .catch(e => {
             console.log(e);
             });
+
+        HealthConcernsService.getAll()
+            .then(response => {
+            this.concerns = response.data;
+            })
+            .catch(e => {
+            console.log(e);
+            });
     },
 
     methods: {
+        async addNewExamination() {
+            HealthConcernsService.create(this.newConcern)
+                .then(response => {
+                    console.log(response);
+                    NotificationsUtils.successPopup('Health concern added to database.', this.$vs);
+                })
+                .catch(e => {
+                    NotificationsUtils.failPopup(e, this.$vs);
+                });
+        },
+
         getState(rawState) {
             if(rawState === 'WT') {
                 return 'Waiting for first examination';
@@ -240,7 +431,7 @@ export default {
         redirectToNewRequest(healthConcernId) {
             this.$router.push({ name: 'newExaminationRequest', params: {id: healthConcernId }});
         },
-    },
+    }
 }
 </script>
 
@@ -263,7 +454,12 @@ export default {
         border-radius: 10px;
     }
 
-    .actions__table {
+    .input__items {
+        padding: 16px 0;
+        margin-left: 6px;
+    }
+
+        .actions__table {
       width: 80%;
       margin: 1em auto 0;
     }
@@ -278,18 +474,7 @@ export default {
       top: 0;
     }
 
-    .popup__center {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        padding-bottom: 4em;
-        width: 40%;
-        margin-top: 2em;
-    }
-
-    .popup__right {
-      position: absolute;
-      right: 1em;
-      bottom: 1em;
+    .concern__description {
+      height: 100px;
     }
 </style>

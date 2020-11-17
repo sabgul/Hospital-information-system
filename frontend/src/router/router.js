@@ -28,7 +28,7 @@ export default new Router({
         
     // Information for patients
     {
-      path: '/health-concerns',
+      path: '/my-health-concerns',
       name: 'HealthConcerns',
       component: () => import('@/views/healthConcernsOverview/HealthConcernsOverview'),
     },
@@ -45,16 +45,6 @@ export default new Router({
       path: '/patient-detail',
       name: 'patientDetail',
       component: () => import('@/views/patientDetail/PatientDetail'),
-    },
-    {
-      path: '/assigned-health-concerns',
-      name: 'assignedHealthConcerns',
-      component: () => import('@/views/doctor/healthConcerns/ManagedHealthConcerns'),
-    },
-    {
-      path: '/add-health-concern',
-      name: 'addHealthConcern',
-      component: () => import('@/views/doctor/healthConcerns/AddHealthConcern'),
     },
     {
       path: '/health-concern-detail/:id',
@@ -78,6 +68,11 @@ export default new Router({
       path: '/assigned-tickets',
       name: 'assignedTickets',
       component: () => import('@/views/examinations/ManageAssignedTickets'),
+    },
+    {
+      path: '/health-concerns',
+      name: 'healthConcerns',
+      component: () => import('@/views/doctor/healthConcerns/HealthConcerns'),
     },
     // // //
     
