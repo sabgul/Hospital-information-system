@@ -188,6 +188,34 @@
                     Manage users
               </template>
             </vs-tooltip>
+
+            <vs-tooltip right>
+              <vs-sidebar-item>
+                  <template #icon>
+                    <box-icon name='plus-medical' type='solid' ></box-icon>
+                  </template>
+
+                  <router-link to="/doctor-add">Add new doctor</router-link>
+              </vs-sidebar-item>
+
+              <template #tooltip>
+                    Add new doctor
+              </template>
+            </vs-tooltip>
+
+            <vs-tooltip right>
+              <vs-sidebar-item>
+                  <template #icon>
+                    <box-icon name='user-plus' type='solid' ></box-icon>
+                  </template>
+
+                  <router-link to="/healthcare-worker-add">Add new healthcare worker</router-link>
+              </vs-sidebar-item>
+
+              <template #tooltip>
+                    Add new healthcare worker
+              </template>
+            </vs-tooltip>
         </vs-sidebar-group>
 
         <vs-sidebar-item>

@@ -212,7 +212,7 @@ export default {
 
             if(data.date_of_birth === '') {
                 data.date_of_birth = null;
-              }
+            }
 
             PatientsService.create(data)
                 .then(response => {
