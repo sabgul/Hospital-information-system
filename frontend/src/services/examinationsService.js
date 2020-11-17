@@ -5,6 +5,14 @@ class ExaminationsService {
     return http.get("/examinations/");
   }
 
+  getByConcern(concernId) {
+    return http.get("/examinations/", {
+      'params': {
+          ...({ 'concern': concernId }),
+      }
+    })
+  }
+
   get(id) {
     return http.get(`/examinations/${id}/`);
   }

@@ -247,11 +247,12 @@ export default {
         async saveExamination() {
           // adding new examination into DB
           const newExamination = {
-            date_of_examination: DateUtils.getDateForBackend(this.examinationDate),
-            examinating_doctor: this.examinationAboutTicket.created_by.id,
-            request_based_on: this.examinationAboutTicket.id,
-            description: this.description,
-            actions: this.chosenActions.map(action => action.name),
+              date_of_examination: DateUtils.getDateForBackend(this.examinationDate),
+              examinating_doctor: this.examinationAboutTicket.created_by.id,
+              request_based_on: this.examinationAboutTicket.id,
+              concern: this.examinationAboutTicket.concern.id,
+              description: this.description,
+              actions: this.chosenActions.map(action => action.name),
           }
 
           ExaminationsService.create(newExamination)

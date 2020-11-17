@@ -3,7 +3,7 @@ import django_filters
 
 from .models import Patient, Doctor, HealthcareWorker, HealthConcern, DoctorReport, DoctorReportCommentary, ExaminationRequest, ExaminationAction, Examination, TransactionRequest
 from .serializers import PatientSerializer, DoctorSerializer, HealthcareWorkerSerializer, HealthConcernSerializer, DoctorReportSerializer, DoctorReportCommentarySerializer, ExaminationRequestSerializer, ExaminationActionSerializer, ExaminationSerializer, TransactionRequestSerializer
-from .filters import ExaminationActionFilter, PatientsFilter, HealthConcernFilter, ExaminationRequestFilter
+from .filters import ExaminationActionFilter, PatientsFilter, HealthConcernFilter, ExaminationRequestFilter, ExaminationFilter
 
 
 class PatientsViewSet(ModelViewSet):
@@ -25,7 +25,7 @@ class HealthcareWorkerViewSet(ModelViewSet):
 class HealthConcernViewSet(ModelViewSet):
     queryset = HealthConcern.objects.all()
     serializer_class = HealthConcernSerializer
-    filter = HealthConcernFilter
+    filter_class = HealthConcernFilter
 
 
 class DoctorReportViewSet(ModelViewSet):
@@ -53,6 +53,7 @@ class ExaminationActionViewSet(ModelViewSet):
 class ExaminationViewSet(ModelViewSet):
     queryset = Examination.objects.all()
     serializer_class = ExaminationSerializer
+    filter_class = ExaminationFilter
 
 
 class TransactionRequestViewSet(ModelViewSet):

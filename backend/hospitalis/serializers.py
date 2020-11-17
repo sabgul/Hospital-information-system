@@ -87,6 +87,7 @@ class ExaminationSerializer(ModelSerializer):
         response = super().to_representation(instance)
         response['examinating_doctor'] = DoctorSerializer(instance.examinating_doctor).data
         response['request_based_on'] = ExaminationRequestSerializer(instance.request_based_on).data
+        response['concern'] = HealthConcernSerializer(instance.concern).data
 
         return response
 

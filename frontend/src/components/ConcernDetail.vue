@@ -12,7 +12,11 @@
               <h5><b>Description</b>: {{ concern.description }}</h5>
 
               <div style="margin-top: 3em">
-                  <vs-button class="buttons" @click="redirectToNewRequest(concern.id)">
+                  <vs-button border @click="redirectToNewRequest(concern.id)" style="width: 170px;">
+                      Examine
+                  </vs-button>
+
+                  <vs-button class="buttons" @click="redirectToNewRequest(concern.id)" style="width: 170px;">
                       New examination request
                   </vs-button>
 
@@ -20,6 +24,7 @@
                       danger
                       class="buttons"
                       @click="reassign(concern)"
+                      style="width: 170px;"
                   >
                       Assign to another doctor
                   </vs-button>
@@ -33,9 +38,9 @@
           </h1>
 
           <vs-card-group>
-            <vs-card v-for="card in 6" v-bind:key="card.id">
+            <vs-card v-for="examination in examinations" v-bind:key="examination.id">
                 <template #title>
-                    <h3>Pot with a plant</h3>
+                    <h3>{{ getDate(examination.date_of_examination) }}</h3>
                 </template>
 
                 <template #img>
@@ -44,27 +49,23 @@
 
                 <template #text>
                     <p>
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                        {{ examination.description }}
                     </p>
                 </template>
 
-<!--                <template #interactions>-->
-<!--                    <vs-button danger icon>-->
-<!--                        <box-icon name='home'/>-->
-<!--                    </vs-button>-->
-
-<!--                    <vs-button class="btn-chat" shadow primary icon>-->
-<!--                        <box-icon style="fill: #000;" name='message-square-detail'/>-->
-<!--                        <span class="span">-->
-<!--                            54-->
-<!--                        </span>-->
-<!--                    </vs-button>-->
-<!--                </template>-->
+                <template #interactions>
+                    <vs-button class="btn-chat" shadow primary icon>
+                        <box-icon style="fill: #000; margin-right: 0.5em;" name='message-square-detail'/>
+                        <span class="span">
+                            Show actions and report
+                        </span>
+                    </vs-button>
+                </template>
             </vs-card>
 
             <vs-card>
                 <template #title>
-                    <h3>New examination request</h3>
+                    <h3>Examine</h3>
                 </template>
 
                 <template #img>
@@ -79,13 +80,7 @@
             </vs-card>
         </vs-card-group>
       </div>
-
-      <div class="main__content">
-          <h1>
-            Doctors reports related to <b>{{ concern.name }}</b>
-          </h1>
-      </div>
-
+    
       <vs-dialog
           width="500px"
           v-model="activeAssign"
@@ -129,7 +124,10 @@
 
 <script>
 import HealthConcernsService from "@/services/healthConcernsService";
+import ExaminationsService from "@/services/examinationsService";
 import DoctorsService from "@/services/doctorsService";
+
+import DateUtils from "@/utils/dateUtils";
 
 export default {
   name: "ConcernDetail",
@@ -145,6 +143,7 @@ export default {
 
       concern: {},
       availableDoctors: [],
+      examinations: [],
   }),
 
   async created() {
@@ -163,9 +162,21 @@ export default {
             .catch(e => {
             console.log(e);
             });
+
+      ExaminationsService.getByConcern(this.id)
+            .then(response => {
+                this.examinations = response.data;
+            })
+            .catch(e => {
+                console.log(e);
+            });
   },
 
   methods: {
+      getDate(date) {
+          return DateUtils.getDateForFrontend(date);
+      },
+
       getState(rawState) {
           if(rawState === 'WT') {
               return 'Waiting for first examination';
