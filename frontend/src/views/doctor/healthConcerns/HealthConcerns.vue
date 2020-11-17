@@ -25,7 +25,7 @@
           <div class="first__row">
               <vs-input
                   v-model="newConcern.name"
-                  label="Name of health concern"
+                  label="Type of health concern"
                   placeholder="Type name"
                   class="input__items"
                   primary
@@ -88,8 +88,7 @@
               <vs-select
                 v-model="newConcern.doctor"
                 class="input__items"
-                label="Doctor"
-                placeholder="Choose a doctor"
+                label-placeholder="Doctor"
                 color="primary"
               >
                 <template
@@ -113,7 +112,7 @@
           <div class="third__row">
               <vs-select
                 v-model="newConcern.state"
-                label="Concern state"
+                label="Concern priority"
                 color="primary"
               >
                 <vs-option
@@ -174,6 +173,50 @@
 
         <br>
 
+    </div>
+
+    <div class="main__content">
+      <h4>
+        Filter results
+      </h4>
+
+      <div class="wrapper">
+        <div class="left__filter__row">
+          <vs-select
+            v-model="filter.concern_type"
+            label="Type of concern"
+            color="primary"
+          >
+            <vs-option>
+<!--              /* TODO: co s concern id ako key? */-->
+            </vs-option>
+          </vs-select>
+        </div>
+
+        <div class="right__filter__row">
+          <vs-select
+            v-model="filter.patient_name"
+            label="Patient"
+            color="primary"
+          >
+            <vs-option
+              v-for="patient in availablePatients"
+              :key="patient.id"
+              label="patient.name"
+              :value="patient.id"
+            >
+              {{ patient.name }}
+
+            </vs-option>
+
+          </vs-select>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="main__content">
+
         <vs-table
                 striped
                 class="actions__table"
@@ -189,7 +232,7 @@
                 <template #thead>
                     <vs-tr>
                         <vs-th>
-                            Name of health concern
+                            Type of health concern
                         </vs-th>
 
                         <vs-th>
@@ -335,6 +378,13 @@ export default {
         availableDoctors: [],
 
         concerns: [],
+
+      filter: {
+          concern_type: -1,
+          patient_name: -1,
+          state_of_concern: -1,
+      }
+
     }),
 
     async created() {
@@ -374,6 +424,27 @@ export default {
                     NotificationsUtils.failPopup(e, this.$vs);
                 });
         },
+
+      async getFiltered() {
+          HealthConcernsService.getFiltere(this.filter)
+              .then(response => {
+                  this.actions = response.data;
+              })
+      },
+
+      async clearFilter() {
+          this.filter.concern_type = -1;
+          this.filter.patient_name = -1;
+          this.filter.state_of_concern = -1;
+
+          HealthConcernsService.getAll()
+          .then(response => {
+            this.actions = response.data;
+          })
+          .catch(e => {
+            console.log(e);
+          });
+      },
 
         getState(rawState) {
             if(rawState === 'WT') {
