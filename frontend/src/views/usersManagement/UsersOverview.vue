@@ -74,7 +74,7 @@
                         </vs-td>
 
                         <vs-td>
-                          {{ user.user_active ? 'Inactive' : 'Active' }}
+                          {{ user.userData.user_active ? 'Active' : 'Inactive' }}
                         </vs-td>
 
                         <template #expand>
@@ -102,20 +102,7 @@
 
                                 <div class="expanded__item right">
                                     <vs-tooltip>
-                                        <vs-button icon>
-                                            <box-icon
-                                                name='mail-send'
-                                                animation='tada-hover'
-                                            />
-                                        </vs-button>
-
-                                        <template #tooltip>
-                                            Send Email
-                                        </template>
-                                    </vs-tooltip>
-
-                                    <vs-tooltip>
-                                        <vs-button warn icon @click="editUserProfile(user.userData.id, user.role)">
+                                        <vs-button icon @click="editUserProfile(user.userData.id, user.role)">
                                             <box-icon
                                                 name='comment-edit'
                                                 animation='tada-hover'
@@ -124,6 +111,32 @@
 
                                         <template #tooltip>
                                             Edit user
+                                        </template>
+                                    </vs-tooltip>
+
+                                    <vs-tooltip v-if="user.userData.user_active">
+                                        <vs-button warn icon @click="changeUserActivity(user)">
+                                            <box-icon
+                                                name='block'
+                                                animation='tada-hover'
+                                            />
+                                        </vs-button>
+
+                                        <template #tooltip>
+                                            Make user inactive
+                                        </template>
+                                    </vs-tooltip>
+
+                                    <vs-tooltip v-if="!user.userData.user_active">
+                                        <vs-button success icon @click="changeUserActivity(user)">
+                                            <box-icon
+                                                name='check-circle'
+                                                animation='tada-hover'
+                                            />
+                                        </vs-button>
+
+                                        <template #tooltip>
+                                            Make user active
                                         </template>
                                     </vs-tooltip>
 
@@ -161,6 +174,7 @@
 import PatientsService from '@/services/patientsService.js';
 import DoctorsService from '@/services/doctorsService.js';
 import HealthcareWorkersService from '@/services/healthcareWorkersService.js';
+import NotificationsUtils from "@/utils/notificationsUtils";
 
 export default {
     name: 'UsersOverview',    
@@ -209,6 +223,44 @@ export default {
 
         editUserProfile(userId, role) {
             this.$router.push({ name: 'edit-profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }})
+        },
+
+        changeUserActivity(user) {
+            let newUserData = {...user.userData};
+            newUserData.user_active = !newUserData.user_active;
+
+            if(user.role === 'Doctor') {
+                DoctorsService.update(user.userData.id, newUserData)
+                    .then(response => {
+                    console.log(response);
+                    NotificationsUtils.successPopup('User activity successfully changed.', this.$vs);
+                })
+                    .catch(e => {
+                    console.log(e);
+                });
+            }
+
+            if(user.role === 'Health insurance worker') {
+                HealthcareWorkersService.update(user.userData.id, newUserData)
+                    .then(response => {
+                    console.log(response);
+                    NotificationsUtils.successPopup('User activity successfully changed.', this.$vs);
+                })
+                    .catch(e => {
+                    console.log(e);
+                });
+            }
+
+            if(user.role === 'Patient') {
+                PatientsService.update(user.userData.id, newUserData)
+                    .then(response => {
+                    console.log(response);
+                    NotificationsUtils.successPopup('User activity successfully changed.', this.$vs);
+                })
+                .catch(e => {
+                    console.log(e);
+                });
+            }
         }
     },
 }

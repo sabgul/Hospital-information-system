@@ -16,7 +16,7 @@
             </h4>
 
             <div class="wrapper">
-                <div class="left__filter__row">
+                <div class="first__row">
                     <vs-select
                         v-model="filter.state"
                         label="State"
@@ -45,9 +45,9 @@
                     </vs-select>
                 </div>
 
-                <div class="filter__submit">
+                <div class="submit__row" style="padding-bottom: 6em; margin-top: 0;">
                     <vs-button
-                        style="padding: 3px 25px;"
+                        style="padding: 3px 16px;"
                         border
                         @click="clearFilter()"
                     >
