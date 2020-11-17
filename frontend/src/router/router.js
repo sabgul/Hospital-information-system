@@ -39,7 +39,7 @@ export default new Router({
     {
       path: '/patient-add',
       name: 'patientAdd',
-      component: () => import('@/views/patientsOverview/PatientAdd'),
+      component: () => import('@/views/usersManagement/PatientAdd'),
     },
     {
       path: '/patient-detail',
@@ -110,6 +110,16 @@ export default new Router({
       name: 'profile',
       props: true,
       component: () => import('@/views/usersManagement/UserProfile'),
+    },
+    {
+      path: '/doctor-add',
+      name: 'doctorAdd',
+      component: () => import('@/views/usersManagement/DoctorAdd'),
+    },
+    {
+      path: '/healthcare-worker-add',
+      name: 'healthcareWorkerAdd',
+      component: () => import('@/views/usersManagement/HealthcareWorkerAdd'),
     },
     // // //
 
