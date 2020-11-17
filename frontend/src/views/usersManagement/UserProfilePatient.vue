@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>Specific details for Patient role</h3>
+    <h3>Health report card</h3>
     <br>
     <h5>
         <b>Main doctor: </b>

@@ -39,6 +39,10 @@
                         <vs-th>
                             E-mail contact
                         </vs-th>
+
+                        <vs-th>
+                            State
+                        </vs-th>
                     </vs-tr>
                 </template>
 
@@ -67,6 +71,10 @@
 
                         <vs-td>
                             {{ getEmailContact(user.userData.email_field) }}
+                        </vs-td>
+
+                        <vs-td>
+                          {{ user.user_active ? 'Inactive' : 'Active' }}
                         </vs-td>
 
                         <template #expand>

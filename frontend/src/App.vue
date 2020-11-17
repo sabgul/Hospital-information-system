@@ -109,11 +109,11 @@
                         <box-icon name='blanket'></box-icon>
                       </template>
 
-                      <router-link to="/assigned-tickets">Manage assigned tickets</router-link>
+                      <router-link to="/assigned-tickets">Assigned tickets</router-link>
                   </vs-sidebar-item>
 
                   <template #tooltip>
-                      Manage assigned tickets
+                      Assigned tickets
                   </template>
             </vs-tooltip>
         </vs-sidebar-group>
