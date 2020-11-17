@@ -8,6 +8,7 @@
             <div class="info__basic">
                 <h5><b>Date of birth</b>: {{ formatDate(user.date_of_birth) }}</h5>
                 <h5><b>Age</b>: {{ getAge(user.date_of_birth) }}</h5>
+                <h5><b>Sex</b>: {{ getGender(user.gender) }}</h5>
                 <h5><b>Email address</b>: {{ user.email_field ? user.email_field : 'Email not stated' }}</h5>
                 <h5><b>Phone number</b>: {{ user.phone_number ? '+' + user.phone_number : 'Phone number not stated' }}</h5>
             </div>
@@ -133,13 +134,13 @@ export default {
         },
 
         getAge(dateString) {
-            var today = new Date();
-            var birthDate = new Date(dateString);
-            var age = today.getFullYear() - birthDate.getFullYear();
-            var m = today.getMonth() - birthDate.getMonth();
+            const today = new Date();
+            const birthDate = new Date(dateString);
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
 
             if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-                age--;
+                  age--;
             }
             if(age === 0) {
                 return m + ' months';
@@ -149,6 +150,22 @@ export default {
 
         redirectToEdit(id, role) {
           this.$router.push({ name: 'edit-profile', params: { id: id, role: role }});
+        },
+
+        getGender(rawGender) {
+            if(rawGender === 'M') {
+              return 'Male';
+            }
+
+            if(rawGender === 'F') {
+              return 'Female';
+            }
+
+            if(rawGender === 'O') {
+              return 'Other';
+            }
+
+            return '';
         }
     },
 }

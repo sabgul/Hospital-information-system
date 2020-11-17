@@ -26,6 +26,34 @@
             </template>
         </vs-input>
 
+       <vs-select
+            v-model="newPatient.gender"
+            label="Sex"
+            color="primary"
+            class="input__items"
+       >
+         <vs-option
+            value="M"
+            label="Male"
+         >
+           Male
+         </vs-option>
+
+         <vs-option
+            value="F"
+            label="Female"
+         >
+           Female
+         </vs-option>
+
+         <vs-option
+            value="O"
+            label="Other"
+         >
+           Other
+         </vs-option>
+       </vs-select>
+
         <vs-select
             v-model="newPatient.main_doctor_id"
             class="input__items"
@@ -59,7 +87,7 @@
               #message-warn
               v-if="!validDateOfBirth"
           >
-              Required
+              Required field
            </template>
         </vs-input>
 
@@ -137,6 +165,7 @@ export default {
     data:() => ({
         newPatient: {
             'name': '',
+            'gender': 'O',
             'main_doctor_id': -1,
             'date_of_birth': '',
             'email_field': '',
@@ -174,6 +203,7 @@ export default {
         async createPatient() {
             let data = {
                 name: this.newPatient.name,
+                gender: this.newPatient.gender,
                 mainDoctor: this.newPatient.main_doctor_id,
                 date_of_birth: DateUtils.getDateForBackend(this.newPatient.date_of_birth),
                 email_field: this.newPatient.email_field,

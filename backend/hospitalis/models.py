@@ -1,11 +1,26 @@
 from django.db import models
 import datetime
 
+MALE = 'M'
+FEMALE = 'F'
+OTHER = 'O'
+GENDER = [
+    (MALE, 'Male'),
+    (FEMALE, 'Female'),
+    (OTHER, 'Other'),
+]
+
 
 # Create your models here.
 class Doctor(models.Model):
     name = models.CharField(max_length=254)
     date_of_birth = models.DateField(max_length=8, default=datetime.date.today, blank=True)
+    gender = models.CharField(
+        max_length=1,
+        choices=GENDER,
+        default=OTHER,
+    )
+
     email_field = models.EmailField(max_length=254, default=None)
     phone_number = models.CharField(max_length=32, blank=True)
 
@@ -25,6 +40,12 @@ class Doctor(models.Model):
 class Patient(models.Model):
     name = models.CharField(max_length=254)
     date_of_birth = models.DateField(max_length=8, default=datetime.date.today, blank=True)
+    gender = models.CharField(
+        max_length=1,
+        choices=GENDER,
+        default=OTHER,
+    )
+
     email_field = models.EmailField(max_length=254, default=None)
     phone_number = models.CharField(max_length=32, blank=True)
 
@@ -44,6 +65,12 @@ class Patient(models.Model):
 class HealthcareWorker(models.Model):
     name = models.CharField(max_length=254)
     date_of_birth = models.DateField(max_length=8, default=datetime.date.today, blank=True)
+    gender = models.CharField(
+        max_length=1,
+        choices=GENDER,
+        default=OTHER,
+    )
+
     email_field = models.EmailField(max_length=254, default=None)
     phone_number = models.CharField(max_length=32, blank=True)
 
