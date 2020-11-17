@@ -41,6 +41,13 @@ h1 {
     margin-bottom: 1em;
 }
 
+.third__row__single {
+    padding-left: 0;
+    flex-grow: 5;
+    margin-top: auto;
+    margin-bottom: 3em;
+}
+
 .submit__row {
     margin-left: auto;
     order: 3;

@@ -1,79 +1,93 @@
 <template>
-    <div class="main__content">
-        <h1>
-          Add new examination action
-        </h1>
+    <div>
+        <div class="main__content">
+            <h1>
+              Add new examination action
+            </h1>
 
-        <p>
-            By adding new examination action, doctors can use them when examining their patients. <br>
-            Thanks to that, you will be able to track unpaid examinations of patients.
-        </p>
+            <p>
+                By adding new examination action, doctors can use them when examining their patients. <br>
+                Thanks to that, you will be able to track unpaid examinations of patients.
+            </p>
 
-        <br>
+            <br>
 
-        <vs-input 
-            v-model="newAction.name" 
-            label="Name of action"
-            placeholder="Type name of new action"
-            class="input__items"
-            primary
-        >
-            <template
-                #message-warn
-                v-if="newAction.name.length === 0"
-            >
-                Required
-            </template>
-        </vs-input>
+            <div class="wrapper">
+                <div class="first__row">
+                    <vs-input
+                        v-model="newAction.name"
+                        label="Name of action"
+                        placeholder="Type name of new action"
+                        class="input__items"
+                        primary
+                    >
+                        <template
+                            #message-warn
+                            v-if="newAction.name.length === 0"
+                        >
+                            Required
+                        </template>
+                    </vs-input>
+                </div>
 
-        <vs-select 
-            v-model="newAction.action_manager_id"
-            class="input__items"
-            label="Action manager"
-            color="primary"
-        >   
-            <template
-                #message-warn
-                v-if="newAction.action_manager_id === -1"
-            >
-                Required
-            </template>
+                <div class="second__row">
+                    <vs-select
+                        v-model="newAction.action_manager_id"
+                        class="input__items"
+                        label="Action manager"
+                        color="primary"
+                    >
+                        <template
+                            #message-warn
+                            v-if="newAction.action_manager_id === -1"
+                        >
+                            Required
+                        </template>
 
-            <vs-option
-                v-for="worker in availableWorkers"
-                :key="worker.id"
-                :label="worker.name"
-                :value="worker.id"
-            >
-                {{ worker.name }}
-            </vs-option>
-        </vs-select>
+                        <vs-option
+                            v-for="worker in availableWorkers"
+                            :key="worker.id"
+                            :label="worker.name"
+                            :value="worker.id"
+                        >
+                            {{ worker.name }}
+                        </vs-option>
+                    </vs-select>
+                </div>
 
-        <vs-switch 
-            v-model="newAction.is_action_paid" 
-            class="switch"
-        >
-            <template #off>
-                Free
-            </template>
+                <div class="third__row">
+                    <vs-switch
+                        v-model="newAction.is_action_paid"
+                        class="switch"
+                    >
+                        <template #off>
+                            Free
+                        </template>
 
-            <template #on>
-                Paid
-            </template>
-        </vs-switch>
+                        <template #on>
+                            Paid
+                        </template>
+                    </vs-switch>
+                </div>
 
-        <vs-button 
-            @click="addNewExamination()"
-            :disabled="newAction.name.length === 0 || newAction.action_manager_id === -1"
-        >
-            Submit
-        </vs-button>
+                <div class="submit__row">
+                     <vs-button
+                         @click="addNewExamination()"
+                         :disabled="newAction.name.length === 0 || newAction.action_manager_id === -1"
+                     >
+                         Submit
+                     </vs-button>
+                </div>
+            </div>
+        </div>
 
-        <img
-            class="background__img"
-            src="@/assets/add-action.svg"
-            alt=""
-        >
+<!--        <div>-->
+<!--            <img-->
+<!--                class="background__img"-->
+<!--                src="@/assets/add-action.svg"-->
+<!--                alt=""-->
+<!--            >-->
+<!--        </div>-->
     </div>
 </template>
 
@@ -133,13 +147,13 @@ export default {
         position: absolute;
         right: 50px;
         bottom: 50px;
-        z-index: -1;
+        z-index: 0;
     }
 
     .switch {
         width: 80px;
         margin-left: 6px;
-        margin-top: 16px;
+        margin-bottom: 2em;
     }
 
     .input__items {
