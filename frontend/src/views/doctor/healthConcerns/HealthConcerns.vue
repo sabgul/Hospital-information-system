@@ -51,6 +51,7 @@
                 label="Patient"
                 placeholder="Choose a patient"
                 color="primary"
+                filter
               >
                   <template
                     #message-warn
@@ -60,12 +61,12 @@
                   </template>
 
                   <vs-option
-                    v-for="patient in availablePatients"
-                    :key="patient.id"
+                    v-for="(patient, index) in availablePatients"
+                    v-bind:key="index"
                     :label="patient.name"
                     :value="patient.id"
                   >
-                    {{ patient.name }}
+                    aaa
                   </vs-option>
               </vs-select>
           </div>
@@ -90,6 +91,7 @@
                 class="input__items"
                 label-placeholder="Doctor"
                 color="primary"
+                filter
               >
                 <template
                     #message-warn
@@ -99,17 +101,17 @@
                 </template>
 
                 <vs-option
-                    v-for="doctor in availableDoctors"
-                    :key="doctor.id"
-                    :label="doctor.name"
-                    :value="doctor.id"
+                    v-for="(doc, id) in availableDoctors"
+                    :key="id"
+                    :label="doc.name"
+                    :value="id"
                 >
-                    {{ doctor.name }}
+                    {{ doc.name }}
                 </vs-option>
               </vs-select>
           </div>
 
-          <div class="third__row">
+          <div class="third__row__single">
               <vs-select
                 v-model="newConcern.state"
                 label="Concern priority"
@@ -507,32 +509,14 @@ export default {
 </script>
 
 <style scoped>
-    h1 {
-        margin-top: 0.5em;
-        margin-bottom: 1em;
-    }
-
-    .main__content {
-        padding: 20px 20px 20px 25px;
-        margin-top: 20px;
-        margin-left: 25%;
-        margin-right: 15%;
-        background-color: #ffffff;
-        box-shadow:
-            0 1.3px 20.1px rgba(0, 0, 0, 0.003),
-            0 4.2px 44.8px rgba(0, 0, 0, 0.003),
-            0 19px 76px rgba(0, 0, 0, 0.06);
-        border-radius: 10px;
-    }
-
     .input__items {
         padding: 16px 0;
         margin-left: 6px;
     }
 
-        .actions__table {
-      width: 80%;
-      margin: 1em auto 0;
+    .actions__table {
+        width: 80%;
+        margin: 1em auto 0;
     }
 
     .buttons {
