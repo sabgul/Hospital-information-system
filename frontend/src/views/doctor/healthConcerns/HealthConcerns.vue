@@ -51,6 +51,7 @@
                 label="Patient"
                 placeholder="Choose a patient"
                 color="primary"
+                filter
               >
                   <template
                     #message-warn
@@ -65,7 +66,7 @@
                     :label="patient.name"
                     :value="id"
                   >
-                    {{ patient.name }}
+                    aaa
                   </vs-option>
               </vs-select>
           </div>
@@ -91,6 +92,7 @@
                 label="Doctor"
                 placeholder="Choose a doctor"
                 color="primary"
+                filter
               >
                 <template
                     #message-warn
