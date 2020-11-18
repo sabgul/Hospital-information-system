@@ -13,6 +13,18 @@ class HealthConcernsService {
     })
   }
 
+  getFiltered(filter) {
+    const patient_name = filter.patient_name;
+    const state_of_concern = filter.state_of_concern;
+
+    return http.get("/health-concerns/",{
+      'params': {
+        ...(patient_name !== -1 ? { 'patient': patient_name} : {}),
+        ...(state_of_concern !== -1 ? { 'state': state_of_concern} : {}),
+      }
+    })
+  }
+
   get(id) {
     return http.get(`/health-concerns/${id}/`);
   }

@@ -25,7 +25,7 @@
           <div class="first__row">
               <vs-input
                   v-model="newConcern.name"
-                  label="Name of health concern"
+                  label="Type of health concern"
                   placeholder="Type name"
                   class="input__items"
                   primary
@@ -61,10 +61,10 @@
                   </template>
 
                   <vs-option
-                    v-for="(patient, index) in availablePatients"
-                    v-bind:key="index"
+                    v-for="(patient, id) in availablePatients"
+                    :key="id"
                     :label="patient.name"
-                    :value="patient.id"
+                    :value="id"
                   >
                     aaa
                   </vs-option>
@@ -75,7 +75,7 @@
               <vs-input
                   v-model="newConcern.description"
                   label="Description"
-                  placeholder="Briefly describe given concern"
+                  placeholder="Type brief description"
                   class="input__items"
               >
                 <template
@@ -115,12 +115,12 @@
           <div class="third__row__single">
               <vs-select
                 v-model="newConcern.state"
-                label="Concern state"
+                label="State of examination"
                 color="primary"
               >
                 <vs-option
                     value="WT"
-                    label="Waiting for examination"
+                    label="Waiting"
                 >
                     Waiting for examination
                 </vs-option>
@@ -130,13 +130,6 @@
                     label="Ongoing"
                 >
                     Ongoing
-                </vs-option>
-
-                <vs-option
-                    value="TL"
-                    label="Terminal"
-                >
-                    Terminal
                 </vs-option>
 
                 <vs-option
@@ -176,6 +169,81 @@
 
         <br>
 
+    </div>
+
+    <div class="main__content">
+      <h4>
+        Filter results
+      </h4>
+
+      <div class="wrapper">
+        <div class="left__filter__row">
+          <vs-select
+            v-model="filter.patient_name"
+            label="Patient"
+            color="primary"
+          >
+            <vs-option
+              v-for="patient in availablePatients"
+              :key="patient.id"
+              label="patient.name"
+              :value="patient.id"
+            >
+              {{ patient.name }}
+
+            </vs-option>
+
+          </vs-select>
+        </div>
+
+        <div class="right__filter__row">
+          <vs-select
+            v-model="filter.state_of_concern"
+            label="State of examination"
+            color="primary"
+          >
+            <vs-option
+              value="WT"
+              label="Waiting"
+            >
+              Waiting
+            </vs-option>
+            <vs-option
+              value="ON"
+              label="Ongoing"
+            >
+              Ongoing
+            </vs-option>
+            <vs-option
+              value="ED"
+              label="Ended"
+            >
+              Ended
+            </vs-option>
+          </vs-select>
+        </div>
+
+        <div class="filter__submit">
+                    <vs-button
+                        @click="clearFilter()"
+                        style="padding: 3px 25px;"
+                        border
+                    >
+                        Clear filter
+                    </vs-button>
+
+                    <vs-button
+                        @click="getFiltered()"
+                        style="padding: 3px 42px;"
+                    >
+                        Apply filter
+                    </vs-button>
+        </div>
+      </div>
+    </div>
+
+    <div class="main__content">
+
         <vs-table
                 striped
                 class="actions__table"
@@ -191,7 +259,7 @@
                 <template #thead>
                     <vs-tr>
                         <vs-th>
-                            Name of health concern
+                            Type of health concern
                         </vs-th>
 
                         <vs-th>
@@ -337,6 +405,12 @@ export default {
         availableDoctors: [],
 
         concerns: [],
+
+      filter: {
+          patient_name: -1,
+          state_of_concern: -1,
+      }
+
     }),
 
     async created() {
@@ -376,6 +450,26 @@ export default {
                     NotificationsUtils.failPopup(e, this.$vs);
                 });
         },
+
+      async getFiltered() {
+          HealthConcernsService.getFiltered(this.filter)
+              .then(response => {
+                  this.concerns = response.data;
+              })
+      },
+
+      async clearFilter() {
+          this.filter.patient_name = -1;
+          this.filter.state_of_concern = -1;
+
+          HealthConcernsService.getAll()
+          .then(response => {
+            this.concerns = response.data;
+          })
+          .catch(e => {
+            console.log(e);
+          });
+      },
 
         getState(rawState) {
             if(rawState === 'WT') {
