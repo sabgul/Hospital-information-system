@@ -51,7 +51,6 @@
                 label="Patient"
                 placeholder="Choose a patient"
                 color="primary"
-                filter
               >
                   <template
                     #message-warn
@@ -92,7 +91,6 @@
                 label="Doctor"
                 placeholder="Choose a doctor"
                 color="primary"
-                filter
               >
                 <template
                     #message-warn
