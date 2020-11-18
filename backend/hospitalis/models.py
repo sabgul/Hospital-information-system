@@ -89,7 +89,7 @@ class HealthcareWorker(models.Model):
 
 # Zdravotny problem
 class HealthConcern(models.Model):
-    # Concertn states
+    # Concern states
     WAITING = 'WT'
     ONGOING = 'ON'
     TERMINAL = 'TL'

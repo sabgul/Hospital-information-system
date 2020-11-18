@@ -84,7 +84,7 @@
 
                 <h5>
                     Concern:
-                <span @click="redirectToConcern(ticket.concern.id)" class="redirect__profile">{{ ticket.concern.name }}</span> <!--  TODO: FIX THIS -->
+                <span @click="showConcernDetail(ticket.concern.id)" class="redirect__profile">{{ ticket.concern.name }}</span>
                 </h5>
 
                 <h5>
@@ -176,8 +176,8 @@ export default {
         this.$router.push({ name: 'profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }});
         },
 
-        redirectToConcern(concernId) {
-        this.$router.push({ name: 'health-concern-detail', params: {id: concernId}});
+        showConcernDetail(concernId) {
+            this.$router.push({ name: 'healthConcernDetail', params: {id: concernId }})
         },
 
         async cancelRequest(ticket, ticketId) {
