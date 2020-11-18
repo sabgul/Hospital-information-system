@@ -44,7 +44,7 @@
                 </template>
 
                 <template #img>
-                  <img src="../assets/user-illu.jpg" alt="">
+                  <img src="../assets/examination.svg" alt="" width="200px;height=150px;">
                 </template>
 
                 <template #text>
@@ -88,7 +88,7 @@
           <vs-card-group>
             <vs-card v-for="report in reports" v-bind:key="report.id">
                 <template #img>
-                  <img src="../assets/user-illu.jpg" alt="">
+                  <img src="../assets/missing-image.svg" alt="">
                 </template>
 
                 <template #text>

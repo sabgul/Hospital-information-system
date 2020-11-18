@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <div class="hidden" v-if="this.$route.path !== '/'">
+    <div v-if="this.$route.path !== '/'">
       <vs-sidebar
-      absolute
       v-model="active"
       open
       >
         <template #logo>
+
             <img src="./assets/hospital-logo.png" alt="Hospital logo">
         </template>
 
@@ -291,13 +291,11 @@ export default {
 
 html, body {
   font-family: 'Roboto', sans-serif;
-  height: 100%;
   background-color: #fafafa !important;
 }
 
-body {
-  /*overflow: hidden;*/
-  /*height: 100%;*/
+.hidden {
+    position: fixed;
 }
 
 box-icon {
