@@ -37,7 +37,7 @@
                   v-if="request.request_state === 'UD'"
                   success
                   style="padding: 6px 30px"
-                  @click="coverRequest(request)"
+                  @click="openConfirmationRequest(request)"
               >
                   Cover transaction
               </vs-button>
@@ -53,6 +53,35 @@
           </div>
         </div>
     </div>
+
+    <vs-dialog
+            width="300px"
+            v-model="confirmationWindowActive"
+        >
+            <template #header>
+            <h5>
+                Are you sure you want to cover selected request?
+            </h5>
+            </template>
+
+            <template #footer>
+                <div class="center">
+                    <vs-button
+                        @click="coverRequest()"
+                        success
+                    >
+                        Yep, cover it
+                    </vs-button>
+
+                    <vs-button
+                        @click="abortCovering()"
+                        transparent
+                    >
+                        Abort mission
+                    </vs-button>
+                </div>
+            </template>
+        </vs-dialog>
   </div>
 </template>
 
@@ -65,6 +94,8 @@ export default {
 
     data:() => ({
         requests: [],
+        confirmationWindowActive: false,
+        requestToCover: {},
     }),
 
     async created() {
@@ -90,16 +121,21 @@ export default {
           return '';
         },
 
-        async coverRequest(request) {
+        openConfirmationRequest(request) {
+            this.confirmationWindowActive = true;
+            this.requestToCover = request;
+        },
+
+        async coverRequest() {
             let editedRequest = {
-                id: request.id,
-                examination_action: request.examination_action.name,
-                related_to_patient: request.related_to_patient.id,
-                transaction_approver: request.transaction_approver.id,
+                id: this.requestToCover.id,
+                examination_action: this.requestToCover.examination_action.name,
+                related_to_patient: this.requestToCover.related_to_patient.id,
+                transaction_approver: this.requestToCover.transaction_approver.id,
                 request_state: 'CD',
             };
 
-            TransactionRequestsService.update(request.id, editedRequest)
+            TransactionRequestsService.update(this.requestToCover.id, editedRequest)
                 .then(response => {
                     console.log(response);
                     NotificationsUtils.successPopup('Given action is successfully cover by insurance company.', this.$vs);
@@ -135,6 +171,11 @@ export default {
                 .catch(e => {
                     NotificationsUtils.failPopup(e, this.$vs);
                 });
+        },
+
+        abortCovering() {
+            this.confirmationWindowActive = false;
+            this.requestToCover = {};
         }
     },
 }
@@ -160,5 +201,10 @@ export default {
         display: block;
         margin: 2em auto;
         width: 60%;
+    }
+
+    .center {
+        float: right;
+        padding-bottom: 10px;
     }
 </style>
