@@ -121,7 +121,7 @@ class DoctorReport(models.Model):
     created_by = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     about_concern = models.ForeignKey(HealthConcern, on_delete=models.CASCADE)
     date_of_created = models.DateField(auto_now_add=True)
-    text = models.CharField(max_length=2046)
+    description = models.CharField(max_length=2046, blank=True)
 
     class Meta:
         ordering = ['date_of_created']
@@ -184,10 +184,9 @@ class ExaminationAction(models.Model):
 class Examination(models.Model):
     date_of_examination = models.DateField()
     examinating_doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
-    request_based_on = models.ForeignKey(ExaminationRequest, on_delete=models.CASCADE)
+    request_based_on = models.ForeignKey(ExaminationRequest, on_delete=models.CASCADE, blank=True, null=True)
     concern = models.ForeignKey(HealthConcern, on_delete=models.CASCADE)
     actions = models.ManyToManyField('ExaminationAction', blank=True)
-    description = models.CharField(max_length=2046, blank=True)
 
     class Meta:
         ordering = ['date_of_examination']
@@ -196,24 +195,22 @@ class Examination(models.Model):
 
 # Ziadost o zaplatenie jedneho ukonu vramci lekarskeho vysetrenia
 class TransactionRequest(models.Model):
-    OVERPAID = 'PD'
+    COVERED = 'CD'
     UNPAID = 'UD'
-    FREE = 'FR'
     TRANSACTION_STATE = [
-        (OVERPAID, 'Paid'),
+        (COVERED, 'Covered'),
         (UNPAID, 'Unpaid'),
-        (FREE, 'Free'),
     ]
 
-    examination = models.ForeignKey(Examination, on_delete=models.CASCADE)
     examination_action = models.ForeignKey(ExaminationAction, on_delete=models.CASCADE)
 
-    # transaction_approver = models.ForeignKey(HealthcareWorker, on_delete=models.CASCADE)
+    related_to_patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    transaction_approver = models.ForeignKey(HealthcareWorker, on_delete=models.CASCADE)
 
     request_state = models.CharField(
         max_length=2,
         choices=TRANSACTION_STATE,
-        default=FREE,
+        default=UNPAID,
     )
 
     # class Meta:

@@ -9,11 +9,56 @@
             You can see overview of all requests made by doctors, which you are able to manage.
         </p>
     </div>
+
+    <div class="main__content" style="text-align: center;">
+        <div v-if="requests.length === 0">
+            <h4>No requests to manage</h4>
+            <img src="../../assets/relax.svg" alt="">
+        </div>
+      
+        <div
+            v-else
+            v-for="(request, index) in requests"
+            v-bind:key="index"
+            class="request"
+        >
+          <div>
+              <span>Request n. <b>{{ request.id }}</b></span>
+              <br>
+              <span>Patient: <b>{{ request.related_to_patient.name }}</b></span>
+              <br>
+              <span>Examination action: <b>{{ request.examination_action.name }}</b></span>
+              <br>
+              <span>State: <b>{{ getState(request.request_state) }}</b></span>
+          </div>
+
+          <div class="buttons__action">
+              <vs-button
+                  v-if="request.request_state === 'UD'"
+                  success
+                  style="padding: 6px 30px"
+                  @click="coverRequest(request)"
+              >
+                  Cover transaction
+              </vs-button>
+
+              <vs-button
+                  v-if="request.request_state === 'CD'"
+                  danger
+                  style="padding: 6px 30px"
+                  @click="removeRequest(request)"
+              >
+                  Remove covered transaction
+              </vs-button>
+          </div>
+        </div>
+    </div>
   </div>
 </template>
 
 <script>
 import TransactionRequestsService from "@/services/transactionRequestsService";
+import NotificationsUtils from "@/utils/notificationsUtils";
 
 export default {
     name: 'TransactionsManager',    
@@ -31,8 +76,89 @@ export default {
             console.log(e);
         });
     },
+
+    methods: {
+        getState(rawState) {
+          if(rawState === 'CD') {
+            return 'Covered';
+          }
+
+          if(rawState === 'UD') {
+            return 'Unpaid';
+          }
+
+          return '';
+        },
+
+        async coverRequest(request) {
+            let editedRequest = {
+                id: request.id,
+                examination_action: request.examination_action.name,
+                related_to_patient: request.related_to_patient.id,
+                transaction_approver: request.transaction_approver.id,
+                request_state: 'CD',
+            };
+
+            TransactionRequestsService.update(request.id, editedRequest)
+                .then(response => {
+                    console.log(response);
+                    NotificationsUtils.successPopup('Given action is successfully cover by insurance company.', this.$vs);
+
+                    TransactionRequestsService.getAll()
+                      .then(response => {
+                          this.requests = response.data;
+                      })
+                      .catch(e => {
+                          console.log(e);
+                      });
+                })
+                .catch(e => {
+                    NotificationsUtils.failPopup(e, this.$vs);
+                });
+
+        },
+
+        async removeRequest(request) {
+            TransactionRequestsService.delete(request.id)
+                .then(response => {
+                    console.log(response);
+                    NotificationsUtils.successPopup('Given action is successfully removed.', this.$vs);
+
+                    TransactionRequestsService.getAll()
+                      .then(response => {
+                          this.requests = response.data;
+                      })
+                      .catch(e => {
+                          console.log(e);
+                      });
+                })
+                .catch(e => {
+                    NotificationsUtils.failPopup(e, this.$vs);
+                });
+        }
+    },
 }
 </script>
 
 <style scoped>
+    .request {
+        background-color: #195bff;
+        opacity: 0.95;
+        color: white;
+        padding: 1em 2em;
+        border-radius: 10px;
+        margin-bottom: 1em;
+        display: flex;
+        justify-content:space-between;
+    }
+
+    .buttons__action {
+        margin-top: 1.2em;
+    }
+
+    img {
+        display: block;
+        margin: 2em auto;
+        width: 60%;
+    }
 </style>

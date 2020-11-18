@@ -34,16 +34,16 @@
                 </div>
 
                 <div class="buttons__action">
-                  <div style="display: inline-block" v-if="action.is_action_paid">
-                       <vs-button
-                            icon
-                            border
-                            color="rgb(255,255,255)"
-                            @click="overpayQuery(action.name)"
-                        >
-                            <box-icon name='dollar-circle' style="fill: #fff"/>
-                            Ask Insurance company to cover this action
-                        </vs-button>
+                    <div class="overpay__switch" v-if="action.is_action_paid">
+                       <vs-switch v-model="askToCover" success style="bottom: 7px;">
+                            <template #off>
+                                Patient is self-payer
+                            </template>
+
+                            <template #on>
+                                Ask insurance company to overpay
+                            </template>
+                       </vs-switch>
                     </div>
 
                     <div style="display: inline-block">
@@ -150,7 +150,7 @@ import ExaminationActionsService from "@/services/examinationActionsService";
 import TransactionRequestsService from "@/services/transactionRequestsService";
 import ExaminationsService from "@/services/examinationsService";
 import HealthConcernsService from "@/services/healthConcernsService";
-// import DoctorsReportsService from "@/services/doctorsReportsService";
+import DoctorsReportsService from "@/services/doctorsReportsService";
 
 import NotificationsUtils from "@/utils/notificationsUtils";
 import DateUtils from "@/utils/dateUtils";
@@ -175,6 +175,7 @@ export default {
         availableActions: [],
 
         markTicketResolved: true,
+        askToCover: true,     // if false, patient pays it on his own
     }),
 
     async created() {
@@ -200,7 +201,7 @@ export default {
         month += 1;
         const year = date.getFullYear();
 
-        this.examinationDate = year + '-' + month + '-' + day
+        this.examinationDate = year + '-' + month + '-' + day;
     },
 
     methods: {
@@ -251,7 +252,6 @@ export default {
               examinating_doctor: this.examinationAboutTicket.created_by.id,
               request_based_on: this.examinationAboutTicket.id,
               concern: this.examinationAboutTicket.concern.id,
-              description: this.description,
               actions: this.chosenActions.map(action => action.name),
           }
 
@@ -264,11 +264,19 @@ export default {
                   NotificationsUtils.failPopup(e, this.$vs);
               });
 
-          // const newReport = {
-          //   created_by: this.examinationAboutTicket.created_by.id, // TODO current user
-          //   about_concern: this.examinationAboutTicket.concern.id,
-          //   text: this.description,
-          // }
+          const newReport = {
+            created_by: this.examinationAboutTicket.created_by.id, // TODO current user
+            about_concern: this.examinationAboutTicket.concern.id,
+            description: this.description,
+          }
+
+          DoctorsReportsService.create(newReport)
+              .then(response => {
+                  console.log(response);
+              })
+              .catch(e => {
+                  NotificationsUtils.failPopup(e, this.$vs);
+              });
 
           // Ticket is set to be resolved
           if(this.markTicketResolved) {
@@ -357,6 +365,13 @@ export default {
       float: left;
       margin-right: 2em;
     }
+
+    .overpay__switch {
+        display: inline-block;
+        width: 15em;
+        padding-right: 1em;
+    }
+
     textarea {
       border-radius: 12px;
       width: 60%;

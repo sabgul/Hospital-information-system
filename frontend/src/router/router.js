@@ -65,6 +65,12 @@ export default new Router({
       component: () => import('@/views/examinations/NewExamination'),
     },
     {
+      path: '/examine/:id',
+      name: 'examine',
+      props: true,
+      component: () => import('@/views/examinations/Examine'),
+    },
+    {
       path: '/assigned-tickets',
       name: 'assignedTickets',
       component: () => import('@/views/examinations/ManageAssignedTickets'),

@@ -12,7 +12,7 @@
               <h5><b>Description</b>: {{ concern.description }}</h5>
 
               <div style="margin-top: 3em">
-                  <vs-button border @click="redirectToNewRequest(concern.id)" style="width: 170px;">
+                  <vs-button border @click="redirectToExamination(concern.id)" style="width: 170px;">
                       Examine
                   </vs-button>
 
@@ -33,9 +33,9 @@
       </div>
 
       <div class="main__content">
-          <h1>
+          <h5>
               Passed examinations
-          </h1>
+          </h5>
 
           <vs-card-group>
             <vs-card v-for="examination in examinations" v-bind:key="examination.id">
@@ -49,7 +49,6 @@
 
                 <template #text>
                     <p>
-                        {{ examination.description }}
                     </p>
                 </template>
 
@@ -63,7 +62,7 @@
                 </template>
             </vs-card>
 
-            <vs-card>
+            <vs-card @click="redirectToExamination(id)">
                 <template #title>
                     <h3>Examine</h3>
                 </template>
@@ -76,6 +75,35 @@
                     <p>
                         Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                     </p>
+                </template>
+            </vs-card>
+        </vs-card-group>
+      </div>
+
+      <div class="main__content">
+          <h5>
+              Doctor reports related to this health concern
+          </h5>
+
+          <vs-card-group>
+            <vs-card v-for="report in reports" v-bind:key="report.id">
+                <template #img>
+                  <img src="../assets/user-illu.jpg" alt="">
+                </template>
+
+                <template #text>
+                    <p>
+                      {{ report.description }}
+                    </p>
+                </template>
+
+                <template #interactions>
+                    <vs-button class="btn-chat" shadow primary icon>
+                        <box-icon style="fill: #000; margin-right: 0.5em;" name='message-square-detail'/>
+                        <span class="span">
+                            Show attached files
+                        </span>
+                    </vs-button>
                 </template>
             </vs-card>
         </vs-card-group>
@@ -126,6 +154,7 @@
 import HealthConcernsService from "@/services/healthConcernsService";
 import ExaminationsService from "@/services/examinationsService";
 import DoctorsService from "@/services/doctorsService";
+import DoctorsReportsService from "@/services/doctorsReportsService";
 
 import DateUtils from "@/utils/dateUtils";
 
@@ -144,6 +173,7 @@ export default {
       concern: {},
       availableDoctors: [],
       examinations: [],
+      reports: [],
   }),
 
   async created() {
@@ -166,6 +196,14 @@ export default {
       ExaminationsService.getByConcern(this.id)
             .then(response => {
                 this.examinations = response.data;
+            })
+            .catch(e => {
+                console.log(e);
+            });
+
+      DoctorsReportsService.getByConcern(this.id)
+            .then(response => {
+                this.reports = response.data;
             })
             .catch(e => {
                 console.log(e);
@@ -198,7 +236,11 @@ export default {
       },
 
       redirectToNewRequest(healthConcernId) {
-          this.$router.push({ name: 'newExaminationRequest', params: {id: healthConcernId }});
+          this.$router.push({ name: 'newExaminationRequest', params: { id: healthConcernId }});
+      },
+
+      redirectToExamination(healthConcernId) {
+          this.$router.push({ name: 'examine', params: { id: healthConcernId }});
       },
 
       reassign(concern) {
