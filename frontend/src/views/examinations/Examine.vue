@@ -30,12 +30,12 @@
                     class="action__within__examination"
                 >
                   <div>
-                      <span><b>{{ action.name }}</b> <br> ({{getPricing(action.is_action_paid)}})</span>
+                      <span><b>{{ action.actionData.name }}</b> <br> ({{getPricing(action.actionData.is_action_paid)}})</span>
                   </div>
 
                   <div class="buttons__action">
-                      <div class="overpay__switch" v-if="action.is_action_paid">
-                         <vs-switch v-model="askToCover" success style="bottom: 7px;">
+                      <div class="overpay__switch" v-if="action.actionData.is_action_paid">
+                         <vs-switch v-model="action.cover" success style="bottom: 7px;">
                               <template #off>
                                   Patient is self-payer
                               </template>
@@ -205,8 +205,7 @@ export default {
         addActionFinal() {
             ExaminationActionsService.get(this.actionToAdd)
                 .then(response => {
-                    this.chosenActions.push(response.data);
-                    NotificationsUtils.successPopup('Action successfully added into examination.', this.$vs);
+                    this.chosenActions.push({ actionData: response.data, cover: true });
                 })
                 .catch(e => {
                     NotificationsUtils.failPopup(e, this.$vs);
@@ -221,31 +220,15 @@ export default {
           this.chosenActions.splice(index, 1);
         },
 
-        overpayQuery(name) {
-            const newRequest = {
-                examination: 1,
-                examination_action: name,
-                request_state: 'UD'
-            }
-
-            TransactionRequestsService.create(newRequest)
-                .then(response => {
-                      console.log(response);
-                      NotificationsUtils.successPopup('Request to cover this action was sent to insurance company.', this.$vs);
-                  })
-                  .catch(e => {
-                      NotificationsUtils.failPopup(e, this.$vs);
-                  });
-        },
-
         async saveExamination() {
           // adding new examination into DB
+          console.log(this.chosenActions)
           const newExamination = {
               date_of_examination: DateUtils.getDateForBackend(this.examinationDate),
               examinating_doctor: this.aboutConcern.doctor.id,    // TODO current user
               concern: this.aboutConcern.id,
               request_based_on: null,
-              actions: this.chosenActions.map(action => action.name),
+              actions: this.chosenActions.map(action => action.actionData.name),
           }
 
           ExaminationsService.create(newExamination)
@@ -287,6 +270,25 @@ export default {
               .catch(e => {
                   NotificationsUtils.failPopup(e, this.$vs);
               });
+
+          this.chosenActions.forEach(action => {
+              if(action.cover) {
+                  const newRequest = {
+                    examination_action: action.actionData.name,
+                    request_state: 'UD',
+                    related_to_patient: this.aboutConcern.patient.id,
+                    transaction_approver: action.actionData.action_manager.id,
+                  }
+
+                  TransactionRequestsService.create(newRequest)
+                    .then(response => {
+                          console.log(response);
+                      })
+                      .catch(e => {
+                          NotificationsUtils.failPopup(e, this.$vs);
+                      });
+              }
+        });
         }
     }
 }

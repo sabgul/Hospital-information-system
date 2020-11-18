@@ -81,6 +81,7 @@ class ExaminationActionSerializer(ModelSerializer):
     def to_representation(self, instance):
         response = super().to_representation(instance)
         response['action_manager'] = HealthcareWorkerSerializer(instance.action_manager).data
+
         return response
 
 
@@ -105,7 +106,8 @@ class TransactionRequestSerializer(ModelSerializer):
 
     def to_representation(self, instance):
         response = super().to_representation(instance)
-        response['examination'] = ExaminationSerializer(instance.examination).data
         response['examination_action'] = ExaminationActionSerializer(instance.examination_action).data
+        response['related_to_patient'] = PatientSerializer(instance.related_to_patient).data
+        response['transaction_approver'] = HealthcareWorkerSerializer(instance.transaction_approver).data
 
         return response

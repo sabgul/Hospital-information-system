@@ -197,11 +197,9 @@ class Examination(models.Model):
 class TransactionRequest(models.Model):
     COVERED = 'CD'
     UNPAID = 'UD'
-    FREE = 'FR'
     TRANSACTION_STATE = [
         (COVERED, 'Covered'),
         (UNPAID, 'Unpaid'),
-        (FREE, 'Free'),
     ]
 
     examination_action = models.ForeignKey(ExaminationAction, on_delete=models.CASCADE)
@@ -212,7 +210,7 @@ class TransactionRequest(models.Model):
     request_state = models.CharField(
         max_length=2,
         choices=TRANSACTION_STATE,
-        default=FREE,
+        default=UNPAID,
     )
 
     # class Meta:
