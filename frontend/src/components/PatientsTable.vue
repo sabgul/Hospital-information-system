@@ -44,7 +44,7 @@
                     </vs-td>
 
                     <vs-td>
-                        {{ patient.mainDoctor.name }}
+                      <span @click="redirectToDoctorProfile(patient.mainDoctor.id, 'doctor')" class="redirect__profile">{{ patient.mainDoctor.name }}</span>
                     </vs-td>
                 </vs-tr>
             </template>
@@ -72,6 +72,11 @@ export default {
 
   methods: {
     redirectToPatientProfile(userId, role) {
+        this.$router.push({ name: 'profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }});
+        // this.$router.go();
+    },
+
+    redirectToDoctorProfile(userId, role) {
         this.$router.push({ name: 'profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }});
         // this.$router.go();
     },

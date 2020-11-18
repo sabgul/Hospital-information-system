@@ -78,15 +78,18 @@
                 </h5>
 
                 <h5>
-                    Patient: {{ ticket.concern.patient.name }}
+                    Patient:
+                  <span @click="redirectToProfile(ticket.concern.patient.id, 'patient')" class="redirect__profile">{{ ticket.concern.patient.name }}</span>
                 </h5>
 
                 <h5>
-                    Concern: {{ ticket.concern.name }}
+                    Concern:
+                <span @click="redirectToConcern(ticket.concern.id)" class="redirect__profile">{{ ticket.concern.name }}</span> <!--  TODO: FIX THIS -->
                 </h5>
 
                 <h5>
-                  Ticket created by doctor <b>{{ ticket.created_by.name }}</b>
+                    Ticket created by:
+                    <span @click="redirectToProfile(ticket.created_by.id, 'doctor')" class="redirect__profile">{{ ticket.created_by.name }}</span>
                 </h5>
 
                 <div class="button__area">
@@ -167,6 +170,14 @@ export default {
             if(rawState === 'RD') {
               return 'Ticket already resolved.'
             }
+        },
+
+        redirectToProfile(userId, role) {
+        this.$router.push({ name: 'profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }});
+        },
+
+        redirectToConcern(concernId) {
+        this.$router.push({ name: 'health-concern-detail', params: {id: concernId}});
         },
 
         async cancelRequest(ticket, ticketId) {
@@ -250,6 +261,12 @@ export default {
 
     .button__top {
       margin-bottom: 0.5em;
+    }
+
+    .redirect__profile:hover {
+        cursor: pointer;
+        font-weight: 600;
+        text-decoration: underline;
     }
 
 </style>
