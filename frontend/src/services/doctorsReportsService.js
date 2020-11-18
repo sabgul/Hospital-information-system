@@ -5,6 +5,14 @@ class DoctorsReportsService {
     return http.get("/doctor-reports/");
   }
 
+  getByConcern(concernId) {
+    return http.get("/doctor-reports/", {
+      'params': {
+          ...({ 'about_concern': concernId }),
+      }
+    })
+  }
+
   get(id) {
     return http.get(`/doctor-reports/${id}/`);
   }

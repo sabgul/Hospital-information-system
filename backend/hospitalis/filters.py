@@ -1,6 +1,6 @@
 import django_filters
 
-from .models import ExaminationAction, Patient, HealthConcern, ExaminationRequest, Examination
+from .models import ExaminationAction, Patient, HealthConcern, ExaminationRequest, Examination, DoctorReport
 
 
 class ExaminationActionFilter(django_filters.FilterSet):
@@ -24,10 +24,16 @@ class PatientsFilter(django_filters.FilterSet):
 class HealthConcernFilter(django_filters.FilterSet):
     class Meta:
         model = HealthConcern
-        fields = ['patient']
+        fields = ['patient', 'state']
 
 
 class ExaminationFilter(django_filters.FilterSet):
     class Meta:
         model = Examination
         fields = ['concern']
+
+
+class DoctorReportFilter(django_filters.FilterSet):
+    class Meta:
+        model = DoctorReport
+        fields = ['about_concern']

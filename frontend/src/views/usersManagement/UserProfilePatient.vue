@@ -63,7 +63,7 @@
                         </vs-td>
 
                         <vs-td>
-                            <vs-button border @click="redirectToNewRequest(concern.id)" style="width: 170px;">
+                            <vs-button border @click="redirectToExamination(concern.id)" style="width: 170px;">
                                 Examine
                             </vs-button>
 
@@ -242,6 +242,10 @@ export default {
 
       redirectToNewRequest(healthConcernId) {
           this.$router.push({ name: 'newExaminationRequest', params: {id: healthConcernId }});
+      },
+
+      redirectToExamination(healthConcernId) {
+          this.$router.push({ name: 'examine', params: { id: healthConcernId }});
       },
 
       redirectToDocProfile(userId, role) {
