@@ -284,11 +284,11 @@
                         :data="concern"
                     >
                         <vs-td>
-                            {{ concern.name }}
+                          <span @click="showConcernDetail(concern.id)" class="redirect__profile">{{ concern.name }}</span>
                         </vs-td>
 
                         <vs-td>
-                            {{ concern.patient.name }}
+                           <span @click="redirectToPatientProfile(concern.patient.id, 'patient')" class="redirect__profile">{{ concern.patient.name }}</span>
                         </vs-td>
 
                         <vs-td>
@@ -451,6 +451,11 @@ export default {
                 });
         },
 
+    redirectToPatientProfile(userId, role) {
+        this.$router.push({ name: 'profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }});
+        // this.$router.go();
+    },
+
       async getFiltered() {
           HealthConcernsService.getFiltered(this.filter)
               .then(response => {
@@ -554,5 +559,11 @@ export default {
 
     .concern__description {
       height: 100px;
+    }
+
+    .redirect__profile:hover {
+        cursor: pointer;
+        font-weight: 600;
+        text-decoration: underline;
     }
 </style>
