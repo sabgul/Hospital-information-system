@@ -135,7 +135,13 @@ export default new Router({
       name: 'edit-profile',
       props: true,
       component: () => import('@/views/general/EditProfile'),
-    }
+    },
     // // //
+
+    {
+      path: '*',
+      name: 'pageNotFound',
+      component: () => import('@/views/general/PageNotFound'),
+    }
   ]
 });
