@@ -10,6 +10,38 @@
         </div>
 
         <div class="main__content">
+          <h4>
+            Filter results
+          </h4>
+
+          <div class="wrapper">
+            <div class="left__filter__row">
+              <vs-select
+                v-model="filter.user_role"
+                label="Role"
+                color="primary"
+              >
+                <vs-option
+                  v-for="user in users"
+                  :key="user.id"
+                  label="meno"
+                  :value="user.id"
+                >
+                  {{ "ajoj" }}
+                </vs-option>
+              </vs-select>
+<!--              HERE I AM DOING THE ROLE FILTER-->
+            </div>
+
+            <div class="right__filter__row">
+<!--              HERE I AM DOING THE STATE FILTER-->
+
+            </div>
+
+          </div>
+        </div>
+
+        <div class="main__content">
             <vs-table
                 striped
                 class="users__table"
@@ -175,6 +207,7 @@ import PatientsService from '@/services/patientsService.js';
 import DoctorsService from '@/services/doctorsService.js';
 import HealthcareWorkersService from '@/services/healthcareWorkersService.js';
 import NotificationsUtils from "@/utils/notificationsUtils";
+import HealthConcernsService from "@/services/healthConcernsService";
 
 export default {
     name: 'UsersOverview',    
@@ -184,6 +217,11 @@ export default {
         page: 1,
         max: 5,
         searchValue: '',
+
+      filter: {
+        user_role: -1,
+        user_state: -1,  // active, inactive
+      }
     }),
 
     async created() {
@@ -224,6 +262,13 @@ export default {
         editUserProfile(userId, role) {
             this.$router.push({ name: 'edit-profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }})
         },
+
+        async getFiltered() {
+          HealthConcernsService.getFiltered(this.filter)
+              .then(response => {
+                  this.users = response.data;
+              })
+      },
 
         changeUserActivity(user) {
             let newUserData = {...user.userData};
