@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import http from "@/http-common";
+import axios_instance from "@/http-common";
 
 Vue.use(Vuex);
 
@@ -87,7 +87,7 @@ export const store = new Vuex.Store({
             },
             registerUser(context, data) {  // not used yet
                 return new Promise((resolve, reject) => {
-                    http.post('/register/', {
+                    axios_instance.post('api/user/', {
                         name: data.name,
                         email: data.email,
                         username: data.username,

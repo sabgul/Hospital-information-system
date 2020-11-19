@@ -1,28 +1,28 @@
-import http from "@/http-common";
+import axios_instance from "@/http-common";
 
 class HealthcareWorkersService {
   getAll() {
-    return http.get("/healthcare-workers/");
+    return axios_instance.get("api/healthcare-workers/");
   }
 
   get(id) {
-    return http.get(`/healthcare-workers/${id}/`);
+    return axios_instance.get(`api/healthcare-workers/${id}/`);
   }
 
   create(data) {
-    return http.post("/healthcare-workers/", data);
+    return axios_instance.post("api/healthcare-workers/", data);
   }
 
   update(id, data) {
-    return http.put(`/healthcare-workers/${id}/`, data);
+    return axios_instance.put(`api/healthcare-workers/${id}/`, data);
   }
 
   delete(id) {
-    return http.delete(`/healthcare-workers/${id}/`);
+    return axios_instance.delete(`api/healthcare-workers/${id}/`);
   }
 
   deleteAll() {
-    return http.delete(`/healthcare-workers/`);
+    return axios_instance.delete(`api/healthcare-workers/`);
   }
 }
 

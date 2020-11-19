@@ -1,12 +1,12 @@
-import http from "@/http-common";
+import axios_instance from "@/http-common";
 
 class HealthConcernsService {
   getAll() {
-    return http.get("/health-concerns/");
+    return axios_instance.get("api/health-concerns/");
   }
 
   getAllByPatient(patientId) {
-    return http.get("/health-concerns/", {
+    return axios_instance.get("api/health-concerns/", {
       'params': {
         patient: patientId,
       }
@@ -14,23 +14,23 @@ class HealthConcernsService {
   }
 
   get(id) {
-    return http.get(`/health-concerns/${id}/`);
+    return axios_instance.get(`api/health-concerns/${id}/`);
   }
 
   create(data) {
-    return http.post("/health-concerns/", data);
+    return axios_instance.post("api/health-concerns/", data);
   }
 
   update(id, data) {
-    return http.put(`/health-concerns/${id}/`, data);
+    return axios_instance.put(`api/health-concerns/${id}/`, data);
   }
 
   delete(id) {
-    return http.delete(`/health-concerns/${id}/`);
+    return axios_instance.delete(`api/health-concerns/${id}/`);
   }
 
   deleteAll() {
-    return http.delete(`/health-concerns/`);
+    return axios_instance.delete(`api/health-concerns/`);
   }
 }
 

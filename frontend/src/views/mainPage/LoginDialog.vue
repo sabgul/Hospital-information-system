@@ -118,7 +118,6 @@ computed: {
         password: this.password
       })
           .then(() => {
-            console.log('success')
             this.invalid_credentials = false
             this.$router.push('patients')
             this.loginDialogClosed()

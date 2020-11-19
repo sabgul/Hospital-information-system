@@ -6,7 +6,6 @@
                 <h1 class="headline">
                     HospIS - best solution for your hospital
                 </h1>
-
                 <div class="button--area">
                     <vs-button
                         floating

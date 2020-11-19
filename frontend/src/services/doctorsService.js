@@ -1,28 +1,28 @@
-import http from "@/http-common";
+import axios_instance from "@/http-common";
 
 class DoctorsService {
   getAll() {
-    return http.get("/doctors");
+    return axios_instance.get("api/doctors");
   }
 
   get(id) {
-    return http.get(`/doctors/${id}`);
+    return axios_instance.get(`api/doctors/${id}`);
   }
 
   create(data) {
-    return http.post("/doctors/", data);
+    return axios_instance.post("api/doctors/", data);
   }
 
   update(id, data) {
-    return http.put(`/doctors/${id}/`, data);
+    return axios_instance.put(`api/doctors/${id}/`, data);
   }
 
   delete(id) {
-    return http.delete(`/doctors/${id}/`);
+    return axios_instance.delete(`api/doctors/${id}/`);
   }
 
   deleteAll() {
-    return http.delete(`/doctors`);
+    return axios_instance.delete(`api/doctors`);
   }
 }
 
