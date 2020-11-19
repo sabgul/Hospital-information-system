@@ -26,6 +26,34 @@
             </template>
         </vs-input>
 
+       <vs-select
+            v-model="newPatient.gender"
+            label="Sex"
+            color="primary"
+            class="input__items"
+       >
+         <vs-option
+            value="M"
+            label="Male"
+         >
+           Male
+         </vs-option>
+
+         <vs-option
+            value="F"
+            label="Female"
+         >
+           Female
+         </vs-option>
+
+         <vs-option
+            value="O"
+            label="Other"
+         >
+           Other
+         </vs-option>
+       </vs-select>
+
         <vs-select
             v-model="newPatient.main_doctor_id"
             class="input__items"
@@ -59,7 +87,7 @@
               #message-warn
               v-if="!validDateOfBirth"
           >
-              Required
+              Required field
            </template>
         </vs-input>
 
@@ -128,12 +156,16 @@
 import PatientsService from "@/services/patientsService";
 import DoctorsService from "@/services/doctorsService";
 
+import NotificationsUtils from "@/utils/notificationsUtils";
+import DateUtils from "@/utils/dateUtils";
+
 export default {
     name: 'PatientAdd',    
 
     data:() => ({
         newPatient: {
             'name': '',
+            'gender': 'O',
             'main_doctor_id': -1,
             'date_of_birth': '',
             'email_field': '',
@@ -169,91 +201,33 @@ export default {
 
     methods: {
         async createPatient() {
-            const position = 'top-right';
-            const progress = 'auto';
-            const duration = '6000';
-
-            var data = {
+            let data = {
                 name: this.newPatient.name,
+                gender: this.newPatient.gender,
                 mainDoctor: this.newPatient.main_doctor_id,
-                date_of_birth: this.formatDate(this.newPatient.date_of_birth),
+                date_of_birth: DateUtils.getDateForBackend(this.newPatient.date_of_birth),
                 email_field: this.newPatient.email_field,
                 phone_number: this.newPatient.phone_number
             };
 
             if(data.date_of_birth === '') {
-              data.date_of_birth = null;
+                data.date_of_birth = null;
             }
 
             PatientsService.create(data)
                 .then(response => {
-                    var color = '';
-
-                    if(response) {
-                        color = 'success';
-                    }
-                    color = 'success';
-
-                    const noti = this.$vs.notification({
-                        duration,
-                        progress,
-                        color,
-                        position,
-                        title: 'Hooray!🎉',
-                        text: 'New patient was added to the database.'
-                    });
-                    console.log(noti);
+                    console.log(response);
+                    NotificationsUtils.successPopup('New patient was added to the database.', this.$vs);
                 })
                 .catch(e => {
-                    var color = '';
-
-                    if(e) {
-                        color = 'danger';
-                    }
-                    color = 'danger';
-
-                    const noti = this.$vs.notification({
-                        duration,
-                        progress,
-                        color,
-                        position,
-                        title: 'Whoops!😓: ' + e.message,
-                        text: 'Something went wrong. Please try again later or contact support.',
-                    });
-                    console.log(noti);
+                    NotificationsUtils.failPopup(e, this.$vs);
                 });
-        },
-
-        formatDate(date) {
-            const day = date.slice(8, 10);
-            const month = date.slice(5, 7);
-            const year = date.slice(0, 4);
-
-            return year + '-' + month + '-' + day
         },
     },
 }
 </script>
 
 <style scoped>
-    h1 {
-        margin-top: 0.5em;
-        margin-bottom: 1em;
-    }
-
-    .main__content {
-        padding: 20px 20px 20px 25px;
-        margin-top: 20px;
-        margin-left: 25%;
-        margin-right: 15%;
-        background-color: #ffffff;
-        box-shadow:
-            0 1.3px 20.1px rgba(0, 0, 0, 0.003),
-            0 4.2px 44.8px rgba(0, 0, 0, 0.003),
-            0 19px 76px rgba(0, 0, 0, 0.06);
-        border-radius: 10px;
-    }
-
     .input__items {
         padding: 16px 0;
         margin-left: 6px;

@@ -95,25 +95,22 @@ class HealthcareWorkerViewSet(ModelViewSet):
 class HealthConcernViewSet(ModelViewSet):
     queryset = HealthConcern.objects.all()
     serializer_class = HealthConcernSerializer
-    filter = HealthConcernFilter
+    # filter = HealthConcernFilter
     permission_classes = [IsAuthenticated]
+    filter_class = HealthConcernFilter
 
 
 class DoctorReportViewSet(ModelViewSet):
     queryset = DoctorReport.objects.all()
     serializer_class = DoctorReportSerializer
-    permission_classes = [IsAuthenticated]
-
-
-class DoctorReportCommentaryViewSet(ModelViewSet):
-    queryset = DoctorReportCommentary.objects.all()
-    serializer_class = DoctorReportCommentarySerializer
+    filter_class = DoctorReportFilter
     permission_classes = [IsAuthenticated]
 
 
 class ExaminationRequestViewSet(ModelViewSet):
     queryset = ExaminationRequest.objects.all()
     serializer_class = ExaminationRequestSerializer
+    filter_class = ExaminationRequestFilter
     permission_classes = [IsAuthenticated]
 
 
@@ -127,6 +124,7 @@ class ExaminationActionViewSet(ModelViewSet):
 class ExaminationViewSet(ModelViewSet):
     queryset = Examination.objects.all()
     serializer_class = ExaminationSerializer
+    filter_class = ExaminationFilter
     permission_classes = [IsAuthenticated]
 
 

@@ -11,21 +11,20 @@ export default new Router({
     {
       path: '/',
       name: 'homepage',
-      component: () => import('@/views/mainPage/MainPage'),
+      component: () => import('@/views/general/MainPage'),
     },
     {
       path: '/patients',
       name: 'patients',
-      component: () => import('@/views/patientsOverview/PatientsOverview'),
-      meta: { // TODO add for all other
+      component: () => import('@/views/doctor/patientsOverview/PatientsOverview'),
+      meta: {
         requiresAuth: true
       }
     },
-
     {
       path: '/doctors',
       name: 'doctors',
-      component: () => import('@/views/doctorsOverview/DoctorsOverview'),
+      component: () => import('@/views/admin/doctorsOverview/DoctorsOverview'),
       meta: {
         requiresAuth: true
       }
@@ -35,9 +34,9 @@ export default new Router({
         
     // Information for patients
     {
-      path: '/health-concerns',
+      path: '/my-health-concerns',
       name: 'HealthConcerns',
-      component: () => import('@/views/healthConcernsOverview/HealthConcernsOverview'),
+      component: () => import('@/views/patient/healthConcernsOverview/HealthConcernsOverview'),
       meta: {
         requiresAuth: true
       }
@@ -45,22 +44,45 @@ export default new Router({
     // // //
     
 
-    // Patients management modules
+   // Patients management modules
     {
       path: '/patient-add',
       name: 'patientAdd',
-      component: () => import('@/views/patientsOverview/PatientAdd'),
-      meta: {
-        requiresAuth: true
-      }
+      component: () => import('@/views/admin/usersManagement/newUserModules/PatientAdd'),
     },
     {
-      path: '/patient-detail',
-      name: 'patientDetail',
-      component: () => import('@/views/patientDetail/PatientDetail'),
-      meta: {
-        requiresAuth: true
-      }
+      path: '/health-concern-detail/:id',
+      name: 'healthConcernDetail',
+      props: true,
+      component: () => import('@/components/ConcernDetail'),
+    },
+    {
+      path: '/new-examination-request/:id',
+      name: 'newExaminationRequest',
+      props: true,
+      component: () => import('@/views/doctor/examinations/NewExaminationRequest'),
+    },
+    {
+      path: '/examination/:id',
+      name: 'newExamination',
+      props: true,
+      component: () => import('@/views/doctor/examinations/NewExamination'),
+    },
+    {
+      path: '/examine/:id',
+      name: 'examine',
+      props: true,
+      component: () => import('@/views/doctor/examinations/Examine'),
+    },
+    {
+      path: '/assigned-tickets',
+      name: 'assignedTickets',
+      component: () => import('@/views/doctor/examinations/ManageAssignedTickets'),
+    },
+    {
+      path: '/health-concerns',
+      name: 'healthConcerns',
+      component: () => import('@/views/doctor/healthConcerns/HealthConcerns'),
     },
     // // //
     
@@ -69,26 +91,17 @@ export default new Router({
     {
       path: '/examination-actions-overview',
       name: 'examinationActionsOverview',
-      component: () => import('@/views/hcWorkerActions/ExaminationActionsOverview'),
-      meta: {
-        requiresAuth: true
-      }
+      component: () => import('@/views/healthcare-worker/examinationActions/ExaminationActionsOverview'),
     },
     {
       path: '/examination-action-add',
       name: 'examinationActionAdd',
-      component: () => import('@/views/hcWorkerActions/ExaminationActionAdd'),
-      meta: {
-        requiresAuth: true
-      }
+      component: () => import('@/views/healthcare-worker/examinationActions/ExaminationActionAdd'),
     },
     {
       path: '/manage-requests',
       name: 'manageTransactionsRequests',
-      component: () => import('@/views/transactionRequests/TransactionsManager'),
-      meta: {
-        requiresAuth: true
-      }
+      component: () => import('@/views/healthcare-worker/transactionRequests/TransactionsManager'),
     },
     // // //
 
@@ -97,10 +110,7 @@ export default new Router({
     {
       path: '/users-overview',
       name: 'usersOverview',
-      component: () => import('@/views/usersManagement/UsersOverview'),
-      meta: {
-        requiresAuth: true
-      }
+      component: () => import('@/views/admin/usersManagement/usersOverview/UsersOverview'),
     },
     // // //
 
@@ -109,11 +119,19 @@ export default new Router({
       path: '/profile/:role/:id',
       name: 'profile',
       props: true,
-      component: () => import('@/views/usersManagement/UserProfile'),
-      meta: {
-        requiresAuth: true
-      }
+      component: () => import('@/views/admin/usersManagement/userProfile/UserProfile'),
     },
+    {
+      path: '/doctor-add',
+      name: 'doctorAdd',
+      component: () => import('@/views/admin/usersManagement/newUserModules/DoctorAdd'),
+    },
+    {
+      path: '/healthcare-worker-add',
+      name: 'healthcareWorkerAdd',
+      component: () => import('@/views/admin/usersManagement/newUserModules/HealthcareWorkerAdd'),
+    },
+
     // // //
 
     // Edit profile
@@ -122,10 +140,18 @@ export default new Router({
       name: 'edit-profile',
       props: true,
       component: () => import('@/views/general/EditProfile'),
-      meta: {
-        requiresAuth: true
-      }
-    }
+    },
     // // //
+    {
+      path: 'page-not-found',
+      name: 'pageNotFound',
+      component: () => import('@/views/general/PageNotFound'),
+    },
+
+    {
+      path: '*',
+      name: 'pageNotFound',
+      component: () => import('@/views/general/PageNotFound'),
+    }
   ]
 });

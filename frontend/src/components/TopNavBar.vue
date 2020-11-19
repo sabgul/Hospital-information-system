@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import LoginDialog from '@/views/mainPage/LoginDialog.vue';
+import LoginDialog from '@/views/general/LoginDialog.vue';
 
 export default {
   name: 'TopNavBar',    

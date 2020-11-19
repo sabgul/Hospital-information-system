@@ -8,7 +8,7 @@
 
         <div class="main__content">
           <div class="wrapper">
-                <div class="left__filter__row">
+                <div class="first__row">
                     <vs-input
                         label="Name"
                         color="primary"
@@ -32,7 +32,7 @@
                   </vs-input>
                 </div>
 
-                <div class="right__filter__row">
+                <div class="second__row">
                     <vs-input
                         v-model="newUserData.date_of_birth"
                         label="Date of birth"
@@ -49,7 +49,7 @@
                   />
                 </div>
 
-                <div class="third__filter__row">
+                <div class="third__row">
                   <vs-input
                       v-if="role === 'doctor'"
                       label="Doctor specialisation"
@@ -77,7 +77,7 @@
 
                 </div>
 
-                <div class="filter__submit">
+                <div class="submit__row" style="margin-bottom: 5em; margin-top: 2em;">
                     <vs-button @click="resetUserData" style="padding: 3px 25px;" border>
                         Reset unsaved
                     </vs-button>
@@ -101,6 +101,8 @@
 import PatientsService from "@/services/patientsService";
 import DoctorsService from "@/services/doctorsService";
 import HealthcareWorkersService from "@/services/healthcareWorkersService";
+
+import NotificationsUtils from "@/utils/notificationsUtils";
 
 export default {
     name: 'EditProfile',
@@ -184,40 +186,6 @@ export default {
           this.newUserData = {...this.user};
         },
 
-        successPopup() {
-          const position = 'top-right';
-          const progress = 'auto';
-          const duration = '6000';
-          const color = 'success';
-
-          const noti = this.$vs.notification({
-              duration,
-              progress,
-              color,
-              position,
-              title: 'Hooray!🎉',
-              text: 'User data successfully edited.'
-          });
-          console.log(noti);
-        },
-
-        failPopup(e) {
-          const position = 'top-right';
-          const progress = 'auto';
-          const duration = '6000';
-          var color = 'danger';
-
-          const noti = this.$vs.notification({
-              duration,
-              progress,
-              color,
-              position,
-              title: 'Whoops!😓: ' + e.message,
-              text: 'Profile was not edited properly. Try again later or contact support.'
-          });
-          console.log(noti);
-        },
-
         saveChanges() {
           let updatedInfo;
 
@@ -226,7 +194,7 @@ export default {
               name: this.newUserData.name,
               date_of_birth: this.formatDate(this.newUserData.date_of_birth),
               email_field: this.newUserData.email_field,
-              phone_number: this.newUserData.name,
+              phone_number: this.newUserData.phone_number,
               specializes_in: this.newUserData.specializes_in,
               user_active: true,
               active_from: this.formatDate(this.user.active_from)
@@ -234,12 +202,12 @@ export default {
 
             DoctorsService.update(this.id, updatedInfo)
             .then(response => {
-              console.log(response);
-              this.successPopup();
-              this.user = {...updatedInfo};
+                console.log(response);
+                NotificationsUtils.successPopup('User data successfully edited.', this.$vs);
+                this.user = {...updatedInfo};
             })
             .catch(e => {
-              this.failPopup(e);
+                NotificationsUtils.failPopup(e, this.$vs);
             });
           }
 
@@ -248,7 +216,7 @@ export default {
               name: this.newUserData.name,
               date_of_birth: this.formatDate(this.newUserData.date_of_birth),
               email_field: this.newUserData.email_field,
-              phone_number: this.newUserData.name,
+              phone_number: this.newUserData.phone_number,
               user_active: true,
               active_from: this.formatDate(this.user.active_from),
               works_for_company: this.newUserData.works_for_company
@@ -256,12 +224,12 @@ export default {
 
             HealthcareWorkersService.update(this.id, updatedInfo)
             .then(response => {
-              console.log(response);
-              this.successPopup();
-              this.user = {...updatedInfo};
+                console.log(response);
+                NotificationsUtils.successPopup('User data successfully edited.', this.$vs);
+                this.user = {...updatedInfo};
             })
             .catch(e => {
-              this.failPopup(e);
+                NotificationsUtils.failPopup(e, this.$vs);
             });
           }
         }
@@ -270,26 +238,8 @@ export default {
 </script>
 
 <style scoped>
-    h1 {
-        margin-top: 0.5em;
-        margin-bottom: 1em;
-    }
-
     box-icon {
         fill: #fbfbfb;
-    }
-
-    .main__content {
-        padding: 20px 20px 20px 25px;
-        margin-top: 20px;
-        margin-left: 25%;
-        margin-right: 15%;
-        background-color: #ffffff;
-        box-shadow:
-            0 1.3px 20.1px rgba(0, 0, 0, 0.003),
-            0 4.2px 44.8px rgba(0, 0, 0, 0.003),
-            0 19px 76px rgba(0, 0, 0, 0.06);
-        border-radius: 10px;
     }
 
     .wrapper {

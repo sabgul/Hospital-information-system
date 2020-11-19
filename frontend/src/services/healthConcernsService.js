@@ -8,7 +8,19 @@ class HealthConcernsService {
   getAllByPatient(patientId) {
     return axios_instance.get("api/health-concerns/", {
       'params': {
-        patient: patientId,
+          ...({ 'patient': patientId }),
+      }
+    })
+  }
+
+  getFiltered(filter) {
+    const patient_name = filter.patient_name;
+    const state_of_concern = filter.state_of_concern;
+
+    return http.get("/health-concerns/",{
+      'params': {
+        ...(patient_name !== -1 ? { 'patient': patient_name} : {}),
+        ...(state_of_concern !== -1 ? { 'state': state_of_concern} : {}),
       }
     })
   }

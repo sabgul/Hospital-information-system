@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <div class="hidden" v-if="this.$route.path !== '/'">
+    <div v-if="this.$route.path !== '/'">
       <vs-sidebar
-      absolute
       v-model="active"
       open
       >
         <template #logo>
+
             <img src="./assets/hospital-logo.png" alt="Hospital logo">
         </template>
 
@@ -50,7 +50,7 @@
                 <box-icon type='solid' name='virus' ></box-icon>
               </template>
 
-              <router-link to="/health-concerns">My health concerns</router-link>
+              <router-link to="/my-health-concerns">My health concerns</router-link>
           </vs-sidebar-item>
         </vs-sidebar-group>
 
@@ -78,7 +78,7 @@
             <vs-tooltip right>
               <vs-sidebar-item>
                   <template #icon>
-                    <box-icon name='user-plus'></box-icon>
+                    <box-icon name='user-plus'/>
                   </template>
 
                   <router-link to="/patient-add">Add patient</router-link>
@@ -87,6 +87,34 @@
               <template #tooltip>
                   Add patient
               </template>
+            </vs-tooltip>
+
+            <vs-tooltip right>
+                <vs-sidebar-item>
+                    <template #icon>
+                      <box-icon type='solid' name='virus'/>
+                    </template>
+
+                    <router-link to="/health-concerns">Health concerns</router-link>
+                </vs-sidebar-item>
+
+                <template #tooltip>
+                    Health concerns
+                </template>
+            </vs-tooltip>
+
+            <vs-tooltip right>
+                  <vs-sidebar-item>
+                      <template #icon>
+                        <box-icon name='blanket'></box-icon>
+                      </template>
+
+                      <router-link to="/assigned-tickets">Assigned tickets</router-link>
+                  </vs-sidebar-item>
+
+                  <template #tooltip>
+                      Assigned tickets
+                  </template>
             </vs-tooltip>
         </vs-sidebar-group>
 
@@ -160,6 +188,34 @@
                     Manage users
               </template>
             </vs-tooltip>
+
+            <vs-tooltip right>
+              <vs-sidebar-item>
+                  <template #icon>
+                    <box-icon name='plus-medical' type='solid' ></box-icon>
+                  </template>
+
+                  <router-link to="/doctor-add">Add new doctor</router-link>
+              </vs-sidebar-item>
+
+              <template #tooltip>
+                    Add new doctor
+              </template>
+            </vs-tooltip>
+
+            <vs-tooltip right>
+              <vs-sidebar-item>
+                  <template #icon>
+                    <box-icon name='user-plus' type='solid' ></box-icon>
+                  </template>
+
+                  <router-link to="/healthcare-worker-add">Add new healthcare worker</router-link>
+              </vs-sidebar-item>
+
+              <template #tooltip>
+                    Add new healthcare worker
+              </template>
+            </vs-tooltip>
         </vs-sidebar-group>
 
         <vs-sidebar-item>
@@ -178,7 +234,7 @@
                   </template>
 
                   <template #img>
-                    <img src="./assets/user-illu.jpg" alt="" width="200" height="200">
+                      <img src="./assets/user-illu.jpg" alt="" width="200" height="200">
                   </template>
 
                   <template #text>
@@ -188,15 +244,15 @@
                   </template>
 
                   <template #interactions>
-                    <vs-tooltip>
-                            <vs-button>
-                                <box-icon name='comment-edit' animation='tada-hover' style="fill: #fbfbfb;"></box-icon>
-                            </vs-button>
+                      <vs-tooltip>
+                          <vs-button>
+                              <box-icon name='comment-edit' animation='tada-hover' style="fill: #fbfbfb;"></box-icon>
+                          </vs-button>
 
-                            <template #tooltip>
-                                Edit profile
-                            </template>
-                        </vs-tooltip>
+                          <template #tooltip>
+                              Edit profile
+                          </template>
+                      </vs-tooltip>
                   </template>
               </vs-card>
             </div>
@@ -242,13 +298,11 @@ export default {
 
 html, body {
   font-family: 'Roboto', sans-serif;
-  height: 100%;
   background-color: #fafafa !important;
 }
 
-body {
-  /*overflow: hidden;*/
-  /*height: 100%;*/
+.hidden {
+    position: fixed;
 }
 
 box-icon {
