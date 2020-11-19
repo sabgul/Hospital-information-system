@@ -4,60 +4,124 @@ import datetime
 
 # Create your models here.
 class Doctor(models.Model):
-    name = models.CharField(max_length=254)
-    date_of_birth = models.DateField(max_length=8, default=datetime.date.today, blank=True)
-    email_field = models.EmailField(max_length=254, default=None)
-    phone_number = models.CharField(max_length=32, blank=True)
+    # user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # name = models.CharField(max_length=254)
+    # date_of_birth = models.DateField(max_length=8, default=datetime.date.today, blank=True)
+    # email_field = models.EmailField(max_length=254, default=None)
+    # phone_number = models.CharField(max_length=32, blank=True)
 
     specializes_in = models.CharField(max_length=254, default=None, blank=True)
 
-    user_active = models.BooleanField(default=True)
-    active_from = models.DateField(default=datetime.date.today)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
-        # permission = [()]     TODO: permission group that can access this table will be specified here
+    # user_active = models.BooleanField(default=True)
+    # active_from = models.DateField(default=datetime.date.today)
+    #
+    # class Meta:
+    #     ordering = ['name']
+    #     # permission = [()]     TODO: permission group that can access this table will be specified here
 
 
 class Patient(models.Model):
-    name = models.CharField(max_length=254)
-    date_of_birth = models.DateField(max_length=8, default=datetime.date.today, blank=True)
-    email_field = models.EmailField(max_length=254, default=None)
-    phone_number = models.CharField(max_length=32, blank=True)
+    # user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # name = models.CharField(max_length=254)
+    # date_of_birth = models.DateField(max_length=8, default=datetime.date.today, blank=True)
+    # email_field = models.EmailField(max_length=254, default=None)
+    # phone_number = models.CharField(max_length=32, blank=True)
 
     mainDoctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
 
-    user_active = models.BooleanField(default=True)
-    active_from = models.DateField(default=datetime.date.today)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
-        # permission = [()]     TODO: permission group that can access this table will be specified here
+    # user_active = models.BooleanField(default=True)
+    # active_from = models.DateField(default=datetime.date.today)
+    #
+    # def __str__(self):
+    #     return self.name
+    #
+    # class Meta:
+    #     ordering = ['name']
+    #     # permission = [()]     TODO: permission group that can access this table will be specified here
 
 
 class HealthcareWorker(models.Model):
-    name = models.CharField(max_length=254)
-    date_of_birth = models.DateField(max_length=8, default=datetime.date.today, blank=True)
-    email_field = models.EmailField(max_length=254, default=None)
-    phone_number = models.CharField(max_length=32, blank=True)
+    # user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # name = models.CharField(max_length=254)
+    # date_of_birth = models.DateField(max_length=8, default=datetime.date.today, blank=True)
+    # email_field = models.EmailField(max_length=254, default=None)
+    # phone_number = models.CharField(max_length=32, blank=True)
 
     works_for_company = models.CharField(max_length=254, default=None, blank=True)
 
-    user_active = models.BooleanField(default=True)
-    active_from = models.DateField(default=datetime.date.today)
+    # user_active = models.BooleanField(default=True)
+    # active_from = models.DateField(default=datetime.date.today)
+
+    # def __str__(self):
+    #     return self.name
+
+    # class Meta:
+    #     ordering = ['name']
+    #     permission = [()]     TODO: permission group that can access this table will be specified here
+
+
+class UserManager(BaseUserManager):
+
+    def _create_user(self, email, password, **extra_fields):
+        """
+        Creates and saves a User with the given email,and password.
+        """
+        if not email:
+            raise ValueError('The given email must be set')
+        try:
+            with transaction.atomic():
+                user = self.model(email=email,
+                                  username=email,
+                                  **extra_fields)
+                user.set_password(password)
+                user.save(using=self._db)
+                return user
+        except:
+            raise
+
+    def create_user(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', False)
+        extra_fields.setdefault('is_superuser', False)
+        return self._create_user(email, password, **extra_fields)
+
+    def create_superuser(self, email, password, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        return self._create_user(email, password=password, **extra_fields)
+
+
+class User(AbstractBaseUser, PermissionsMixin):
+    # login:
+    email = models.EmailField(max_length=40, unique=True)
+    # password inherited
+
+    first_name = models.CharField(max_length=30, blank=True)
+    last_name = models.CharField(max_length=30, blank=True)
+    username = models.CharField(max_length=30)
+
+    date_of_birth = models.DateField(max_length=8, default=datetime.date.today, blank=True)
+    phone_number = models.CharField(max_length=32, blank=True)
+
+    is_active = models.BooleanField(default=True)  # inherited
+    is_staff = models.BooleanField(default=False)
+    date_joined = models.DateTimeField(default=timezone.now)
+
+    doctor = models.OneToOneField(Doctor, blank=True, null=True, on_delete=models.SET_NULL)
+    patient = models.OneToOneField(Patient, blank=True, null=True, on_delete=models.SET_NULL)
+    healthcare_worker = models.OneToOneField(HealthcareWorker, blank=True, null=True, on_delete=models.SET_NULL)
+
+    objects = UserManager()
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'last_name']
+
+    def save(self, *args, **kwargs):
+        super(User, self).save(*args, **kwargs)
+        return self
 
     def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
-        # permission = [()]     TODO: permission group that can access this table will be specified here
+        return '{} {}'.format(self.first_name, self.last_name)
 
 
 # Zdravotny problem

@@ -17,12 +17,18 @@ export default new Router({
       path: '/patients',
       name: 'patients',
       component: () => import('@/views/patientsOverview/PatientsOverview'),
+      meta: { // TODO add for all other
+        requiresAuth: true
+      }
     },
 
     {
       path: '/doctors',
       name: 'doctors',
       component: () => import('@/views/doctorsOverview/DoctorsOverview'),
+      meta: {
+        requiresAuth: true
+      }
     },
     // // //
 
@@ -32,6 +38,9 @@ export default new Router({
       path: '/health-concerns',
       name: 'HealthConcerns',
       component: () => import('@/views/healthConcernsOverview/HealthConcernsOverview'),
+      meta: {
+        requiresAuth: true
+      }
     },
     // // //
     
@@ -41,11 +50,17 @@ export default new Router({
       path: '/patient-add',
       name: 'patientAdd',
       component: () => import('@/views/patientsOverview/PatientAdd'),
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/patient-detail',
       name: 'patientDetail',
       component: () => import('@/views/patientDetail/PatientDetail'),
+      meta: {
+        requiresAuth: true
+      }
     },
     // // //
     
@@ -55,16 +70,25 @@ export default new Router({
       path: '/examination-actions-overview',
       name: 'examinationActionsOverview',
       component: () => import('@/views/hcWorkerActions/ExaminationActionsOverview'),
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/examination-action-add',
       name: 'examinationActionAdd',
       component: () => import('@/views/hcWorkerActions/ExaminationActionAdd'),
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/manage-requests',
       name: 'manageTransactionsRequests',
       component: () => import('@/views/transactionRequests/TransactionsManager'),
+      meta: {
+        requiresAuth: true
+      }
     },
     // // //
 
@@ -74,6 +98,9 @@ export default new Router({
       path: '/users-overview',
       name: 'usersOverview',
       component: () => import('@/views/usersManagement/UsersOverview'),
+      meta: {
+        requiresAuth: true
+      }
     },
     // // //
 
@@ -83,6 +110,9 @@ export default new Router({
       name: 'profile',
       props: true,
       component: () => import('@/views/usersManagement/UserProfile'),
+      meta: {
+        requiresAuth: true
+      }
     },
     // // //
 
@@ -92,6 +122,9 @@ export default new Router({
       name: 'edit-profile',
       props: true,
       component: () => import('@/views/general/EditProfile'),
+      meta: {
+        requiresAuth: true
+      }
     }
     // // //
   ]

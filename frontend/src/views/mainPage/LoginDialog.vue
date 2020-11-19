@@ -18,7 +18,8 @@
         >
 
           <template #icon>
-            <box-icon name='user'></box-icon>
+            @
+<!--            <box-icon name='user'></box-icon>-->
           </template>
         </vs-input>
 
@@ -77,7 +78,7 @@ export default {
 
   data: () => ({
     hasVisiblePassword: false,
-    username: '',
+    email: '',
     password: '',
     invalid_credentials: false,
   }),
@@ -107,9 +108,8 @@ export default {
         console.log('empty');
         return;
       }
-
       this.$store.dispatch('loginUser', {
-        username: this.username,
+        email: this.email,
         password: this.password
       })
           .then(() => {
@@ -126,7 +126,7 @@ export default {
       this.$store.dispatch('registerUser', {
         name: this.name,
         email: this.email,
-        username: this.username,
+        // username: this.email,
         password: this.password,
         confirm: this.confirm
       })

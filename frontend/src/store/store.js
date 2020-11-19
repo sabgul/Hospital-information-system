@@ -12,6 +12,7 @@ export const store = new Vuex.Store({
             adminLoginActive: false,
             access_token: localStorage.getItem('access_token') || null, // if exists: load, else: null, later set in retrieveToken.
             refresh_token: localStorage.getItem('refresh_token') || null, // if exists: load, else: null, later set in retrieveToken.
+            user: {}
         },
 
         mutations: {
@@ -38,19 +39,44 @@ export const store = new Vuex.Store({
               localStorage.setItem('refresh_token', refresh)
               state.refresh_token = refresh
             },
+            SET_USER(state, user) {
+                state.user = user
+            },
         },
 
         actions: {
             loginUser(context, credentials) {
+                let login_role;
+
+                if (store.state.doctorLoginActive)
+                    login_role = 'patient'
+                else if (store.state.doctorLoginActive)
+                    login_role = 'doctor'
+                else if (store.state.doctorLoginActive)
+                    login_role = 'healthcare-worker'
+                else if (store.state.doctorLoginActive)
+                    login_role = 'admin'
+                else
+                    console.log('invalid login role')
+
                 return new Promise((resolve, reject) => {
-                    http.post('/token/', {
-                        username: credentials.username,
-                        password: credentials.password
+                    axios_instance.post('api/token/', {
+                        email: credentials.email,
+                        password: credentials.password,
+                        role: login_role
                     })
                         .then(response => {
                             console.log('retrieveToken().then()', response);
                             context.commit('SET_ACCESS_TOKEN', response.data.access)
                             context.commit('SET_REFRESH_TOKEN', response.data.refresh)
+
+                            // if token acquired, get user data
+                            axios_instance.get('/user/')
+                                .then(response => {
+                                    context.commit('SET_USER', response.data)
+                                })
+                                // todo handle errors
+
                             resolve()
                         })
                         .catch(error => {
