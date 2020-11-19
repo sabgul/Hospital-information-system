@@ -1,8 +1,8 @@
 from rest_framework.viewsets import ModelViewSet
 import django_filters
 
-from .models import Patient, Doctor, HealthcareWorker, HealthConcern, DoctorReport, DoctorReportCommentary, ExaminationRequest, ExaminationAction, Examination, TransactionRequest
-from .serializers import PatientSerializer, DoctorSerializer, HealthcareWorkerSerializer, HealthConcernSerializer, DoctorReportSerializer, DoctorReportCommentarySerializer, ExaminationRequestSerializer, ExaminationActionSerializer, ExaminationSerializer, TransactionRequestSerializer
+from .models import Patient, Doctor, HealthcareWorker, HealthConcern, DoctorReport, ExaminationRequest, ExaminationAction, Examination, TransactionRequest
+from .serializers import PatientSerializer, DoctorSerializer, HealthcareWorkerSerializer, HealthConcernSerializer, DoctorReportSerializer, ExaminationRequestSerializer, ExaminationActionSerializer, ExaminationSerializer, TransactionRequestSerializer
 from .filters import ExaminationActionFilter, PatientsFilter, HealthConcernFilter, ExaminationRequestFilter, ExaminationFilter, DoctorReportFilter
 
 

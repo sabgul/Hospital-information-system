@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 
-from .models import Patient, Doctor, HealthcareWorker, HealthConcern, DoctorReport, DoctorReportCommentary, ExaminationRequest, ExaminationAction, Examination, TransactionRequest
+from .models import Patient, Doctor, HealthcareWorker, HealthConcern, DoctorReport, ExaminationRequest, ExaminationAction, Examination, TransactionRequest
 
 
 class DoctorSerializer(ModelSerializer):
