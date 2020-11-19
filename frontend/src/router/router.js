@@ -39,7 +39,7 @@ export default new Router({
     {
       path: '/patient-add',
       name: 'patientAdd',
-      component: () => import('@/views/admin/usersManagement/PatientAdd'),
+      component: () => import('@/views/admin/usersManagement/newUserModules/PatientAdd'),
     },
     {
       path: '/health-concern-detail/:id',
@@ -82,12 +82,12 @@ export default new Router({
     {
       path: '/examination-actions-overview',
       name: 'examinationActionsOverview',
-      component: () => import('@/views/healthcare-worker/ExaminationActionsOverview'),
+      component: () => import('@/views/healthcare-worker/examinationActions/ExaminationActionsOverview'),
     },
     {
       path: '/examination-action-add',
       name: 'examinationActionAdd',
-      component: () => import('@/views/healthcare-worker/ExaminationActionAdd'),
+      component: () => import('@/views/healthcare-worker/examinationActions/ExaminationActionAdd'),
     },
     {
       path: '/manage-requests',
@@ -101,7 +101,7 @@ export default new Router({
     {
       path: '/users-overview',
       name: 'usersOverview',
-      component: () => import('@/views/admin/usersManagement/UsersOverview'),
+      component: () => import('@/views/admin/usersManagement/usersOverview/UsersOverview'),
     },
     // // //
 
@@ -110,17 +110,17 @@ export default new Router({
       path: '/profile/:role/:id',
       name: 'profile',
       props: true,
-      component: () => import('@/views/admin/usersManagement/UserProfile'),
+      component: () => import('@/views/admin/usersManagement/userProfile/UserProfile'),
     },
     {
       path: '/doctor-add',
       name: 'doctorAdd',
-      component: () => import('@/views/admin/usersManagement/DoctorAdd'),
+      component: () => import('@/views/admin/usersManagement/newUserModules/DoctorAdd'),
     },
     {
       path: '/healthcare-worker-add',
       name: 'healthcareWorkerAdd',
-      component: () => import('@/views/admin/usersManagement/HealthcareWorkerAdd'),
+      component: () => import('@/views/admin/usersManagement/newUserModules/HealthcareWorkerAdd'),
     },
     // // //
 
