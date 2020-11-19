@@ -95,7 +95,7 @@
 
                 <template #text>
                     <p style="margin-top: 1em;">
-                      {{ report.description.length ? report.description : '-' }}
+                      {{ report.description }}
                     </p>
                 </template>
 
@@ -187,7 +187,7 @@
 
               <br>
 
-              <p><b>Description</b>: {{ detailReport.description.length ? detailReport.description : '-' }}</p>
+              <p><b>Description</b>: {{ detailReport.description }}</p>
 
               <br>
 
