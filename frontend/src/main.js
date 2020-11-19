@@ -7,6 +7,7 @@ import 'vuesax/dist/vuesax.css'; // Vuesax styles
 import '@/assets/css/global.css';
 
 Vue.config.productionTip = false;
+Vue.prototype.window = window;
 
 Vue.use(Vuesax, {
 });

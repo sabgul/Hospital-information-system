@@ -1,13 +1,14 @@
 <template>
-    <div>
+    <div class="main__page">
         <top-nav-bar/>
+
         <div class="row">
-            <div class="column left--part">
+            <div class="column left__part">
                 <h1 class="headline">
                     HospIS - best solution for your hospital
                 </h1>
 
-                <div class="button--area">
+                <div class="button__area">
                     <vs-button
                         floating
                         large
@@ -57,19 +58,11 @@
 
             <div class="column">
                 <img
-                    class="home--illustration"
+                    class="home__illustration"
                     src="@/assets/home-page.svg"
                     alt=""
                 >
             </div>
-        </div>
-
-        <div class="row">
-            <img
-                class="home--wave"
-                src="@/assets/wave.svg"
-                alt=""
-            >
         </div>
     </div>
 </template>
@@ -103,12 +96,20 @@ export default {
 </script>
 
 <style scoped>
-    .button--area {
+    .main__page {
+        overflow: hidden;
+        background-image: url("../../assets/wave.svg");
+        background-repeat: no-repeat;
+        background-position: bottom;
+        height: 100vh;
+    }
+
+    .button__area {
         display: grid;
         margin: 0 auto;
     }
 
-    .button--area .btn {
+    .button__area .btn {
         margin-top: 1em;
         padding: 4px 16px;
         font-size: 14px;
@@ -123,36 +124,45 @@ export default {
         padding-bottom: 1em;
     }
 
-    .left--part {
+    .left__part {
         display: grid;
         margin-top: 10em;
         align-content: center;
+        text-align: center;
         padding-left: 6em;
     }
 
-    .home--illustration {
+    .home__illustration {
         align-content: center;
         margin-top: 10em;
         width: 90%;
     }
 
     .row {
-        display: flex;
+        /*display: flex;*/
     }
 
     .column {
         flex: 50%;
     }
 
-    .home--wave {
+    .home__wave {
         position: absolute;
-        top: 600px;
+        top: 70%;
         left: 0;
     }
 
     @media only screen and (max-width: 1100px) {
-        .home--illustration {
+        .home__illustration {
             display: none;
+        }
+
+        .home__wave {
+            display: none;
+        }
+
+        .left__part {
+            margin: 20% 20% 20% 10%;
         }
     }
 </style>

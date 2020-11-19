@@ -3,10 +3,9 @@
     <div v-if="this.$route.path !== '/'">
       <vs-sidebar
       v-model="active"
-      open
+      :open="windowWidth >= 1200 || (windowWidth < 1200 && activeSidebar)"
       >
         <template #logo>
-
             <img src="./assets/hospital-logo.png" alt="Hospital logo">
         </template>
 
@@ -267,12 +266,27 @@
     </div>
 
     <div class="content">
-      <router-view />
+      <div class="expand__sidebar">
+        <vs-button
+            v-if="windowWidth < 1200"
+            @click="activeSidebar = !activeSidebar"
+            flat
+            icon
+        >
+              <box-icon name='menu'/>
+        </vs-button>
+      </div>
+
+      <div @click="hideSideBar()">
+          <router-view />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { useWindowSize } from 'vue-window-size';
+
 export default {
   name: 'App',
 
@@ -281,11 +295,28 @@ export default {
 
   data:() => ({
     active: 'home',
+    activeSidebar: false,
   }),
+
+  setup() {
+    const { width, height } = useWindowSize();
+    return {
+      windowWidth: width,
+      windowHeight: height,
+    };
+  },
 
   methods: {
     redirectToProfile() {
       // Vue.$router.push({ name: 'patientDetail' });
+    },
+
+    hideSideBar() {
+      if (this.activeSidebar === true) {
+        this.activeSidebar = !this.activeSidebar;
+      } else {
+        this.activeSidebar = false;
+      }
     }
   }
 }
@@ -319,6 +350,11 @@ box-icon {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+}
+
+.expand__sidebar {
+  margin-left: 1em;
+  margin-top: 1em;
 }
 
 @media only screen and (max-width: 600px) {
