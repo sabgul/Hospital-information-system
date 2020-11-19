@@ -13,7 +13,7 @@
     <div class="main__content" style="text-align: center;">
         <div v-if="requests.length === 0">
             <h4>No requests to manage</h4>
-            <img src="../../assets/relax.svg" alt="">
+            <img src="../../../assets/relax.svg" alt="">
         </div>
       
         <div

@@ -64,7 +64,18 @@
             </div>
         </div>
 
-        <div class="main__content"
+        <div
+            class="main__content"
+            v-if="tickets.length === 0"
+            style="text-align: center;"
+        >
+            <h4>No tickets assigned to you!</h4>
+            <img src="../../../assets/relax.svg" alt="">
+        </div>
+
+      <div
+            v-else
+            class="main__content"
             v-for="ticket in tickets"
             :key="ticket.id"
         >
@@ -269,4 +280,9 @@ export default {
         text-decoration: underline;
     }
 
+    img {
+        display: block;
+        margin: 2em auto;
+        width: 60%;
+    }
 </style>

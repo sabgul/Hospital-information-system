@@ -71,9 +71,9 @@
 import PatientsService from '@/services/patientsService.js';
 import DoctorsService from '@/services/doctorsService.js';
 import HealthcareWorkersService from '@/services/healthcareWorkersService.js';
-import UserProfileDoctor from "@/views/usersManagement/UserProfileDoctor";
-import UserProfileHcWorker from "@/views/usersManagement/UserProfileHcWorker";
-import UserProfilePatient from "@/views/usersManagement/UserProfilePatient";
+import UserProfileDoctor from "@/views/admin/usersManagement/UserProfileDoctor";
+import UserProfileHcWorker from "@/views/admin/usersManagement/UserProfileHcWorker";
+import UserProfilePatient from "@/views/admin/usersManagement/UserProfilePatient";
 
 export default {
     name: 'UserProfile', 

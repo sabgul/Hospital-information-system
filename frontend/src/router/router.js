@@ -11,17 +11,17 @@ export default new Router({
     {
       path: '/',
       name: 'homepage',
-      component: () => import('@/views/mainPage/MainPage'),
+      component: () => import('@/views/general/MainPage'),
     },
     {
       path: '/patients',
       name: 'patients',
-      component: () => import('@/views/patientsOverview/PatientsOverview'),
+      component: () => import('@/views/doctor/patientsOverview/PatientsOverview'),
     },
     {
       path: '/doctors',
       name: 'doctors',
-      component: () => import('@/views/doctorsOverview/DoctorsOverview'),
+      component: () => import('@/views/admin/doctorsOverview/DoctorsOverview'),
     },
     // // //
 
@@ -30,7 +30,7 @@ export default new Router({
     {
       path: '/my-health-concerns',
       name: 'HealthConcerns',
-      component: () => import('@/views/healthConcernsOverview/HealthConcernsOverview'),
+      component: () => import('@/views/patient/healthConcernsOverview/HealthConcernsOverview'),
     },
     // // //
     
@@ -39,7 +39,7 @@ export default new Router({
     {
       path: '/patient-add',
       name: 'patientAdd',
-      component: () => import('@/views/usersManagement/PatientAdd'),
+      component: () => import('@/views/admin/usersManagement/PatientAdd'),
     },
     {
       path: '/health-concern-detail/:id',
@@ -51,24 +51,24 @@ export default new Router({
       path: '/new-examination-request/:id',
       name: 'newExaminationRequest',
       props: true,
-      component: () => import('@/views/examinations/NewExaminationRequest'),
+      component: () => import('@/views/doctor/examinations/NewExaminationRequest'),
     },
     {
       path: '/examination/:id',
       name: 'newExamination',
       props: true,
-      component: () => import('@/views/examinations/NewExamination'),
+      component: () => import('@/views/doctor/examinations/NewExamination'),
     },
     {
       path: '/examine/:id',
       name: 'examine',
       props: true,
-      component: () => import('@/views/examinations/Examine'),
+      component: () => import('@/views/doctor/examinations/Examine'),
     },
     {
       path: '/assigned-tickets',
       name: 'assignedTickets',
-      component: () => import('@/views/examinations/ManageAssignedTickets'),
+      component: () => import('@/views/doctor/examinations/ManageAssignedTickets'),
     },
     {
       path: '/health-concerns',
@@ -82,17 +82,17 @@ export default new Router({
     {
       path: '/examination-actions-overview',
       name: 'examinationActionsOverview',
-      component: () => import('@/views/hcWorkerActions/ExaminationActionsOverview'),
+      component: () => import('@/views/healthcare-worker/ExaminationActionsOverview'),
     },
     {
       path: '/examination-action-add',
       name: 'examinationActionAdd',
-      component: () => import('@/views/hcWorkerActions/ExaminationActionAdd'),
+      component: () => import('@/views/healthcare-worker/ExaminationActionAdd'),
     },
     {
       path: '/manage-requests',
       name: 'manageTransactionsRequests',
-      component: () => import('@/views/transactionRequests/TransactionsManager'),
+      component: () => import('@/views/healthcare-worker/transactionRequests/TransactionsManager'),
     },
     // // //
 
@@ -101,7 +101,7 @@ export default new Router({
     {
       path: '/users-overview',
       name: 'usersOverview',
-      component: () => import('@/views/usersManagement/UsersOverview'),
+      component: () => import('@/views/admin/usersManagement/UsersOverview'),
     },
     // // //
 
@@ -110,17 +110,17 @@ export default new Router({
       path: '/profile/:role/:id',
       name: 'profile',
       props: true,
-      component: () => import('@/views/usersManagement/UserProfile'),
+      component: () => import('@/views/admin/usersManagement/UserProfile'),
     },
     {
       path: '/doctor-add',
       name: 'doctorAdd',
-      component: () => import('@/views/usersManagement/DoctorAdd'),
+      component: () => import('@/views/admin/usersManagement/DoctorAdd'),
     },
     {
       path: '/healthcare-worker-add',
       name: 'healthcareWorkerAdd',
-      component: () => import('@/views/usersManagement/HealthcareWorkerAdd'),
+      component: () => import('@/views/admin/usersManagement/HealthcareWorkerAdd'),
     },
     // // //
 
