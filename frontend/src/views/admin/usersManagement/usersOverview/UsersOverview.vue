@@ -172,7 +172,7 @@
                                         </template>
                                     </vs-tooltip>
 
-                                    <vs-tooltip>
+                                    <vs-tooltip v-if="user.role !== 'Doctor'">
                                         <vs-button danger icon @click="deleteUserDialog(user)">
                                             <box-icon
                                                 name='trash'
@@ -312,6 +312,8 @@ export default {
                     .then(response => {
                     console.log(response);
                     NotificationsUtils.successPopup('User activity successfully changed.', this.$vs);
+                    this.getAllUsers();
+                    this.$forceUpdate();
                 })
                     .catch(e => {
                     console.log(e);
@@ -360,7 +362,7 @@ export default {
                     console.log(e);
                 });
           }
-          console.log(this.userToDelete.role);
+
           if(this.userToDelete.role === 'Health insurance worker') {
             HealthcareWorkersService.delete(this.userToDelete.userData.id)
                 .then(response => {

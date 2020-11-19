@@ -18,11 +18,6 @@ export default new Router({
       name: 'patients',
       component: () => import('@/views/doctor/patientsOverview/PatientsOverview'),
     },
-    {
-      path: '/doctors',
-      name: 'doctors',
-      component: () => import('@/views/admin/doctorsOverview/DoctorsOverview'),
-    },
     // // //
 
         

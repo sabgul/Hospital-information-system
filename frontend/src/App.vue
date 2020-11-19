@@ -81,11 +81,11 @@
                     <box-icon name='user-plus'/>
                   </template>
 
-                  <router-link to="/patient-add">Add patient</router-link>
+                  <router-link to="/patient-add">Add new patient</router-link>
               </vs-sidebar-item>
 
               <template #tooltip>
-                  Add patient
+                  Add new patient
               </template>
             </vs-tooltip>
 
@@ -192,6 +192,20 @@
             <vs-tooltip right>
               <vs-sidebar-item>
                   <template #icon>
+                    <box-icon name='user-plus'/>
+                  </template>
+
+                  <router-link to="/patient-add">Add new patient</router-link>
+              </vs-sidebar-item>
+
+              <template #tooltip>
+                  Add new patient
+              </template>
+            </vs-tooltip>
+
+            <vs-tooltip right>
+              <vs-sidebar-item>
+                  <template #icon>
                     <box-icon name='plus-medical' type='solid' ></box-icon>
                   </template>
 
@@ -217,14 +231,6 @@
               </template>
             </vs-tooltip>
         </vs-sidebar-group>
-
-        <vs-sidebar-item>
-          <template #icon>
-            <box-icon type='solid' name='first-aid'></box-icon>
-          </template>
-
-          <router-link to="/doctors">Doctors</router-link>
-        </vs-sidebar-item>
 
         <template #footer v-on:click="redirectToProfile()">
             <div class="footer">

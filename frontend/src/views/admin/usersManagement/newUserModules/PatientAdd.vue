@@ -11,143 +11,153 @@
 
         <br>
 
-        <vs-input
-            v-model="newPatient.name"
-            label="Name of patient"
-            placeholder="Type name of new patient"
-            class="input__items"
-            primary
-        >
-            <template
-                #message-warn
-                v-if="newPatient.name.length === 0"
-            >
-                Required
-            </template>
-        </vs-input>
+        <div class="wrapper">
+            <div class="first__row">
+                <vs-input
+                    v-model="newPatient.name"
+                    label="Name of patient"
+                    placeholder="Type name of new patient"
+                    class="input__items"
+                    primary
+                >
+                    <template
+                        #message-warn
+                        v-if="newPatient.name.length === 0"
+                    >
+                        Required
+                    </template>
+                </vs-input>
 
-       <vs-select
-            v-model="newPatient.gender"
-            label="Sex"
-            color="primary"
-            class="input__items"
-       >
-         <vs-option
-            value="M"
-            label="Male"
-         >
-           Male
-         </vs-option>
+                <vs-input
+                    type="date"
+                    v-model="newPatient.date_of_birth"
+                    label="Date of birth"
+                    class="input__items"
+                >
+                  <template
+                      #message-warn
+                      v-if="!validDateOfBirth"
+                  >
+                      Required field
+                   </template>
+                </vs-input>
+            </div>
 
-         <vs-option
-            value="F"
-            label="Female"
-         >
-           Female
-         </vs-option>
+            <div class="second__row">
+                <vs-select
+                    v-model="newPatient.main_doctor_id"
+                    class="input__items"
+                    label="Main doctor"
+                    color="primary"
+                >
+                    <template
+                        #message-warn
+                        v-if="newPatient.main_doctor_id === -1"
+                    >
+                        Required
+                    </template>
 
-         <vs-option
-            value="O"
-            label="Other"
-         >
-           Other
-         </vs-option>
-       </vs-select>
+                    <vs-option
+                        v-for="doctor in availableDoctors"
+                        :key="doctor.id"
+                        :label="doctor.name"
+                        :value="doctor.id"
+                    >
+                        {{ doctor.name }}
+                    </vs-option>
+                </vs-select>
 
-        <vs-select
-            v-model="newPatient.main_doctor_id"
-            class="input__items"
-            label="Main doctor"
-            color="primary"
-        >
-            <template
-                #message-warn
-                v-if="newPatient.main_doctor_id === -1"
-            >
-                Required
-            </template>
+                <vs-select
+                    v-model="newPatient.gender"
+                    label="Sex"
+                    color="primary"
+                    class="input__items"
+                 >
+                   <vs-option
+                      value="M"
+                      label="Male"
+                   >
+                     Male
+                   </vs-option>
 
-            <vs-option
-                v-for="doctor in availableDoctors"
-                :key="doctor.id"
-                :label="doctor.name"
-                :value="doctor.id"
-            >
-                {{ doctor.name }}
-            </vs-option>
-        </vs-select>
+                   <vs-option
+                      value="F"
+                      label="Female"
+                   >
+                     Female
+                   </vs-option>
 
-        <vs-input
-            type="date"
-            v-model="newPatient.date_of_birth"
-            label="Date of birth"
-            class="input__items"
-        >
-          <template
-              #message-warn
-              v-if="!validDateOfBirth"
-          >
-              Required field
-           </template>
-        </vs-input>
+                   <vs-option
+                      value="O"
+                      label="Other"
+                   >
+                     Other
+                   </vs-option>
+                 </vs-select>
+            </div>
 
-        <vs-input
-            v-model="newPatient.email_field"
-            label="Email address"
-            class="input__items"
-        >
-            <template
-                v-if="validEmail"
-                #message-success
-            >
-                Valid email
-            </template>
+            <div class="third__row">
+                <vs-input
+                    v-model="newPatient.email_field"
+                    label="Email address"
+                    class="input__items"
+                >
+                    <template
+                        v-if="validEmail"
+                        #message-success
+                    >
+                        Valid email
+                    </template>
 
-            <template
-                v-if="!validEmail && newPatient.email_field !== ''"
-                #message-danger
-            >
-                Invalid email
-            </template>
+                    <template
+                        v-if="!validEmail && newPatient.email_field !== ''"
+                        #message-danger
+                    >
+                        Invalid email
+                    </template>
 
-            <template
-                #message-warn
-                v-if="newPatient.email_field.length === 0"
-            >
-                Required
-            </template>
-        </vs-input>
+                    <template
+                        #message-warn
+                        v-if="newPatient.email_field.length === 0"
+                    >
+                        Required
+                    </template>
+                </vs-input>
 
-        <vs-input
-          v-model="newPatient.phone_number"
-          label="Phone number"
-          class="input__items"
-        >
-          <template
-              v-if="validNumber"
-              #message-success
-          >
-              Valid phone number
-          </template>
+                <vs-input
+                  v-model="newPatient.phone_number"
+                  label="Phone number"
+                  class="input__items"
+                >
+                  <template
+                      v-if="validNumber"
+                      #message-success
+                  >
+                      Valid phone number
+                  </template>
 
-          <template
-              v-if="!validNumber && newPatient.phone_number !== ''"
-              #message-danger
-          >
-              Invalid phone number
-          </template>
-        </vs-input>
+                  <template
+                      v-if="!validNumber && newPatient.phone_number !== ''"
+                      #message-danger
+                  >
+                      Invalid phone number
+                  </template>
+                </vs-input>
+            </div>
 
-        <vs-button
-            @click="createPatient()"
-            :disabled=" newPatient.name.length === 0 ||
-                        newPatient.main_doctor_id === -1 ||
-                        !validDateOfBirth ||
-                        (!validEmail && newPatient.email_field.length !== 0) ||
-                        (!validNumber && newPatient.phone_number.length !== 0)"
-        >
-            Submit
-        </vs-button>
+            <div class="submit__row">
+                  <vs-button
+                      @click="createPatient()"
+                      :disabled=" newPatient.name.length === 0 ||
+                                  newPatient.main_doctor_id === -1 ||
+                                  !validDateOfBirth ||
+                                  (!validEmail && newPatient.email_field.length !== 0) ||
+                                  (!validNumber && newPatient.phone_number.length !== 0)"
+                  >
+                      Submit
+                  </vs-button>
+            </div>
+        </div>
     </div>
 </template>
 
