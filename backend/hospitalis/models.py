@@ -128,15 +128,6 @@ class DoctorReport(models.Model):
         # permission = [()]     TODO: permission group that can access this table will be specified here
 
 
-# Komentar k lekarskej sprave
-class DoctorReportCommentary(models.Model):
-    report = models.ForeignKey(DoctorReport, on_delete=models.CASCADE)
-    text = models.CharField(max_length=2046)
-
-    # class Meta:
-    # permission = [()]     TODO: permission group that can access this table will be specified here
-
-
 # Ziadost o lekarske vysetrenie
 class ExaminationRequest(models.Model):
     # Examination request states
@@ -167,7 +158,7 @@ class ExaminationRequest(models.Model):
 class ExaminationAction(models.Model):
     name = models.CharField(max_length=254, primary_key=True)  # To avoid having two similar actions in db
     is_action_paid = models.BooleanField(default=False)
-    action_manager = models.ForeignKey(HealthcareWorker, on_delete=models.CASCADE)
+    action_manager = models.ForeignKey(HealthcareWorker, null=True, on_delete=models.SET_NULL)
 
     def get_action_paid(self):
         if self.is_action_paid:
@@ -206,7 +197,7 @@ class TransactionRequest(models.Model):
     examination_action = models.ForeignKey(ExaminationAction, on_delete=models.CASCADE)
 
     related_to_patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    transaction_approver = models.ForeignKey(HealthcareWorker, on_delete=models.CASCADE)
+    transaction_approver = models.ForeignKey(HealthcareWorker, null=True, on_delete=models.SET_NULL)
 
     request_state = models.CharField(
         max_length=2,

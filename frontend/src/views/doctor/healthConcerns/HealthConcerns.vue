@@ -62,7 +62,7 @@
                     v-for="(patient, id) in availablePatients"
                     :key="id"
                     :label="patient.name"
-                    :value="id"
+                    :value="patient.id"
                   >
                     aaa
                   </vs-option>
@@ -103,7 +103,7 @@
                     v-for="(doc, id) in availableDoctors"
                     :key="id"
                     :label="doc.name"
-                    :value="id"
+                    :value="doc.id"
                 >
                     {{ doc.name }}
                 </vs-option>

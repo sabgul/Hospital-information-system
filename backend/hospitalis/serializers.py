@@ -52,13 +52,6 @@ class DoctorReportSerializer(ModelSerializer):
         return response
 
 
-class DoctorReportCommentarySerializer(ModelSerializer):
-    class Meta:
-        model = DoctorReportCommentary
-        fields = '__all__'
-        depth = 3
-
-
 class ExaminationRequestSerializer(ModelSerializer):
     class Meta:
         model = ExaminationRequest

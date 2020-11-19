@@ -124,7 +124,7 @@
                         </vs-td>
 
                         <vs-td>
-                            {{ action.action_manager.name }}
+                            {{ action.action_manager.name.length ? action.action_manager.name : 'No manager' }}
                         </vs-td>
 
                         <vs-td>

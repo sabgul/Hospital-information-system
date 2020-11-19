@@ -105,7 +105,7 @@
                 </template>
             </vs-table>
 
-    <vs-dialog
+          <vs-dialog
               width="500px"
               v-model="activeAssign"
           >

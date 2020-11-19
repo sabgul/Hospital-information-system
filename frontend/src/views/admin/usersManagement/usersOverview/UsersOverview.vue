@@ -173,7 +173,7 @@
                                     </vs-tooltip>
 
                                     <vs-tooltip>
-                                        <vs-button danger icon>
+                                        <vs-button danger icon @click="deleteUserDialog(user)">
                                             <box-icon
                                                 name='trash'
                                                 animation='tada-hover'
@@ -197,7 +197,32 @@
                     />
                 </template>
             </vs-table>
-        </div> 
+        </div>
+
+        <vs-dialog
+            width="500px"
+            v-model="activeDelete"
+        >
+            <template #header>
+                <h5>
+                    Are you sure you want to delete <b>{{ userToDelete.userData.name }}</b>?
+                </h5>
+            </template>
+
+          <br>
+          <br>
+            <template #footer>
+                <div class="popup__right">
+                    <vs-button
+                        danger
+                        border
+                        @click="deleteUser()"
+                    >
+                        Delete
+                    </vs-button>
+                </div>
+            </template>
+        </vs-dialog>
     </div>
 </template>
 
@@ -218,39 +243,47 @@ export default {
         max: 5,
         searchValue: '',
 
-      filter: {
-        user_role: -1,
-        user_state: -1,  // active, inactive
-      }
+        userToDelete: {},
+        activeDelete: false,
+
+        filter: {
+            user_role: -1,
+            user_state: -1,  // active, inactive
+        }
     }),
 
     async created() {
-        PatientsService.getAll()
-        .then(response => {
-            response.data.forEach(patient => this.users.push({userData: patient, role: 'Patient'}));
-        })
-        .catch(e => {
-            console.log(e);
-        });
-
-        DoctorsService.getAll()
-        .then(response => {
-            response.data.forEach(doctor => this.users.push({userData: doctor, role: 'Doctor'}));
-        })
-        .catch(e => {
-            console.log(e);
-        });
-
-        HealthcareWorkersService.getAll()
-        .then(response => {
-            response.data.forEach(worker => this.users.push({userData: worker, role: 'Health insurance worker'}));
-        })
-        .catch(e => {
-            console.log(e);
-        });
+        await this.getAllUsers();
     },
     
     methods: {
+        async getAllUsers() {
+            this.users = [];
+            PatientsService.getAll()
+            .then(response => {
+                response.data.forEach(patient => this.users.push({userData: patient, role: 'Patient'}));
+            })
+            .catch(e => {
+                console.log(e);
+            });
+
+            DoctorsService.getAll()
+            .then(response => {
+                response.data.forEach(doctor => this.users.push({userData: doctor, role: 'Doctor'}));
+            })
+            .catch(e => {
+                console.log(e);
+            });
+
+            HealthcareWorkersService.getAll()
+            .then(response => {
+                response.data.forEach(worker => this.users.push({userData: worker, role: 'Health insurance worker'}));
+            })
+            .catch(e => {
+                console.log(e);
+            });
+        },
+
         getEmailContact(fetchedEmail) {
             return fetchedEmail ? fetchedEmail : 'Email not stated';
         },
@@ -306,6 +339,41 @@ export default {
                     console.log(e);
                 });
             }
+        },
+
+        deleteUserDialog(user) {
+          this.activeDelete = true;
+          this.userToDelete = user;
+        },
+
+        async deleteUser() {
+          if(this.userToDelete.role === 'Patient') {
+            PatientsService.delete(this.userToDelete.userData.id)
+                .then(response => {
+                    console.log(response);
+                    NotificationsUtils.successPopup('Patient successfully deleted.', this.$vs);
+                    this.getAllUsers();
+                    this.activeDelete = false;
+                    this.$forceUpdate();
+                })
+                .catch(e => {
+                    console.log(e);
+                });
+          }
+          console.log(this.userToDelete.role);
+          if(this.userToDelete.role === 'Health insurance worker') {
+            HealthcareWorkersService.delete(this.userToDelete.userData.id)
+                .then(response => {
+                    console.log(response);
+                    NotificationsUtils.successPopup('Health insurance worker successfully deleted.', this.$vs);
+                    this.getAllUsers();
+                    this.activeDelete = false;
+                    this.$forceUpdate();
+                })
+                .catch(e => {
+                    console.log(e);
+                });
+          }
         }
     },
 }

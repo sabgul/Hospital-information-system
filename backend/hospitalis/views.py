@@ -34,11 +34,6 @@ class DoctorReportViewSet(ModelViewSet):
     filter_class = DoctorReportFilter
 
 
-class DoctorReportCommentaryViewSet(ModelViewSet):
-    queryset = DoctorReportCommentary.objects.all()
-    serializer_class = DoctorReportCommentarySerializer
-
-
 class ExaminationRequestViewSet(ModelViewSet):
     queryset = ExaminationRequest.objects.all()
     serializer_class = ExaminationRequestSerializer
