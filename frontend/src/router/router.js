@@ -42,11 +42,6 @@ export default new Router({
       component: () => import('@/views/usersManagement/PatientAdd'),
     },
     {
-      path: '/patient-detail',
-      name: 'patientDetail',
-      component: () => import('@/views/patientDetail/PatientDetail'),
-    },
-    {
       path: '/health-concern-detail/:id',
       name: 'healthConcernDetail',
       props: true,
