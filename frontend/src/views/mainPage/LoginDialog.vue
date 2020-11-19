@@ -13,8 +13,9 @@
       <div class="con-form">
         <vs-input
             class="con-form-item"
-            v-model="username"
-            label-placeholder="Username"
+            v-model="email"
+            label-placeholder="Email"
+            ref="email_field"
         >
 
           <template #icon>
@@ -83,6 +84,12 @@ export default {
     invalid_credentials: false,
   }),
 
+computed: {
+        validEmail() {
+          return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.xxx)
+        }
+    },
+
   methods: {
     async loginDialogClosed() {
       if (this.userType === 'Administrator') {
@@ -103,9 +110,7 @@ export default {
     },
 
     login() {
-      console.log(`login() "${this.username}" "${this.password}"`);
-      if (!this.username.length || !this.password.length) {
-        console.log('empty');
+      if (!this.email.length || !this.password.length) {
         return;
       }
       this.$store.dispatch('loginUser', {
@@ -116,6 +121,7 @@ export default {
             console.log('success')
             this.invalid_credentials = false
             this.$router.push('patients')
+            this.loginDialogClosed()
           })
           .catch(err => {
             console.log(err)
@@ -130,9 +136,9 @@ export default {
         password: this.password,
         confirm: this.confirm
       })
-    }
+    },
 
-  }
+  },
 }
 </script>
 <style scoped>

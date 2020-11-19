@@ -53,7 +53,7 @@
               <router-link to="/health-concerns">My health concerns</router-link>
           </vs-sidebar-item>
         </vs-sidebar-group>
-        
+
         <vs-sidebar-group>
             <template #header>
                 <vs-sidebar-item arrow>
@@ -201,6 +201,7 @@
               </vs-card>
             </div>
         </template>
+        <vs-button v-on:click="logout">Logout</vs-button>  <!-- todo position  -->
       </vs-sidebar>
     </div>
 
@@ -224,6 +225,12 @@ export default {
   methods: {
     redirectToProfile() {
       // Vue.$router.push({ name: 'patientDetail' });
+    },
+    logout() {
+      this.$store.dispatch('logoutUser')
+      .then(() => {
+        this.$router.push('/')
+      })
     }
   }
 }
