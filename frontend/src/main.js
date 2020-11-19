@@ -2,8 +2,7 @@ import Vue from 'vue'
 import App from '@/App.vue'
 import { store } from '@/store/store';
 import router from '@/router/router.js';
-
-import Vuesax from 'vuesax'
+import Vuesax from 'vuesax';
 import 'vuesax/dist/vuesax.css'; // Vuesax styles
 import '@/assets/css/global.css';
 

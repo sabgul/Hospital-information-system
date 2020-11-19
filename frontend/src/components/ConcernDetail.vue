@@ -5,13 +5,15 @@
             Detail of health concern <b>{{ concern.name }}</b>
           </h1>
 
-          <div class="info__basic">
-              <h5><b>Patient</b>: {{ concern.patient.name }}</h5>
-              <h5><b>Doctor</b>: {{ concern.doctor.name }}</h5>
-              <h5><b>State</b>: {{ getState(concern.state) }}</h5>
-              <h5><b>Description</b>: {{ concern.description }}</h5>
+          <div class="info__basic wrapper">
+              <div class="first__row" style="width: 500px;">
+                  <h5><b>Patient</b>: {{ concern.patient.name }}</h5>
+                  <h5><b>Doctor</b>: {{ concern.doctor.name }}</h5>
+                  <h5><b>State</b>: {{ getState(concern.state) }}</h5>
+                  <h5><b>Description</b>: {{ concern.description }}</h5>
+              </div>
 
-              <div style="margin-top: 3em">
+              <div class="submit__row" style="margin-top: 1em; margin-right: 4em;">
                   <vs-button border @click="redirectToExamination(concern.id)" style="width: 170px;">
                       Examine
                   </vs-button>
@@ -38,7 +40,7 @@
           </h5>
 
           <vs-card-group>
-            <vs-card v-for="examination in examinations" v-bind:key="examination.id">
+            <vs-card v-for="examination in examinations" v-bind:key="examination.id"  @click="showExaminationDialog(examination)">
                 <template #title>
                     <h3>{{ getDate(examination.date_of_examination) }}</h3>
                 </template>
@@ -53,10 +55,10 @@
                 </template>
 
                 <template #interactions>
-                    <vs-button class="btn-chat" shadow primary icon>
+                    <vs-button class="btn-chat" shadow primary icon @click="showExaminationDialog(examination)">
                         <box-icon style="fill: #000; margin-right: 0.5em;" name='message-square-detail'/>
                         <span class="span">
-                            Show actions and report
+                            Show actions and description
                         </span>
                     </vs-button>
                 </template>
@@ -86,19 +88,19 @@
           </h5>
 
           <vs-card-group>
-            <vs-card v-for="report in reports" v-bind:key="report.id">
+            <vs-card v-for="report in reports" v-bind:key="report.id" @click="showReportDialog(report)">
                 <template #img>
                   <img src="../assets/missing-image.svg" alt="">
                 </template>
 
                 <template #text>
-                    <p>
-                      {{ report.description }}
+                    <p style="margin-top: 1em;">
+                      {{ report.description.length ? report.description : '-' }}
                     </p>
                 </template>
 
                 <template #interactions>
-                    <vs-button class="btn-chat" shadow primary icon>
+                    <vs-button class="btn-chat" shadow primary icon @click="showReportDialog(report)">
                         <box-icon style="fill: #000; margin-right: 0.5em;" name='message-square-detail'/>
                         <span class="span">
                             Show attached files
@@ -147,6 +149,52 @@
               </div>
           </template>
       </vs-dialog>
+
+        <vs-dialog
+            width="500px"
+            v-model="activeExaminationDetail"
+        >
+            <template #header>
+                <h5>
+                    Examination date: {{ detailExamination.date_of_examination }}
+                </h5>
+            </template>
+
+            <div style="padding-left: 1em;">
+              <h6>Brief description of examination:</h6>
+
+              <p> {{ detailExamination.description }} </p>
+
+              <h6>Actions made during this examination:</h6>
+
+              <div
+                  v-for="(action, index) in detailExamination.actions"
+                  v-bind:key="index"
+              >
+                <div>
+                    <span>{{ index+1 }}. <b>{{ action }}</b></span>
+                </div>
+              </div>
+            </div>
+        </vs-dialog>
+
+        <vs-dialog
+            width="500px"
+            v-model="activeReportDetail"
+        >
+            <div style="padding: 1.5em;">
+              <h6><b>Date</b>: {{ detailReport.date_of_created }}</h6>
+
+              <br>
+
+              <p><b>Description</b>: {{ detailReport.description.length ? detailReport.description : '-' }}</p>
+
+              <br>
+
+              <h6><b>Attached files</b>: No attached files</h6>
+            </div>
+
+        </vs-dialog>
   </div>
 </template>
 
@@ -157,6 +205,7 @@ import DoctorsService from "@/services/doctorsService";
 import DoctorsReportsService from "@/services/doctorsReportsService";
 
 import DateUtils from "@/utils/dateUtils";
+import NotificationsUtils from "@/utils/notificationsUtils";
 
 export default {
   name: "ConcernDetail",
@@ -167,6 +216,13 @@ export default {
 
   data:() => ({
       activeAssign: false,
+
+      activeExaminationDetail: false,
+      detailExamination: {},
+
+      activeReportDetail: false,
+      detailReport: {},
+
       toReassign: {},
       newDoc: -1,
 
@@ -249,44 +305,29 @@ export default {
           this.newDoc = concern.doctor.id;
       },
 
-      finishReassign() {
-        const position = 'top-right';
-        const progress = 'auto';
-        const duration = '6000';
+      showExaminationDialog(examination) {
+          this.detailExamination = {...examination};
+          this.activeExaminationDetail = true;
+      },
 
-        let newConcern = {...this.toReassign}
-        newConcern.doctor = this.newDoc;
-        newConcern.patient = this.toReassign.patient.id;
+      showReportDialog(report) {
+          this.detailReport = {...report};
+          this.activeReportDetail = true;
+      },
 
-        HealthConcernsService.update(this.toReassign.id, newConcern)
-            .then(response => {
-              var color = '';
-              response ? color = 'success' : color = 'success';
+      async finishReassign() {
+          let newConcern = {...this.toReassign}
+          newConcern.doctor = this.newDoc;
+          newConcern.patient = this.toReassign.patient.id;
 
-              const noti = this.$vs.notification({
-                duration,
-                progress,
-                color,
-                position,
-                title: 'Hooray!🎉',
-                text: 'Manager of ' + newConcern.name + ' successfully changed.',
+          HealthConcernsService.update(this.toReassign.id, newConcern)
+              .then(response => {
+                console.log(response);
+                NotificationsUtils.successPopup('Manager of ' + newConcern.name + ' successfully changed.', this.$vs);
+              })
+              .catch(e => {
+                NotificationsUtils.failPopup(e, this.$vs);
               });
-              console.log(noti);
-            })
-            .catch(e => {
-              var color = '';
-              e ? color = 'danger' : color = 'danger';
-
-              const noti = this.$vs.notification({
-                duration,
-                progress,
-                color,
-                position,
-                title: 'Whoops!😓: ' + e.message,
-                text: 'There was an error in changing the manager. Try again later or contact support.',
-              });
-              console.log(noti);
-            });
       }
   }
 }

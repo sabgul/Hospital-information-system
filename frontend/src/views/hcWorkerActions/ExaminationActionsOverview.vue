@@ -17,7 +17,7 @@
             </h4>
 
             <div class="wrapper">
-                <div class="left__filter__row">
+                <div class="first__row">
                     <vs-select 
                         v-model="filter.action_manager"
                         label="Action manager"
@@ -34,7 +34,7 @@
                     </vs-select>
                 </div>
 
-                <div class="right__filter__row">
+                <div class="second__row">
                     <vs-select 
                         v-model="filter.is_action_paid"
                         label="Action pricing"
@@ -56,7 +56,7 @@
                     </vs-select>
                 </div>
 
-                <div class="filter__submit">
+                <div class="submit__row" style="margin-top: 2em; margin-bottom: 4em;">
                     <vs-button
                         @click="clearFilter()"
                         style="padding: 3px 25px;"
@@ -207,7 +207,7 @@
                     Paid
                 </template>
             </vs-switch>
-            
+
             <template #footer>
                 <div class="center">
                     <vs-button
@@ -229,7 +229,7 @@ import HealthcareWorkersService from "@/services/healthcareWorkersService";
 import NotificationsUtils from "@/utils/notificationsUtils";
 
 export default {
-    name: 'ExaminationActionsOverview',    
+    name: 'ExaminationActionsOverview',
 
     data:() => ({
         page: 1,
@@ -338,7 +338,7 @@ export default {
         async finalEdit() {
             ExaminationActionsService.update(this.newNameConst, this.toEdit)
             .then(response => {
-                console.log(response); 
+                console.log(response);
             })
             .catch(e => {
                 console.log(e);
@@ -360,7 +360,7 @@ export default {
                 .catch(e => {
                     console.log(e);
                 });
-            }        
+            }
 
             ExaminationActionsService.getAll()
             .then(response => {

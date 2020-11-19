@@ -7,8 +7,6 @@
     </div>
 
     <div class="main__content">
-        <br>
-
         <h4>Add health concern</h4>
 
         <br>
@@ -141,34 +139,31 @@
               </vs-select>
           </div>
 
-          <vs-button
-            @click="addNewExamination()"
-            :disabled=" newConcern.name.length === 0 ||
-                        newConcern.name.length > 250 ||
-                        newConcern.doctor === -1 ||
-                        newConcern.patient === -1 ||
-                        newConcern.description.length > 2000"
-            class="filter__submit"
-        >
-            Submit
-        </vs-button>
+          <div class="submit__row">
+              <vs-button
+                  @click="addNewExamination()"
+                  :disabled=" newConcern.name.length === 0 ||
+                              newConcern.name.length > 250 ||
+                              newConcern.doctor === -1 ||
+                              newConcern.patient === -1 ||
+                              newConcern.description.length > 2000"
+              >
+                  Submit
+              </vs-button>
+          </div>
       </div>
-
     </div>
 
     <div class="main__content">
-        <br>
-
         <h4>Health concerns overview</h4>
 
         <br>
 
         <p>
-           TODO text
+           Here you can see all health concerns you manage. <br>
+           You can filter the results by patient and/or by examination state. <br>
+           You can use Search tab in table as well.
         </p>
-
-        <br>
-
     </div>
 
     <div class="main__content">
@@ -176,7 +171,7 @@
         Filter results
       </h4>
 
-      <div class="wrapper">
+      <div class="wrapper" style="height: 130px;">
         <div class="left__filter__row">
           <vs-select
             v-model="filter.patient_name"
@@ -223,21 +218,22 @@
           </vs-select>
         </div>
 
-        <div class="filter__submit">
-                    <vs-button
-                        @click="clearFilter()"
-                        style="padding: 3px 25px;"
-                        border
-                    >
-                        Clear filter
-                    </vs-button>
+        <div
+            class="submit__row"
+            style="margin-top: 0;"
+        >
+            <vs-button
+                @click="clearFilter()"
+                border
+            >
+                Clear filter
+            </vs-button>
 
-                    <vs-button
-                        @click="getFiltered()"
-                        style="padding: 3px 42px;"
-                    >
-                        Apply filter
-                    </vs-button>
+            <vs-button
+                @click="getFiltered()"
+            >
+                Apply filter
+            </vs-button>
         </div>
       </div>
     </div>
@@ -296,7 +292,19 @@
                         </vs-td>
 
                         <vs-td>
-                            <vs-button class="buttons" @click="redirectToNewRequest(concern.id)">
+                            <vs-button
+                                border
+                                class="buttons"
+                                @click="redirectToExamine(concern.id)"
+                                style="width: 120px;"
+                            >
+                                Examine
+                            </vs-button>
+
+                            <vs-button
+                                class="buttons"
+                                @click="redirectToNewRequest(concern.id)"
+                            >
                                 New examination request
                             </vs-button>
 
@@ -531,6 +539,10 @@ export default {
 
         redirectToNewRequest(healthConcernId) {
             this.$router.push({ name: 'newExaminationRequest', params: {id: healthConcernId }});
+        },
+
+        redirectToExamine(healthConcernId) {
+            this.$router.push({ name: 'examine', params: { id: healthConcernId }});
         },
     }
 }

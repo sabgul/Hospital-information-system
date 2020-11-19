@@ -234,7 +234,7 @@
                   </template>
 
                   <template #img>
-                    <img src="./assets/user-illu.jpg" alt="" width="200" height="200">
+                      <img src="./assets/user-illu.jpg" alt="" width="200" height="200">
                   </template>
 
                   <template #text>
@@ -244,15 +244,15 @@
                   </template>
 
                   <template #interactions>
-                    <vs-tooltip>
-                            <vs-button>
-                                <box-icon name='comment-edit' animation='tada-hover' style="fill: #fbfbfb;"></box-icon>
-                            </vs-button>
+                      <vs-tooltip>
+                          <vs-button>
+                              <box-icon name='comment-edit' animation='tada-hover' style="fill: #fbfbfb;"></box-icon>
+                          </vs-button>
 
-                            <template #tooltip>
-                                Edit profile
-                            </template>
-                        </vs-tooltip>
+                          <template #tooltip>
+                              Edit profile
+                          </template>
+                      </vs-tooltip>
                   </template>
               </vs-card>
             </div>

@@ -137,6 +137,11 @@ export default new Router({
       component: () => import('@/views/general/EditProfile'),
     },
     // // //
+    {
+      path: 'page-not-found',
+      name: 'pageNotFound',
+      component: () => import('@/views/general/PageNotFound'),
+    },
 
     {
       path: '*',

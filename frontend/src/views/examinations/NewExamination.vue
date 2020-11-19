@@ -21,6 +21,15 @@
 
           <br>
 
+          <h5>Description</h5>
+
+          <textarea
+              v-model="examinationDescription"
+              placeholder="Briefly describe examination.."
+          />
+
+          <br>
+
           <div class="actions">
               <h5>Examination actions made during this examination: </h5>
               <span v-if="chosenActions.length === 0">No actions selected</span>
@@ -86,10 +95,10 @@
 
           <br>
 
-          <h6>Description</h6>
+          <h6>Report text</h6>
           <textarea
-              v-model="description"
-              placeholder="Describe briefly this report.."
+              v-model="reportDescription"
+              placeholder="Put text of report here.."
           />
       </div>
 
@@ -169,7 +178,8 @@ export default {
         activeActionAdd: false,
         actionToAdd: '',
 
-        description: '',
+        examinationDescription: '',
+        reportDescription: '',
 
         chosenActions: [],
         availableActions: [],
@@ -253,6 +263,7 @@ export default {
               request_based_on: this.examinationAboutTicket.id,
               concern: this.examinationAboutTicket.concern.id,
               actions: this.chosenActions.map(action => action.name),
+              description: this.examinationDescription,
           }
 
           ExaminationsService.create(newExamination)
@@ -267,7 +278,7 @@ export default {
           const newReport = {
             created_by: this.examinationAboutTicket.created_by.id, // TODO current user
             about_concern: this.examinationAboutTicket.concern.id,
-            description: this.description,
+            description: this.reportDescription,
           }
 
           DoctorsReportsService.create(newReport)

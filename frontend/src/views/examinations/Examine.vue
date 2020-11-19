@@ -21,6 +21,13 @@
 
             <br>
 
+            <h5>Brief description of examination</h5>
+
+            <textarea
+                v-model="examinationDescription"
+                placeholder="Briefly describe this examination.."
+            />
+
             <div class="actions">
                 <h5>Examination actions made during this examination: </h5>
                 <span v-if="chosenActions.length === 0">No actions selected</span>
@@ -85,10 +92,10 @@
 
             <br>
 
-            <h6>Description</h6>
+            <h6>Report text</h6>
             <textarea
-                v-model="description"
-                placeholder="Describe briefly this report.."
+                v-model="reportDescription"
+                placeholder="Put text of report here.."
             />
         </div>
 
@@ -163,7 +170,8 @@ export default {
         activeActionAdd: false,
         actionToAdd: '',
 
-        description: '',
+        examinationDescription: '',
+        reportDescription: '',
 
         chosenActions: [],
         availableActions: [],
@@ -222,13 +230,13 @@ export default {
 
         async saveExamination() {
           // adding new examination into DB
-          console.log(this.chosenActions)
           const newExamination = {
               date_of_examination: DateUtils.getDateForBackend(this.examinationDate),
               examinating_doctor: this.aboutConcern.doctor.id,    // TODO current user
               concern: this.aboutConcern.id,
               request_based_on: null,
               actions: this.chosenActions.map(action => action.actionData.name),
+              description: this.examinationDescription,
           }
 
           ExaminationsService.create(newExamination)
@@ -243,7 +251,7 @@ export default {
           const newReport = {
             created_by: this.aboutConcern.doctor.id, // TODO current user
             about_concern: this.aboutConcern.id,
-            description: this.description,
+            description: this.reportDescription,
           }
 
           DoctorsReportsService.create(newReport)

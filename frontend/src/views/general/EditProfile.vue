@@ -8,7 +8,7 @@
 
         <div class="main__content">
           <div class="wrapper">
-                <div class="left__filter__row">
+                <div class="first__row">
                     <vs-input
                         label="Name"
                         color="primary"
@@ -32,7 +32,7 @@
                   </vs-input>
                 </div>
 
-                <div class="right__filter__row">
+                <div class="second__row">
                     <vs-input
                         v-model="newUserData.date_of_birth"
                         label="Date of birth"
@@ -49,7 +49,7 @@
                   />
                 </div>
 
-                <div class="third__filter__row">
+                <div class="third__row">
                   <vs-input
                       v-if="role === 'doctor'"
                       label="Doctor specialisation"
@@ -77,7 +77,7 @@
 
                 </div>
 
-                <div class="filter__submit">
+                <div class="submit__row" style="margin-bottom: 5em; margin-top: 2em;">
                     <vs-button @click="resetUserData" style="padding: 3px 25px;" border>
                         Reset unsaved
                     </vs-button>

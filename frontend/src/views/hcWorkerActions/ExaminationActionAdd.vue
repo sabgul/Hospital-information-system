@@ -1,16 +1,16 @@
 <template>
     <div>
         <div class="main__content">
-            <h1>
+            <h4>
               Add new examination action
-            </h1>
+            </h4>
+
+            <br>
 
             <p>
                 By adding new examination action, doctors can use them when examining their patients. <br>
                 Thanks to that, you will be able to track unpaid examinations of patients.
             </p>
-
-            <br>
 
             <div class="wrapper">
                 <div class="first__row">

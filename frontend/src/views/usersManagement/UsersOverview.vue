@@ -270,7 +270,7 @@ export default {
               })
       },
 
-        changeUserActivity(user) {
+        async changeUserActivity(user) {
             let newUserData = {...user.userData};
             newUserData.user_active = !newUserData.user_active;
 
