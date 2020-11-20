@@ -177,17 +177,11 @@ export default {
         .then(response => {
             this.healthConcerns = response.data;
         })
-        .catch(e => {
-            console.log(e);
-        });
 
     DoctorsService.getAll()
             .then(response => {
             this.availableDoctors = response.data;
             })
-            .catch(e => {
-            console.log(e);
-            });
   },
 
   methods: {
@@ -208,7 +202,7 @@ export default {
               return 'Ended';
           }
 
-          return 'Uknown state';
+          return 'Unknown state';
       },
 
       reassign(concern) {
@@ -231,9 +225,6 @@ export default {
                   .then(response => {
                   this.concerns = response.data;
                   })
-                  .catch(e => {
-                  console.log(e);
-                  });
           })
           .catch(e => {
               NotificationsUtils.failPopup(e, this.$vs);
@@ -261,17 +252,6 @@ export default {
 </script>
 
 <style scoped>
-    .concern__content {
-        padding: 20px 20px 20px 25px;
-        margin: 20px 15% 20px 0;
-        background-color: #ffffff;
-        box-shadow:
-            0 1.3px 20.1px rgba(0, 0, 0, 0.003),
-            0 4.2px 44.8px rgba(0, 0, 0, 0.003),
-            0 19px 76px rgba(0, 0, 0, 0.06);
-        border-radius: 10px;
-    }
-
     .redirect__profile:hover, .concern__name:hover {
         cursor: pointer;
         font-weight: 600;

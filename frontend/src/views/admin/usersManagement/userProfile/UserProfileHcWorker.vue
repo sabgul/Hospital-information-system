@@ -80,9 +80,6 @@ export default {
         .then(response => {
             this.supervised_actions = response.data;
         })
-        .catch(e => {
-            console.log(e);
-        });
   },
 
   methods: {

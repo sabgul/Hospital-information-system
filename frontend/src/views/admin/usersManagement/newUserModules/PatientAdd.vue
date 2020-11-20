@@ -204,9 +204,6 @@ export default {
             .then(response => {
             this.availableDoctors = response.data;
             })
-            .catch(e => {
-            console.log(e);
-            });
     },
 
     methods: {

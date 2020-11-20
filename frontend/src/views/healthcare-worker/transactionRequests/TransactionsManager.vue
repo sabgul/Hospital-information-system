@@ -103,9 +103,6 @@ export default {
         .then(response => {
             this.requests = response.data;
         })
-        .catch(e => {
-            console.log(e);
-        });
     },
 
     methods: {
@@ -144,9 +141,6 @@ export default {
                       .then(response => {
                           this.requests = response.data;
                       })
-                      .catch(e => {
-                          console.log(e);
-                      });
                 })
                 .catch(e => {
                     NotificationsUtils.failPopup(e, this.$vs);

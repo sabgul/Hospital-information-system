@@ -37,12 +37,6 @@ export default {
             .then(response => {
             this.patients = response.data;
             })
-            .catch(e => {
-            console.log(e);
-            });
-    },
-
-    methods: {
     },
 }
 </script>

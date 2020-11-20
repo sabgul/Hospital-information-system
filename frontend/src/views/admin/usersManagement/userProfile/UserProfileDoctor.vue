@@ -36,9 +36,6 @@ export default {
           .then(response => {
               this.assignedPatients = response.data;
           })
-          .catch(e => {
-              console.log(e);
-          });
   }
 }
 </script>

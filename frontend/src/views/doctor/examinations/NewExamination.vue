@@ -331,15 +331,6 @@ export default {
       margin-top: 2em;
     }
 
-    .popup__center {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        padding-bottom: 4em;
-        width: 40%;
-        margin-top: 2em;
-    }
-
     .popup__headline {
         display: block;
         margin-left: auto;
@@ -347,12 +338,6 @@ export default {
         margin-top: 0.5em;
         width: 80%;
         text-align: center;
-    }
-
-    .popup__right {
-        position: absolute;
-        right: 1em;
-        bottom: 1em;
     }
 
     .action__within__examination {

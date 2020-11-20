@@ -12,7 +12,7 @@
         <br>
 
       <div class="wrapper">
-        <div class="left__row">
+        <div class="first__row">
             <vs-select
               v-model="chosenDoctor"
               class="input__items"
@@ -41,7 +41,7 @@
         <vs-button
             @click="addNewExamination()"
             :disabled=" chosenDoctor === -1"
-            class="filter__submit"
+            class="submit__row"
         >
             Submit
         </vs-button>
@@ -76,17 +76,11 @@ export default {
             .then(response => {
             this.availableDoctors = response.data;
             })
-            .catch(e => {
-            console.log(e);
-            });
 
         HealthConcernsService.get(this.id)
             .then(response => {
               this.relatedConcern = response.data;
             })
-            .catch(e => {
-              console.log(e);
-            });
     },
 
     methods: {
@@ -115,43 +109,5 @@ export default {
     .input__items {
         padding: 16px 0;
         margin-left: 6px;
-    }
-
-    .wrapper {
-        display: flex;
-        padding-top: 2em;
-    }
-
-    .left__row {
-        width: 200px;
-        margin-top: auto;
-        margin-bottom: 1em;
-    }
-
-    .right__row {
-        padding-left: 2em;
-        flex-grow: 1;
-        margin-top: auto;
-        margin-bottom: 1em;
-    }
-
-    .third__row {
-        padding-left: 0;
-        flex-grow: 2;
-        margin-top: auto;
-        margin-bottom: 3em;
-    }
-
-    .filter__submit {
-        margin-left: auto;
-        order: 3;
-        margin-top: 5em;
-        margin-right: 1em;
-        height: 4em;
-        width: 8em;
-    }
-
-    .concern__description {
-      height: 100px;
     }
 </style>

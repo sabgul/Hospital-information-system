@@ -192,9 +192,6 @@ export default {
             .then(response => {
             this.availableActions = response.data;
             })
-            .catch(e => {
-            console.log(e);
-            });
 
         const date = new Date();
         let day = date.getDate();
@@ -291,10 +288,10 @@ export default {
                   TransactionRequestsService.create(newRequest)
                     .then(response => {
                           console.log(response);
-                      })
-                      .catch(e => {
-                          NotificationsUtils.failPopup(e, this.$vs);
-                      });
+                    })
+                    .catch(e => {
+                        NotificationsUtils.failPopup(e, this.$vs);
+                    });
               }
         });
         }

@@ -159,9 +159,6 @@ export default {
             .then(response => {
             this.tickets = response.data;
             })
-            .catch(e => {
-            console.log(e);
-            });
     },
 
     methods: {
@@ -208,13 +205,7 @@ export default {
                       .then(response => {
                       this.tickets = response.data;
                       })
-                      .catch(e => {
-                      console.log(e);
-                      });
                 })
-                .catch(e => {
-                console.log(e);
-                });
         },
 
         async removeTicket(ticketId) {
@@ -230,9 +221,6 @@ export default {
                       console.log(e);
                       });
                 })
-                .catch(e => {
-                console.log(e);
-                });
         },
 
         async clearFilter() {
@@ -242,9 +230,6 @@ export default {
                 .then(response => {
                 this.tickets = response.data;
                 })
-                .catch(e => {
-                console.log(e);
-                });
         },
 
         async getFiltered() {
@@ -252,9 +237,6 @@ export default {
                 .then(response => {
                 this.tickets = response.data;
                 })
-                .catch(e => {
-                console.log(e);
-                });
         },
 
         examine(ticketId) {

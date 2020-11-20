@@ -426,25 +426,16 @@ export default {
             .then(response => {
             this.availablePatients = response.data;
             })
-            .catch(e => {
-            console.log(e);
-            });
 
         DoctorsService.getAll()
             .then(response => {
             this.availableDoctors = response.data;
             })
-            .catch(e => {
-            console.log(e);
-            });
 
         HealthConcernsService.getAll()
             .then(response => {
             this.concerns = response.data;
             })
-            .catch(e => {
-            console.log(e);
-            });
     },
 
     methods: {
@@ -461,7 +452,6 @@ export default {
 
     redirectToPatientProfile(userId, role) {
         this.$router.push({ name: 'profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }});
-        // this.$router.go();
     },
 
       async getFiltered() {
@@ -479,9 +469,6 @@ export default {
           .then(response => {
             this.concerns = response.data;
           })
-          .catch(e => {
-            console.log(e);
-          });
       },
 
         getState(rawState) {
@@ -528,9 +515,6 @@ export default {
                     .then(response => {
                     this.concerns = response.data;
                     })
-                    .catch(e => {
-                    console.log(e);
-                    });
             })
             .catch(e => {
                 NotificationsUtils.failPopup(e, this.$vs);
@@ -567,10 +551,6 @@ export default {
       position: absolute;
       right: 10px;
       top: 0;
-    }
-
-    .concern__description {
-      height: 100px;
     }
 
     .redirect__profile:hover {
