@@ -172,16 +172,16 @@ export default {
       patient: {},
   },
 
-  created() {
-    HealthConcernsService.getAllByPatient(this.patient.id)
-        .then(response => {
-            this.healthConcerns = response.data;
-        })
+  async created() {
+      HealthConcernsService.getAllByPatient(this.patient.id)
+          .then(response => {
+              this.healthConcerns = response.data;
+          })
 
-    DoctorsService.getAll()
-            .then(response => {
-            this.availableDoctors = response.data;
-            })
+      DoctorsService.getAll()
+              .then(response => {
+              this.availableDoctors = response.data;
+              })
   },
 
   methods: {
@@ -211,7 +211,7 @@ export default {
           this.newDoc = concern.doctor.id;
       },
 
-      finishReassign() {
+      async finishReassign() {
           let newConcern = {...this.toReassign}
           newConcern.doctor = this.newDoc;
           newConcern.patient = this.toReassign.patient.id;

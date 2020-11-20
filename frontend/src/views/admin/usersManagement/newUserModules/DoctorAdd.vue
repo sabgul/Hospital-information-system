@@ -188,7 +188,7 @@ export default {
     },
 
     methods: {
-        createDoctor() {
+        async createDoctor() {
             let data = {
                 name: this.newDoctor.name,
                 gender: this.newDoctor.gender,

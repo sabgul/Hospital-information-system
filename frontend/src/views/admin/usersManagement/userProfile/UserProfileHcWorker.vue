@@ -75,7 +75,7 @@ export default {
     worker: {},
   },
 
-  created() {
+  async created() {
       ExaminationActionsService.getAllByWorker(this.worker.id)
         .then(response => {
             this.supervised_actions = response.data;

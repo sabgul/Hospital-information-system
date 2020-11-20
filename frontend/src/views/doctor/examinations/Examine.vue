@@ -207,7 +207,7 @@ export default {
             this.activeActionAdd = true;
         },
 
-        addActionFinal() {
+        async addActionFinal() {
             ExaminationActionsService.get(this.actionToAdd)
                 .then(response => {
                     this.chosenActions.push({ actionData: response.data, cover: true });

@@ -219,7 +219,7 @@ export default {
             this.activeActionAdd = true;
         },
 
-        addActionFinal() {
+        async addActionFinal() {
             ExaminationActionsService.get(this.actionToAdd)
                 .then(response => {
                     this.chosenActions.push(response.data);
@@ -238,7 +238,7 @@ export default {
           this.chosenActions.splice(index, 1);
         },
 
-        overpayQuery(name) {
+        async overpayQuery(name) {
             const newRequest = {
                 examination: 1,
                 examination_action: name,

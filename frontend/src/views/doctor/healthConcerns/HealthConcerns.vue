@@ -501,7 +501,7 @@ export default {
             this.newDoc = concern.doctor.id;
         },
 
-        finishReassign() {
+        async finishReassign() {
             let newConcern = {...this.toReassign}
             newConcern.doctor = this.newDoc;
             newConcern.patient = this.toReassign.patient.id;

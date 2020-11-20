@@ -292,7 +292,7 @@ export default {
               .then(response => {
                   this.users = response.data;
               })
-      },
+        },
 
         async changeUserActivity(user) {
             let newUserData = {...user.userData};
