@@ -186,7 +186,7 @@ export default {
     },
 
     methods: {
-        createWorker() {
+        async createWorker() {
             let data = {
                 name: this.newWorker.name,
                 gender: this.newWorker.gender,

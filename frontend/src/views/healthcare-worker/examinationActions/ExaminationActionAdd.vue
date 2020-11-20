@@ -115,9 +115,6 @@ export default {
             .then(response => {
             this.availableWorkers = response.data;
             })
-            .catch(e => {
-            console.log(e);
-            });
     },
     
     methods: {
@@ -142,14 +139,6 @@ export default {
 </script>
 
 <style scoped>
-    .background__img {
-        width: 30%;
-        position: absolute;
-        right: 50px;
-        bottom: 50px;
-        z-index: 0;
-    }
-
     .switch {
         width: 80px;
         margin-left: 6px;

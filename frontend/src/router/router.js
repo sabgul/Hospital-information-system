@@ -17,17 +17,6 @@ export default new Router({
       path: '/patients',
       name: 'patients',
       component: () => import('@/views/doctor/patientsOverview/PatientsOverview'),
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/doctors',
-      name: 'doctors',
-      component: () => import('@/views/admin/doctorsOverview/DoctorsOverview'),
-      meta: {
-        requiresAuth: true
-      }
     },
     // // //
 
@@ -37,14 +26,11 @@ export default new Router({
       path: '/my-health-concerns',
       name: 'HealthConcerns',
       component: () => import('@/views/patient/healthConcernsOverview/HealthConcernsOverview'),
-      meta: {
-        requiresAuth: true
-      }
     },
     // // //
     
 
-   // Patients management modules
+    // Patients management modules
     {
       path: '/patient-add',
       name: 'patientAdd',
@@ -131,7 +117,6 @@ export default new Router({
       name: 'healthcareWorkerAdd',
       component: () => import('@/views/admin/usersManagement/newUserModules/HealthcareWorkerAdd'),
     },
-
     // // //
 
     // Edit profile

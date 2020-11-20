@@ -31,14 +31,11 @@ export default {
     doctor: {},
   },
 
-  created() {
+  async created() {
       PatientsService.getAllByDoctor(this.doctor.id)
           .then(response => {
               this.assignedPatients = response.data;
           })
-          .catch(e => {
-              console.log(e);
-          });
   }
 }
 </script>

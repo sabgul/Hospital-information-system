@@ -1,20 +1,12 @@
 <template>
-  <div class="center examplex">
-    <vs-navbar 
+  <div>
+    <vs-navbar
       center-collapsed
-      class="top--navbar"
+      class="top__navbar"
     >
-      <template #left>
-        <img 
-          src="/logo2.png" 
-          alt=""
-        />
-      </template>
-
       <template #right>
         <vs-button 
           floating 
-          gradient
           @click="setAdminLoginActive()"
         >
           Administrator login
@@ -48,7 +40,8 @@ export default {
 </script>
 
 <style scoped>
-    .top--navbar {
+    .top__navbar {
         padding: 2em;
+        background-color: #fbfbfb;
     }
 </style>

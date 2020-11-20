@@ -260,17 +260,11 @@ export default {
             .then(response => {
                 this.actions = response.data;
             })
-            .catch(e => {
-                console.log(e);
-            });
 
         HealthcareWorkersService.getAll()
             .then(response => {
                 this.availableWorkers = response.data;
             })
-            .catch(e => {
-                console.log(e);
-            });
     },
     
     methods: {
@@ -293,9 +287,6 @@ export default {
             .then(response => {
                 this.actions = response.data;
             })
-            .catch(e => {
-                console.log(e);
-            });
         },
 
         deleteAction(name) {
@@ -340,9 +331,6 @@ export default {
             .then(response => {
                 console.log(response);
             })
-            .catch(e => {
-                console.log(e);
-            });  
 
             if(this.newNameConst !== this.toEdit.name) {
                 ExaminationActionsService.delete(this.newNameConst)
@@ -353,9 +341,6 @@ export default {
                     .then(response => {
                         this.actions = response.data;
                     })
-                    .catch(e => {
-                        console.log(e);
-                    });
                 })
                 .catch(e => {
                     console.log(e);
@@ -366,9 +351,6 @@ export default {
             .then(response => {
                 this.actions = response.data;
             })
-            .catch(e => {
-                console.log(e);
-            });
 
             this.activeEdit = false;
         }

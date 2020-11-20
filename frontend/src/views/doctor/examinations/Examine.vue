@@ -192,9 +192,6 @@ export default {
             .then(response => {
             this.availableActions = response.data;
             })
-            .catch(e => {
-            console.log(e);
-            });
 
         const date = new Date();
         let day = date.getDate();
@@ -210,7 +207,7 @@ export default {
             this.activeActionAdd = true;
         },
 
-        addActionFinal() {
+        async addActionFinal() {
             ExaminationActionsService.get(this.actionToAdd)
                 .then(response => {
                     this.chosenActions.push({ actionData: response.data, cover: true });
@@ -291,10 +288,10 @@ export default {
                   TransactionRequestsService.create(newRequest)
                     .then(response => {
                           console.log(response);
-                      })
-                      .catch(e => {
-                          NotificationsUtils.failPopup(e, this.$vs);
-                      });
+                    })
+                    .catch(e => {
+                        NotificationsUtils.failPopup(e, this.$vs);
+                    });
               }
         });
         }

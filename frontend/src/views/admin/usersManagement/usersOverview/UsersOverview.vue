@@ -172,7 +172,7 @@
                                         </template>
                                     </vs-tooltip>
 
-                                    <vs-tooltip>
+                                    <vs-tooltip v-if="user.role !== 'Doctor'">
                                         <vs-button danger icon @click="deleteUserDialog(user)">
                                             <box-icon
                                                 name='trash'
@@ -263,25 +263,16 @@ export default {
             .then(response => {
                 response.data.forEach(patient => this.users.push({userData: patient, role: 'Patient'}));
             })
-            .catch(e => {
-                console.log(e);
-            });
 
             DoctorsService.getAll()
             .then(response => {
                 response.data.forEach(doctor => this.users.push({userData: doctor, role: 'Doctor'}));
             })
-            .catch(e => {
-                console.log(e);
-            });
 
             HealthcareWorkersService.getAll()
             .then(response => {
                 response.data.forEach(worker => this.users.push({userData: worker, role: 'Health insurance worker'}));
             })
-            .catch(e => {
-                console.log(e);
-            });
         },
 
         getEmailContact(fetchedEmail) {
@@ -301,7 +292,7 @@ export default {
               .then(response => {
                   this.users = response.data;
               })
-      },
+        },
 
         async changeUserActivity(user) {
             let newUserData = {...user.userData};
@@ -312,10 +303,9 @@ export default {
                     .then(response => {
                     console.log(response);
                     NotificationsUtils.successPopup('User activity successfully changed.', this.$vs);
+                    this.getAllUsers();
+                    this.$forceUpdate();
                 })
-                    .catch(e => {
-                    console.log(e);
-                });
             }
 
             if(user.role === 'Health insurance worker') {
@@ -324,9 +314,6 @@ export default {
                     console.log(response);
                     NotificationsUtils.successPopup('User activity successfully changed.', this.$vs);
                 })
-                    .catch(e => {
-                    console.log(e);
-                });
             }
 
             if(user.role === 'Patient') {
@@ -335,9 +322,6 @@ export default {
                     console.log(response);
                     NotificationsUtils.successPopup('User activity successfully changed.', this.$vs);
                 })
-                .catch(e => {
-                    console.log(e);
-                });
             }
         },
 
@@ -356,11 +340,8 @@ export default {
                     this.activeDelete = false;
                     this.$forceUpdate();
                 })
-                .catch(e => {
-                    console.log(e);
-                });
           }
-          console.log(this.userToDelete.role);
+
           if(this.userToDelete.role === 'Health insurance worker') {
             HealthcareWorkersService.delete(this.userToDelete.userData.id)
                 .then(response => {
@@ -370,9 +351,6 @@ export default {
                     this.activeDelete = false;
                     this.$forceUpdate();
                 })
-                .catch(e => {
-                    console.log(e);
-                });
           }
         }
     },

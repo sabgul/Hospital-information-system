@@ -112,10 +112,6 @@ export default {
         role: String,
     },
 
-    components: {
-
-    },
-
     data:() => ({
       user: {},
       newUserData: {},
@@ -127,9 +123,6 @@ export default {
             .then(response => {
             this.doctors = response.data;
             })
-            .catch(e => {
-            console.log(e);
-            });
     },
 
     async created() {
@@ -139,9 +132,6 @@ export default {
               this.user = response.data;
               this.newUserData = {...this.user};
           })
-          .catch(e => {
-              console.log(e);
-          });
       }
 
       if(this.role === 'doctor') {
@@ -150,9 +140,6 @@ export default {
               this.user = response.data;
               this.newUserData = {...this.user};
           })
-          .catch(e => {
-              console.log(e);
-          });
       }
 
       if(this.role === 'health-insurance-worker') {
@@ -161,9 +148,6 @@ export default {
               this.user = response.data;
               this.newUserData = {...this.user};
           })
-          .catch(e => {
-              console.log(e);
-          });
       }
     },
 
@@ -178,7 +162,7 @@ export default {
             const day = date.slice(8, 10);
             const month = date.slice(5, 7);
             const year = date.slice(0, 4);
-          console.log( year + '-' + month + '-' + day)
+
             return year + '-' + month + '-' + day
         },
 
@@ -242,48 +226,10 @@ export default {
         fill: #fbfbfb;
     }
 
-    .wrapper {
-        display: flex;
-        padding-top: 2em;
-    }
-
-    .left__filter__row {
-        width: 200px;
-        margin-top: auto;
-        margin-bottom: 1em;
-    }
-
-    .right__filter__row {
-        padding-left: 2em;
-        flex-grow: 1;
-        margin-top: auto;
-        margin-bottom: 1em;
-    }
-
-    .third__filter__row {
-        padding-left: 0em;
-        flex-grow: 2;
-        margin-top: auto;
-        margin-bottom: 1em;
-    }
-
-    .filter__submit {
-        margin-left: auto;
-        order: 3;
-        margin-bottom: 1em;
-        margin-right: 1em;
-    }
-
     .background__img {
       position: absolute;
       right: 0;
       bottom: 0;
       width: 35%;
-    }
-
-    @media only screen and (max-width: 1200px) {
-        .user__pic {
-            display: none;
-        }
     }
 </style>

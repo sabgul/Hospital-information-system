@@ -99,9 +99,6 @@ export default {
             .then(response => {
                 this.user = response.data
             })
-            .catch(e => {
-                console.log(e);
-            });
         }
 
         if(this.role === 'doctor') {
@@ -109,9 +106,6 @@ export default {
             .then(response => {
                 this.user = response.data
             })
-            .catch(e => {
-                console.log(e);
-            });
         }
 
         if(this.role === 'health-insurance-worker') {
@@ -119,9 +113,6 @@ export default {
             .then(response => {
                 this.user = response.data
             })
-            .catch(e => {
-                console.log(e);
-            });
         }
     },
     
