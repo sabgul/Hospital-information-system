@@ -1,8 +1,17 @@
 from django.urls import path
 from rest_framework import routers
-from .views import PatientsViewSet, DoctorsViewSet, HealthcareWorkerViewSet, HealthConcernViewSet, DoctorReportViewSet, ExaminationRequestViewSet, ExaminationActionViewSet, ExaminationViewSet, TransactionRequestViewSet
-
-from .views import CreateUserAPIView
+from .views import (
+    DoctorsViewSet,
+    DoctorReportViewSet,
+    ExaminationViewSet,
+    ExaminationActionViewSet,
+    ExaminationRequestViewSet,
+    HealthcareWorkerViewSet,
+    HealthConcernViewSet,
+    PatientsViewSet,
+    TransactionRequestViewSet,
+    UserViewSet,
+)
 
 router = routers.DefaultRouter()
 router.register('patients', PatientsViewSet)
@@ -14,6 +23,6 @@ router.register('examination-requests', ExaminationRequestViewSet)
 router.register('examination-actions', ExaminationActionViewSet)
 router.register('examinations', ExaminationViewSet)
 router.register('transaction-requests', TransactionRequestViewSet)
-# router.register('register', CreateUserAPIView)  # should be a viewset - how (DRF read up)
+router.register('user', UserViewSet)  # should be a viewset - how (DRF read up)
 
 urlpatterns = router.urls

@@ -1,12 +1,12 @@
-import axios_instance from "@/http-common";
+import http from "@/http-common";
 
 class ExaminationActionsService {
   getAll() {
-    return axios_instance.get("api/examination-actions/");
+    return http.get("examination-actions/");
   }
 
   getAllByWorker(workerId) {
-    return axios_instance.get("api/examination-actions/", {
+    return http.get("examination-actions/", {
       'params': {
         action_manager: workerId,
       }
@@ -18,7 +18,7 @@ class ExaminationActionsService {
     const is_action_paid = filter.is_action_paid === 'true' ? 'true' : 'false';
     const action_manager = filter.action_manager;
 
-    return axios_instance.get("api/examination-actions/", {
+    return http.get("examination-actions/", {
       'params': {
         ...(is_action_paid_set ? { 'is_action_paid': is_action_paid } : {}),
         ...(action_manager !== -1 ? { 'action_manager': action_manager } : {}),
@@ -27,23 +27,23 @@ class ExaminationActionsService {
   }
   
   get(id) {
-    return axios_instance.get(`api/examination-actions/${id}/`);
+    return http.get(`examination-actions/${id}/`);
   }
 
   create(data) {
-    return axios_instance.post("api/examination-actions/", data);
+    return http.post("examination-actions/", data);
   }
 
   update(id, data) {
-    return axios_instance.put(`api/examination-actions/${id}/`, data);
+    return http.put(`examination-actions/${id}/`, data);
   }
 
   delete(id) {
-    return axios_instance.delete(`api/examination-actions/${id}/`);
+    return http.delete(`examination-actions/${id}/`);
   }
 
   deleteAll() {
-    return axios_instance.delete(`api/examination-actions`);
+    return http.delete(`examination-actions`);
   }
 }
 

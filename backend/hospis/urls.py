@@ -6,8 +6,9 @@ from rest_framework_simplejwt.views import (
 
 from .settings import BASE_DIR
 
-from hospitalis.views import MyObtainTokenPairView, CreateUserAPIView, UserRetrieveUpdateAPIView
-
+from hospitalis.views import (
+    MyObtainTokenPairView,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -19,7 +20,4 @@ urlpatterns = [
     path('api/', include('hospitalis.urls')),
     # also works as a login page, currently unused
     path('api-auth/', include('rest_framework.urls')),
-
-    path('user-create/', CreateUserAPIView.as_view()),
-    path('user/', UserRetrieveUpdateAPIView.as_view()),
 ]

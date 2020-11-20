@@ -1,28 +1,28 @@
-import axios_instance from "@/http-common";
+import http from "@/http-common";
 
 class TransactionRequestsService {
   getAll() {
-    return axios_instance.get("api/transaction-requests/");
+    return http.get("transaction-requests/");
   }
 
   get(id) {
-    return axios_instance.get(`api/transaction-requests/${id}/`);
+    return http.get(`transaction-requests/${id}/`);
   }
 
   create(data) {
-    return axios_instance.post("api/transaction-requests/", data);
+    return http.post("transaction-requests/", data);
   }
 
   update(id, data) {
-    return axios_instance.put(`api/transaction-requests/${id}/`, data);
+    return http.put(`transaction-requests/${id}/`, data);
   }
 
   delete(id) {
-    return axios_instance.delete(`api/transaction-requests/${id}/`);
+    return http.delete(`transaction-requests/${id}/`);
   }
 
   deleteAll() {
-    return axios_instance.delete(`api/transaction-requests`);
+    return http.delete(`transaction-requests`);
   }
 }
 

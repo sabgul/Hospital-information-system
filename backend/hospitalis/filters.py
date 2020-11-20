@@ -1,6 +1,12 @@
 import django_filters
 
-from .models import ExaminationAction, Patient, HealthConcern, ExaminationRequest, Examination, DoctorReport
+from .models import (
+    ExaminationAction,
+    Patient,
+    HealthConcern,
+    ExaminationRequest,
+    Examination,
+    DoctorReport)
 
 
 class ExaminationActionFilter(django_filters.FilterSet):

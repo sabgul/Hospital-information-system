@@ -128,13 +128,13 @@ export default new Router({
     },
     // // //
     {
-      path: 'page-not-found',
+      path: '/page-not-found',
       name: 'pageNotFound',
       component: () => import('@/views/general/PageNotFound'),
     },
 
     {
-      path: '*',
+      path: '/*',
       name: 'pageNotFound',
       component: () => import('@/views/general/PageNotFound'),
     }

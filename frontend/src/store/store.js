@@ -15,6 +15,18 @@ export const store = new Vuex.Store({
             user: {}
         },
 
+        getters: {
+            // should be outside the store, as it might not yet exist when this is called
+            user_full_name() {
+                if (this.state.user) {
+                    return `${this.state.user.first_name} ${this.state.user.last_name}`
+                }
+                else {
+                    return "Name Surname"
+                }
+            },
+        },
+
         mutations: {
             SET_ADMIN_LOGIN(state) {
                 state.adminLoginActive = !state.adminLoginActive;
@@ -60,18 +72,17 @@ export const store = new Vuex.Store({
                     console.log('invalid login role')
 
                 return new Promise((resolve, reject) => {
-                    axios_instance.post('api/token/', {
+                    axios_instance.post('/token/', {
                         email: credentials.email,
                         password: credentials.password,
                         role: login_role
                     })
                         .then(response => {
-                            console.log('retrieveToken().then()', response);
                             context.commit('SET_ACCESS_TOKEN', response.data.access)
                             context.commit('SET_REFRESH_TOKEN', response.data.refresh)
 
                             // if token acquired, get user data
-                            axios_instance.get('/user/')
+                            axios_instance.get('/user/me/')
                                 .then(response => {
                                     context.commit('SET_USER', response.data)
                                 })
@@ -87,7 +98,7 @@ export const store = new Vuex.Store({
             },
             registerUser(context, data) {  // not used yet
                 return new Promise((resolve, reject) => {
-                    axios_instance.post('api/user/', {
+                    axios_instance.post('/user/', {
                         name: data.name,
                         email: data.email,
                         username: data.username,
@@ -105,7 +116,7 @@ export const store = new Vuex.Store({
             logoutUser(context) {
                 if (context.getters.loggedIn) {
                     return new Promise((resolve, ) => {  // removed second param 'reject'
-                        axios_instance.post('/api/token/logout/')
+                        axios_instance.post('/token/logout/')
                             .then(() => {
                                 localStorage.removeItem('access_token')
                                 localStorage.removeItem('refresh_token')
@@ -125,7 +136,7 @@ export const store = new Vuex.Store({
 
             refreshToken(context) {
                 return new Promise((resolve, reject) => {
-                    axios_instance.post('/api/token/refresh/', {
+                    axios_instance.post('/token/refresh/', {
                         refresh: context.state.refreshToken
                     }) // send the stored refresh token to the backend API
                         .then(response => { // if API sends back new access and refresh token update the store

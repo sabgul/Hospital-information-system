@@ -1,73 +1,87 @@
-from rest_framework.viewsets import ModelViewSet
 import django_filters
-from rest_framework.permissions import IsAuthenticated, AllowAny
 
-from .models import Patient, Doctor, HealthcareWorker, HealthConcern, DoctorReport, DoctorReportCommentary, \
-    ExaminationRequest, ExaminationAction, Examination, TransactionRequest
-from .serializers import PatientSerializer, DoctorSerializer, HealthcareWorkerSerializer, HealthConcernSerializer, \
-    DoctorReportSerializer, DoctorReportCommentarySerializer, ExaminationRequestSerializer, ExaminationActionSerializer, \
-    ExaminationSerializer, TransactionRequestSerializer, MyTokenObtainPairSerializer, UserSerializer
-from .filters import ExaminationActionFilter, PatientsFilter, HealthConcernFilter
+from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
+
+from rest_framework import filters
+from rest_framework import status
+from rest_framework.decorators import action, permission_classes
+from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.permissions import IsAuthenticated, AllowAny, BasePermission
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from rest_framework.views import APIView
-from rest_framework.generics import RetrieveUpdateAPIView
+from .models import (
+    Doctor,
+    DoctorReport,
+    Examination,
+    ExaminationRequest,
+    ExaminationAction,
+    HealthConcern,
+    HealthcareWorker,
+    Patient,
+    TransactionRequest,
+    User,
+)
 
-from rest_framework.response import Response
-from rest_framework import status
+from .serializers import (
+    DoctorSerializer,
+    DoctorReportSerializer,
+    ExaminationSerializer,
+    ExaminationActionSerializer,
+    ExaminationRequestSerializer,
+    HealthcareWorkerSerializer,
+    HealthConcernSerializer,
+    MyTokenObtainPairSerializer,
+    PatientSerializer,
+    TransactionRequestSerializer,
+    UserSerializer,
+    UserRegSerializer,
+)
 
-""" POST testing
-{
-    "email": "gah@ma.il",
-    "password": "googlegogol"
-
-}
-
-{
-    "email": "ja@ja.ja",
-    "password": "heslojasam"
-}
-"""
+from .filters import (
+    DoctorReportFilter,
+    ExaminationFilter,
+    ExaminationActionFilter,
+    ExaminationRequestFilter,
+    PatientsFilter,
+    HealthConcernFilter,
+)
 
 
-class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
-    # Allow only authenticated users to access this url
-    permission_classes = (IsAuthenticated,)
+class IsCreationOrIsAuthenticated(BasePermission):
+    def has_permission(self, request, view):
+        # anonymous user can create an account
+        # logged-in user can do anything
+        return view.action == 'create' or IsAuthenticated
+
+
+class UserViewSet(ModelViewSet):
     serializer_class = UserSerializer
+    queryset = User.objects.all()
+    permission_classes = [IsCreationOrIsAuthenticated]
 
-    def get(self, request, *args, **kwargs):
-        # serializer to handle turning our `User` object into something that
-        # can be JSONified and sent to the client.
-        serializer = self.serializer_class(request.user)
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def put(self, request, *args, **kwargs):
-        serializer_data = request.data.get('user', {})
-
-        serializer = UserSerializer(
-            request.user, data=serializer_data, partial=True
-        )
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-class CreateUserAPIView(APIView):
-    # Allow any user (authenticated or not) to access this url
-    permission_classes = (AllowAny,)
-
-    def post(self, request):
+    def create(self, request, *args, **kwargs):
         user = request.data
-        serializer = UserSerializer(data=user)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # different serializer used
+        reg_serializer = UserRegSerializer(data=user)
+        reg_serializer.is_valid(raise_exception=True)
+        reg_serializer.save()
+        return Response(reg_serializer.data, status=status.HTTP_201_CREATED)
+
+    # allows for GET /api/user/me/
+    @action(methods=['get'], detail=False)
+    def me(self, request, *args, **kwargs):
+        user = get_user_model()
+        self.object = get_object_or_404(user, pk=request.user.id)
+        serializer = self.get_serializer(self.object)
+        return Response(serializer.data)
 
 
-# obtain token that includes additional field
+# not a ViewSet
 class MyObtainTokenPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
     permission_classes = (AllowAny,)

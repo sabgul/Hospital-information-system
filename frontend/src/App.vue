@@ -236,6 +236,7 @@
               <vs-card type="5">
                   <template #title>
                       <h3>Name and Surname</h3>
+<!--                      {{ store.user_full_name() }}-->
                   </template>
 
                   <template #img>
@@ -287,6 +288,8 @@
 
 <script>
 import { useWindowSize } from 'vue-window-size';
+import { store } from '@/store/store';
+
 
 export default {
   name: 'App',
@@ -297,6 +300,7 @@ export default {
   data:() => ({
     active: 'home',
     activeSidebar: false,
+    store_copy: store
   }),
 
   setup() {

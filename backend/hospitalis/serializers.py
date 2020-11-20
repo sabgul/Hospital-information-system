@@ -1,23 +1,46 @@
-from rest_framework.serializers import ModelSerializer
 
-from .models import Patient, Doctor, HealthcareWorker, HealthConcern, DoctorReport, DoctorReportCommentary, \
-    ExaminationRequest, ExaminationAction, Examination, TransactionRequest
+from rest_framework.serializers import (ModelSerializer, ReadOnlyField)
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from rest_framework import serializers
-from .models import User
+from .models import (
+    Doctor,
+    DoctorReport,
+    Examination,
+    ExaminationAction,
+    ExaminationRequest,
+    HealthcareWorker,
+    HealthConcern,
+    Patient,
+    TransactionRequest,
+    User)
 
 
-class UserSerializer(serializers.ModelSerializer):
-    date_joined = serializers.ReadOnlyField()
+class UserRegSerializer(ModelSerializer):
+    class Meta(object):
+        model = User
+
+        fields = '__all__'
+        extra_kwargs = {'password': {'write_only': True}}
+
+
+class UserSerializer(ModelSerializer):
 
     class Meta(object):
         model = User
         fields = ('id', 'email', 'first_name', 'last_name',
-                  'doctor', 'patient', 'healthcare_worker',
-                  'date_joined', 'password')
+                  'doctor', 'patient', 'healthcareworker',
+                  # care, you can't see role fields in models.User
+                  # OneToOneFields reference User from role-classes, but the connection is both way
+                  # the referencing-class name becomes lowercase
+
+                  # 'date_joined'  # , ...
+                  )
         extra_kwargs = {'password': {'write_only': True}}
+
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        return response
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -25,13 +48,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super(MyTokenObtainPairSerializer, cls).get_token(user)
-
-        # added here => part of token (not part of response)
-        token['username'] = str(user)
-        token['is_doctor'] = 1 if user.doctor else 0
-        token['is_patient'] = 1 if user.patient else 0
-        token['is_healthcare_worker'] = 1 if user.healthcare_worker else 0
-
         return token
 
 
@@ -39,6 +55,12 @@ class DoctorSerializer(ModelSerializer):
     class Meta:
         model = Doctor
         fields = '__all__'
+
+    def to_representation(self, instance):
+        # not executed on GET ...:8000/api/doctors/
+        response = super().to_representation(instance)
+        response['user'] = UserSerializer(instance.user).data
+        return response
 
 
 class PatientSerializer(ModelSerializer):
