@@ -58,25 +58,8 @@ export const store = new Vuex.Store({
 
         actions: {
             loginUser(context, credentials) {
-                let login_role;
-
-                if (store.state.doctorLoginActive)
-                    login_role = 'patient'
-                else if (store.state.doctorLoginActive)
-                    login_role = 'doctor'
-                else if (store.state.doctorLoginActive)
-                    login_role = 'healthcare-worker'
-                else if (store.state.doctorLoginActive)
-                    login_role = 'admin'
-                else
-                    console.log('invalid login role')
-
                 return new Promise((resolve, reject) => {
-                    axios_instance.post('/token/', {
-                        email: credentials.email,
-                        password: credentials.password,
-                        role: login_role
-                    })
+                    axios_instance.post('/token/', credentials)
                         .then(response => {
                             context.commit('SET_ACCESS_TOKEN', response.data.access)
                             context.commit('SET_REFRESH_TOKEN', response.data.refresh)
@@ -91,8 +74,8 @@ export const store = new Vuex.Store({
                             resolve()
                         })
                         .catch(error => {
-                            console.log(error)
-                            reject(error)  // propagate back to login dialog?
+                            // propagate back to login dialog
+                            reject(error)
                         })
                 })
             },

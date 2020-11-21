@@ -20,7 +20,7 @@
 
           <template #icon>
             @
-<!--            <box-icon name='user'></box-icon>-->
+            <!--            <box-icon name='user'></box-icon>-->
           </template>
         </vs-input>
 
@@ -61,7 +61,11 @@
           Sign In
         </vs-button>
       </div>
-      <span v-if="invalid_credentials">Wrong credentials.</span>
+<!--      <span v-if="credentials_invalid">Wrong credentials</span>-->
+      <span v-if="response_code"><br>
+        Response code: {{ this.$data.response_code }} <br>
+        Response detail: {{ this.response_string }}
+      </span>
       <!--       </template>-->
 
     </form>
@@ -81,14 +85,16 @@ export default {
     hasVisiblePassword: false,
     email: '',
     password: '',
-    invalid_credentials: false,
+    credentials_invalid: false,
+    response_code: null,
+    response_string: null,
   }),
 
-computed: {
-        validEmail() {
-          return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.xxx)
-        }
-    },
+  computed: {
+    validEmail() {
+      return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.xxx)
+    }
+  },
 
   methods: {
     async loginDialogClosed() {
@@ -113,27 +119,46 @@ computed: {
       if (!this.email.length || !this.password.length) {
         return;
       }
+
+      let login_role;
+      if (this.$store.state.patientLoginActive)
+        login_role = 'patient'
+      else if (this.$store.state.doctorLoginActive)
+        login_role = 'doctor'
+      else if (this.$store.state.healthcareLoginActive)
+        login_role = 'healthcare-worker'
+      else if (this.$store.state.adminLoginActive)
+        login_role = 'admin'
+      else {
+        console.log('invalid login role')
+        return
+      }
+
+
+
       this.$store.dispatch('loginUser', {
         email: this.email,
-        password: this.password
+        password: this.password,
+        role: login_role,
       })
           .then(() => {
-            this.invalid_credentials = false
+            this.credentials_invalid = false
             this.$router.push('patients')
             this.loginDialogClosed()
           })
           .catch(err => {
             console.log(err)
-            this.invalid_credentials = true
+            this.credentials_invalid = true
+            this.$data.response_string = err.response.data.detail
+            this.$data.response_code = err.response.status
           })
     },
     register() {
       this.$store.dispatch('registerUser', {
         name: this.name,
         email: this.email,
-        // username: this.email,
         password: this.password,
-        confirm: this.confirm
+        // confirm: this.confirm  // manually verify matching passwords?
       })
     },
 
