@@ -66,9 +66,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(default=timezone.now)
     date_of_birth = models.DateField(max_length=8, default=datetime.date.today, blank=True)
 
-    # doctor = models.OneToOneField(Doctor, blank=True, null=True, on_delete=models.SET_NULL)
-    # patient = models.OneToOneField(Patient, blank=True, null=True, on_delete=models.SET_NULL)
-    # healthcare_worker = models.OneToOneField(HealthcareWorker, blank=True, null=True, on_delete=models.SET_NULL)
+    # Foreign keys:
+    # doctor
+    # patient
+    # healthcareworker
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
@@ -134,7 +135,7 @@ class HealthConcern(models.Model):
 
     class Meta:
         ordering = ['name']
-        # permission = [()]     TODO: permission group that can access this table will be specified here
+        # permission = [()]     TODO: permission group
 
 
 # Lekarska sprava
@@ -146,7 +147,7 @@ class DoctorReport(models.Model):
 
     class Meta:
         ordering = ['date_of_created']
-        # permission = [()]     TODO: permission group that can access this table will be specified here
+        # permission = [()]     TODO: permission group
 
 
 # Ziadost o lekarske vysetrenie
@@ -172,7 +173,7 @@ class ExaminationRequest(models.Model):
 
     class Meta:
         ordering = ['created_timestamp']
-        # permission = [()]     TODO: permission group that can access this table will be specified here
+        # permission = [()]     TODO: permission group
 
 
 # Ukon vramci lekarskeho vysetrenia
@@ -189,7 +190,7 @@ class ExaminationAction(models.Model):
 
     class Meta:
         ordering = ['name']
-        # permission = [()]     TODO: permission group that can access this table will be specified here
+        # permission = [()]     TODO: permission group
 
 
 # Lekarske vysetrenie
@@ -203,7 +204,7 @@ class Examination(models.Model):
 
     class Meta:
         ordering = ['date_of_examination']
-        # permission = [()]     TODO: permission group that can access this table will be specified here
+        # permission = [()]     TODO: permission group
 
 
 # Ziadost o zaplatenie jedneho ukonu vramci lekarskeho vysetrenia
@@ -227,4 +228,4 @@ class TransactionRequest(models.Model):
     )
 
     # class Meta:
-    # permission = [()]     TODO: permission group that can access this table will be specified here
+    # permission = [()]     TODO: permission group

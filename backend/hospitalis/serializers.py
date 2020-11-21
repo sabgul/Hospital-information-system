@@ -17,7 +17,7 @@ from .models import (
     User)
 
 
-# registration only
+# registration only (POST)
 class UserRegSerializer(ModelSerializer):
     class Meta(object):
         model = User
@@ -29,14 +29,14 @@ class UserRegSerializer(ModelSerializer):
 class UserSerializer(ModelSerializer):
     class Meta(object):
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name',
+        fields = ['id', 'email', 'first_name', 'last_name',
                   'doctor', 'patient', 'healthcareworker',
                   # care, you can't see role fields in models.User
                   # OneToOneFields reference User from role-classes, but the connection is both way
                   # the referencing-class name becomes lowercase
 
                   # 'date_joined'  # , ...
-                  )
+                  ]
         extra_kwargs = {'password': {'write_only': True}}
 
     def to_representation(self, instance):
@@ -88,6 +88,13 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             update_last_login(None, self.user)
 
         return data
+
+
+class DoctorRegSerializer(ModelSerializer):
+    class Meta:
+        model = Doctor
+        # fields = '__all__'
+        fields = ['specializes_in', 'user']
 
 
 class DoctorSerializer(ModelSerializer):

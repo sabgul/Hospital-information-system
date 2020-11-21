@@ -29,6 +29,7 @@ from .models import (
 
 from .serializers import (
     DoctorSerializer,
+    DoctorRegSerializer,
     DoctorReportSerializer,
     ExaminationSerializer,
     ExaminationActionSerializer,
@@ -54,9 +55,9 @@ from .filters import (
 
 class IsCreationOrIsAuthenticated(BasePermission):
     def has_permission(self, request, view):
-        # anonymous user can create an account
-        # logged-in user can do anything
-        return view.action == 'create' or IsAuthenticated
+        # anonymous user can create an account (POST --> view action 'create')
+        # for other actions, they must be logged in
+        return view.action == 'create' or request.user.is_authenticated
 
 
 class UserViewSet(ModelViewSet):
@@ -65,20 +66,19 @@ class UserViewSet(ModelViewSet):
     permission_classes = [IsCreationOrIsAuthenticated]
 
     def create(self, request, *args, **kwargs):
-        user = request.data
         # different serializer used
-        reg_serializer = UserRegSerializer(data=user)
-        reg_serializer.is_valid(raise_exception=True)
-        reg_serializer.save()  # todo use returned instance to create role-users
-        return Response(reg_serializer.data, status=status.HTTP_201_CREATED)
+        user_reg = UserRegSerializer(data=request.data)
+        user_reg.is_valid(raise_exception=True)
+        user_reg.save()
+        return Response(user_reg.data, status=status.HTTP_201_CREATED)
 
     # allows for GET /api/user/me/
     @action(methods=['get'], detail=False)
     def me(self, request, *args, **kwargs):
         user = get_user_model()
         self.object = get_object_or_404(user, pk=request.user.id)
-        serializer = self.get_serializer(self.object)
-        return Response(serializer.data)
+        retrieve_me = self.get_serializer(self.object)
+        return Response(retrieve_me.data)
 
 
 # not a ViewSet
@@ -91,19 +91,39 @@ class PatientsViewSet(ModelViewSet):
     queryset = Patient.objects.all()
     serializer_class = PatientSerializer
     filter_class = PatientsFilter
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsCreationOrIsAuthenticated]
 
 
 class DoctorsViewSet(ModelViewSet):
     queryset = Doctor.objects.all()
     serializer_class = DoctorSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsCreationOrIsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        # prevent FE from setting any role info
+        request.data['doctor'] = None
+        request.data['patient'] = None
+        request.data['healthcareworker'] = None
+
+        # different serializer used
+        reg_user = UserRegSerializer(data=request.data)
+
+        reg_user.is_valid(raise_exception=True)
+        user = reg_user.save()
+        request.data['user'] = user.id
+
+        reg_doctor = DoctorRegSerializer(data=request.data)
+        reg_doctor.is_valid(raise_exception=True)
+        doctor = reg_doctor.save()
+
+        user.doctor = doctor
+        return Response(reg_doctor.data, status=status.HTTP_201_CREATED)
 
 
 class HealthcareWorkerViewSet(ModelViewSet):
     queryset = HealthcareWorker.objects.all()
     serializer_class = HealthcareWorkerSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsCreationOrIsAuthenticated]
 
 
 class HealthConcernViewSet(ModelViewSet):
