@@ -1,7 +1,8 @@
-
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.serializers import (ModelSerializer, ReadOnlyField)
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.settings import api_settings
 
 from .models import (
     Doctor,
@@ -16,6 +17,7 @@ from .models import (
     User)
 
 
+# registration only
 class UserRegSerializer(ModelSerializer):
     class Meta(object):
         model = User
@@ -25,7 +27,6 @@ class UserRegSerializer(ModelSerializer):
 
 
 class UserSerializer(ModelSerializer):
-
     class Meta(object):
         model = User
         fields = ('id', 'email', 'first_name', 'last_name',
@@ -43,12 +44,50 @@ class UserSerializer(ModelSerializer):
         return response
 
 
+# GET only
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-
     @classmethod
     def get_token(cls, user):
         token = super(MyTokenObtainPairSerializer, cls).get_token(user)
         return token
+
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        try:
+            if 'role' in self.initial_data:
+                role = self.initial_data['role']
+                if role == 'patient':
+                    if self.user.patient is None:
+                        raise AuthenticationFailed()
+
+                elif role == 'doctor':
+                    if self.user.doctor is None:
+                        raise AuthenticationFailed()
+
+                elif role == 'healthcare-worker':
+                    if self.user.healthcareworker is None:
+                        raise AuthenticationFailed()
+
+                elif role == 'admin':
+                    if self.user.is_superuser is None:
+                        raise AuthenticationFailed()
+
+                else:
+                    raise AuthenticationFailed(f'Role \'{role}\' does not exist')
+
+        except (AuthenticationFailed, KeyError, AttributeError) as exc:
+            raise AuthenticationFailed('Invalid role: ' + str(exc))
+
+        refresh = self.get_token(self.user)
+
+        data['refresh'] = str(refresh)
+        data['access'] = str(refresh.access_token)
+
+        if api_settings.UPDATE_LAST_LOGIN:
+            update_last_login(None, self.user)
+
+        return data
 
 
 class DoctorSerializer(ModelSerializer):
@@ -70,6 +109,7 @@ class PatientSerializer(ModelSerializer):
 
     def to_representation(self, instance):
         response = super().to_representation(instance)
+        response['user'] = UserSerializer(instance.user).data
         response['mainDoctor'] = DoctorSerializer(instance.mainDoctor).data
         return response
 
@@ -78,6 +118,12 @@ class HealthcareWorkerSerializer(ModelSerializer):
     class Meta:
         model = HealthcareWorker
         fields = '__all__'
+
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        response['user'] = UserSerializer(instance.user).data
+
+        return response
 
 
 class HealthConcernSerializer(ModelSerializer):
@@ -124,7 +170,6 @@ class ExaminationActionSerializer(ModelSerializer):
         model = ExaminationAction
         fields = '__all__'
 
-    # TODO: This is proper way for nested objects in GET method. Rework everywhere else 
     def to_representation(self, instance):
         response = super().to_representation(instance)
         response['action_manager'] = HealthcareWorkerSerializer(instance.action_manager).data

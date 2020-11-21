@@ -69,7 +69,7 @@ class UserViewSet(ModelViewSet):
         # different serializer used
         reg_serializer = UserRegSerializer(data=user)
         reg_serializer.is_valid(raise_exception=True)
-        reg_serializer.save()
+        reg_serializer.save()  # todo use returned instance to create role-users
         return Response(reg_serializer.data, status=status.HTTP_201_CREATED)
 
     # allows for GET /api/user/me/
