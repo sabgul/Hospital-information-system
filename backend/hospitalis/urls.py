@@ -23,6 +23,6 @@ router.register('examination-requests', ExaminationRequestViewSet)
 router.register('examination-actions', ExaminationActionViewSet)
 router.register('examinations', ExaminationViewSet)
 router.register('transaction-requests', TransactionRequestViewSet)
-router.register('user', UserViewSet)  # should be a viewset - how (DRF read up)
+router.register('users', UserViewSet)  # should be a viewset - how (DRF read up)
 
 urlpatterns = router.urls

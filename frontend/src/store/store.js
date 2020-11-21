@@ -65,7 +65,7 @@ export const store = new Vuex.Store({
                             context.commit('SET_REFRESH_TOKEN', response.data.refresh)
 
                             // if token acquired, get user data
-                            axios_instance.get('/user/me/')
+                            axios_instance.get('/users/me/')
                                 .then(response => {
                                     context.commit('SET_USER', response.data)
                                 })
@@ -81,7 +81,7 @@ export const store = new Vuex.Store({
             },
             registerUser(context, data) {  // not used yet
                 return new Promise((resolve, reject) => {
-                    axios_instance.post('/user/', {
+                    axios_instance.post('/users/', {
                         name: data.name,
                         email: data.email,
                         username: data.username,

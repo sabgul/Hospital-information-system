@@ -72,7 +72,7 @@ class UserViewSet(ModelViewSet):
         user_reg.save()
         return Response(user_reg.data, status=status.HTTP_201_CREATED)
 
-    # allows for GET /api/user/me/
+    # allows for GET /api/users/me/
     @action(methods=['get'], detail=False)
     def me(self, request, *args, **kwargs):
         user = get_user_model()
