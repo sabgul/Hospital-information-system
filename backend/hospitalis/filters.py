@@ -24,7 +24,7 @@ class ExaminationRequestFilter(django_filters.FilterSet):
 class PatientsFilter(django_filters.FilterSet):
     class Meta:
         model = Patient
-        fields = ['mainDoctor']
+        fields = ['main_doctor']
 
 
 class HealthConcernFilter(django_filters.FilterSet):

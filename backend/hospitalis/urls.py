@@ -14,6 +14,7 @@ from .views import (
 )
 
 router = routers.DefaultRouter()
+router.register('users', UserViewSet)
 router.register('patients', PatientsViewSet)
 router.register('doctors', DoctorsViewSet)
 router.register('healthcare-workers', HealthcareWorkerViewSet)
@@ -23,6 +24,5 @@ router.register('examination-requests', ExaminationRequestViewSet)
 router.register('examination-actions', ExaminationActionViewSet)
 router.register('examinations', ExaminationViewSet)
 router.register('transaction-requests', TransactionRequestViewSet)
-router.register('users', UserViewSet)  # should be a viewset - how (DRF read up)
 
 urlpatterns = router.urls

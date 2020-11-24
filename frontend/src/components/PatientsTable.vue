@@ -44,7 +44,7 @@
                     </vs-td>
 
                     <vs-td>
-                      <span @click="redirectToDoctorProfile(patient.mainDoctor.id, 'doctor')" class="redirect__profile">{{ patient.mainDoctor.name }}</span>
+                      <span @click="redirectToDoctorProfile(patient.main_doctor.id, 'doctor')" class="redirect__profile">{{ patient.main_doctor.name }}</span>
                     </vs-td>
                 </vs-tr>
             </template>

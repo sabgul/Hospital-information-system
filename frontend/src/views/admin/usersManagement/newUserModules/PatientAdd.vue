@@ -211,7 +211,7 @@ export default {
             let data = {
                 name: this.newPatient.name,
                 gender: this.newPatient.gender,
-                mainDoctor: this.newPatient.main_doctor_id,
+                main_doctor: this.newPatient.main_doctor_id,
                 date_of_birth: DateUtils.getDateForBackend(this.newPatient.date_of_birth),
                 email_field: this.newPatient.email_field,
                 phone_number: this.newPatient.phone_number

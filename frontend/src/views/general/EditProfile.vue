@@ -66,7 +66,7 @@
 
                   <vs-select
                       v-if="role === 'patient'"
-                      v-model="newUserData.mainDoctor"
+                      v-model="newUserData.main_doctor"
                       label="Main doctor"
                   >
 <!--                    TODO: DOES NOT WORK!-->

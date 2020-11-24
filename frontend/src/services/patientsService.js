@@ -8,7 +8,7 @@ class PatientsService {
   getAllByDoctor(doctorId) {
     return http.get("patients/", {
       'params': {
-        'mainDoctor': doctorId,
+        'main_doctor': doctorId,
       }
     })
   }

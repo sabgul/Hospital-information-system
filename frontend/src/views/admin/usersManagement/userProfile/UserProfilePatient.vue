@@ -6,10 +6,10 @@
         <b>Main doctor: </b>
 
         <span
-            @click="redirectToDocProfile(patient.mainDoctor.id, 'doctor')"
+            @click="redirectToDocProfile(patient.main_doctor.id, 'doctor')"
             class="redirect__profile"
         >
-            {{ patient.mainDoctor.name }}
+            {{ patient.main_doctor.name }}
         </span>
     </h5>
 

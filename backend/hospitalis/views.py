@@ -35,9 +35,11 @@ from .serializers import (
     ExaminationActionSerializer,
     ExaminationRequestSerializer,
     HealthcareWorkerSerializer,
+    HealthcareWorkerRegSerializer,
     HealthConcernSerializer,
     MyTokenObtainPairSerializer,
     PatientSerializer,
+    PatientRegSerializer,
     TransactionRequestSerializer,
     UserSerializer,
     UserRegSerializer,
@@ -93,6 +95,25 @@ class PatientsViewSet(ModelViewSet):
     filter_class = PatientsFilter
     permission_classes = [IsCreationOrIsAuthenticated]
 
+    def create(self, request, *args, **kwargs):
+        # prevent FE from setting any role info
+        request.data['doctor'] = None
+        request.data['patient'] = None
+        request.data['healthcareworker'] = None
+
+        reg_user = UserRegSerializer(data=request.data)
+
+        reg_user.is_valid(raise_exception=True)
+        user = reg_user.save()
+        request.data['user'] = user.id
+
+        reg_patient = PatientRegSerializer(data=request.data)
+        reg_patient.is_valid(raise_exception=True)
+        patient = reg_patient.save()
+
+        user.patient = patient
+        return Response(reg_patient.data, status=status.HTTP_201_CREATED)
+
 
 class DoctorsViewSet(ModelViewSet):
     queryset = Doctor.objects.all()
@@ -105,7 +126,6 @@ class DoctorsViewSet(ModelViewSet):
         request.data['patient'] = None
         request.data['healthcareworker'] = None
 
-        # different serializer used
         reg_user = UserRegSerializer(data=request.data)
 
         reg_user.is_valid(raise_exception=True)
@@ -124,6 +144,25 @@ class HealthcareWorkerViewSet(ModelViewSet):
     queryset = HealthcareWorker.objects.all()
     serializer_class = HealthcareWorkerSerializer
     permission_classes = [IsCreationOrIsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        # prevent FE from setting any role info
+        request.data['doctor'] = None
+        request.data['patient'] = None
+        request.data['healthcareworker'] = None
+
+        reg_user = UserRegSerializer(data=request.data)
+
+        reg_user.is_valid(raise_exception=True)
+        user = reg_user.save()
+        request.data['user'] = user.id
+
+        reg_healthcareworker = HealthcareWorkerRegSerializer(data=request.data)
+        reg_healthcareworker.is_valid(raise_exception=True)
+        healthcareworker = reg_healthcareworker.save()
+
+        user.healthcareworker = healthcareworker
+        return Response(reg_healthcareworker.data, status=status.HTTP_201_CREATED)
 
 
 class HealthConcernViewSet(ModelViewSet):

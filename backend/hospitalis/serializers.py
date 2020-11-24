@@ -29,13 +29,13 @@ class UserRegSerializer(ModelSerializer):
 class UserSerializer(ModelSerializer):
     class Meta(object):
         model = User
-        fields = ['id', 'email', 'first_name', 'last_name',
+        fields = ['id', 'email', 'first_name', 'last_name', 'gender',
                   'doctor', 'patient', 'healthcareworker',
-                  # care, you can't see role fields in models.User
-                  # OneToOneFields reference User from role-classes, but the connection is both way
+                  # care, you can't see ^role fields^ in models.User
+                  # OneToOneFields reference User from role-classes, but the connection is two-way
                   # the referencing-class name becomes lowercase
 
-                  # 'date_joined'  # , ...
+                  # 'date_joined'  # todo add other fields?
                   ]
         extra_kwargs = {'password': {'write_only': True}}
 
@@ -93,7 +93,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class DoctorRegSerializer(ModelSerializer):
     class Meta:
         model = Doctor
-        # fields = '__all__'
         fields = ['specializes_in', 'user']
 
 
@@ -109,6 +108,12 @@ class DoctorSerializer(ModelSerializer):
         return response
 
 
+class PatientRegSerializer(ModelSerializer):
+    class Meta:
+        model = Patient
+        fields = ['main_doctor', 'user']
+
+
 class PatientSerializer(ModelSerializer):
     class Meta:
         model = Patient
@@ -117,8 +122,14 @@ class PatientSerializer(ModelSerializer):
     def to_representation(self, instance):
         response = super().to_representation(instance)
         response['user'] = UserSerializer(instance.user).data
-        response['mainDoctor'] = DoctorSerializer(instance.mainDoctor).data
+        response['main_doctor'] = DoctorSerializer(instance.main_doctor).data
         return response
+
+
+class HealthcareWorkerRegSerializer(ModelSerializer):
+    class Meta:
+        model = HealthcareWorker
+        fields = ['works_for_company', 'user']
 
 
 class HealthcareWorkerSerializer(ModelSerializer):

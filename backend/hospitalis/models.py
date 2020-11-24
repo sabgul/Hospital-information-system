@@ -92,7 +92,7 @@ class Doctor(models.Model):
 
 class Patient(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    mainDoctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    main_doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
 
     # class Meta:
     #     ordering = ['name']
@@ -106,7 +106,6 @@ class HealthcareWorker(models.Model):
     # class Meta:
     #     ordering = ['name']
     #     permission = [()]     TODO: permission group
-
 
 
 # Zdravotny problem
