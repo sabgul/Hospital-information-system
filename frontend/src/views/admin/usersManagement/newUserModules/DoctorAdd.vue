@@ -80,6 +80,7 @@
                         label="Email address"
                         placeholder="Type email"
                         class="input__items"
+                        primary
                     >
                         <template
                             v-if="validEmail"
@@ -109,6 +110,7 @@
                         placeholder="Type password"
                         class="input__items"
                         type="password"
+                        primary
                     >
 
                         <template
@@ -140,6 +142,7 @@
                           v-model="newDoctor.date_of_birth"
                           label="Date of birth"
                           class="input__items"
+                          primary
                       >
                           <template
                               #message-warn

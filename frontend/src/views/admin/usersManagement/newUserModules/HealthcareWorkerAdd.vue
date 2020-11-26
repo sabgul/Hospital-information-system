@@ -15,15 +15,30 @@
           <div class="wrapper">
               <div class="first__row">
                   <vs-input
-                      v-model="newWorker.name"
-                      label="Name of worker"
-                      placeholder="Type name"
+                      v-model="newWorker.first_name"
+                      label="First name of worker"
+                      placeholder="Type first name"
                       class="input__items"
                       primary
                   >
                       <template
                           #message-warn
-                          v-if="newWorker.name.length === 0"
+                          v-if="newWorker.first_name.length === 0"
+                      >
+                          Required
+                      </template>
+                  </vs-input>
+
+                  <vs-input
+                      v-model="newWorker.last_name"
+                      label="Last name of worker"
+                      placeholder="Type last name"
+                      class="input__items"
+                      primary
+                  >
+                      <template
+                          #message-warn
+                          v-if="newWorker.last_name.length === 0"
                       >
                           Required
                       </template>
@@ -60,16 +75,47 @@
 
               <div class="second__row">
                   <vs-input
-                      type="date"
-                      v-model="newWorker.date_of_birth"
-                      label="Date of birth"
+                      v-model="newWorker.email_field"
+                      label="Email address"
+                      placeholder="Type email"
                       class="input__items"
                   >
                       <template
-                          #message-warn
-                          v-if="newWorker.date_of_birth === ''"
+                          v-if="validEmail"
+                          #message-success
                       >
-                          Required field
+                          Valid email
+                      </template>
+
+                      <template
+                          v-if="!validEmail && newWorker.email_field !== ''"
+                          #message-danger
+                      >
+                          Invalid email
+                      </template>
+
+                      <template
+                          #message-warn
+                          v-if="newWorker.email_field.length === 0"
+                      >
+                          Required
+                      </template>
+                  </vs-input>
+
+                  <vs-input
+                      v-model="newWorker.password"
+                      label="Password"
+                      placeholder="Type password"
+                      class="input__items"
+                      type="password"
+                      primary
+                  >
+
+                      <template
+                          v-if="newWorker.password.length === 0"
+                          #message-warn
+                      >
+                          Required
                       </template>
                   </vs-input>
 
@@ -90,30 +136,16 @@
 
               <div class="third__row">
                     <vs-input
-                        v-model="newWorker.email_field"
-                        label="Email address"
-                        placeholder="Type email"
+                        type="date"
+                        v-model="newWorker.date_of_birth"
+                        label="Date of birth"
                         class="input__items"
                     >
                         <template
-                            v-if="validEmail"
-                            #message-success
-                        >
-                            Valid email
-                        </template>
-
-                        <template
-                            v-if="!validEmail && newWorker.email_field !== ''"
-                            #message-danger
-                        >
-                            Invalid email
-                        </template>
-
-                        <template
                             #message-warn
-                            v-if="newWorker.email_field.length === 0"
+                            v-if="newWorker.date_of_birth === ''"
                         >
-                            Required
+                            Required field
                         </template>
                     </vs-input>
 
@@ -142,7 +174,8 @@
               <div class="submit__row">
                   <vs-button
                       @click="createWorker()"
-                      :disabled=" newWorker.name.length === 0 ||
+                      :disabled=" newWorker.first_name.length === 0 ||
+                                  newWorker.last_name.length === 0 ||
                                   newWorker.main_doctor_id === -1 ||
                                   newWorker.date_of_birth === '' ||
                                   (!validEmail && newWorker.email_field.length !== 0) ||
@@ -166,12 +199,14 @@ export default {
 
     data:() => ({
         newWorker: {
-            'name': '',
+            'first_name': '',
+            'last_name': '',
             'gender': 'O',
             'date_of_birth': '',
             'email_field': '',
             'phone_number': '',
             'works_for_company': '',
+            'password': '',
         },
     }),
 
@@ -188,12 +223,14 @@ export default {
     methods: {
         async createWorker() {
             let data = {
-                name: this.newWorker.name,
+                first_name: this.newWorker.first_name,
+                last_name: this.newWorker.last_name,
                 gender: this.newWorker.gender,
                 works_for_company: this.newWorker.works_for_company,
                 date_of_birth: DateUtils.getDateForBackend(this.newWorker.date_of_birth),
-                email_field: this.newWorker.email_field,
-                phone_number: this.newWorker.phone_number
+                email: this.newWorker.email_field,
+                phone_number: this.newWorker.phone_number,
+                password: this.newWorker.password,
             };
 
             if(data.date_of_birth === '') {

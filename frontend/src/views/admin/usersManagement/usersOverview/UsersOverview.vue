@@ -86,10 +86,10 @@
                     >
                         <vs-td>
                             <span
-                                @click="showUserProfile(user.userData.id, user.role)"
+                                @click="showUserProfile(user.userData.user.id, user.role)"
                                 class="redirect__profile"
                             >
-                                {{ user.userData.name }}
+                                {{ user.userData.user.first_name }} {{ user.userData.user.last_name }}
                             </span>
                         </vs-td>
 
@@ -98,11 +98,11 @@
                         </vs-td>
 
                         <vs-td>
-                            {{ user.userData.date_of_birth }}
+                            {{ user.userData.user.date_of_birth }}
                         </vs-td>
 
                         <vs-td>
-                            {{ getEmailContact(user.userData.email_field) }}
+                            {{ getEmailContact(user.userData.user.email) }}
                         </vs-td>
 
                         <vs-td>
@@ -113,7 +113,7 @@
                             <div class="expanded__item">
                                 <div class="expanded__item">
                                     <vs-avatar
-                                        @click="showUserProfile(user.userData.id, user.role)"
+                                        @click="showUserProfile(user.userData.user.id, user.role)"
                                         class="redirect__profile"
                                     >
                                         <img
@@ -125,16 +125,16 @@
                                     <b>
                                         <span
                                             class="user__name redirect__profile"
-                                            @click="showUserProfile(user.userData.id, user.role)"
+                                            @click="showUserProfile(user.userData.user.id, user.role)"
                                         >
-                                            {{ user.userData.name }}
+                                            {{ user.userData.user.first_name }} {{ user.userData.user.last_name }}
                                         </span>
                                     </b>
                                 </div>
 
                                 <div class="expanded__item right">
                                     <vs-tooltip>
-                                        <vs-button icon @click="editUserProfile(user.userData.id, user.role)">
+                                        <vs-button icon @click="editUserProfile(user.userData.user.id, user.role)">
                                             <box-icon
                                                 name='comment-edit'
                                                 animation='tada-hover'
@@ -146,7 +146,7 @@
                                         </template>
                                     </vs-tooltip>
 
-                                    <vs-tooltip v-if="user.userData.user_active">
+                                    <vs-tooltip v-if="user.userData.user.user_active">
                                         <vs-button warn icon @click="changeUserActivity(user)">
                                             <box-icon
                                                 name='block'
@@ -159,7 +159,7 @@
                                         </template>
                                     </vs-tooltip>
 
-                                    <vs-tooltip v-if="!user.userData.user_active">
+                                    <vs-tooltip v-if="!user.userData.user.user_active">
                                         <vs-button success icon @click="changeUserActivity(user)">
                                             <box-icon
                                                 name='check-circle'

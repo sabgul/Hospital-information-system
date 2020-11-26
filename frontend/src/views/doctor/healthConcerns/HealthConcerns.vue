@@ -161,8 +161,7 @@
 
         <p>
            Here you can see all health concerns you manage. <br>
-           You can filter the results by patient and/or by examination state. <br>
-           You can use Search tab in table as well.
+           You can filter the results by patient and/or by examination state or use search bar in table. <br>
         </p>
     </div>
 

@@ -2,7 +2,7 @@
     <div>
         <div class="main__content">
           <h1>
-            Editing <b>{{ user.name }}</b>'s profile
+            Editing <b>{{ userData.user.first_name }} {{ userData.user.last_name }}</b>'s profile
           </h1>
         </div>
 
@@ -10,31 +10,31 @@
           <div class="wrapper">
                 <div class="first__row">
                     <vs-input
-                        label="Name"
+                        label="First name"
                         color="primary"
-                        v-model="newUserData.name"
+                        v-model="newUserData.user.first_name"
                     >
-                      <template #message-danger v-if="newUserData.name.length === 0">
+                      <template #message-danger v-if="newUserData.user.first_name.length === 0">
                         Required
                       </template>
                     </vs-input>
 
-                  <br>
+                    <br>
 
-                  <vs-input
-                      label="Email"
-                      color="primary"
-                      v-model="newUserData.email_field"
-                  >
-                    <template #message-danger v-if="!isEmailValid">
-                      Valid email required
-                    </template>
-                  </vs-input>
+                    <vs-input
+                        label="Last name"
+                        color="primary"
+                        v-model="newUserData.user.last_name"
+                    >
+                      <template #message-danger v-if="newUserData.user.last_name.length === 0">
+                        Required
+                      </template>
+                    </vs-input>
                 </div>
 
                 <div class="second__row">
                     <vs-input
-                        v-model="newUserData.date_of_birth"
+                        v-model="newUserData.user.date_of_birth"
                         label="Date of birth"
                         color="primary"
                         type="date"
@@ -45,7 +45,7 @@
                   <vs-input
                       label="Phone number"
                       color="primary"
-                      v-model="newUserData.phone_number"
+                      v-model="newUserData.user.phone_number"
                   />
                 </div>
 
@@ -70,8 +70,8 @@
                       label="Main doctor"
                   >
 <!--                    TODO: DOES NOT WORK!-->
-                     <vs-option v-for="doctor in doctors" :key="doctor.id" :label="doctor.name" :value="doctor.id">
-                        {{ doctor.name }}
+                     <vs-option v-for="doctor in doctors" :key="doctor.user.id" :label="doctor.user.first_name" :value="doctor.user.id">
+                        {{ doctor.user.first_name }}
                     </vs-option>
                   </vs-select>
 
@@ -113,7 +113,7 @@ export default {
     },
 
     data:() => ({
-      user: {},
+      userData: {},
       newUserData: {},
       doctors: [],
     }),
@@ -129,31 +129,31 @@ export default {
       if(this.role === 'patient') {
           PatientsService.get(this.id)
           .then(response => {
-              this.user = response.data;
-              this.newUserData = {...this.user};
+              this.userData = response.data;
+              this.newUserData = {...this.userData};
           })
       }
 
       if(this.role === 'doctor') {
           DoctorsService.get(this.id)
           .then(response => {
-              this.user = response.data;
-              this.newUserData = {...this.user};
+              this.userData = response.data;
+              this.newUserData = {...this.userData};
           })
       }
 
       if(this.role === 'health-insurance-worker') {
           HealthcareWorkersService.get(this.id)
           .then(response => {
-              this.user = response.data;
-              this.newUserData = {...this.user};
+              this.userData = response.data;
+              this.newUserData = {...this.userData};
           })
       }
     },
 
     computed: {
         isEmailValid() {
-          return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.newUserData.email_field);
+          return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.newUserData.user.email);
         },
     },
 
@@ -167,7 +167,7 @@ export default {
         },
 
         resetUserData() {
-          this.newUserData = {...this.user};
+          this.newUserData = {...this.userData};
         },
 
         saveChanges() {
@@ -177,18 +177,17 @@ export default {
             updatedInfo = {
               name: this.newUserData.name,
               date_of_birth: this.formatDate(this.newUserData.date_of_birth),
-              email_field: this.newUserData.email_field,
               phone_number: this.newUserData.phone_number,
               specializes_in: this.newUserData.specializes_in,
               user_active: true,
-              active_from: this.formatDate(this.user.active_from)
+              active_from: this.formatDate(this.userData.active_from)
             };
 
             DoctorsService.update(this.id, updatedInfo)
             .then(response => {
                 console.log(response);
                 NotificationsUtils.successPopup('User data successfully edited.', this.$vs);
-                this.user = {...updatedInfo};
+                this.userData = {...updatedInfo};
             })
             .catch(e => {
                 NotificationsUtils.failPopup(e, this.$vs);
@@ -199,10 +198,9 @@ export default {
             updatedInfo = {
               name: this.newUserData.name,
               date_of_birth: this.formatDate(this.newUserData.date_of_birth),
-              email_field: this.newUserData.email_field,
               phone_number: this.newUserData.phone_number,
               user_active: true,
-              active_from: this.formatDate(this.user.active_from),
+              active_from: this.formatDate(this.userData.active_from),
               works_for_company: this.newUserData.works_for_company
             };
 
@@ -210,7 +208,7 @@ export default {
             .then(response => {
                 console.log(response);
                 NotificationsUtils.successPopup('User data successfully edited.', this.$vs);
-                this.user = {...updatedInfo};
+                this.userData = {...updatedInfo};
             })
             .catch(e => {
                 NotificationsUtils.failPopup(e, this.$vs);

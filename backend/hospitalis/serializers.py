@@ -29,7 +29,7 @@ class UserRegSerializer(ModelSerializer):
 class UserSerializer(ModelSerializer):
     class Meta(object):
         model = User
-        fields = ['id', 'email', 'first_name', 'last_name', 'gender',
+        fields = ['id', 'email', 'first_name', 'last_name', 'gender',  'date_of_birth',
                   'doctor', 'patient', 'healthcareworker',
                   # care, you can't see ^role fields^ in models.User
                   # OneToOneFields reference User from role-classes, but the connection is two-way

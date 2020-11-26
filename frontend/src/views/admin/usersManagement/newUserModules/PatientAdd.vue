@@ -14,58 +14,34 @@
         <div class="wrapper">
             <div class="first__row">
                 <vs-input
-                    v-model="newPatient.name"
-                    label="Name of patient"
-                    placeholder="Type name of new patient"
+                    v-model="newPatient.first_name"
+                    label="First name of patient"
+                    placeholder="Type first name of new patient"
                     class="input__items"
                     primary
                 >
                     <template
                         #message-warn
-                        v-if="newPatient.name.length === 0"
+                        v-if="newPatient.first_name.length === 0"
                     >
                         Required
                     </template>
                 </vs-input>
 
                 <vs-input
-                    type="date"
-                    v-model="newPatient.date_of_birth"
-                    label="Date of birth"
+                    v-model="newPatient.last_name"
+                    label="Last name of patient"
+                    placeholder="Type last name of new patient"
                     class="input__items"
-                >
-                  <template
-                      #message-warn
-                      v-if="!validDateOfBirth"
-                  >
-                      Required field
-                   </template>
-                </vs-input>
-            </div>
-
-            <div class="second__row">
-                <vs-select
-                    v-model="newPatient.main_doctor_id"
-                    class="input__items"
-                    label="Main doctor"
-                    color="primary"
+                    primary
                 >
                     <template
                         #message-warn
-                        v-if="newPatient.main_doctor_id === -1"
+                        v-if="newPatient.last_name.length === 0"
                     >
                         Required
                     </template>
-
-                    <vs-option
-                        v-for="doctor in availableDoctors"
-                        :key="doctor.id"
-                        :label="doctor.name"
-                        :value="doctor.id"
-                    >
-                        {{ doctor.name }}
-                    </vs-option>
-                </vs-select>
+                </vs-input>
 
                 <vs-select
                     v-model="newPatient.gender"
@@ -96,8 +72,8 @@
                  </vs-select>
             </div>
 
-            <div class="third__row">
-                <vs-input
+            <div class="second__row">
+                 <vs-input
                     v-model="newPatient.email_field"
                     label="Email address"
                     class="input__items"
@@ -125,6 +101,62 @@
                 </vs-input>
 
                 <vs-input
+                    v-model="newPatient.password"
+                    label="Password"
+                    placeholder="Type password"
+                    class="input__items"
+                    type="password"
+                    primary
+                >
+
+                    <template
+                        v-if="newPatient.password.length === 0"
+                        #message-warn
+                    >
+                        Required
+                    </template>
+                </vs-input>
+
+                <vs-select
+                    v-model="newPatient.main_doctor_id"
+                    class="input__items"
+                    label="Main doctor"
+                    color="primary"
+                >
+                    <template
+                        #message-warn
+                        v-if="newPatient.main_doctor_id === -1"
+                    >
+                        Required
+                    </template>
+
+                    <vs-option
+                        v-for="doctor in availableDoctors"
+                        :key="doctor.user.id"
+                        :label="doctor.user.first_name"
+                        :value="doctor.user.id"
+                    >
+                        {{ doctor.user.first_name }}
+                    </vs-option>
+                </vs-select>
+            </div>
+
+            <div class="third__row">
+                <vs-input
+                    type="date"
+                    v-model="newPatient.date_of_birth"
+                    label="Date of birth"
+                    class="input__items"
+                >
+                  <template
+                      #message-warn
+                      v-if="!validDateOfBirth"
+                  >
+                      Required field
+                   </template>
+                </vs-input>
+
+                <vs-input
                   v-model="newPatient.phone_number"
                   label="Phone number"
                   class="input__items"
@@ -148,7 +180,8 @@
             <div class="submit__row">
                   <vs-button
                       @click="createPatient()"
-                      :disabled=" newPatient.name.length === 0 ||
+                      :disabled=" newPatient.first_name.length === 0 ||
+                                  newPatient.last_name.length === 0 ||
                                   newPatient.main_doctor_id === -1 ||
                                   !validDateOfBirth ||
                                   (!validEmail && newPatient.email_field.length !== 0) ||
@@ -174,12 +207,14 @@ export default {
 
     data:() => ({
         newPatient: {
-            'name': '',
+            'first_name': '',
+            'last_name': '',
             'gender': 'O',
             'main_doctor_id': -1,
             'date_of_birth': '',
             'email_field': '',
             'phone_number': '',
+            'password': '',
         },
 
         availableDoctors: [],
@@ -209,12 +244,14 @@ export default {
     methods: {
         async createPatient() {
             let data = {
-                name: this.newPatient.name,
+                first_name: this.newPatient.first_name,
+                last_name: this.newPatient.last_name,
                 gender: this.newPatient.gender,
                 main_doctor: this.newPatient.main_doctor_id,
                 date_of_birth: DateUtils.getDateForBackend(this.newPatient.date_of_birth),
-                email_field: this.newPatient.email_field,
-                phone_number: this.newPatient.phone_number
+                email: this.newPatient.email_field,
+                phone_number: this.newPatient.phone_number,
+                password: this.newPatient.password,
             };
 
             if(data.date_of_birth === '') {
