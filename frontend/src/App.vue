@@ -235,8 +235,7 @@
             <div class="footer">
               <vs-card type="5">
                   <template #title>
-                      <h3>Name and Surname</h3>
-<!--                      {{ store.user_full_name() }}-->
+                      <h3>{{ user.first_name }} {{ user.last_name }}</h3>
                   </template>
 
                   <template #img>
@@ -245,7 +244,7 @@
 
                   <template #text>
                     <p>
-                      Logged as [Patient | Doc | Admin | HC]
+                      Logged as {{ userRole }}
                     </p>
                   </template>
 
@@ -298,7 +297,7 @@
 <script>
 import { useWindowSize } from 'vue-window-size';
 import { store } from '@/store/store';
-
+import { mapState } from 'vuex';
 
 export default {
   name: 'App',
@@ -309,7 +308,7 @@ export default {
   data:() => ({
     active: 'home',
     activeSidebar: false,
-    store_copy: store
+    store_copy: store,
   }),
 
   setup() {
@@ -318,6 +317,13 @@ export default {
       windowWidth: width,
       windowHeight: height,
     };
+  },
+
+  computed: {
+    ...mapState([
+        'user',
+        'userRole',
+    ])
   },
 
   methods: {

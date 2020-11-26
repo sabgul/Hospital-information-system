@@ -16,15 +16,30 @@
             <div class="wrapper">
                 <div class="first__row">
                     <vs-input
-                        v-model="newDoctor.name"
-                        label="Name of doctor"
-                        placeholder="Type name of new doctor"
+                        v-model="newDoctor.first_name"
+                        label="First name of doctor"
+                        placeholder="Type first name of new doctor"
                         class="input__items"
                         primary
                     >
                         <template
                             #message-warn
-                            v-if="newDoctor.name.length === 0"
+                            v-if="newDoctor.first_name.length === 0"
+                        >
+                            Required
+                        </template>
+                    </vs-input>
+
+                    <vs-input
+                        v-model="newDoctor.last_name"
+                        label="Last name of doctor"
+                        placeholder="Type last name of new doctor"
+                        class="input__items"
+                        primary
+                    >
+                        <template
+                            #message-warn
+                            v-if="newDoctor.last_name.length === 0"
                         >
                             Required
                         </template>
@@ -61,16 +76,46 @@
 
                 <div class="second__row">
                     <vs-input
-                        type="date"
-                        v-model="newDoctor.date_of_birth"
-                        label="Date of birth"
+                        v-model="newDoctor.email_field"
+                        label="Email address"
+                        placeholder="Type email"
                         class="input__items"
                     >
                         <template
-                            #message-warn
-                            v-if="newDoctor.date_of_birth === ''"
+                            v-if="validEmail"
+                            #message-success
                         >
-                            Required field
+                            Valid email
+                        </template>
+
+                        <template
+                            v-if="!validEmail && newDoctor.email_field !== ''"
+                            #message-danger
+                        >
+                            Invalid email
+                        </template>
+
+                        <template
+                            #message-warn
+                            v-if="newDoctor.email_field.length === 0"
+                        >
+                            Required
+                        </template>
+                    </vs-input>
+
+                    <vs-input
+                        v-model="newDoctor.password"
+                        label="Password"
+                        placeholder="Type password"
+                        class="input__items"
+                        type="password"
+                    >
+
+                        <template
+                            v-if="newDoctor.password.length === 0"
+                            #message-warn
+                        >
+                            Required
                         </template>
                     </vs-input>
 
@@ -91,30 +136,16 @@
 
                 <div class="third__row">
                       <vs-input
-                          v-model="newDoctor.email_field"
-                          label="Email address"
-                          placeholder="Type email"
+                          type="date"
+                          v-model="newDoctor.date_of_birth"
+                          label="Date of birth"
                           class="input__items"
                       >
                           <template
-                              v-if="validEmail"
-                              #message-success
-                          >
-                              Valid email
-                          </template>
-
-                          <template
-                              v-if="!validEmail && newDoctor.email_field !== ''"
-                              #message-danger
-                          >
-                              Invalid email
-                          </template>
-
-                          <template
                               #message-warn
-                              v-if="newDoctor.email_field.length === 0"
+                              v-if="newDoctor.date_of_birth === ''"
                           >
-                              Required
+                              Required field
                           </template>
                       </vs-input>
 
@@ -143,9 +174,11 @@
                 <div class="submit__row">
                     <vs-button
                         @click="createDoctor()"
-                        :disabled=" newDoctor.name.length === 0 ||
+                        :disabled=" newDoctor.first_name.length === 0 ||
+                                    newDoctor.last_name.length === 0 ||
                                     newDoctor.main_doctor_id === -1 ||
                                     newDoctor.date_of_birth === '' ||
+                                    newDoctor.password.length === 0 ||
                                     (!validEmail && newDoctor.email_field.length !== 0) ||
                                     (!validNumber && newDoctor.phone_number.length !== 0)"
                     >
@@ -168,12 +201,14 @@ export default {
 
     data:() => ({
         newDoctor: {
-            'name': '',
+            'first_name': '',
+            'last_name': '',
             'gender': 'O',
             'date_of_birth': '',
             'email_field': '',
             'phone_number': '',
             'specializes_in': '',
+            'password': '',
         },
     }),
 
@@ -190,12 +225,14 @@ export default {
     methods: {
         async createDoctor() {
             let data = {
-                name: this.newDoctor.name,
+                first_name: this.newDoctor.first_name,
+                last_name: this.newDoctor.last_name ,
                 gender: this.newDoctor.gender,
                 specializes_in: this.newDoctor.specializes_in,
                 date_of_birth: DateUtils.getDateForBackend(this.newDoctor.date_of_birth),
-                email_field: this.newDoctor.email_field,
-                phone_number: this.newDoctor.phone_number
+                email: this.newDoctor.email_field,
+                phone_number: this.newDoctor.phone_number,
+                password: this.newDoctor.password,
             };
 
             if(data.date_of_birth === '') {

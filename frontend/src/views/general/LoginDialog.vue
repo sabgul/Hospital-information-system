@@ -99,19 +99,19 @@ export default {
   methods: {
     async loginDialogClosed() {
       if (this.userType === 'Administrator') {
-        await this.$store.commit('SET_ADMIN_LOGIN');
+        await this.$store.commit('SET_ADMIN_LOGIN_WINDOW');
       }
 
       if (this.userType === 'Doctor') {
-        await this.$store.commit('SET_DOCTOR_LOGIN');
+        await this.$store.commit('SET_DOCTOR_LOGIN_WINDOW');
       }
 
       if (this.userType === 'Patient') {
-        await this.$store.commit('SET_PATIENT_LOGIN');
+        await this.$store.commit('SET_PATIENT_LOGIN_WINDOW');
       }
 
       if (this.userType === 'Healthcare worker') {
-        await this.$store.commit('SET_HEALTHCARE_LOGIN');
+        await this.$store.commit('SET_HEALTHCARE_LOGIN_WINDOW');
       }
     },
 
@@ -121,20 +121,18 @@ export default {
       }
 
       let login_role;
-      if (this.$store.state.patientLoginActive)
+      if (this.$store.state.patientLoginWindowActive)
         login_role = 'patient'
-      else if (this.$store.state.doctorLoginActive)
+      else if (this.$store.state.doctorLoginWindowActive)
         login_role = 'doctor'
-      else if (this.$store.state.healthcareLoginActive)
+      else if (this.$store.state.healthcareLoginWindowActive)
         login_role = 'healthcare-worker'
-      else if (this.$store.state.adminLoginActive)
+      else if (this.$store.state.adminLoginWindowActive)
         login_role = 'admin'
       else {
         console.log('invalid login role')
         return
       }
-
-
 
       this.$store.dispatch('loginUser', {
         email: this.email,

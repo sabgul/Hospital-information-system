@@ -21,7 +21,7 @@
 
                     <login-dialog
                         :userType="'Doctor'"
-                        :userLoginActive="this.$store.state.doctorLoginActive"
+                        :userLoginActive="this.$store.state.doctorLoginWindowActive"
                     />
 
                     <vs-button
@@ -36,7 +36,7 @@
 
                     <login-dialog
                         :userType="'Patient'"
-                        :userLoginActive="this.$store.state.patientLoginActive"
+                        :userLoginActive="this.$store.state.patientLoginWindowActive"
                     />
 
                     <vs-button
@@ -51,7 +51,7 @@
 
                     <login-dialog
                         :userType="'Healthcare worker'"
-                        :userLoginActive="this.$store.state.healthcareLoginActive"
+                        :userLoginActive="this.$store.state.healthcareLoginWindowActive"
                     />
                 </div>
             </div>
@@ -81,15 +81,15 @@ export default {
 
     methods: {
         async setDoctorLoginActive() {
-            await this.$store.commit('SET_DOCTOR_LOGIN');
+            await this.$store.commit('SET_DOCTOR_LOGIN_WINDOW');
         },
 
         async setPatientLoginActive() {
-            await this.$store.commit('SET_PATIENT_LOGIN');
+            await this.$store.commit('SET_PATIENT_LOGIN_WINDOW');
         },
 
         async setHealthcareLoginActive() {
-            await this.$store.commit('SET_HEALTHCARE_LOGIN');
+            await this.$store.commit('SET_HEALTHCARE_LOGIN_WINDOW');
         },
     }
 }

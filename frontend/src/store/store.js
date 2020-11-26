@@ -1,58 +1,59 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios_instance from "@/http-common";
+import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
+        plugins: [createPersistedState({
+            storage: window.sessionStorage,
+        })],
+
         state: {
-            doctorLoginActive: false,
-            patientLoginActive: false,
-            healthcareLoginActive: false,
-            adminLoginActive: false,
+            doctorLoginWindowActive: false,
+            patientLoginWindowActive: false,
+            healthcareLoginWindowActive: false,
+            adminLoginWindowActive: false,
             access_token: localStorage.getItem('access_token') || null, // if exists: load, else: null, later set in retrieveToken.
             refresh_token: localStorage.getItem('refresh_token') || null, // if exists: load, else: null, later set in retrieveToken.
-            user: {}
-        },
-
-        getters: {
-            // should be outside the store, as it might not yet exist when this is called
-            user_full_name() {
-                if (this.state.user) {
-                    return `${this.state.user.first_name} ${this.state.user.last_name}`
-                }
-                else {
-                    return "Name Surname"
-                }
-            },
+            user: {},
+            userRole: null,
         },
 
         mutations: {
-            SET_ADMIN_LOGIN(state) {
-                state.adminLoginActive = !state.adminLoginActive;
+            SET_ADMIN_LOGIN_WINDOW(state) {
+                state.adminLoginWindowActive = !state.adminLoginWindowActive;
             },
 
-            SET_DOCTOR_LOGIN(state) {
-                state.doctorLoginActive = !state.doctorLoginActive;
+            SET_DOCTOR_LOGIN_WINDOW(state) {
+                state.doctorLoginWindowActive = !state.doctorLoginWindowActive;
             },
 
-            SET_PATIENT_LOGIN(state) {
-                state.patientLoginActive = !state.patientLoginActive;
+            SET_PATIENT_LOGIN_WINDOW(state) {
+                state.patientLoginWindowActive = !state.patientLoginWindowActive;
             },
 
-            SET_HEALTHCARE_LOGIN(state) {
-                state.healthcareLoginActive = !state.healthcareLoginActive;
+            SET_HEALTHCARE_LOGIN_WINDOW(state) {
+                state.healthcareLoginWindowActive = !state.healthcareLoginWindowActive;
             },
+
             SET_ACCESS_TOKEN(state, access) {
-                localStorage.setItem('access_token', access)
-                state.access_token = access
+                localStorage.setItem('access_token', access);
+                state.access_token = access;
             },
+
             SET_REFRESH_TOKEN(state, refresh) {
-                localStorage.setItem('refresh_token', refresh)
-                state.refresh_token = refresh
+                localStorage.setItem('refresh_token', refresh);
+                state.refresh_token = refresh;
             },
+
             SET_USER(state, user) {
-                state.user = user
+                state.user = user;
+            },
+
+            SET_CURRENT_USER_ROLE(state, role) {
+                state.userRole = role;
             },
         },
 
@@ -61,8 +62,9 @@ export const store = new Vuex.Store({
                 return new Promise((resolve, reject) => {
                     axios_instance.post('/token/', credentials)
                         .then(response => {
-                            context.commit('SET_ACCESS_TOKEN', response.data.access)
-                            context.commit('SET_REFRESH_TOKEN', response.data.refresh)
+                            context.commit('SET_ACCESS_TOKEN', response.data.access);
+                            context.commit('SET_REFRESH_TOKEN', response.data.refresh);
+                            context.commit('SET_CURRENT_USER_ROLE', credentials.role);
 
                             // if token acquired, get user data
                             axios_instance.get('/users/me/')
@@ -97,6 +99,7 @@ export const store = new Vuex.Store({
                 })
             },
             logoutUser(context) {
+
                 if (context.getters.loggedIn) {
                     return new Promise((resolve, ) => {  // removed second param 'reject'
                         axios_instance.post('/token/logout/')
@@ -105,6 +108,7 @@ export const store = new Vuex.Store({
                                 localStorage.removeItem('refresh_token')
                                 context.commit('SET_ACCESS_TOKEN', null)
                                 context.commit('SET_REFRESH_TOKEN', null)
+                                this.window.sessionStorage.clear();
                             })
                             .catch(err => {
                                 localStorage.removeItem('access_token')
@@ -112,8 +116,10 @@ export const store = new Vuex.Store({
                                 context.commit('SET_ACCESS_TOKEN', null)
                                 context.commit('SET_REFRESH_TOKEN', null)
                                 resolve(err)
+                                this.window.sessionStorage.clear();
                             })
-                    })
+                    });
+
                 }
             },
 
@@ -134,7 +140,18 @@ export const store = new Vuex.Store({
                         })
                 })
             }
+        },
 
-        }
+        getters: {
+            // should be outside the store, as it might not yet exist when this is called
+            user_full_name() {
+                if (this.state.user) {
+                    return `${this.state.user.first_name} ${this.state.user.last_name}`
+                }
+                else {
+                    return "Name Surname"
+                }
+            },
+        },
     })
 ;

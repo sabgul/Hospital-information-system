@@ -16,7 +16,7 @@
 
     <login-dialog 
       :userType="'Administrator'"
-      :userLoginActive="this.$store.state.adminLoginActive"    
+      :userLoginActive="this.$store.state.adminLoginWindowActive"
     />
   </div>
 </template>
@@ -33,7 +33,7 @@ export default {
 
   methods: {
     async setAdminLoginActive() {
-      await this.$store.commit('SET_ADMIN_LOGIN');
+      await this.$store.commit('SET_ADMIN_LOGIN_WINDOW');
     }
   },
 }
