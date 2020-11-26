@@ -67,12 +67,22 @@ class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     permission_classes = [IsCreationOrIsAuthenticated]
 
+    @staticmethod
+    def create_user_internal(request):
+        reg_user = UserRegSerializer(data=request.data)
+        reg_user.is_valid(raise_exception=True)
+
+        user = reg_user.save()
+        user.set_password(request.data['password'])
+        user.save()  # save again with hashed password
+
+        return reg_user, user
+
     def create(self, request, *args, **kwargs):
         # different serializer used
-        user_reg = UserRegSerializer(data=request.data)
-        user_reg.is_valid(raise_exception=True)
-        user_reg.save()
-        return Response(user_reg.data, status=status.HTTP_201_CREATED)
+        reg_user, user = self.__class__.create_user_internal(request)
+
+        return Response(reg_user.data, status=status.HTTP_201_CREATED)
 
     # allows for GET /api/users/me/
     @action(methods=['get'], detail=False)
@@ -101,18 +111,23 @@ class PatientsViewSet(ModelViewSet):
         request.data['patient'] = None
         request.data['healthcareworker'] = None
 
-        reg_user = UserRegSerializer(data=request.data)
-
-        reg_user.is_valid(raise_exception=True)
-        user = reg_user.save()
+        reg_user, user = UserViewSet.create_user_internal(request)
         request.data['user'] = user.id
 
-        reg_patient = PatientRegSerializer(data=request.data)
-        reg_patient.is_valid(raise_exception=True)
-        patient = reg_patient.save()
+        try:
+            reg_patient = PatientRegSerializer(data=request.data)
+            reg_patient.is_valid(raise_exception=True)
 
-        user.patient = patient
-        return Response(reg_patient.data, status=status.HTTP_201_CREATED)
+            patient = reg_patient.save()
+            user.patient = patient
+            return Response(reg_patient.data, status=status.HTTP_201_CREATED)
+        except Exception as exc:
+            # could not create patient (e. g. invalid main_doctor number)
+            #  => delete user with no role
+            user.delete()
+
+            # propagate error from creating patient instance
+            return Response(str(exc), status=status.HTTP_400_BAD_REQUEST)
 
 
 class DoctorsViewSet(ModelViewSet):
@@ -126,18 +141,23 @@ class DoctorsViewSet(ModelViewSet):
         request.data['patient'] = None
         request.data['healthcareworker'] = None
 
-        reg_user = UserRegSerializer(data=request.data)
-
-        reg_user.is_valid(raise_exception=True)
-        user = reg_user.save()
+        reg_user, user = UserViewSet.create_user_internal(request)
         request.data['user'] = user.id
 
-        reg_doctor = DoctorRegSerializer(data=request.data)
-        reg_doctor.is_valid(raise_exception=True)
-        doctor = reg_doctor.save()
+        try:
+            reg_doctor = DoctorRegSerializer(data=request.data)
+            reg_doctor.is_valid(raise_exception=True)
+            doctor = reg_doctor.save()
 
-        user.doctor = doctor
-        return Response(reg_doctor.data, status=status.HTTP_201_CREATED)
+            user.doctor = doctor
+            return Response(reg_doctor.data, status=status.HTTP_201_CREATED)
+        except Exception as exc:
+            # could not create doctor
+            #  => delete user with no role
+            user.delete()
+
+            # propagate error from creating doctor instance
+            return Response(str(exc), status=status.HTTP_400_BAD_REQUEST)
 
 
 class HealthcareWorkerViewSet(ModelViewSet):
@@ -151,18 +171,23 @@ class HealthcareWorkerViewSet(ModelViewSet):
         request.data['patient'] = None
         request.data['healthcareworker'] = None
 
-        reg_user = UserRegSerializer(data=request.data)
-
-        reg_user.is_valid(raise_exception=True)
-        user = reg_user.save()
+        reg_user, user = UserViewSet.create_user_internal(request)
         request.data['user'] = user.id
 
-        reg_healthcareworker = HealthcareWorkerRegSerializer(data=request.data)
-        reg_healthcareworker.is_valid(raise_exception=True)
-        healthcareworker = reg_healthcareworker.save()
+        try:
+            reg_healthcareworker = HealthcareWorkerRegSerializer(data=request.data)
+            reg_healthcareworker.is_valid(raise_exception=True)
 
-        user.healthcareworker = healthcareworker
-        return Response(reg_healthcareworker.data, status=status.HTTP_201_CREATED)
+            healthcareworker = reg_healthcareworker.save()
+            user.healthcareworker = healthcareworker
+            return Response(reg_healthcareworker.data, status=status.HTTP_201_CREATED)
+        except Exception as exc:
+            # could not create hcworker
+            #  => delete user with no role
+            user.delete()
+
+            # propagate error from creating hcworker instance
+            return Response(str(exc), status=status.HTTP_400_BAD_REQUEST)
 
 
 class HealthConcernViewSet(ModelViewSet):

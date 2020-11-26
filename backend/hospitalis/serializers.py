@@ -1,8 +1,10 @@
+from django.contrib.auth import get_user_model
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.serializers import (ModelSerializer, ReadOnlyField)
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.settings import api_settings
+
 
 from .models import (
     Doctor,
@@ -20,7 +22,7 @@ from .models import (
 # registration only (POST)
 class UserRegSerializer(ModelSerializer):
     class Meta(object):
-        model = User
+        model = get_user_model()
 
         fields = '__all__'
         extra_kwargs = {'password': {'write_only': True}}
@@ -28,7 +30,7 @@ class UserRegSerializer(ModelSerializer):
 
 class UserSerializer(ModelSerializer):
     class Meta(object):
-        model = User
+        model = get_user_model()
         fields = ['id', 'email', 'first_name', 'last_name', 'gender',  'date_of_birth',
                   'doctor', 'patient', 'healthcareworker',
                   # care, you can't see ^role fields^ in models.User
@@ -84,6 +86,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['refresh'] = str(refresh)
         data['access'] = str(refresh.access_token)
 
+        # todo investigate what this does
         # if api_settings.UPDATE_LAST_LOGIN:
         #     update_last_login(None, self.user)
 
