@@ -5,7 +5,9 @@ import router from '@/router/router.js';
 import Vuesax from 'vuesax';
 import 'vuesax/dist/vuesax.css'; // Vuesax styles
 import '@/assets/css/global.css';
+import FileUpload from 'v-file-upload'
 
+Vue.use(FileUpload);
 Vue.config.productionTip = false;
 Vue.prototype.window = window;
 

@@ -251,8 +251,18 @@
 
                   <template #interactions>
                       <vs-tooltip>
+                          <vs-button v-on:click="logout" danger>
+                                <box-icon name='log-out' animation='tada-hover' style="fill: #fbfbfb;"/>
+                          </vs-button>
+
+                          <template #tooltip>
+                              Logout
+                          </template>
+                      </vs-tooltip>
+                    
+                      <vs-tooltip>
                           <vs-button>
-                              <box-icon name='comment-edit' animation='tada-hover' style="fill: #fbfbfb;"></box-icon>
+                              <box-icon name='comment-edit' animation='tada-hover' style="fill: #fbfbfb;"/>
                           </vs-button>
 
                           <template #tooltip>
@@ -263,7 +273,6 @@
               </vs-card>
             </div>
         </template>
-        <vs-button v-on:click="logout">Logout</vs-button>  <!-- todo position  -->
       </vs-sidebar>
     </div>
 
