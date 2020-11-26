@@ -18,10 +18,6 @@
                     <vs-th>
                         Email contact
                     </vs-th>
-
-                    <vs-th>
-                        Main Doctor
-                    </vs-th>
                 </vs-tr>
             </template>
 
@@ -32,19 +28,15 @@
                     :data="patient"
                 >
                     <vs-td>
-                        <span @click="redirectToPatientProfile(patient.id, 'patient')" class="redirect__profile">{{ patient.name }}</span>
+                        <span @click="redirectToPatientProfile(patient.user.id, 'patient')" class="redirect__profile">{{ patient.user.first_name }} {{ patient.user.last_name }}</span>
                     </vs-td>
 
                     <vs-td>
-                        {{ patient.date_of_birth }}
+                        {{ patient.user.date_of_birth }}
                     </vs-td>
 
                     <vs-td>
-                        {{ patient.email_field }}
-                    </vs-td>
-
-                    <vs-td>
-                      <span @click="redirectToDoctorProfile(patient.main_doctor.id, 'doctor')" class="redirect__profile">{{ patient.main_doctor.name }}</span>
+                        {{ patient.user.email }}
                     </vs-td>
                 </vs-tr>
             </template>
@@ -73,12 +65,6 @@ export default {
   methods: {
     redirectToPatientProfile(userId, role) {
         this.$router.push({ name: 'profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }});
-        // this.$router.go();
-    },
-
-    redirectToDoctorProfile(userId, role) {
-        this.$router.push({ name: 'profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }});
-        // this.$router.go();
     },
   },
 }

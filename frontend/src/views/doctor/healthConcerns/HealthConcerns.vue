@@ -61,10 +61,10 @@
                   <vs-option
                     v-for="(patient, id) in availablePatients"
                     :key="id"
-                    :label="patient.name"
-                    :value="patient.id"
+                    :label="patient.user.first_name"
+                    :value="patient.user.id"
                   >
-                    aaa
+                    {{ patient.user.first_name }}
                   </vs-option>
               </vs-select>
           </div>
@@ -102,10 +102,10 @@
                 <vs-option
                     v-for="(doc, id) in availableDoctors"
                     :key="id"
-                    :label="doc.name"
-                    :value="doc.id"
+                    :label="doc.user.first_name"
+                    :value="doc.user.id"
                 >
-                    {{ doc.name }}
+                    {{ doc.user.first_name }}
                 </vs-option>
               </vs-select>
           </div>
@@ -179,11 +179,11 @@
           >
             <vs-option
               v-for="patient in availablePatients"
-              :key="patient.id"
-              label="patient.name"
-              :value="patient.id"
+              :key="patient.user.id"
+              :label="patient.user.first_name"
+              :value="patient.user.id"
             >
-              {{ patient.name }}
+              {{ patient.user.first_name }}
 
             </vs-option>
 
@@ -283,7 +283,7 @@
                         </vs-td>
 
                         <vs-td>
-                           <span @click="redirectToPatientProfile(concern.patient.id, 'patient')" class="redirect__profile">{{ concern.patient.name }}</span>
+                           <span @click="redirectToPatientProfile(concern.patient.user.id, 'patient')" class="redirect__profile">{{ concern.patient.user.first_name }} {{ concern.patient.user.last_name }}</span>
                         </vs-td>
 
                         <vs-td>
@@ -360,11 +360,11 @@
                   >
                       <vs-option
                           v-for="doctor in availableDoctors"
-                          :key="doctor.id"
-                          :label="doctor.name"
-                          :value="doctor.id"
+                          :key="doctor.user.id"
+                          :label="doctor.user.first_name"
+                          :value="doctor.user.id"
                       >
-                          {{ doctor.name }}
+                          {{ doctor.user.first_name }}
                       </vs-option>
               </vs-select>
 

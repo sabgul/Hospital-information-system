@@ -5,6 +5,14 @@ class ExaminationRequestsService {
     return http.get("/examination-requests/");
   }
 
+  getAllByCurrentUser(currentUserId) {
+      return http.get("/examination-requests/", {
+      'params': {
+        ...({ 'assigned_to': currentUserId }),
+      }
+    })
+  }
+
   getFiltered(filter) {
     const isStateSet = filter.state.length !== 0;
 

@@ -163,6 +163,7 @@ class ExaminationRequest(models.Model):
 
     created_timestamp = models.DateTimeField(auto_now_add=True)
     concern = models.ForeignKey(HealthConcern, on_delete=models.CASCADE)
+    assigned_to = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='%(class)s_requests_created')
     created_by = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     state = models.CharField(
         max_length=2,

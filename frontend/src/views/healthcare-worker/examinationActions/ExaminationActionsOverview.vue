@@ -25,11 +25,11 @@
                     >   
                         <vs-option
                             v-for="worker in availableWorkers"
-                            :key="worker.id"
-                            label="worker.name"
-                            :value="worker.id"
+                            :key="worker.user.id"
+                            :label="worker.user.first_name"
+                            :value="worker.user.id"
                         >
-                            {{ worker.name }}
+                            {{ worker.user.first_name }}
                         </vs-option>
                     </vs-select>
                 </div>
@@ -124,11 +124,11 @@
                         </vs-td>
 
                         <vs-td>
-                            {{ action.action_manager.name.length ? action.action_manager.name : 'No manager' }}
+                            {{ action.action_manager.user.first_name.length ? action.action_manager.user.first_name + ' ' + action.action_manager.user.last_name : 'No manager' }}
                         </vs-td>
 
                         <vs-td>
-                            <vs-button @click="editAction(action.name, action.is_action_paid)">
+                            <vs-button @click="editAction(action.name, action.is_action_paid, action.action_manager.user.id)">
                                 Edit
                             </vs-button>
 
@@ -245,7 +245,7 @@ export default {
         toEdit: {
             name: '',
             is_action_paid: false,
-            action_manager: 1,
+            action_manager: -1,
         },
         newNameConst: '',
 
@@ -319,11 +319,12 @@ export default {
             this.activeDelete = false;
         },
 
-        editAction(name, pricing) {
+        editAction(name, pricing, managerId) {
             this.activeEdit = true;
             this.toEdit.name = name;
             this.newNameConst = name;
             this.toEdit.is_action_paid = pricing;
+            this.toEdit.action_manager = managerId;
         },
 
         async finalEdit() {
@@ -345,13 +346,13 @@ export default {
                 .catch(e => {
                     console.log(e);
                 });
+            } else {
+              ExaminationActionsService.getAll()
+              .then(response => {
+                  this.actions = response.data;
+                  this.activeEdit = false;
+              })
             }
-
-            ExaminationActionsService.getAll()
-            .then(response => {
-                this.actions = response.data;
-            })
-
             this.activeEdit = false;
         }
     },

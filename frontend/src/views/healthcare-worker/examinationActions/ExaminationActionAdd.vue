@@ -46,11 +46,11 @@
 
                         <vs-option
                             v-for="worker in availableWorkers"
-                            :key="worker.id"
-                            :label="worker.name"
-                            :value="worker.id"
+                            :key="worker.user.id"
+                            :label="worker.user.first_name"
+                            :value="worker.user.id"
                         >
-                            {{ worker.name }}
+                            {{ worker.user.first_name }}
                         </vs-option>
                     </vs-select>
                 </div>

@@ -90,7 +90,7 @@
 
                 <h5>
                     Patient:
-                  <span @click="redirectToProfile(ticket.concern.patient.id, 'patient')" class="redirect__profile">{{ ticket.concern.patient.name }}</span>
+                  <span @click="redirectToProfile(ticket.concern.patient.user.id, 'patient')" class="redirect__profile">{{ ticket.concern.patient.user.first_name }} {{ ticket.concern.patient.user.last_name }}</span>
                 </h5>
 
                 <h5>
@@ -100,7 +100,7 @@
 
                 <h5>
                     Ticket created by:
-                    <span @click="redirectToProfile(ticket.created_by.id, 'doctor')" class="redirect__profile">{{ ticket.created_by.name }}</span>
+                    <span @click="redirectToProfile(ticket.created_by.user.id, 'doctor')" class="redirect__profile">{{ ticket.created_by.user.first_name }} {{ ticket.created_by.user.first_name }}</span>
                 </h5>
 
                 <div class="button__area">
@@ -138,6 +138,7 @@
 import ExaminationRequestsService from "@/services/examinationRequestsService";
 
 import DateUtils from "@/utils/dateUtils";
+import {mapState} from "vuex";
 
 export default {
     name: "ManageAssignedTickets",
@@ -154,11 +155,26 @@ export default {
         }
     }),
 
+    computed: {
+        ...mapState([
+            'user',
+            'userRole',
+        ])
+    },
+
     async created() {
-        ExaminationRequestsService.getAll()
-            .then(response => {
-            this.tickets = response.data;
-            })
+        if(this.userRole === 'admin') {
+            ExaminationRequestsService.getAll()
+                .then(response => {
+                this.tickets = response.data;
+                })
+        } else {
+            ExaminationRequestsService.getAllByCurrentUser(this.user.id)
+                .then(response => {
+                this.tickets = response.data;
+                })
+        }
+
     },
 
     methods: {

@@ -18,7 +18,7 @@ class ExaminationActionFilter(django_filters.FilterSet):
 class ExaminationRequestFilter(django_filters.FilterSet):
     class Meta:
         model = ExaminationRequest
-        fields = ['state']
+        fields = ['state', 'assigned_to']
 
 
 class PatientsFilter(django_filters.FilterSet):

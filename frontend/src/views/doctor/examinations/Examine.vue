@@ -3,7 +3,7 @@
         <div class="main__content">
             <h1>
               Creating examination for health concern {{ aboutConcern.name }}
-              of patient {{ aboutConcern.patient.name }}
+              of patient {{ aboutConcern.patient.user.first_name }} {{ aboutConcern.patient.user.last_name }}
           </h1>
         </div>
 
@@ -87,7 +87,7 @@
 
             <br>
 
-            <h5>Author: <b>TODO...current user</b></h5>
+            <h5>Author: <b>{{ user.first_name }} {{ user.last_name }}</b></h5>
             <h5>About concern: <b>{{ aboutConcern.name }}</b></h5>
 
             <br>
@@ -154,9 +154,16 @@ import TransactionRequestsService from "@/services/transactionRequestsService";
 import DateUtils from "@/utils/dateUtils";
 import ExaminationsService from "@/services/examinationsService";
 import DoctorsReportsService from "@/services/doctorsReportsService";
+import {mapState} from "vuex";
 
 export default {
     name: "Examine",
+
+    computed: {
+        ...mapState([
+            'user',
+        ])
+    },
 
     props: {
         id: String,
@@ -229,7 +236,7 @@ export default {
           // adding new examination into DB
           const newExamination = {
               date_of_examination: DateUtils.getDateForBackend(this.examinationDate),
-              examinating_doctor: this.aboutConcern.doctor.id,    // TODO current user
+              examinating_doctor: this.user.id,    // TODO current user
               concern: this.aboutConcern.id,
               request_based_on: null,
               actions: this.chosenActions.map(action => action.actionData.name),
@@ -246,7 +253,7 @@ export default {
               });
 
           const newReport = {
-            created_by: this.aboutConcern.doctor.id, // TODO current user
+            created_by: this.user.id,
             about_concern: this.aboutConcern.id,
             description: this.reportDescription,
           }
@@ -264,8 +271,8 @@ export default {
             name: this.aboutConcern.name,
             description: this.aboutConcern.description,
             state: 'ON',
-            patient: this.aboutConcern.patient.id,
-            doctor: this.aboutConcern.doctor.id
+            patient: this.aboutConcern.patient.user.id,
+            doctor: this.aboutConcern.doctor.user.id
           }
 
           HealthConcernsService.update(this.aboutConcern.id, newConcern)

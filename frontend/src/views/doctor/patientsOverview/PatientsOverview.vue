@@ -24,12 +24,20 @@
 <script>
 import PatientsService from "@/services/patientsService";
 import PatientsTable from "@/components/PatientsTable";
+import {mapState} from "vuex";
 
 export default {
     name: 'PatientsOverview',    
 
     components: {
         PatientsTable,
+    },
+
+    computed: {
+        ...mapState([
+            'user',
+            'userRole',
+        ])
     },
 
     data:() => ({
@@ -43,10 +51,19 @@ export default {
     }),
 
     async created() {
-        PatientsService.getAll()
-            .then(response => {
-            this.patients = response.data;
-            })
+        if(this.userRole === 'admin') {
+            PatientsService.getAll()
+              .then(response => {
+              this.patients = response.data;
+              })
+        }
+
+        if(this.userRole === 'doctor') {
+            PatientsService.getAllByDoctor(this.user.id)
+              .then(response => {
+              this.patients = response.data;
+              })
+        }
     },
 
     methods: {

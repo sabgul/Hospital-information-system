@@ -29,11 +29,11 @@
 
               <vs-option
                   v-for="doctor in availableDoctors"
-                  :key="doctor.id"
-                  :label="doctor.name"
-                  :value="doctor.id"
+                  :key="doctor.user.id"
+                  :label="doctor.user.first_name"
+                  :value="doctor.user.id"
               >
-                  {{ doctor.name }}
+                  {{ doctor.user.first_name }}
               </vs-option>
           </vs-select>
         </div>
@@ -56,12 +56,19 @@ import DoctorsService from "@/services/doctorsService";
 import ExaminationRequestsService from "@/services/examinationRequestsService";
 
 import NotificationsUtils from "@/utils/notificationsUtils";
+import {mapState} from "vuex";
 
 export default {
     name: 'NewExaminationRequest',
 
     props: {
       id: String,
+    },
+
+    computed: {
+        ...mapState([
+            'user',
+        ])
     },
 
     data:() => ({
@@ -88,8 +95,8 @@ export default {
             const newTicket = {
               state: 'PD',
               concern: this.id,
-              doctor: this.chosenDoctor,
-              created_by: this.chosenDoctor, // TODO toto bude current user!!
+              assigned_to: this.chosenDoctor,
+              created_by: this.user.id, // TODO toto bude current user!!
             }
 
             ExaminationRequestsService.create(newTicket)

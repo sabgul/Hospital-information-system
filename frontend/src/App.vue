@@ -37,7 +37,7 @@
           </template>
         </vs-tooltip>
 
-        <vs-sidebar-group>
+        <vs-sidebar-group v-if="userRole === 'patient' || userRole === 'admin'">
           <template #header>
                 <vs-sidebar-item arrow>
                     For patient
@@ -53,7 +53,7 @@
           </vs-sidebar-item>
         </vs-sidebar-group>
         
-        <vs-sidebar-group>
+        <vs-sidebar-group v-if="userRole === 'doctor' || userRole === 'admin'">
             <template #header>
                 <vs-sidebar-item arrow>
                     For doctor
@@ -117,7 +117,7 @@
             </vs-tooltip>
         </vs-sidebar-group>
 
-        <vs-sidebar-group>
+        <vs-sidebar-group v-if="userRole === 'healthcare-worker' || userRole === 'admin'">
             <template #header>
                 <vs-sidebar-item arrow>
                     For insurance worker
@@ -167,7 +167,7 @@
             </vs-tooltip>
         </vs-sidebar-group>
 
-        <vs-sidebar-group>
+        <vs-sidebar-group v-if="userRole === 'admin'">
             <template #header>
                 <vs-sidebar-item arrow>
                     For admin
@@ -244,7 +244,7 @@
 
                   <template #text>
                     <p>
-                      Logged as {{ userRole }}
+                      Logged as {{ userRole.replace('-', ' ') }}
                     </p>
                   </template>
 
