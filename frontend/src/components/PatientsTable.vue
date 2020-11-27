@@ -18,6 +18,10 @@
                     <vs-th>
                         Email contact
                     </vs-th>
+
+                    <vs-th>
+                        Gender
+                    </vs-th>
                 </vs-tr>
             </template>
 
@@ -28,15 +32,19 @@
                     :data="patient"
                 >
                     <vs-td>
-                        <span @click="redirectToPatientProfile(patient.user.id, 'patient')" class="redirect__profile">{{ patient.user.first_name }} {{ patient.user.last_name }}</span>
+                      <span @click="redirectToPatientProfile(patient.user.id, 'patient')" class="redirect__profile"><b>{{ patient.user.first_name }} {{ patient.user.last_name }}</b></span>
                     </vs-td>
 
                     <vs-td>
-                        {{ patient.user.date_of_birth }}
+                        {{ getDate(patient.user.date_of_birth) }}
                     </vs-td>
 
                     <vs-td>
                         {{ patient.user.email }}
+                    </vs-td>
+
+                    <vs-td>
+                        {{ getGender(patient.user.gender) }}
                     </vs-td>
                 </vs-tr>
             </template>
@@ -49,6 +57,8 @@
 </template>
 
 <script>
+import DateUtils from "@/utils/dateUtils";
+
 export default {
   name: "PatientsTable",
 
@@ -66,6 +76,24 @@ export default {
     redirectToPatientProfile(userId, role) {
         this.$router.push({ name: 'profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }});
     },
+
+    getDate(date) {
+      return DateUtils.getDateForFrontend(date);
+    },
+
+    getGender(rawGender) {
+      if(rawGender === 'M') {
+        return 'Male';
+      }
+
+      if(rawGender === 'F') {
+        return 'Female';
+      }
+
+      if(rawGender === 'O') {
+        return 'Other';
+      }
+    }
   },
 }
 </script>

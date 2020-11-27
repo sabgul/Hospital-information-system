@@ -7,10 +7,10 @@
 
           <div class="info__basic wrapper">
               <div class="first__row" style="width: 500px;">
-                  <h5><b>Patient</b>: {{ concern.patient.name }}</h5>
-                  <h5><b>Doctor</b>: {{ concern.doctor.name }}</h5>
+                  <h5><b>Patient</b>: {{ concern.patient.user.first_name }} {{ concern.patient.user.last_name }}</h5>
+                  <h5><b>Doctor</b>: {{ concern.doctor.user.first_name }} {{ concern.doctor.user.last_name }}</h5>
                   <h5><b>State</b>: {{ getState(concern.state) }}</h5>
-                  <h5><b>Description</b>: {{ concern.description }}</h5>
+                  <h5><b>Description</b>: {{ concern.description.length ? concern.description : '-' }}</h5>
               </div>
 
               <div class="submit__row" style="margin-top: 1em; margin-right: 4em;">
@@ -156,7 +156,7 @@
         >
             <template #header>
                 <h5>
-                    Examination date: {{ detailExamination.date_of_examination }}
+                    Examination date: {{ getDate(detailExamination.date_of_examination) }}
                 </h5>
             </template>
 

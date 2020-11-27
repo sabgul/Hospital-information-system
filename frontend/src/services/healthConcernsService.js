@@ -21,7 +21,7 @@ class HealthConcernsService {
     })
   }
 
-  getFiltered(filter) {
+  getFiltered(filter, currentUserId, role) {
     const patient_name = filter.patient_name;
     const state_of_concern = filter.state_of_concern;
 
@@ -29,6 +29,7 @@ class HealthConcernsService {
       'params': {
         ...(patient_name !== -1 ? { 'patient': patient_name} : {}),
         ...(state_of_concern !== -1 ? { 'state': state_of_concern} : {}),
+        ...(role === 'doctor' ? { 'doctor': currentUserId } : {})
       }
     })
   }

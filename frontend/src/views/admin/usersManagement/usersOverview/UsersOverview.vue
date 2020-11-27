@@ -98,7 +98,7 @@
                         </vs-td>
 
                         <vs-td>
-                            {{ user.userData.user.date_of_birth }}
+                            {{ getDate(user.userData.user.date_of_birth) }}
                         </vs-td>
 
                         <vs-td>
@@ -234,6 +234,8 @@ import HealthcareWorkersService from '@/services/healthcareWorkersService.js';
 import NotificationsUtils from "@/utils/notificationsUtils";
 import HealthConcernsService from "@/services/healthConcernsService";
 
+import DateUtils from "@/utils/dateUtils";
+
 export default {
     name: 'UsersOverview',    
 
@@ -257,6 +259,10 @@ export default {
     },
     
     methods: {
+        getDate(date) {
+          return DateUtils.getDateForFrontend(date);
+        },
+
         async getAllUsers() {
             this.users = [];
             PatientsService.getAll()

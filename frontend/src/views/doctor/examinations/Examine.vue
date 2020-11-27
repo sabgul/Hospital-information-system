@@ -97,6 +97,13 @@
                 v-model="reportDescription"
                 placeholder="Put text of report here.."
             />
+
+             <file-upload
+                :url='url'
+                :thumb-url='thumbUrl'
+                :headers="headers"
+                @change="onFileChange"
+              />
         </div>
 
         <div class="main__content">
@@ -154,7 +161,7 @@ import TransactionRequestsService from "@/services/transactionRequestsService";
 import DateUtils from "@/utils/dateUtils";
 import ExaminationsService from "@/services/examinationsService";
 import DoctorsReportsService from "@/services/doctorsReportsService";
-import {mapState} from "vuex";
+import { mapState } from "vuex";
 
 export default {
     name: "Examine",
@@ -184,6 +191,10 @@ export default {
         availableActions: [],
 
         askToCover: true,     // if false, patient pays it on his own
+
+        url: 'http://your-post.url',
+        headers: {'access-token': '<your-token>'},
+        filesUploaded: [],
     }),
 
     async created() {
@@ -301,7 +312,16 @@ export default {
                     });
               }
         });
-        }
+        },
+
+        thumbUrl (file) {
+          return file.myThumbUrlProperty;
+        },
+
+        onFileChange (file) {
+          // Handle files like:
+          this.filesUploaded = file;
+        },
     }
 }
 </script>

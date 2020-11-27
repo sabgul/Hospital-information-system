@@ -452,7 +452,6 @@ export default {
               this.concerns = response.data;
               })
         }
-
     },
 
     methods: {
@@ -472,7 +471,7 @@ export default {
         },
 
         async getFiltered() {
-            HealthConcernsService.getFiltered(this.filter)
+            HealthConcernsService.getFiltered(this.filter, this.user.id, this.userRole)
                 .then(response => {
                     this.concerns = response.data;
                 })
@@ -482,10 +481,19 @@ export default {
             this.filter.patient_name = -1;
             this.filter.state_of_concern = -1;
 
-            HealthConcernsService.getAll()
-            .then(response => {
-              this.concerns = response.data;
-            })
+            if(this.userRole === 'admin') {
+                HealthConcernsService.getAll()
+                  .then(response => {
+                  this.concerns = response.data;
+                  })
+            }
+
+            if(this.userRole === 'doctor') {
+                HealthConcernsService.getAllByCurrentUser(this.user.id)
+                  .then(response => {
+                  this.concerns = response.data;
+                  })
+            }
         },
 
           getState(rawState) {

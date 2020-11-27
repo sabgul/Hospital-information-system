@@ -3,7 +3,7 @@
       <div class="main__content">
           <h1>
               Creating examination according to ticket related to health concern {{ examinationAboutTicket.concern.name }}
-              of patient {{ examinationAboutTicket.concern.patient.name }}
+              of patient {{ examinationAboutTicket.concern.patient.user.first_name }} {{ examinationAboutTicket.concern.patient.user.last_name }}
           </h1>
       </div>
 
@@ -89,7 +89,7 @@
 
           <br>
 
-          <h5>Author: <b>TODO...current user</b></h5>
+          <h5>Author: <b>{{ currentUserName }}</b></h5>
           <h5>About concern: <b>{{ examinationAboutTicket.concern.name }}</b></h5>
           <h5>Based on ticket number <b>{{ examinationAboutTicket.id }}</b></h5>
 
@@ -163,12 +163,23 @@ import DoctorsReportsService from "@/services/doctorsReportsService";
 
 import NotificationsUtils from "@/utils/notificationsUtils";
 import DateUtils from "@/utils/dateUtils";
+import {mapState} from "vuex";
 
 export default {
     name: "NewExamination",
 
     props: {
         id: String,
+    },
+
+    computed: {
+        ...mapState([
+            'user',
+        ]),
+
+        currentUserName() {
+          return this.user.first_name + ' ' + this.user.last_name;
+        }
     },
 
     data:() => ({
@@ -259,7 +270,7 @@ export default {
           // adding new examination into DB
           const newExamination = {
               date_of_examination: DateUtils.getDateForBackend(this.examinationDate),
-              examinating_doctor: this.examinationAboutTicket.created_by.id,
+              examinating_doctor: this.examinationAboutTicket.created_by.user.id,
               request_based_on: this.examinationAboutTicket.id,
               concern: this.examinationAboutTicket.concern.id,
               actions: this.chosenActions.map(action => action.name),
@@ -276,7 +287,7 @@ export default {
               });
 
           const newReport = {
-            created_by: this.examinationAboutTicket.created_by.id, // TODO current user
+            created_by: this.user.id, // TODO current user
             about_concern: this.examinationAboutTicket.concern.id,
             description: this.reportDescription,
           }
@@ -293,7 +304,8 @@ export default {
           if(this.markTicketResolved) {
             const newTicketData = {
                 concern: this.examinationAboutTicket.concern.id,
-                created_by: this.examinationAboutTicket.created_by.id,
+                created_by: this.examinationAboutTicket.created_by.user.id,
+                assigned_to: this.user.id,
                 state: 'RD'
             };
             ExaminationRequestsService.update(this.examinationAboutTicket.id, newTicketData)
@@ -310,8 +322,8 @@ export default {
             name: this.examinationAboutTicket.concern.name,
             description: this.examinationAboutTicket.concern.description,
             state: 'ON',
-            patient: this.examinationAboutTicket.concern.patient.id,
-            doctor: this.examinationAboutTicket.concern.doctor.id
+            patient: this.examinationAboutTicket.concern.patient.user.id,
+            doctor: this.examinationAboutTicket.concern.doctor.user.id
           }
 
           HealthConcernsService.update(this.examinationAboutTicket.concern.id, newConcern)

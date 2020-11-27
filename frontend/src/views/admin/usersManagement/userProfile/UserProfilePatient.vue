@@ -9,7 +9,7 @@
             @click="redirectToDocProfile(patient.main_doctor.id, 'doctor')"
             class="redirect__profile"
         >
-            {{ patient.main_doctor.name }}
+            {{ patient.main_doctor.user.first_name }} {{ patient.main_doctor.user.last_name }}
         </span>
     </h5>
 
@@ -54,7 +54,7 @@
                     >
                         <vs-td>
                             <span @click="redirectToConcernDetail(concern.id)" class="concern__name">
-                                {{ concern.name }}
+                                <b>{{ concern.name }}</b>
                             </span>
                         </vs-td>
 
@@ -124,11 +124,11 @@
                   >
                       <vs-option
                           v-for="doctor in availableDoctors"
-                          :key="doctor.id"
-                          :label="doctor.name"
-                          :value="doctor.id"
+                          :key="doctor.user.id"
+                          :label="doctor.user.first_name"
+                          :value="doctor.user.id"
                       >
-                          {{ doctor.name }}
+                          {{ doctor.user.first_name }}
                       </vs-option>
               </vs-select>
 

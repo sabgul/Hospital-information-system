@@ -40,7 +40,7 @@
                 </vs-td>
 
                 <vs-td>
-                    <b>{{ getPricingInfo(supervised_actions.is_action_paid) }}</b>
+                    <b>{{ getPricingInfo(action.is_action_paid) }}</b>
                 </vs-td>
             </vs-tr>
         </template>

@@ -10,13 +10,6 @@
 
     <div class="main__content">
       <patients-table :patients="patients"/>
-
-      <file-upload
-        :url='url'
-        :thumb-url='thumbUrl'
-        :headers="headers"
-        @change="onFileChange"
-      />
     </div>
   </div>
 </template>
@@ -45,9 +38,6 @@ export default {
         page: 1,
         max: 10,
         searchValue: '',
-        url: 'http://your-post.url',
-        headers: {'access-token': '<your-token>'},
-        filesUploaded: []
     }),
 
     async created() {
@@ -65,16 +55,6 @@ export default {
               })
         }
     },
-
-    methods: {
-        thumbUrl (file) {
-          return file.myThumbUrlProperty;
-        },
-        onFileChange (file) {
-          // Handle files like:
-          this.filesUploaded = file;
-        },
-    }
 }
 </script>
 
