@@ -5,12 +5,12 @@
 
         <p>
             During patient examination, there are usually several examination actions.<br>
-            Many of them might be paid by patient's healthcare insurence.<br>
+            Many of them might be paid by patient's healthcare insurance.<br>
             You can see overview of all requests made by doctors, which you are able to manage.
         </p>
     </div>
 
-    <div class="main__content" style="text-align: center;">
+    <div class="main__content">
         <div v-if="requests.length === 0">
             <h4>No requests to manage</h4>
             <img src="../../../assets/relax.svg" alt="">
@@ -22,10 +22,10 @@
             v-bind:key="index"
             class="request"
         >
-          <div>
+          <div style="margin-left: 1em;">
               <span>Request n. <b>{{ request.id }}</b></span>
               <br>
-              <span>Patient: <b>{{ request.related_to_patient.name }}</b></span>
+              <span>Patient: <b>{{ request.related_to_patient.user.first_name }} {{ request.related_to_patient.user.last_name }}</b></span>
               <br>
               <span>Examination action: <b>{{ request.examination_action.name }}</b></span>
               <br>
@@ -127,15 +127,15 @@ export default {
             let editedRequest = {
                 id: this.requestToCover.id,
                 examination_action: this.requestToCover.examination_action.name,
-                related_to_patient: this.requestToCover.related_to_patient.id,
-                transaction_approver: this.requestToCover.transaction_approver.id,
+                related_to_patient: this.requestToCover.related_to_patient.user.id,
+                transaction_approver: this.requestToCover.transaction_approver.user.id,
                 request_state: 'CD',
             };
 
             TransactionRequestsService.update(this.requestToCover.id, editedRequest)
                 .then(response => {
                     console.log(response);
-                    NotificationsUtils.successPopup('Given action is successfully cover by insurance company.', this.$vs);
+                    NotificationsUtils.successPopup('Given action is successfully covered by insurance company.', this.$vs);
 
                     TransactionRequestsService.getAll()
                       .then(response => {
@@ -152,7 +152,7 @@ export default {
             TransactionRequestsService.delete(request.id)
                 .then(response => {
                     console.log(response);
-                    NotificationsUtils.successPopup('Given action is successfully removed.', this.$vs);
+                    NotificationsUtils.successPopup('Given action was successfully removed.', this.$vs);
 
                     TransactionRequestsService.getAll()
                       .then(response => {

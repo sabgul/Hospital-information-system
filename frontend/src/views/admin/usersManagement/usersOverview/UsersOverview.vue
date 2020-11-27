@@ -106,7 +106,7 @@
                         </vs-td>
 
                         <vs-td>
-                          {{ user.userData.user_active ? 'Active' : 'Inactive' }}
+                          {{ user.userData.user.is_active ? 'Active' : 'Inactive' }}
                         </vs-td>
 
                         <template #expand>
@@ -146,7 +146,7 @@
                                         </template>
                                     </vs-tooltip>
 
-                                    <vs-tooltip v-if="user.userData.user.user_active">
+                                    <vs-tooltip v-if="user.userData.user.is_active">
                                         <vs-button warn icon @click="changeUserActivity(user)">
                                             <box-icon
                                                 name='block'
@@ -159,7 +159,7 @@
                                         </template>
                                     </vs-tooltip>
 
-                                    <vs-tooltip v-if="!user.userData.user.user_active">
+                                    <vs-tooltip v-if="!user.userData.user.is_active">
                                         <vs-button success icon @click="changeUserActivity(user)">
                                             <box-icon
                                                 name='check-circle'
