@@ -71,10 +71,6 @@
                         <vs-th>
                             E-mail contact
                         </vs-th>
-
-                        <vs-th>
-                            State
-                        </vs-th>
                     </vs-tr>
                 </template>
 
@@ -103,10 +99,6 @@
 
                         <vs-td>
                             {{ getEmailContact(user.userData.user.email) }}
-                        </vs-td>
-
-                        <vs-td>
-                          {{ user.userData.user.is_active ? 'Active' : 'Inactive' }}
                         </vs-td>
 
                         <template #expand>
@@ -143,32 +135,6 @@
 
                                         <template #tooltip>
                                             Edit user
-                                        </template>
-                                    </vs-tooltip>
-
-                                    <vs-tooltip v-if="user.userData.user.is_active">
-                                        <vs-button warn icon @click="changeUserActivity(user)">
-                                            <box-icon
-                                                name='block'
-                                                animation='tada-hover'
-                                            />
-                                        </vs-button>
-
-                                        <template #tooltip>
-                                            Make user inactive
-                                        </template>
-                                    </vs-tooltip>
-
-                                    <vs-tooltip v-if="!user.userData.user.is_active">
-                                        <vs-button success icon @click="changeUserActivity(user)">
-                                            <box-icon
-                                                name='check-circle'
-                                                animation='tada-hover'
-                                            />
-                                        </vs-button>
-
-                                        <template #tooltip>
-                                            Make user active
                                         </template>
                                     </vs-tooltip>
 
@@ -298,37 +264,6 @@ export default {
               .then(response => {
                   this.users = response.data;
               })
-        },
-
-        async changeUserActivity(user) {
-            let newUserData = {...user.userData};
-            newUserData.user_active = !newUserData.user_active;
-
-            if(user.role === 'Doctor') {
-                DoctorsService.update(user.userData.id, newUserData)
-                    .then(response => {
-                    console.log(response);
-                    NotificationsUtils.successPopup('User activity successfully changed.', this.$vs);
-                    this.getAllUsers();
-                    this.$forceUpdate();
-                })
-            }
-
-            if(user.role === 'Health insurance worker') {
-                HealthcareWorkersService.update(user.userData.id, newUserData)
-                    .then(response => {
-                    console.log(response);
-                    NotificationsUtils.successPopup('User activity successfully changed.', this.$vs);
-                })
-            }
-
-            if(user.role === 'Patient') {
-                PatientsService.update(user.userData.id, newUserData)
-                    .then(response => {
-                    console.log(response);
-                    NotificationsUtils.successPopup('User activity successfully changed.', this.$vs);
-                })
-            }
         },
 
         deleteUserDialog(user) {

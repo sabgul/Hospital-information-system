@@ -2,7 +2,7 @@
     <div>
         <div class="main__content">
           <h1>
-            Editing <b>{{ userData.user.first_name }} {{ userData.user.last_name }}</b>'s profile
+            Editing <b>{{ userData.first_name }} {{ userData.last_name }}</b>'s profile
           </h1>
         </div>
 
@@ -12,9 +12,9 @@
                     <vs-input
                         label="First name"
                         color="primary"
-                        v-model="newUserData.user.first_name"
+                        v-model="newUserData.first_name"
                     >
-                      <template #message-danger v-if="newUserData.user.first_name.length === 0">
+                      <template #message-danger v-if="newUserData.first_name.length === 0">
                         Required
                       </template>
                     </vs-input>
@@ -24,9 +24,9 @@
                     <vs-input
                         label="Last name"
                         color="primary"
-                        v-model="newUserData.user.last_name"
+                        v-model="newUserData.last_name"
                     >
-                      <template #message-danger v-if="newUserData.user.last_name.length === 0">
+                      <template #message-danger v-if="newUserData.last_name.length === 0">
                         Required
                       </template>
                     </vs-input>
@@ -34,7 +34,7 @@
 
                 <div class="second__row">
                     <vs-input
-                        v-model="newUserData.user.date_of_birth"
+                        v-model="newUserData.date_of_birth"
                         label="Date of birth"
                         color="primary"
                         type="date"
@@ -45,24 +45,24 @@
                   <vs-input
                       label="Phone number"
                       color="primary"
-                      v-model="newUserData.user.phone_number"
+                      v-model="newUserData.phone_number"
                   />
                 </div>
 
                 <div class="third__row">
-                  <vs-input
-                      v-if="role === 'doctor'"
-                      label="Doctor specialisation"
-                      color="primary"
-                      v-model="newUserData.specializes_in"
-                  />
+<!--                  <vs-input-->
+<!--                      v-if="role === 'doctor'"-->
+<!--                      label="Doctor specialisation"-->
+<!--                      color="primary"-->
+<!--                      v-model="newUserData.specializes_in"-->
+<!--                  />-->
 
-                  <vs-input
-                      v-if="role === 'health-insurance-worker'"
-                      label="Insurance company"
-                      color="primary"
-                      v-model="newUserData.works_for_company"
-                  />
+<!--                  <vs-input-->
+<!--                      v-if="role === 'health-insurance-worker'"-->
+<!--                      label="Insurance company"-->
+<!--                      color="primary"-->
+<!--                      v-model="newUserData.works_for_company"-->
+<!--                  />-->
 
                   <vs-select
                       v-if="role === 'patient'"
@@ -84,7 +84,6 @@
 
                     <vs-button
                         @click="saveChanges"
-                        :disabled="!isEmailValid"
                         style="padding: 3px 28px;">
                         Save changes
                     </vs-button>
@@ -100,7 +99,8 @@
 <script>
 import PatientsService from "@/services/patientsService";
 import DoctorsService from "@/services/doctorsService";
-import HealthcareWorkersService from "@/services/healthcareWorkersService";
+// import HealthcareWorkersService from "@/services/healthcareWorkersService";
+import UsersService from "@/services/usersService";
 
 import NotificationsUtils from "@/utils/notificationsUtils";
 
@@ -126,9 +126,16 @@ export default {
     },
 
     async created() {
+      UsersService.get(this.id)
+          .then(response => {
+              this.userData = response.data;
+              this.newUserData = {...this.userData};
+            })
+
       if(this.role === 'patient') {
           PatientsService.get(this.id)
           .then(response => {
+            console.log(response.data);
               this.userData = response.data;
               this.newUserData = {...this.userData};
           })
@@ -142,23 +149,19 @@ export default {
           })
       }
 
-      if(this.role === 'health-insurance-worker') {
-          HealthcareWorkersService.get(this.id)
-          .then(response => {
-              this.userData = response.data;
-              this.newUserData = {...this.userData};
-          })
-      }
-    },
-
-    computed: {
-        isEmailValid() {
-          return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.newUserData.user.email);
-        },
+      // if(this.role === 'health-insurance-worker') {
+      //     HealthcareWorkersService.get(this.id)
+      //     .then(response => {
+      //       console.log(response.data);
+      //         this.userData = response.data;
+      //         this.newUserData = {...this.userData};
+      //     })
+      // }
     },
 
     methods: {
         formatDate(date) {
+          console.log(date);
             const day = date.slice(8, 10);
             const month = date.slice(5, 7);
             const year = date.slice(0, 4);
@@ -175,12 +178,13 @@ export default {
 
           if(this.role === 'doctor') {
             updatedInfo = {
-              name: this.newUserData.name,
-              date_of_birth: this.formatDate(this.newUserData.date_of_birth),
-              phone_number: this.newUserData.phone_number,
+              user: {
+                first_name: this.newUserData.user.first_name,
+                last_name: this.newUserData.user.last_name,
+                date_of_birth: this.formatDate(this.newUserData.user.date_of_birth),
+                phone_number: this.newUserData.user.phone_number,
+              },
               specializes_in: this.newUserData.specializes_in,
-              user_active: true,
-              active_from: this.formatDate(this.userData.active_from)
             };
 
             DoctorsService.update(this.id, updatedInfo)
@@ -195,20 +199,21 @@ export default {
           }
 
           if(this.role === 'health-insurance-worker') {
-            updatedInfo = {
-              name: this.newUserData.name,
-              date_of_birth: this.formatDate(this.newUserData.date_of_birth),
-              phone_number: this.newUserData.phone_number,
-              user_active: true,
-              active_from: this.formatDate(this.userData.active_from),
-              works_for_company: this.newUserData.works_for_company
-            };
+            // updatedInfo = {
+            //   // user: {
+            //     first_name: this.newUserData.user.first_name,
+            //     last_name: this.newUserData.user.last_name,
+            //     date_of_birth: this.formatDate(this.newUserData.user.date_of_birth),
+            //     phone_number: this.newUserData.user.phone_number,
+            //   // },
+            //   // works_for_company: this.newUserData.works_for_company
+            // };
 
-            HealthcareWorkersService.update(this.id, updatedInfo)
+            UsersService.update(this.id, this.newUserData)
             .then(response => {
                 console.log(response);
                 NotificationsUtils.successPopup('User data successfully edited.', this.$vs);
-                this.userData = {...updatedInfo};
+                // this.userData = {...updatedInfo};
             })
             .catch(e => {
                 NotificationsUtils.failPopup(e, this.$vs);

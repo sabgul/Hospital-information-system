@@ -14,8 +14,6 @@
                   {{ userData.user.phone_number ? '+' + userData.user.phone_number : 'Phone number not stated' }}</h5>
             </div>
 
-            <h6><b>User activity</b>: {{ userData.user.is_active ? 'Active' : 'Inactive' }}</h6>
-            
             <div class="user__pic">
                 <vs-card type="2">
                     <template #img>

@@ -99,8 +99,7 @@ export const store = new Vuex.Store({
                 })
             },
             logoutUser(context) {
-
-                if (context.getters.loggedIn) { // todo why not isAuthenticated
+                if (context.getters.isAuthenticated) { // todo why not isAuthenticated
                     return new Promise((resolve, ) => {  // removed second param 'reject'
                         axios_instance.post('/token/logout/')
                             .then(() => {

@@ -397,10 +397,10 @@ export default {
 
       logoutConfirm() {
         this.activeLogout = false;
-
         this.$store.dispatch('logoutUser')
             .then(() => {
               this.$router.push('/');
+              this.window.sessionStorage.clear();
             })
       },
   }
