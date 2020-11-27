@@ -6,15 +6,18 @@
 
     <br>
 
-    <h5><b>Assigned patients:</b></h5>
+    <div v-if="userRole === 'admin' || user.id === doctor.user.id">
+        <h5><b>Assigned patients:</b></h5>
 
-    <patients-table :patients="assignedPatients"/>
+        <patients-table :patients="assignedPatients"/>
+    </div>
   </div>
 </template>
 
 <script>
 import PatientsService from "@/services/patientsService";
 import PatientsTable from "@/components/PatientsTable";
+import {mapState} from "vuex";
 
 export default {
   name: "UserProfileDoctor",
@@ -29,6 +32,13 @@ export default {
 
   props: {
     doctor: {},
+  },
+
+  computed: {
+      ...mapState([
+          'user',
+          'userRole',
+      ])
   },
 
   async created() {

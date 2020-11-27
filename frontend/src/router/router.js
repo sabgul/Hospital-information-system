@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import {store} from '@/store/store';
+import { store } from '@/store/store';
 
 Vue.use(Router);
 
@@ -28,7 +28,7 @@ const router = new Router({
         // Information for patients
         {
             path: '/my-health-report-card',
-            name: 'HealthReportCard',
+            name: 'healthReportCard',
             component: () => import('@/views/patient/healthReportCard/HealthReportCard'),
             meta: {
                 requiresAuth: true
@@ -196,11 +196,11 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
     if (to.matched.some((record) => record.meta.requiresAuth)) {
         if (!store.getters.isAuthenticated) {
-            next('/')
-            return
+            next('/');
+            return;
         }
     }
-    next()
+    next();
 })
 
-export default router
+export default router;

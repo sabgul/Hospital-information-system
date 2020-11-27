@@ -12,6 +12,60 @@
         </div>
 
         <div class="main__content">
+            <h4>
+                Filter in your health concerns
+            </h4>
+
+            <div class="wrapper">
+                <div class="first__row">
+                    <vs-select
+                        v-model="filter.state"
+                        label="State"
+                        color="primary"
+                    >
+                        <vs-option
+                            value="WT"
+                            label="Waiting"
+                        >
+                            Waiting
+                        </vs-option>
+
+                        <vs-option
+                            value="ON"
+                            label="Ongoing"
+                        >
+                            Ongoing
+                        </vs-option>
+
+                        <vs-option
+                            value="ED"
+                            label="Ended"
+                        >
+                            Ended
+                        </vs-option>
+                    </vs-select>
+                </div>
+
+                <div class="submit__row" style="margin-top: 2em; margin-bottom: 4em;">
+                    <vs-button
+                        @click="clearFilter()"
+                        style="padding: 3px 25px;"
+                        border
+                    >
+                        Clear filter
+                    </vs-button>
+
+                    <vs-button
+                        @click="getFiltered()"
+                        style="padding: 3px 42px;"
+                    >
+                        Filter
+                    </vs-button>
+                </div>
+            </div>
+        </div>
+
+        <div class="main__content">
             <vs-table
                 striped
                 class="actions__table"
@@ -103,19 +157,24 @@ export default {
         searchValue: '',
 
         healthConcerns: [],
+
+        filter: {
+            state: -1,
+        }
     }),
 
     computed: {
         ...mapState([
             'user',
+            'userRole'
         ])
     },
 
     async created() {
         HealthConcernsService.getAllByPatient(this.user.id)
-          .then(response => {
-              this.healthConcerns = response.data;
-          })
+            .then(response => {
+                this.healthConcerns = response.data;
+            })
     },
 
     methods: {
@@ -126,10 +185,29 @@ export default {
         redirectToConcernDetail(concernId) {
            this.$router.push({ name: 'healthConcernDetail', params: {id: concernId }});
         },
+
+        async clearFilter() {
+            this.filter.state = -1;
+
+             HealthConcernsService.getAllByPatient(this.user.id)
+                 .then(response => {
+                    this.healthConcerns = response.data;
+                 })
+        },
+
+        async getFiltered() {
+            HealthConcernsService.getFilteredByPatient(this.user.id, this.filter)
+                .then(response => {
+                    this.healthConcerns = response.data;
+                })
+        }
     },
 }
 </script>
 
 <style scoped>
-
+    .actions__table {
+        width: 80%;
+        margin: 1em auto 0;
+    }
 </style>

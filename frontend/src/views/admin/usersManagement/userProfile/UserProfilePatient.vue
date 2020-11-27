@@ -39,10 +39,13 @@
                           State
                       </vs-th>
 
+                      <vs-th v-if="userRole === 'patient'">
+                          Description
+                      </vs-th>
+
                       <vs-th>
                           Actions
                       </vs-th>
-
                   </vs-tr>
               </template>
 
@@ -63,15 +66,30 @@
                       </vs-td>
 
                       <vs-td>
-                          <vs-button border @click="redirectToExamination(concern.id)" style="width: 170px;">
+                          {{ concern.description.length ? concern.description : '-' }}
+                      </vs-td>
+
+                      <vs-td>
+                          <vs-button
+                              v-if="userRole === 'admin' || userRole === 'doctor'"
+                              border
+                              @click="redirectToExamination(concern.id)"
+                              style="width: 170px;"
+                          >
                               Examine
                           </vs-button>
 
-                          <vs-button class="buttons" @click="redirectToNewRequest(concern.id)" style="width: 170px;">
+                          <vs-button
+                              v-if="userRole === 'admin' || userRole === 'doctor'"
+                              class="buttons"
+                              @click="redirectToNewRequest(concern.id)"
+                              style="width: 170px;"
+                          >
                               New examination request
                           </vs-button>
 
                           <vs-button
+                              v-if="userRole === 'admin' || userRole === 'doctor'"
                               danger
                               class="buttons"
                               @click="reassign(concern)"
@@ -79,9 +97,18 @@
                           >
                               Assign to another doctor
                           </vs-button>
+
+                          <vs-button
+                              v-if="userRole === 'patient'"
+                              class="buttons"
+                              border
+                              @click="redirectToConcernDetail(concern.id)"
+                          >
+                                Show more details
+                          </vs-button>
                       </vs-td>
 
-                      <template #expand>
+                      <template #expand v-if="userRole === 'admin' || userRole === 'doctor'">
                         <div style="width: 80%;">
                         <p><b>Description: </b>{{ concern.description }}</p>
                         </div>
@@ -91,7 +118,7 @@
                             @click="redirectToConcernDetail(concern.id)"
                         >
                               Show more details
-                          </vs-button>
+                        </vs-button>
                       </template>
 
                   </vs-tr>
@@ -176,20 +203,20 @@ export default {
   computed: {
       ...mapState([
           'user',
+          'userRole',
       ])
   },
 
   async created() {
-      console.log(this.patient)
-      HealthConcernsService.getAllByPatient(this.patient.id)
+      HealthConcernsService.getAllByPatient(this.patient.user.id)
           .then(response => {
               this.healthConcerns = response.data;
           })
 
       DoctorsService.getAll()
-              .then(response => {
+          .then(response => {
               this.availableDoctors = response.data;
-              })
+          })
   },
 
   methods: {
@@ -213,10 +240,10 @@ export default {
               console.log(response);
               NotificationsUtils.successPopup('Manager of ' + newConcern.name + ' successfully changed.', this.$vs);
 
-              HealthConcernsService.getAll()
-                  .then(response => {
-                  this.concerns = response.data;
-                  })
+              HealthConcernsService.getAllByPatient(this.patient.id)
+              .then(response => {
+                  this.healthConcerns = response.data;
+              })
           })
           .catch(e => {
               NotificationsUtils.failPopup(e, this.$vs);

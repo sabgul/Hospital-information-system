@@ -8,15 +8,24 @@ class HealthConcernsService {
   getAllByCurrentUser(currentUserId) {
       return http.get("/health-concerns/", {
       'params': {
-        ...({ 'doctor': currentUserId }),
+          ...({ 'doctor': currentUserId }),
       }
     })
   }
 
   getAllByPatient(patientId) {
-    return http.get("health-concerns/", {
+    return http.get("/health-concerns/", {
       'params': {
           ...({ 'patient': patientId }),
+      }
+    })
+  }
+
+  getFilteredByPatient(patientId, filter) {
+    return http.get("/health-concerns/", {
+      'params': {
+          ...({ 'patient': patientId }),
+          ...(filter.state !== -1 ? { 'state': filter.state } : {}),
       }
     })
   }
@@ -27,8 +36,8 @@ class HealthConcernsService {
 
     return http.get("/health-concerns/",{
       'params': {
-        ...(patient_name !== -1 ? { 'patient': patient_name} : {}),
-        ...(state_of_concern !== -1 ? { 'state': state_of_concern} : {}),
+        ...(patient_name !== -1 ? { 'patient': patient_name } : {}),
+        ...(state_of_concern !== -1 ? { 'state': state_of_concern } : {}),
         ...(role === 'doctor' ? { 'doctor': currentUserId } : {})
       }
     })

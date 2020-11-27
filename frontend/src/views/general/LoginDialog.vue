@@ -122,16 +122,16 @@ export default {
 
       let login_role;
       if (this.$store.state.patientLoginWindowActive)
-        login_role = 'patient'
+        login_role = 'patient';
       else if (this.$store.state.doctorLoginWindowActive)
-        login_role = 'doctor'
+        login_role = 'doctor';
       else if (this.$store.state.healthcareLoginWindowActive)
-        login_role = 'healthcare-worker'
+        login_role = 'healthcare-worker';
       else if (this.$store.state.adminLoginWindowActive)
-        login_role = 'admin'
+        login_role = 'admin';
       else {
-        console.log('invalid login role')
-        return
+        console.log('invalid login role');
+        return;
       }
 
       this.$store.dispatch('loginUser', {
@@ -140,23 +140,36 @@ export default {
         role: login_role,
       })
           .then(() => {
-            this.credentials_invalid = false
-            this.$router.push('patients')
-            this.loginDialogClosed()
+            this.credentials_invalid = false;
+
+            if(login_role === 'patient') {
+              this.$router.push('my-health-report-card');
+            }
+            if(login_role === 'doctor') {
+              this.$router.push('health-concerns');
+            }
+            if(login_role === 'healthcare-worker') {
+              this.$router.push('examination-actions-overview');
+            }
+            if(login_role === 'admin') {
+              this.$router.push('users-overview');
+            }
+
+            this.loginDialogClosed();
           })
           .catch(err => {
-            console.log(err)
-            this.credentials_invalid = true
+            console.log(err);
+            this.credentials_invalid = true;
 
             // no response if BE is not running
             if (err.response) {
               if (err.response.data) {
-                this.response_string = err.response.data.detail
+                this.response_string = err.response.data.detail;
               }
-              this.response_code = err.response.status
+              this.response_code = err.response.status;
             } else {
-              this.response_string = 'No response from server'
-              this.response_code = '-'
+              this.response_string = 'No response from server';
+              this.response_code = '-';
             }
           })
     },
@@ -172,9 +185,10 @@ export default {
   },
 }
 </script>
+
 <style scoped>
-.con-form-item {
-  padding-bottom: 24px;
-  padding-left: 20%;
-}
+    .con-form-item {
+      padding-bottom: 24px;
+      padding-left: 20%;
+    }
 </style>

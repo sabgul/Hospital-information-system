@@ -7,8 +7,26 @@
 
           <div class="info__basic wrapper">
               <div class="first__row" style="width: 500px;">
-                  <h5><b>Patient</b>: {{ concern.patient.user.first_name }} {{ concern.patient.user.last_name }}</h5>
-                  <h5><b>Doctor</b>: {{ concern.doctor.user.first_name }} {{ concern.doctor.user.last_name }}</h5>
+                  <h5>
+                      <b>Patient</b>
+                      :
+                      <span
+                          class="redirect__profile"
+                          @click="showUserProfile(concern.patient.user.id, 'patient')"
+                      >
+                          {{ concern.patient.user.first_name }} {{ concern.patient.user.last_name }}
+                      </span>
+                  </h5>
+                  <h5>
+                      <b>Doctor</b>
+                      :
+                      <span
+                          class="redirect__profile"
+                          @click="showUserProfile(concern.doctor.user.id, 'doctor')"
+                      >
+                        {{ concern.doctor.user.first_name }} {{ concern.doctor.user.last_name }}
+                      </span>
+                  </h5>
                   <h5><b>State</b>: {{ getState(concern.state) }}</h5>
                   <h5><b>Description</b>: {{ concern.description.length ? concern.description : '-' }}</h5>
               </div>
@@ -296,6 +314,10 @@ export default {
           this.$router.push({ name: 'examine', params: { id: healthConcernId }});
       },
 
+      showUserProfile(userId, role) {
+          this.$router.push({ name: 'profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }})
+      },
+
       reassign(concern) {
           this.activeAssign = true;
           this.toReassign = concern;
@@ -334,6 +356,12 @@ export default {
     .info__basic {
         padding-bottom: 2em;
         padding-top: 1em;
+    }
+
+    .redirect__profile:hover {
+        cursor: pointer;
+        font-weight: 600;
+        text-decoration: underline;
     }
 
     box-icon {
