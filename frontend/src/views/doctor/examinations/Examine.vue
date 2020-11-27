@@ -288,8 +288,8 @@ export default {
                   const newRequest = {
                     examination_action: action.actionData.name,
                     request_state: 'UD',
-                    related_to_patient: this.aboutConcern.patient.id,
-                    transaction_approver: action.actionData.action_manager.id,
+                    related_to_patient: this.aboutConcern.patient.user.id,
+                    transaction_approver: action.actionData.action_manager.user.id,
                   }
 
                   TransactionRequestsService.create(newRequest)

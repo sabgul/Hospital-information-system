@@ -29,7 +29,19 @@
                 <box-icon name='user' ></box-icon>
               </template>
 
-              <router-link to="/patient-detail">My profile</router-link>
+              <router-link
+                  v-if="userRole === 'healthcare-worker'"
+                  :to="`/profile/health-insurance-worker/${user.id}`"
+              >
+                My profile
+              </router-link>
+
+              <router-link
+                  v-else
+                  :to="`/profile/${userRole}/${user.id}`"
+              >
+                My profile
+              </router-link>
           </vs-sidebar-item>
 
           <template #tooltip>
@@ -231,8 +243,8 @@
             </vs-tooltip>
         </vs-sidebar-group>
 
-        <template #footer v-on:click="redirectToProfile()">
-            <div class="footer">
+        <template #footer>
+            <div class="footer" >
               <vs-card type="5">
                   <template #title>
                       <h3>{{ user.first_name }} {{ user.last_name }}</h3>
@@ -250,7 +262,7 @@
 
                   <template #interactions>
                       <vs-tooltip>
-                          <vs-button v-on:click="logout" danger>
+                          <vs-button @click="logout" danger>
                                 <box-icon name='log-out' animation='tada-hover' style="fill: #fbfbfb;"/>
                           </vs-button>
 
@@ -260,7 +272,7 @@
                       </vs-tooltip>
                     
                       <vs-tooltip>
-                          <vs-button>
+                          <vs-button @click="editUserProfile(user.id, userRole)">
                               <box-icon name='comment-edit' animation='tada-hover' style="fill: #fbfbfb;"/>
                           </vs-button>
 
@@ -291,6 +303,37 @@
           <router-view />
       </div>
     </div>
+
+    <vs-dialog
+        width="600px"
+        v-model="activeLogout"
+    >
+        <template #header>
+        <h5>
+            Are you sure you want to log out?
+        </h5>
+        </template>
+
+        <template #footer>
+            <img src="./assets/logout.svg" alt="" width="400">
+
+            <div class="center">
+                <vs-button
+                    @click="logoutConfirm()"
+                    danger
+                >
+                    Yep, leave
+                </vs-button>
+
+                <vs-button
+                    @click="abortLeaving()"
+                    transparent
+                >
+                    Abort mission
+                </vs-button>
+            </div>
+        </template>
+    </vs-dialog>
   </div>
 </template>
 
@@ -309,6 +352,7 @@ export default {
     active: 'home',
     activeSidebar: false,
     store_copy: store,
+    activeLogout: false,
   }),
 
   setup() {
@@ -327,23 +371,38 @@ export default {
   },
 
   methods: {
-    redirectToProfile() {
-      // Vue.$router.push({ name: 'patientDetail' });
-    },
+      showUserProfile(userId, role) {
+          this.$router.push({ name: 'profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }})
+      },
 
-    hideSideBar() {
-      if (this.activeSidebar === true) {
-        this.activeSidebar = !this.activeSidebar;
-      } else {
-        this.activeSidebar = false;
-      }
-    },
-    logout() {
-      this.$store.dispatch('logoutUser')
-      .then(() => {
-        this.$router.push('/')
-      })
-    }
+      editUserProfile(userId, role) {
+          this.$router.push({ name: 'edit-profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }})
+      },
+
+      hideSideBar() {
+          if (this.activeSidebar === true) {
+              this.activeSidebar = !this.activeSidebar;
+          } else {
+              this.activeSidebar = false;
+          }
+      },
+
+      logout() {
+          this.activeLogout = true;
+      },
+
+      abortLeaving() {
+          this.activeLogout = false;
+      },
+
+      logoutConfirm() {
+        this.activeLogout = false;
+
+        this.$store.dispatch('logoutUser')
+            .then(() => {
+              this.$router.push('/');
+            })
+      },
   }
 }
 </script>
@@ -381,6 +440,12 @@ box-icon {
 .expand__sidebar {
   margin-left: 1em;
   margin-top: 1em;
+}
+
+.center {
+  float: right;
+  padding-top: 12em;
+  margin-bottom: 3em;
 }
 
 @media only screen and (max-width: 600px) {
