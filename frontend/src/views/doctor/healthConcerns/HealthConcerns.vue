@@ -386,8 +386,11 @@
 import PatientsService from "@/services/patientsService";
 import DoctorsService from "@/services/doctorsService";
 import HealthConcernsService from "@/services/healthConcernsService";
+
 import NotificationsUtils from "@/utils/notificationsUtils";
-import {mapState} from "vuex";
+import StateUtils from "@/utils/stateUtils";
+
+import { mapState } from "vuex";
 
 export default {
     name: "HealthConcerns",
@@ -496,24 +499,8 @@ export default {
             }
         },
 
-          getState(rawState) {
-              if(rawState === 'WT') {
-                  return 'Waiting for first examination';
-              }
-
-              if(rawState === 'ON') {
-                  return 'Ongoing';
-              }
-
-              if(rawState === 'TL') {
-                  return 'Terminal';
-              }
-
-              if(rawState === 'ED') {
-                  return 'Ended';
-              }
-
-            return 'Unknown state';
+        getState(rawState) {
+            return StateUtils.getExaminationState(rawState);
         },
 
         showConcernDetail(concernId) {

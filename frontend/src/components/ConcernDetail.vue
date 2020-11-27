@@ -13,7 +13,11 @@
                   <h5><b>Description</b>: {{ concern.description.length ? concern.description : '-' }}</h5>
               </div>
 
-              <div class="submit__row" style="margin-top: 1em; margin-right: 4em;">
+              <div
+                  v-if="userRole === 'admin' || userRole === 'doctor'"
+                  class="submit__row"
+                  style="margin-top: 1em; margin-right: 4em;"
+              >
                   <vs-button border @click="redirectToExamination(concern.id)" style="width: 170px;">
                       Examine
                   </vs-button>
@@ -206,6 +210,9 @@ import DoctorsReportsService from "@/services/doctorsReportsService";
 
 import DateUtils from "@/utils/dateUtils";
 import NotificationsUtils from "@/utils/notificationsUtils";
+import StateUtils from "@/utils/stateUtils";
+
+import { mapState } from "vuex";
 
 export default {
   name: "ConcernDetail",
@@ -231,6 +238,12 @@ export default {
       examinations: [],
       reports: [],
   }),
+
+  computed: {
+      ...mapState([
+          'userRole',
+      ])
+  },
 
   async created() {
       HealthConcernsService.get(this.id)
@@ -272,23 +285,7 @@ export default {
       },
 
       getState(rawState) {
-          if(rawState === 'WT') {
-              return 'Waiting for first examination';
-          }
-
-          if(rawState === 'ON') {
-              return 'Ongoing';
-          }
-
-          if(rawState === 'TL') {
-              return 'Terminal';
-          }
-
-          if(rawState === 'ED') {
-              return 'Ended';
-          }
-
-          return 'Unknown state';
+          return StateUtils.getExaminationState(rawState);
       },
 
       redirectToNewRequest(healthConcernId) {
@@ -337,21 +334,6 @@ export default {
     .info__basic {
         padding-bottom: 2em;
         padding-top: 1em;
-    }
-
-    .popup__center {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        padding-bottom: 4em;
-        width: 40%;
-        margin-top: 2em;
-    }
-
-    .popup__right {
-      position: absolute;
-      right: 1em;
-      bottom: 1em;
     }
 
     box-icon {

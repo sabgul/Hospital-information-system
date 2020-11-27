@@ -138,6 +138,8 @@
 import ExaminationRequestsService from "@/services/examinationRequestsService";
 
 import DateUtils from "@/utils/dateUtils";
+import StateUtils from "@/utils/stateUtils";
+
 import {mapState} from "vuex";
 
 export default {
@@ -183,17 +185,7 @@ export default {
         },
 
         getState(rawState) {
-            if(rawState === 'PD') {
-              return 'Ticket is waiting. Examine your patient!'
-            }
-
-            if(rawState === 'CD') {
-              return 'Examination request was canceled.'
-            }
-
-            if(rawState === 'RD') {
-              return 'Ticket already resolved.'
-            }
+            return StateUtils.getTicketState(rawState);
         },
 
         redirectToProfile(userId, role) {

@@ -90,11 +90,11 @@ h1 {
   bottom: 1em;
 }
 
-
-
-
-
-
+.redirect__profile:hover, .concern__name:hover {
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: underline;
+}
 
 .left__filter__row {
     width: 200px;

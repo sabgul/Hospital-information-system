@@ -87,7 +87,9 @@
 
 <script>
 import TransactionRequestsService from "@/services/transactionRequestsService";
+
 import NotificationsUtils from "@/utils/notificationsUtils";
+import StateUtils from "@/utils/stateUtils";
 
 export default {
     name: 'TransactionsManager',    
@@ -107,15 +109,7 @@ export default {
 
     methods: {
         getState(rawState) {
-          if(rawState === 'CD') {
-            return 'Covered';
-          }
-
-          if(rawState === 'UD') {
-            return 'Unpaid';
-          }
-
-          return '';
+          return StateUtils.getTransactionState(rawState);
         },
 
         openConfirmationRequest(request) {

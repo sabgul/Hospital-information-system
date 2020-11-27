@@ -70,9 +70,12 @@
 import PatientsService from '@/services/patientsService.js';
 import DoctorsService from '@/services/doctorsService.js';
 import HealthcareWorkersService from '@/services/healthcareWorkersService.js';
+
 import UserProfileDoctor from "@/views/admin/usersManagement/userProfile/UserProfileDoctor";
 import UserProfileHcWorker from "@/views/admin/usersManagement/userProfile/UserProfileHcWorker";
 import UserProfilePatient from "@/views/admin/usersManagement/userProfile/UserProfilePatient";
+
+import StateUtils from "@/utils/stateUtils";
 
 export default {
     name: 'UserProfile', 
@@ -143,19 +146,7 @@ export default {
         },
 
         getGender(rawGender) {
-            if(rawGender === 'M') {
-              return 'Male';
-            }
-
-            if(rawGender === 'F') {
-              return 'Female';
-            }
-
-            if(rawGender === 'O') {
-              return 'Other';
-            }
-
-            return '';
+            return StateUtils.getGenderState(rawGender);
         }
     },
 }

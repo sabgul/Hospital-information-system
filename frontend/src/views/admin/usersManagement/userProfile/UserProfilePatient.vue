@@ -17,129 +17,129 @@
 
     <h5><b>Patient's health concerns:</b></h5>
 
-   <vs-table
-                striped
-                class="actions__table"
-            >
-                <template #header>
-                    <vs-input
-                        v-model="searchValue"
-                        border
-                        placeholder="Search"
-                    />
-                </template>
-
-                <template #thead>
-                    <vs-tr>
-                        <vs-th>
-                            Name of health concern
-                        </vs-th>
-
-                        <vs-th>
-                            State
-                        </vs-th>
-
-                        <vs-th>
-                            Actions
-                        </vs-th>
-
-                    </vs-tr>
-                </template>
-
-                <template #tbody>
-                    <vs-tr
-                        :key="i"
-                        v-for="(concern, i) in $vs.getPage($vs.getSearch(healthConcerns, searchValue), page, max)"
-                        :data="concern"
-                    >
-                        <vs-td>
-                            <span @click="redirectToConcernDetail(concern.id)" class="concern__name">
-                                <b>{{ concern.name }}</b>
-                            </span>
-                        </vs-td>
-
-                        <vs-td>
-                            {{ getState(concern.state) }}
-                        </vs-td>
-
-                        <vs-td>
-                            <vs-button border @click="redirectToExamination(concern.id)" style="width: 170px;">
-                                Examine
-                            </vs-button>
-
-                            <vs-button class="buttons" @click="redirectToNewRequest(concern.id)" style="width: 170px;">
-                                New examination request
-                            </vs-button>
-
-                            <vs-button
-                                danger
-                                class="buttons"
-                                @click="reassign(concern)"
-                                style="width: 170px;"
-                            >
-                                Assign to another doctor
-                            </vs-button>
-                        </vs-td>
-
-                        <template #expand>
-                          <div style="width: 80%;">
-                          <p><b>Description: </b>{{ concern.description }}</p>
-                          </div>
-                          <vs-button
-                              class="right__part"
-                              border
-                              @click="redirectToConcernDetail(concern.id)"
-                          >
-                                Show more details
-                            </vs-button>
-                        </template>
-
-                    </vs-tr>
-                </template>
-
-                <template #footer>
-                    <vs-pagination
-                        v-model="page"
-                        :length="$vs.getLength(healthConcerns, max)"
-                    />
-                </template>
-            </vs-table>
-
-          <vs-dialog
-              width="500px"
-              v-model="activeAssign"
+    <vs-table
+              striped
+              class="actions__table"
           >
               <template #header>
-                  <h5>
-                      Select new manager of <b>{{ toReassign.name }}</b>
-                  </h5>
+                  <vs-input
+                      v-model="searchValue"
+                      border
+                      placeholder="Search"
+                  />
               </template>
 
-              <select
-                  v-model="newDoc"
-                  class="popup__center"
-              >
-                      <option
-                          v-for="doctor in availableDoctors"
-                          :key="doctor.user.id"
-                          :label="doctor.user.first_name"
-                          :value="doctor.user.id"
-                      >
-                          {{ doctor.user.first_name }}
-                      </option>
-              </select>
+              <template #thead>
+                  <vs-tr>
+                      <vs-th>
+                          Name of health concern
+                      </vs-th>
+
+                      <vs-th>
+                          State
+                      </vs-th>
+
+                      <vs-th>
+                          Actions
+                      </vs-th>
+
+                  </vs-tr>
+              </template>
+
+              <template #tbody>
+                  <vs-tr
+                      :key="i"
+                      v-for="(concern, i) in $vs.getPage($vs.getSearch(healthConcerns, searchValue), page, max)"
+                      :data="concern"
+                  >
+                      <vs-td>
+                          <span @click="redirectToConcernDetail(concern.id)" class="concern__name">
+                              <b>{{ concern.name }}</b>
+                          </span>
+                      </vs-td>
+
+                      <vs-td>
+                          {{ getState(concern.state) }}
+                      </vs-td>
+
+                      <vs-td>
+                          <vs-button border @click="redirectToExamination(concern.id)" style="width: 170px;">
+                              Examine
+                          </vs-button>
+
+                          <vs-button class="buttons" @click="redirectToNewRequest(concern.id)" style="width: 170px;">
+                              New examination request
+                          </vs-button>
+
+                          <vs-button
+                              danger
+                              class="buttons"
+                              @click="reassign(concern)"
+                              style="width: 170px;"
+                          >
+                              Assign to another doctor
+                          </vs-button>
+                      </vs-td>
+
+                      <template #expand>
+                        <div style="width: 80%;">
+                        <p><b>Description: </b>{{ concern.description }}</p>
+                        </div>
+                        <vs-button
+                            class="right__part"
+                            border
+                            @click="redirectToConcernDetail(concern.id)"
+                        >
+                              Show more details
+                          </vs-button>
+                      </template>
+
+                  </vs-tr>
+              </template>
 
               <template #footer>
-                  <div class="popup__right">
-                      <vs-button
-                          success
-                          @click="finishReassign()"
-                      >
-                          Save
-                      </vs-button>
-                  </div>
+                  <vs-pagination
+                      v-model="page"
+                      :length="$vs.getLength(healthConcerns, max)"
+                  />
               </template>
-          </vs-dialog>
+          </vs-table>
+
+        <vs-dialog
+            width="500px"
+            v-model="activeAssign"
+        >
+            <template #header>
+                <h5>
+                    Select new manager of <b>{{ toReassign.name }}</b>
+                </h5>
+            </template>
+
+            <select
+                v-model="newDoc"
+                class="popup__center"
+            >
+                    <option
+                        v-for="doctor in availableDoctors"
+                        :key="doctor.user.id"
+                        :label="doctor.user.first_name"
+                        :value="doctor.user.id"
+                    >
+                        {{ doctor.user.first_name }}
+                    </option>
+            </select>
+
+            <template #footer>
+                <div class="popup__right">
+                    <vs-button
+                        success
+                        @click="finishReassign()"
+                    >
+                        Save
+                    </vs-button>
+                </div>
+            </template>
+        </vs-dialog>
   </div>
 </template>
 
@@ -147,8 +147,11 @@
 
 import HealthConcernsService from "@/services/healthConcernsService";
 import DoctorsService from "@/services/doctorsService";
+
 import NotificationsUtils from "@/utils/notificationsUtils";
-import {mapState} from "vuex";
+import StateUtils from "@/utils/stateUtils";
+
+import { mapState } from "vuex";
 
 export default {
   name: "UserProfilePatient",
@@ -177,6 +180,7 @@ export default {
   },
 
   async created() {
+      console.log(this.patient)
       HealthConcernsService.getAllByPatient(this.patient.id)
           .then(response => {
               this.healthConcerns = response.data;
@@ -190,23 +194,7 @@ export default {
 
   methods: {
       getState(rawState) {
-          if(rawState === 'WT') {
-              return 'Waiting';
-          }
-
-          if(rawState === 'ON') {
-              return 'Ongoing';
-          }
-
-          if(rawState === 'TL') {
-              return 'Terminal';
-          }
-
-          if(rawState === 'ED') {
-              return 'Ended';
-          }
-
-          return 'Unknown state';
+          return StateUtils.getExaminationState(rawState);
       },
 
       reassign(concern) {
@@ -256,34 +244,13 @@ export default {
 </script>
 
 <style scoped>
-    .redirect__profile:hover, .concern__name:hover {
-        cursor: pointer;
-        font-weight: 600;
-        text-decoration: underline;
-    }
-
     .right__part {
       position: absolute;
       right: 10px;
       top: 0;
     }
 
-    .popup__center {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        padding-bottom: 4em;
-        width: 40%;
-        margin-top: 2em;
-    }
-
-    .popup__right {
-      position: absolute;
-      right: 1em;
-      bottom: 1em;
-    }
-
     select {
-      padding-top: 0em;
+      padding-top: 0;
     }
 </style>
