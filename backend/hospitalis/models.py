@@ -41,8 +41,15 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
+        user = self._create_user(email, password=password, **extra_fields)
 
-        return self._create_user(email, password=password, **extra_fields)
+        # admin has all the roles
+        user.doctor = Doctor.objects.create(user=user, specializes_in='Admin')
+        user.healthcareworker = HealthcareWorker.objects.create(user=user, works_for_company='Admin')
+        user.patient = Patient.objects.create(user=user, main_doctor=user.doctor)
+        user.save(using=self._db)
+
+        return user
 
 
 class User(AbstractBaseUser, PermissionsMixin):
