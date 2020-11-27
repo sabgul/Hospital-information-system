@@ -387,9 +387,17 @@ import PatientsService from "@/services/patientsService";
 import DoctorsService from "@/services/doctorsService";
 import HealthConcernsService from "@/services/healthConcernsService";
 import NotificationsUtils from "@/utils/notificationsUtils";
+import {mapState} from "vuex";
 
 export default {
     name: "HealthConcerns",
+
+    computed: {
+        ...mapState([
+            'user',
+            'userRole',
+        ])
+    },
 
     data:() => ({
         searchValue: '',
@@ -431,10 +439,20 @@ export default {
             this.availableDoctors = response.data;
             })
 
-        HealthConcernsService.getAll()
-            .then(response => {
-            this.concerns = response.data;
-            })
+        if(this.userRole === 'admin') {
+            HealthConcernsService.getAll()
+              .then(response => {
+              this.concerns = response.data;
+              })
+        }
+
+        if(this.userRole === 'doctor') {
+            HealthConcernsService.getAllByCurrentUser(this.user.id)
+              .then(response => {
+              this.concerns = response.data;
+              })
+        }
+
     },
 
     methods: {
@@ -449,43 +467,43 @@ export default {
                 });
         },
 
-    redirectToPatientProfile(userId, role) {
-        this.$router.push({ name: 'profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }});
-    },
+        redirectToPatientProfile(userId, role) {
+            this.$router.push({ name: 'profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }});
+        },
 
-      async getFiltered() {
-          HealthConcernsService.getFiltered(this.filter)
-              .then(response => {
-                  this.concerns = response.data;
-              })
-      },
+        async getFiltered() {
+            HealthConcernsService.getFiltered(this.filter)
+                .then(response => {
+                    this.concerns = response.data;
+                })
+        },
 
-      async clearFilter() {
-          this.filter.patient_name = -1;
-          this.filter.state_of_concern = -1;
+        async clearFilter() {
+            this.filter.patient_name = -1;
+            this.filter.state_of_concern = -1;
 
-          HealthConcernsService.getAll()
-          .then(response => {
-            this.concerns = response.data;
-          })
-      },
+            HealthConcernsService.getAll()
+            .then(response => {
+              this.concerns = response.data;
+            })
+        },
 
-        getState(rawState) {
-            if(rawState === 'WT') {
-                return 'Waiting for first examination';
-            }
+          getState(rawState) {
+              if(rawState === 'WT') {
+                  return 'Waiting for first examination';
+              }
 
-            if(rawState === 'ON') {
-                return 'Ongoing';
-            }
+              if(rawState === 'ON') {
+                  return 'Ongoing';
+              }
 
-            if(rawState === 'TL') {
-                return 'Terminal';
-            }
+              if(rawState === 'TL') {
+                  return 'Terminal';
+              }
 
-            if(rawState === 'ED') {
-                return 'Ended';
-            }
+              if(rawState === 'ED') {
+                  return 'Ended';
+              }
 
             return 'Unknown state';
         },
