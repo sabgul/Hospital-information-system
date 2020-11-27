@@ -65,7 +65,7 @@
                           {{ getState(concern.state) }}
                       </vs-td>
 
-                      <vs-td>
+                      <vs-td v-if="userRole === 'patient'">
                           {{ concern.description.length ? concern.description : '-' }}
                       </vs-td>
 

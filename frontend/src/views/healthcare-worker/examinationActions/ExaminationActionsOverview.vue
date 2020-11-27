@@ -193,11 +193,13 @@
             <vs-input
                 v-model="toEdit.name"
                 label="Name"
+                class="popup__center"
             />
 
             <vs-switch
                 v-model="toEdit.is_action_paid"
                 class="switch"
+
             >
                 <template #off>
                     Free
@@ -367,12 +369,13 @@ export default {
 
     .center {
         float: right;
-        padding-bottom: 10px;
+        padding-bottom: 0;
+        padding-top: 2em !important;
     }
 
     .switch {
         width: 100px;
-        margin-left: 6px;
-        margin-top: 16px;
+        margin-left: auto;
+        margin-right: auto;
     }
 </style>

@@ -12,9 +12,9 @@
         <br>
 
         <p>
-            If you were contacted with your patient who told you about his new health concern, <br>
+            If you were contacted by your patient who told you about his new health concern, <br>
             add the information here. <br>
-            <b>If its a new patient, create an account for him first <span>here</span>!</b>
+            <b>If its a new patient, create an account for him first <span @click="redirectToNewPatient()" class="redirect__profile">here</span>!</b>
         </p>
 
         <br>
@@ -463,6 +463,20 @@ export default {
                 .then(response => {
                     console.log(response);
                     NotificationsUtils.successPopup('Health concern added to database.', this.$vs);
+
+                    if(this.userRole === 'admin') {
+                        HealthConcernsService.getAll()
+                          .then(response => {
+                          this.concerns = response.data;
+                          })
+                    }
+
+                    if(this.userRole === 'doctor') {
+                        HealthConcernsService.getAllByCurrentUser(this.user.id)
+                          .then(response => {
+                          this.concerns = response.data;
+                          })
+                    }
                 })
                 .catch(e => {
                     NotificationsUtils.failPopup(e, this.$vs);
@@ -471,6 +485,10 @@ export default {
 
         redirectToPatientProfile(userId, role) {
             this.$router.push({ name: 'profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }});
+        },
+
+        redirectToNewPatient() {
+            this.$router.push({ name: 'patientAdd'});
         },
 
         async getFiltered() {
