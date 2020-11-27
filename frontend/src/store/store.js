@@ -15,8 +15,8 @@ export const store = new Vuex.Store({
             patientLoginWindowActive: false,
             healthcareLoginWindowActive: false,
             adminLoginWindowActive: false,
-            access_token: localStorage.getItem('access_token') || null, // if exists: load, else: null, later set in retrieveToken.
-            refresh_token: localStorage.getItem('refresh_token') || null, // if exists: load, else: null, later set in retrieveToken.
+            access_token: localStorage.getItem('access_token') || null,
+            refresh_token: localStorage.getItem('refresh_token') || null,
             user: {},
             userRole: null,
         },
@@ -100,7 +100,7 @@ export const store = new Vuex.Store({
             },
             logoutUser(context) {
 
-                if (context.getters.loggedIn) {
+                if (context.getters.loggedIn) { // todo why not isAuthenticated
                     return new Promise((resolve, ) => {  // removed second param 'reject'
                         axios_instance.post('/token/logout/')
                             .then(() => {
@@ -143,15 +143,18 @@ export const store = new Vuex.Store({
         },
 
         getters: {
-            // should be outside the store, as it might not yet exist when this is called
-            user_full_name() {
-                if (this.state.user) {
-                    return `${this.state.user.first_name} ${this.state.user.last_name}`
+            user_full_name: state => {
+                if (state.user) {
+                    return `${state.user.first_name} ${state.user.last_name}`
                 }
                 else {
                     return "Name Surname"
                 }
             },
+            isAuthenticated: state => {
+                console.log('.')
+                return !!state.access_token
+            }
         },
     })
 ;

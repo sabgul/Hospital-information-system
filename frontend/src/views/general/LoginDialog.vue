@@ -61,10 +61,10 @@
           Sign In
         </vs-button>
       </div>
-<!--      <span v-if="credentials_invalid">Wrong credentials</span>-->
+      <!--      <span v-if="credentials_invalid">Wrong credentials</span>-->
       <span v-if="response_code"><br>
-        Response code: {{ this.$data.response_code }} <br>
-        Response detail: {{ this.response_string }}
+        Response code: {{ this.response_code || null }} <br>
+        Response detail: {{ this.response_string || null }}
       </span>
       <!--       </template>-->
 
@@ -147,8 +147,17 @@ export default {
           .catch(err => {
             console.log(err)
             this.credentials_invalid = true
-            this.$data.response_string = err.response.data.detail
-            this.$data.response_code = err.response.status
+
+            // no response if BE is not running
+            if (err.response) {
+              if (err.response.data) {
+                this.response_string = err.response.data.detail
+              }
+              this.response_code = err.response.status
+            } else {
+              this.response_string = 'No response from server'
+              this.response_code = '-'
+            }
           })
     },
     register() {
