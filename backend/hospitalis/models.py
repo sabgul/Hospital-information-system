@@ -142,6 +142,7 @@ class DoctorReport(models.Model):
     about_concern = models.ForeignKey(HealthConcern, on_delete=models.CASCADE)
     date_of_created = models.DateField(auto_now_add=True)
     description = models.CharField(max_length=2046, blank=True)
+    file = models.FileField(blank=True, null=True)
 
     class Meta:
         ordering = ['date_of_created']

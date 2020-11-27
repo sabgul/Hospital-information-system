@@ -6,7 +6,7 @@
         <b>Main doctor: </b>
 
         <span
-            @click="redirectToDocProfile(patient.main_doctor.id, 'doctor')"
+            @click="redirectToDocProfile(patient.main_doctor.user.id, 'doctor')"
             class="redirect__profile"
         >
             {{ patient.main_doctor.user.first_name }} {{ patient.main_doctor.user.last_name }}
@@ -115,22 +115,19 @@
                   </h5>
               </template>
 
-              <vs-select
+              <select
                   v-model="newDoc"
                   class="popup__center"
-                  label="Doctor"
-                  placeholder="Choose a doctor"
-                  color="primary"
-                  >
-                      <vs-option
+              >
+                      <option
                           v-for="doctor in availableDoctors"
                           :key="doctor.user.id"
                           :label="doctor.user.first_name"
                           :value="doctor.user.id"
                       >
                           {{ doctor.user.first_name }}
-                      </vs-option>
-              </vs-select>
+                      </option>
+              </select>
 
               <template #footer>
                   <div class="popup__right">
@@ -151,6 +148,7 @@
 import HealthConcernsService from "@/services/healthConcernsService";
 import DoctorsService from "@/services/doctorsService";
 import NotificationsUtils from "@/utils/notificationsUtils";
+import {mapState} from "vuex";
 
 export default {
   name: "UserProfilePatient",
@@ -170,6 +168,12 @@ export default {
 
   props: {
       patient: {},
+  },
+
+  computed: {
+      ...mapState([
+          'user',
+      ])
   },
 
   async created() {
@@ -214,7 +218,7 @@ export default {
       async finishReassign() {
           let newConcern = {...this.toReassign}
           newConcern.doctor = this.newDoc;
-          newConcern.patient = this.toReassign.patient.id;
+          newConcern.patient = this.toReassign.patient.user.id;
 
           HealthConcernsService.update(this.toReassign.id, newConcern)
           .then(response => {
@@ -277,5 +281,9 @@ export default {
       position: absolute;
       right: 1em;
       bottom: 1em;
+    }
+
+    select {
+      padding-top: 0em;
     }
 </style>

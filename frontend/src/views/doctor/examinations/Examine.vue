@@ -98,12 +98,16 @@
                 placeholder="Put text of report here.."
             />
 
-             <file-upload
-                :url='url'
-                :thumb-url='thumbUrl'
-                :headers="headers"
-                @change="onFileChange"
-              />
+<!--             <file-upload-->
+<!--                :url='url'-->
+<!--                :thumb-url='thumbUrl'-->
+<!--                :headers="headers"-->
+<!--                @change="onFileChange"-->
+<!--              />-->
+
+              <label>File
+                <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+              </label>
         </div>
 
         <div class="main__content">
@@ -194,7 +198,7 @@ export default {
 
         url: 'http://your-post.url',
         headers: {'access-token': '<your-token>'},
-        filesUploaded: [],
+        file: '',
     }),
 
     async created() {
@@ -221,6 +225,10 @@ export default {
     },
 
     methods: {
+        handleFileUpload() {
+          this.file = this.$refs.file.files[0];
+        },
+
         addAction() {
             this.activeActionAdd = true;
         },
@@ -263,10 +271,15 @@ export default {
                   NotificationsUtils.failPopup(e, this.$vs);
               });
 
+
+          let formData = new FormData();
+          formData.append('file', this.file, this.file.name);
+
           const newReport = {
             created_by: this.user.id,
             about_concern: this.aboutConcern.id,
             description: this.reportDescription,
+            file: formData,
           }
 
           DoctorsReportsService.create(newReport)

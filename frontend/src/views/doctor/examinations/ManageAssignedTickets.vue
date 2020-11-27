@@ -210,7 +210,8 @@ export default {
               created_timestamp: ticket.created_timestamp,
               state: 'CD',
               concern: ticket.concern.id,
-              created_by: ticket.created_by.id
+              assigned_to: ticket.assigned_to.user.id,
+              created_by: ticket.created_by.user.id
             }
 
             ExaminationRequestsService.update(ticketId, newTicket)

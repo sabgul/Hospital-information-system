@@ -56,13 +56,19 @@
                 </vs-sidebar-item>
             </template>
 
-          <vs-sidebar-item>
-              <template #icon>
-                <box-icon type='solid' name='virus' ></box-icon>
-              </template>
+          <vs-tooltip right>
+              <vs-sidebar-item>
+                  <template #icon>
+                    <box-icon type='solid' name='virus'/>
+                  </template>
 
-              <router-link to="/my-health-concerns">My health concerns</router-link>
-          </vs-sidebar-item>
+                  <router-link to="/my-health-report-card">My health report card</router-link>
+              </vs-sidebar-item>
+
+              <template #tooltip>
+                My health report card
+              </template>
+          </vs-tooltip>
         </vs-sidebar-group>
         
         <vs-sidebar-group v-if="userRole === 'doctor' || userRole === 'admin'">
@@ -344,9 +350,6 @@ import { mapState } from 'vuex';
 
 export default {
   name: 'App',
-
-  components: {
-  },
 
   data:() => ({
     active: 'home',

@@ -27,9 +27,9 @@ const router = new Router({
 
         // Information for patients
         {
-            path: '/my-health-concerns',
-            name: 'HealthConcerns',
-            component: () => import('@/views/patient/healthConcernsOverview/HealthConcernsOverview'),
+            path: '/my-health-report-card',
+            name: 'HealthReportCard',
+            component: () => import('@/views/patient/healthReportCard/HealthReportCard'),
             meta: {
                 requiresAuth: true
             }
