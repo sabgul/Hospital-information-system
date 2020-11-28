@@ -122,7 +122,7 @@
         >
             <template #header>
                 <h5 class="popup__headline">
-                    Choose a new action that was made during this examination
+                    Select actions performed during examination
                 </h5>
             </template>
 
