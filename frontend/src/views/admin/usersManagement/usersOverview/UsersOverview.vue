@@ -5,7 +5,7 @@
 
             <p>
                 In this module you can see list of all users in this system.<br>
-                By clicking on given user, you can manage his information.
+                By clicking on a given user, you can manage their information.
             </p>
         </div>
 

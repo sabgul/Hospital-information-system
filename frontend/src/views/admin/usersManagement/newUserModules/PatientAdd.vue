@@ -5,8 +5,8 @@
         </h1>
 
         <p>
-            Create new patient in the database of patients.<br>
-            Some of the basic patient information are necessary to state, but patient can manage his profile later.
+            Create a new patient.<br>
+              Some fields are required but can be edited later.
         </p>
 
         <br>

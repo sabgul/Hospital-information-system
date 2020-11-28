@@ -44,11 +44,11 @@
                       <div class="overpay__switch" v-if="action.actionData.is_action_paid">
                          <vs-switch v-model="action.cover" success style="bottom: 7px;">
                               <template #off>
-                                  Patient is self-payer
+                                  Paid by patient
                               </template>
 
                               <template #on>
-                                  Ask insurance company to overpay
+                                  Paid by insurance company
                               </template>
                          </vs-switch>
                       </div>
@@ -194,7 +194,7 @@ export default {
         chosenActions: [],
         availableActions: [],
 
-        askToCover: true,     // if false, patient pays it on his own
+        askToCover: true,     // if false, patient pays it on their own
 
         url: 'http://your-post.url',
         headers: {'access-token': '<your-token>'},

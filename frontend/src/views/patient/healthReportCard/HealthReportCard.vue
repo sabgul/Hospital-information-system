@@ -5,15 +5,15 @@
 
             <br>
 
-            <p>This is your health report card. By clicking on name of a health concern or by clicking on 'Show more details',
+            <p>This is your health report card. By clicking on the name of a health concern or by clicking on 'Show more details',
               <br>
-              you can see all examinations and doctor reports related to given concern.
+              you can see all the examinations and doctor reports related to a given concern.
             </p>
         </div>
 
         <div class="main__content">
             <h4>
-                Filter in your health concerns
+                Filter your health concerns
             </h4>
 
             <div class="wrapper">
@@ -59,7 +59,7 @@
                         @click="getFiltered()"
                         style="padding: 3px 42px;"
                     >
-                        Filter
+                        Apply filter
                     </vs-button>
                 </div>
             </div>

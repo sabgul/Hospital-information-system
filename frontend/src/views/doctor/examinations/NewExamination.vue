@@ -45,13 +45,13 @@
                 <div class="buttons__action">
                     <div class="overpay__switch" v-if="action.is_action_paid">
                        <vs-switch v-model="askToCover" success style="bottom: 7px;">
-                            <template #off>
-                                Patient is self-payer
-                            </template>
+                          <template #off>
+                          Paid by patient
+                          </template>
 
-                            <template #on>
-                                Ask insurance company to overpay
-                            </template>
+                          <template #on>
+                          Paid by insurance company
+                          </template>
                        </vs-switch>
                     </div>
 

@@ -12,9 +12,8 @@
         <br>
 
         <p>
-            If you were contacted by your patient who told you about his new health concern, <br>
-            add the information here. <br>
-            <b>If its a new patient, create an account for him first <span @click="redirectToNewPatient()" class="redirect__profile">here</span>!</b>
+            If you were contacted by your patient about a new health concern, add the information here. <br>
+            <b>If it is a new patient, create an account for them<span @click="redirectToNewPatient()" class="redirect__profile"> HERE </span>first!</b>
         </p>
 
         <br>
@@ -160,8 +159,8 @@
         <br>
 
         <p>
-           Here you can see all health concerns you manage. <br>
-           You can filter the results by patient and/or by examination state or use search bar in table. <br>
+           Here you can see all the health concerns you manage. <br>
+           You can filter the results by <b>patient</b> and/or <b>examination state</b>. You can also use the search bar in the table. <br>
         </p>
     </div>
 
@@ -193,7 +192,7 @@
         <div class="right__filter__row">
           <vs-select
             v-model="filter.state_of_concern"
-            label="State of examination"
+            label="Examination state"
             color="primary"
           >
             <vs-option

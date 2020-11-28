@@ -6,8 +6,8 @@
           </h1>
 
           <p>
-              Create new doctor in the database of doctors.<br>
-              Some of the basic patient information are necessary to state, but doctor(or you) can manage his profile later.
+              Create new healthcare worker.<br>
+            Some fields are required. Profile details can be edited later.
           </p>
 
           <br>

@@ -7,7 +7,7 @@
 
             <p>
                 You can see all examinations related to this hospital.<br>
-                You are able to edit name of each examinations and its pricing.
+                You can edit the name of each examination and its pricing.
             </p>
         </div>
 

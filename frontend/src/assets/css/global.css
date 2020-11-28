@@ -3,6 +3,10 @@ h1 {
     margin-bottom: 1em;
 }
 
+.redirect__profile{
+  color:royalblue;
+}
+
 .main__content {
     padding: 20px 20px 20px 25px;
     background-color: #ffffff;
