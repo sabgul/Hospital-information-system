@@ -219,7 +219,7 @@
 
         <div
             class="submit__row"
-            style="margin-top: 0;"
+            style="margin-top: -60px;"
         >
             <vs-button
                 @click="clearFilter()"
@@ -587,5 +587,10 @@ export default {
         cursor: pointer;
         font-weight: 600;
         text-decoration: underline;
+    }
+
+    .vs-button {
+        float: right;
+        padding: 5px 35px;
     }
 </style>

@@ -199,6 +199,7 @@ import DoctorsService from '@/services/doctorsService.js';
 import HealthcareWorkersService from '@/services/healthcareWorkersService.js';
 import NotificationsUtils from "@/utils/notificationsUtils";
 import HealthConcernsService from "@/services/healthConcernsService";
+import UsersService from "@/services/usersService";
 
 import DateUtils from "@/utils/dateUtils";
 
@@ -273,23 +274,35 @@ export default {
 
         async deleteUser() {
           if(this.userToDelete.role === 'Patient') {
-            PatientsService.delete(this.userToDelete.userData.id)
+            PatientsService.delete(this.userToDelete.userData.user.id)
                 .then(response => {
                     console.log(response);
                     NotificationsUtils.successPopup('Patient successfully deleted.', this.$vs);
                     this.getAllUsers();
                     this.activeDelete = false;
+
+                    UsersService.delete(this.userToDelete.userData.user.id)
+                      .then(response => {
+                          console.log(response);
+                      })
+
                     this.$forceUpdate();
                 })
           }
 
           if(this.userToDelete.role === 'Health insurance worker') {
-            HealthcareWorkersService.delete(this.userToDelete.userData.id)
+            HealthcareWorkersService.delete(this.userToDelete.userData.user.id)
                 .then(response => {
                     console.log(response);
                     NotificationsUtils.successPopup('Health insurance worker successfully deleted.', this.$vs);
                     this.getAllUsers();
                     this.activeDelete = false;
+
+                    UsersService.delete(this.userToDelete.userData.user.id)
+                      .then(response => {
+                          console.log(response);
+                      })
+
                     this.$forceUpdate();
                 })
           }

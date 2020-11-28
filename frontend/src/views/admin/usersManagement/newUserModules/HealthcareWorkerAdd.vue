@@ -255,4 +255,9 @@ export default {
         padding: 16px 0;
         margin-left: 6px;
     }
+
+    .vs-button {
+        float: right;
+        padding: 5px 30px;
+    }
 </style>

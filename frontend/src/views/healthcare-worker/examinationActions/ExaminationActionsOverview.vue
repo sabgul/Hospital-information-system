@@ -124,11 +124,14 @@
                         </vs-td>
 
                         <vs-td>
-                            {{ action.action_manager.user.first_name.length ? action.action_manager.user.first_name + ' ' + action.action_manager.user.last_name : 'No manager' }}
+                            {{ action.action_manager.user ? action.action_manager.user.first_name + ' ' + action.action_manager.user.last_name : 'No manager' }}
                         </vs-td>
 
                         <vs-td>
-                            <vs-button @click="editAction(action.name, action.is_action_paid, action.action_manager.user.id)">
+                            <vs-button
+                                v-if="action.action_manager.user"
+                                @click="editAction(action.name, action.is_action_paid, action.action_manager.user.id)"
+                            >
                                 Edit
                             </vs-button>
 

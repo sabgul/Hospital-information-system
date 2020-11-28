@@ -14,7 +14,7 @@
                         color="primary"
                         v-model="newUserData.first_name"
                     >
-                      <template #message-danger v-if="newUserData.first_name.length === 0">
+                      <template #message-warn v-if="newUserData.first_name.length === 0">
                         Required
                       </template>
                     </vs-input>
@@ -26,9 +26,9 @@
                         color="primary"
                         v-model="newUserData.last_name"
                     >
-                      <template #message-danger v-if="newUserData.last_name.length === 0">
-                        Required
-                      </template>
+                        <template #message-wan v-if="newUserData.last_name.length === 0">
+                            Required
+                        </template>
                     </vs-input>
                 </div>
 
@@ -40,41 +40,44 @@
                         type="date"
                     />
 
-                  <br>
+                    <br>
 
-                  <vs-input
-                      label="Phone number"
-                      color="primary"
-                      v-model="newUserData.phone_number"
-                  />
+                    <vs-input
+                        label="Phone number"
+                        color="primary"
+                        v-model="newUserData.phone_number"
+                    >
+                        <template #message-danger v-if="newUserData.phone_number && !validNumber">
+                            Invalid phone number
+                        </template>
+                    </vs-input>
                 </div>
 
                 <div class="third__row">
-<!--                  <vs-input-->
-<!--                      v-if="role === 'doctor'"-->
-<!--                      label="Doctor specialisation"-->
-<!--                      color="primary"-->
-<!--                      v-model="newUserData.specializes_in"-->
-<!--                  />-->
+                    <vs-input
+                        v-if="role === 'doctor'"
+                        label="Doctor specialisation"
+                        color="primary"
+                        v-model="newDoctorSpecialisation"
+                    />
 
-<!--                  <vs-input-->
-<!--                      v-if="role === 'health-insurance-worker'"-->
-<!--                      label="Insurance company"-->
-<!--                      color="primary"-->
-<!--                      v-model="newUserData.works_for_company"-->
-<!--                  />-->
+                    <vs-input
+                        v-if="role === 'health-insurance-worker'"
+                        label="Insurance company"
+                        color="primary"
+                        v-model="newWorkerCompany"
+                    />
 
-                  <vs-select
-                      v-if="role === 'patient'"
-                      v-model="newUserData.main_doctor"
-                      label="Main doctor"
-                  >
-<!--                    TODO: DOES NOT WORK!-->
-                     <vs-option v-for="doctor in doctors" :key="doctor.user.id" :label="doctor.user.first_name" :value="doctor.user.id">
-                        {{ doctor.user.first_name }}
-                    </vs-option>
-                  </vs-select>
-
+                    <vs-select
+                        v-if="role === 'patient'"
+                        v-model="newUserData.main_doctor"
+                        label="Main doctor"
+                    >
+  <!--                    TODO: DOES NOT WORK!-->
+                         <vs-option v-for="doctor in doctors" :key="doctor.user.id" :label="doctor.user.first_name" :value="doctor.user.id">
+                            {{ doctor.user.first_name }}
+                         </vs-option>
+                    </vs-select>
                 </div>
 
                 <div class="submit__row" style="margin-bottom: 5em; margin-top: 2em;">
@@ -83,6 +86,9 @@
                     </vs-button>
 
                     <vs-button
+                        :disabled="(newUserData.phone_number && !validNumber) ||
+                                   newUserData.first_name.length === 0 ||
+                                   newUserData.last_name.length === 0"
                         @click="saveChanges"
                         style="padding: 3px 28px;">
                         Save changes
@@ -99,7 +105,7 @@
 <script>
 import PatientsService from "@/services/patientsService";
 import DoctorsService from "@/services/doctorsService";
-// import HealthcareWorkersService from "@/services/healthcareWorkersService";
+import HealthcareWorkersService from "@/services/healthcareWorkersService";
 import UsersService from "@/services/usersService";
 
 import NotificationsUtils from "@/utils/notificationsUtils";
@@ -113,10 +119,23 @@ export default {
     },
 
     data:() => ({
-      userData: {},
-      newUserData: {},
-      doctors: [],
+        userData: {},
+        newUserData: {},
+
+        doctors: [],
+
+        workerCompany: '',
+        newWorkerCompany: '',
+
+        doctorSpecialization: '',
+        newDoctorSpecialisation: '',
     }),
+
+    computed: {
+        validNumber() {
+            return /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im.test(this.newUserData.phone_number);
+        },
+    },
 
     async mounted() {
         DoctorsService.getAll()
@@ -126,42 +145,39 @@ export default {
     },
 
     async created() {
-      UsersService.get(this.id)
-          .then(response => {
-              this.userData = response.data;
-              this.newUserData = {...this.userData};
+        UsersService.get(this.id)
+            .then(response => {
+                this.userData = response.data;
+                this.newUserData = {...this.userData};
+              })
+
+        if(this.role === 'patient') {
+            PatientsService.get(this.id)
+            .then(response => {
+                this.userData = response.data;
+                this.newUserData = {...this.userData};
             })
+        }
 
-      if(this.role === 'patient') {
-          PatientsService.get(this.id)
-          .then(response => {
-            console.log(response.data);
-              this.userData = response.data;
-              this.newUserData = {...this.userData};
-          })
-      }
+        if(this.role === 'doctor') {
+            DoctorsService.get(this.id)
+            .then(response => {
+                this.doctorSpecialization = response.data.specializes_in;
+                this.newDoctorSpecialisation = this.doctorSpecialization;
+            })
+        }
 
-      if(this.role === 'doctor') {
-          DoctorsService.get(this.id)
-          .then(response => {
-              this.userData = response.data;
-              this.newUserData = {...this.userData};
-          })
-      }
-
-      // if(this.role === 'health-insurance-worker') {
-      //     HealthcareWorkersService.get(this.id)
-      //     .then(response => {
-      //       console.log(response.data);
-      //         this.userData = response.data;
-      //         this.newUserData = {...this.userData};
-      //     })
-      // }
+        if(this.role === 'health-insurance-worker') {
+            HealthcareWorkersService.get(this.id)
+            .then(response => {
+                this.workerCompany = response.data.works_for_company;
+                this.newWorkerCompany = this.workerCompany;
+            })
+        }
     },
 
     methods: {
         formatDate(date) {
-          console.log(date);
             const day = date.slice(8, 10);
             const month = date.slice(5, 7);
             const year = date.slice(0, 4);
@@ -170,55 +186,63 @@ export default {
         },
 
         resetUserData() {
-          this.newUserData = {...this.userData};
+            this.newUserData = {...this.userData};
+            this.newWorkerCompany = this.workerCompany;
+            this.newDoctorSpecialisation = this.doctorSpecialization;
         },
 
         saveChanges() {
-          let updatedInfo;
+            if(this.role === 'doctor') {
+                UsersService.update(this.id, this.newUserData)
+                .then(response => {
+                    console.log(response);
+                    NotificationsUtils.successPopup('User data successfully edited.', this.$vs);
+                    this.userData = {...this.newUserData};
+                })
+                .catch(e => {
+                    NotificationsUtils.failPopup(e, this.$vs);
+                });
 
-          if(this.role === 'doctor') {
-            updatedInfo = {
-              user: {
-                first_name: this.newUserData.user.first_name,
-                last_name: this.newUserData.user.last_name,
-                date_of_birth: this.formatDate(this.newUserData.user.date_of_birth),
-                phone_number: this.newUserData.user.phone_number,
-              },
-              specializes_in: this.newUserData.specializes_in,
-            };
+                let doctorDetail = {
+                    user: this.id,
+                    specializes_in: this.newDoctorSpecialisation,
+                }
+                DoctorsService.update(this.id, doctorDetail)
+                .then(response => {
+                    console.log(response);
+                    this.doctorSpecialization = this.newDoctorSpecialisation;
+                })
+                .catch(e => {
+                    NotificationsUtils.failPopup(e, this.$vs);
+                });
+            }
 
-            DoctorsService.update(this.id, updatedInfo)
-            .then(response => {
-                console.log(response);
-                NotificationsUtils.successPopup('User data successfully edited.', this.$vs);
-                this.userData = {...updatedInfo};
-            })
-            .catch(e => {
-                NotificationsUtils.failPopup(e, this.$vs);
-            });
-          }
+            if(this.role === 'health-insurance-worker') {
+                // Updating user general
+                UsersService.update(this.id, this.newUserData)
+                .then(response => {
+                    console.log(response);
+                    NotificationsUtils.successPopup('User data successfully edited.', this.$vs);
+                    this.userData = {...this.newUserData};
+                })
+                .catch(e => {
+                    NotificationsUtils.failPopup(e, this.$vs);
+                });
 
-          if(this.role === 'health-insurance-worker') {
-            // updatedInfo = {
-            //   // user: {
-            //     first_name: this.newUserData.user.first_name,
-            //     last_name: this.newUserData.user.last_name,
-            //     date_of_birth: this.formatDate(this.newUserData.user.date_of_birth),
-            //     phone_number: this.newUserData.user.phone_number,
-            //   // },
-            //   // works_for_company: this.newUserData.works_for_company
-            // };
-
-            UsersService.update(this.id, this.newUserData)
-            .then(response => {
-                console.log(response);
-                NotificationsUtils.successPopup('User data successfully edited.', this.$vs);
-                // this.userData = {...updatedInfo};
-            })
-            .catch(e => {
-                NotificationsUtils.failPopup(e, this.$vs);
-            });
-          }
+                // Updating worker specific -> insurance company
+                let workerDetail = {
+                    user: this.id,
+                    works_for_company: this.newWorkerCompany,
+                }
+                HealthcareWorkersService.update(this.id, workerDetail)
+                .then(response => {
+                    console.log(response);
+                    this.workerCompany = this.newWorkerCompany;
+                })
+                .catch(e => {
+                    NotificationsUtils.failPopup(e, this.$vs);
+                });
+            }
         }
     },
 }

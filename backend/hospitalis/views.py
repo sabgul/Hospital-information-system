@@ -379,7 +379,7 @@ class HealthConcernViewSet(ModelViewSet):
     permission_classes = (ActionBasedPermission,)
     action_permissions = {
         IsAboutPatient: ['retrieve'],
-        IsDoctor: ['create'],
+        IsDoctor: ['create', 'list'],
         IsFromDoctor: ['destroy', 'partial_update', 'retrieve', 'update', ],
         IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update', ],
     }

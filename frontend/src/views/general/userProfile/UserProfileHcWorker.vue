@@ -8,7 +8,7 @@
 
     <h5><b>Supervised examination actions:</b></h5>
 
-    <vs-table striped>
+    <vs-table striped class="actions__table">
         <template #header>
             <vs-input
                 v-model="searchValue"
@@ -91,5 +91,8 @@ export default {
 </script>
 
 <style scoped>
-
+    .actions__table {
+        width: 70%;
+        margin: 1em auto 0;
+    }
 </style>

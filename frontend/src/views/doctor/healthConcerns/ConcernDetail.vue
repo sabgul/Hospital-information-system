@@ -68,7 +68,7 @@
                 </template>
 
                 <template #img>
-                  <img src="../assets/examination.svg" alt="" width="200px;height=150px;">
+                  <img src="../../../assets/examination.svg" alt="" width="200px;height=150px;">
                 </template>
 
                 <template #text>
@@ -92,7 +92,7 @@
                 </template>
 
                 <template #img>
-                  <img src="../assets/new-examination-request.svg" alt="" style="width:200px;height:150px;">
+                  <img src="../../../assets/new-examination-request.svg" alt="" style="width:200px;height:150px;">
                 </template>
 
                <template #text>
@@ -112,7 +112,7 @@
           <vs-card-group>
             <vs-card v-for="report in reports" v-bind:key="report.id" @click="showReportDialog(report)">
                 <template #img>
-                  <img src="../assets/missing-image.svg" alt="">
+                  <img src="../../../assets/missing-image.svg" alt="">
                 </template>
 
                 <template #text>
@@ -128,6 +128,18 @@
                             Show attached files
                         </span>
                     </vs-button>
+                </template>
+            </vs-card>
+
+            <vs-card v-if="!reports.length" style="cursor: default !important;">
+                <template #img>
+                  <img src="../../../assets/empty.svg" alt="" style="width:200px;height:150px;">
+                </template>
+
+                <template #text>
+                    <p style="text-align: center; margin-top: 1em;">
+                        <b>No reports</b>
+                    </p>
                 </template>
             </vs-card>
         </vs-card-group>

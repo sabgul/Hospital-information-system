@@ -50,7 +50,7 @@ const router = new Router({
             path: '/health-concern-detail/:id',
             name: 'healthConcernDetail',
             props: true,
-            component: () => import('@/components/ConcernDetail'),
+            component: () => import('@/views/doctor/healthConcerns/ConcernDetail'),
             meta: {
                 requiresAuth: true
             }
@@ -145,7 +145,7 @@ const router = new Router({
             path: '/profile/:role/:id',
             name: 'profile',
             props: true,
-            component: () => import('@/views/admin/usersManagement/userProfile/UserProfile'),
+            component: () => import('@/views/general/userProfile/UserProfile'),
             meta: {
                 requiresAuth: true
             }

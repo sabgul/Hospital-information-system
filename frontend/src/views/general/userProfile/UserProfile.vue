@@ -71,9 +71,9 @@ import PatientsService from '@/services/patientsService.js';
 import DoctorsService from '@/services/doctorsService.js';
 import HealthcareWorkersService from '@/services/healthcareWorkersService.js';
 
-import UserProfileDoctor from "@/views/admin/usersManagement/userProfile/UserProfileDoctor";
-import UserProfileHcWorker from "@/views/admin/usersManagement/userProfile/UserProfileHcWorker";
-import UserProfilePatient from "@/views/admin/usersManagement/userProfile/UserProfilePatient";
+import UserProfileDoctor from "@/views/general/userProfile/UserProfileDoctor";
+import UserProfileHcWorker from "@/views/general/userProfile/UserProfileHcWorker";
+import UserProfilePatient from "@/views/general/userProfile/UserProfilePatient";
 
 import StateUtils from "@/utils/stateUtils";
 
@@ -159,7 +159,7 @@ export default {
 
     .user__pic {
         position: absolute;
-        right: 16%;
+        right: 9%;
         top: 5.5em;
         width: 20%;
         height: 20%;
