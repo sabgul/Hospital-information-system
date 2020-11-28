@@ -214,13 +214,13 @@ class UserViewSet(ModelViewSet):
     action_permissions = {
         AllowAny: ['create'],
         IsAuthenticated: ['me'],
-        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update', ],
-        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
 
     action_object_permissions = {
-        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update', ],
-        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
 
     @staticmethod
@@ -254,15 +254,15 @@ class PatientsViewSet(ModelViewSet):
     permission_classes = (ActionBasedPermission,)
     action_permissions = {
         AllowAny: ['create'],
-        IsDoctor: ['list', 'retrieve', 'partial_update', 'update', ],
-        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update', ],
-        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsDoctor: ['list', 'retrieve', 'partial_update', 'update'],
+        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
 
     action_object_permissions = {
-        IsDoctor: ['list', 'retrieve', 'partial_update', 'update', ],
-        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update', ],
-        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsDoctor: ['list', 'retrieve', 'partial_update', 'update'],
+        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
 
     def create(self, request, *args, **kwargs):
@@ -295,15 +295,15 @@ class DoctorsViewSet(ModelViewSet):
     serializer_class = DoctorSerializer
     permission_classes = (ActionBasedPermission,)
     action_permissions = {
-        IsDoctor: ['list', 'retrieve', ],
-        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update', ],
-        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsDoctor: ['list', 'retrieve'],
+        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
 
     action_object_permissions = {
-        IsDoctor: ['list', 'retrieve', ],
-        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update', ],
-        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsDoctor: ['list', 'retrieve'],
+        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
 
     def create(self, request, *args, **kwargs):
@@ -352,13 +352,13 @@ class HealthcareWorkerViewSet(ModelViewSet):
     serializer_class = HealthcareWorkerSerializer
     permission_classes = (ActionBasedPermission,)
     action_permissions = {
-        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update', ],
-        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
 
     action_object_permissions = {
-        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update', ],
-        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
 
     def create(self, request, *args, **kwargs):
@@ -394,15 +394,16 @@ class HealthConcernViewSet(ModelViewSet):
     permission_classes = (ActionBasedPermission,)
     action_permissions = {
         IsAboutPatient: ['retrieve'],
-        IsDoctor: ['create', 'list'],
-        IsFromDoctor: ['destroy', 'partial_update', 'retrieve', 'update', ],
-        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsDoctor: ['create', 'list', 'retrieve'],
+        IsFromDoctor: ['destroy', 'partial_update', 'update'],
+        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
 
     action_object_permissions = {
         IsAboutPatient: ['retrieve'],
-        IsFromDoctor: ['destroy', 'partial_update', 'retrieve', 'update', ],
-        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsDoctor: ['retrieve'],
+        IsFromDoctor: ['destroy', 'partial_update', 'update'],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
 
 
@@ -413,15 +414,15 @@ class DoctorReportViewSet(ModelViewSet):
     permission_classes = (ActionBasedPermission,)
     action_permissions = {
         IsAboutPatient: ['retrieve'],
-        IsDoctor: ['create'],
-        IsFromDoctor: ['destroy', 'partial_update', 'retrieve', 'update', ],
-        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsDoctor: ['create', 'list'],
+        IsFromDoctor: ['destroy', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
 
     action_object_permissions = {
         IsAboutPatient: ['retrieve'],
-        IsFromDoctor: ['destroy', 'partial_update', 'retrieve', 'update', ],
-        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsFromDoctor: ['destroy', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
 
 
@@ -433,14 +434,14 @@ class ExaminationRequestViewSet(ModelViewSet):
     action_permissions = {
         IsAboutPatient: ['retrieve'],
         IsDoctor: ['create'],
-        IsFromDoctor: ['destroy', 'partial_update', 'retrieve', 'update', ],
-        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsFromDoctor: ['destroy', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
 
     action_object_permissions = {
         IsAboutPatient: ['retrieve'],
-        IsFromDoctor: ['destroy', 'partial_update', 'retrieve', 'update', ],
-        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsFromDoctor: ['destroy', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
 
 
@@ -450,15 +451,15 @@ class ExaminationActionViewSet(ModelViewSet):
     filter_class = ExaminationActionFilter
     permission_classes = (ActionBasedPermission,)
     action_permissions = {
-        IsDoctor: ['list', 'retrieve', ],
-        IsHCWorker: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update', ],
-        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsDoctor: ['list', 'retrieve'],
+        IsHCWorker: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
 
     action_object_permissions = {
-        IsDoctor: ['list', 'retrieve', ],
-        IsHCWorker: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
-        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsDoctor: ['list', 'retrieve'],
+        IsHCWorker: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
 
 
@@ -468,16 +469,16 @@ class ExaminationViewSet(ModelViewSet):
     filter_class = ExaminationFilter
     permission_classes = (ActionBasedPermission,)
     action_permissions = {
-        IsAboutPatient: ['retrieve', ],
-        IsDoctor: ['create', ],
-        IsFromDoctor: ['retrieve', 'destroy', 'partial_update', 'retrieve', 'update', ],
-        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsAboutPatient: ['retrieve'],
+        IsDoctor: ['create', 'list'],
+        IsFromDoctor: ['retrieve', 'destroy', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
 
     action_object_permissions = {
-        IsAboutPatient: ['retrieve', ],
-        IsFromDoctor: ['retrieve', 'destroy', 'partial_update', 'retrieve', 'update', ],
-        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsAboutPatient: ['retrieve'],
+        IsFromDoctor: ['retrieve', 'destroy', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
 
 
@@ -486,16 +487,16 @@ class TransactionRequestViewSet(ModelViewSet):
     serializer_class = TransactionRequestSerializer
     permission_classes = (ActionBasedPermission,)
     action_permissions = {
-        IsAboutPatient: ['retrieve', ],
-        IsDoctor: ['create', ],
-        IsFromDoctor: ['retrieve', 'destroy', 'partial_update', 'retrieve', 'update', ],
-        IsHCWorker: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
-        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsAboutPatient: ['retrieve'],
+        IsDoctor: ['create'],
+        IsFromDoctor: ['retrieve', 'destroy', 'partial_update', 'retrieve', 'update'],
+        IsHCWorker: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
 
     action_object_permissions = {
-        IsAboutPatient: ['retrieve', ],
-        IsFromDoctor: ['retrieve', 'destroy', 'partial_update', 'retrieve', 'update', ],
-        IsHCWorker: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
-        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsAboutPatient: ['retrieve'],
+        IsFromDoctor: ['retrieve', 'destroy', 'partial_update', 'retrieve', 'update'],
+        IsHCWorker: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
