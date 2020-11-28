@@ -67,9 +67,10 @@
 
 
 <script>
-import PatientsService from '@/services/patientsService.js';
-import DoctorsService from '@/services/doctorsService.js';
-import HealthcareWorkersService from '@/services/healthcareWorkersService.js';
+import PatientsService from "@/services/patientsService.js";
+import DoctorsService from "@/services/doctorsService.js";
+import HealthcareWorkersService from "@/services/healthcareWorkersService.js";
+import UsersService from "@/services/usersService";
 
 import UserProfileDoctor from "@/views/general/userProfile/UserProfileDoctor";
 import UserProfileHcWorker from "@/views/general/userProfile/UserProfileHcWorker";
@@ -81,7 +82,7 @@ export default {
     name: 'UserProfile', 
     
     props: {
-        id: String, 
+        id: String,
         role: String,
     },
 
@@ -115,6 +116,13 @@ export default {
             .then(response => {
                 this.userData = response.data;
             })
+        }
+
+        if(this.role === 'admin') {
+            UsersService.get(this.id)
+            .then(response => {
+                  this.userData.user = response.data;
+              })
         }
     },
     
