@@ -58,7 +58,7 @@
                         style="padding: 3px 42px;"
                         @click="getFiltered()"
                     >
-                        Filter
+                        Apply filter
                     </vs-button>
                 </div>
             </div>

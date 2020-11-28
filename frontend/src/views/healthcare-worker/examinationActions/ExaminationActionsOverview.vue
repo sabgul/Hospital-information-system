@@ -69,7 +69,7 @@
                         @click="getFiltered()"
                         style="padding: 3px 42px;"
                     >
-                        Filter
+                        Apply filter
                     </vs-button>
                 </div>
             </div>
