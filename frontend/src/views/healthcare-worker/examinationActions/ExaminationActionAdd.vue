@@ -43,6 +43,7 @@
                         class="input__items"
                         label="Action manager"
                         color="primary"
+                        :multiple="false"
                     >
                         <template
                             #message-warn
@@ -52,12 +53,12 @@
                         </template>
 
                         <vs-option
-                            v-for="worker in availableWorkers"
-                            :key="worker.user.id"
-                            :label="worker.user.first_name"
-                            :value="worker.user.id"
+                            v-for="(worker, id) in testt"
+                            v-bind:key="id"
+                            v-bind:label="worker.name"
+                            v-bind:value="worker.id"
                         >
-                            {{ worker.user.first_name }}
+                            {{ worker.name }}
                         </vs-option>
                     </vs-select>
                 </div>
@@ -111,13 +112,42 @@ export default {
             action_manager_id: -1,
         },
         availableWorkers: [],
+        availableWorkersForSelect: [],
+
+        testt: [
+          {
+            name: 'N1',
+            id: 1,
+          },
+          {
+            name: 'N2',
+            id: 2,
+          },
+          {
+            name: 'N3',
+            id: 3
+          }
+        ]
     }),
     
     async created() {
         HealthcareWorkersService.getAll()
             .then(response => {
             this.availableWorkers = response.data;
+            let self = this;
+
+            this.availableWorkers.forEach(item => {
+                self.availableWorkersForSelect.push(
+                    {
+                      name: item.name,
+                      id: item.id,
+                    }
+                )
             })
+            })
+
+      console.log(this.availableWorkersForSelect)
+      console.log(this.testt)
     },
     
     methods: {
