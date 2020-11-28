@@ -71,6 +71,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
     date_of_birth = models.DateField(max_length=8, default=datetime.date.today, blank=True)
+    phone_number = models.CharField(max_length=13, default='')
 
     # Foreign keys:
     # doctor
@@ -97,7 +98,7 @@ class Doctor(models.Model):
 
 class Patient(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    main_doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    main_doctor = models.ForeignKey(Doctor, on_delete=models.DO_NOTHING)
 
     # class Meta:
     #     ordering = ['name']

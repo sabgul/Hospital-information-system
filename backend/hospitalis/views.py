@@ -1,13 +1,13 @@
 import django_filters
 
 from django.contrib.auth import get_user_model
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, get_list_or_404
 
 from rest_framework import filters
 from rest_framework import status
 from rest_framework.decorators import action, permission_classes
 from rest_framework.generics import RetrieveUpdateAPIView
-from rest_framework.permissions import IsAuthenticated, AllowAny, BasePermission, SAFE_METHODS, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, AllowAny, BasePermission, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
@@ -303,8 +303,7 @@ class DoctorsViewSet(ModelViewSet):
     action_object_permissions = {
         IsDoctor: ['list', 'retrieve', ],
         IsOwner: ['destroy', 'partial_update', 'retrieve', 'update', ],
-        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update', ],
-        # does 'create' make sense here?
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
     }
 
     def create(self, request, *args, **kwargs):
@@ -330,6 +329,22 @@ class DoctorsViewSet(ModelViewSet):
 
             # propagate error from creating doctor instance
             return Response(str(exc), status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, *args, **kwargs):
+        try:
+            doctor_being_deleted = get_object_or_404(Doctor, pk=kwargs['pk'])
+            own_patients = get_list_or_404(Patient, main_doctor=doctor_being_deleted)
+            new_doctor_pk = request.query_params['alt']
+            new_main_doctor = get_object_or_404(Doctor, pk=new_doctor_pk)
+
+            for patient in own_patients:
+                patient.main_doctor = new_main_doctor
+                patient.save()
+
+        except:
+            # error during transferring patients to new doctor => no patients to transfer, OK
+            pass
+        return super().destroy(request, args, kwargs)
 
 
 class HealthcareWorkerViewSet(ModelViewSet):

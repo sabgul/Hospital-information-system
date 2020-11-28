@@ -31,13 +31,11 @@ class UserRegSerializer(ModelSerializer):
 class UserSerializer(ModelSerializer):
     class Meta(object):
         model = get_user_model()
-        fields = ['id', 'email', 'first_name', 'last_name', 'gender',  'date_of_birth',
+        fields = ['id', 'email', 'first_name', 'last_name', 'gender',  'date_of_birth', 'phone_number',
                   'doctor', 'patient', 'healthcareworker',
                   # care, you can't see ^role fields^ in models.User
                   # OneToOneFields reference User from role-classes, but the connection is two-way
                   # the referencing-class name becomes lowercase
-
-                  # 'date_joined'  # todo add other fields?
                   ]
         extra_kwargs = {'password': {'write_only': True}}
 
@@ -105,7 +103,7 @@ class DoctorSerializer(ModelSerializer):
         fields = '__all__'
 
     def to_representation(self, instance):
-        # not executed on GET ...:8000/api/doctors/
+        # not executed on GET api/doctors/
         response = super().to_representation(instance)
         response['user'] = UserSerializer(instance.user).data
         return response
