@@ -6,7 +6,7 @@
             </h1>
 
             <p>
-                You can see all tickets assigned to you right here..
+                You can see all tickets assigned to you right here.
             </p>
         </div>
 
