@@ -7,7 +7,7 @@ from rest_framework import filters
 from rest_framework import status
 from rest_framework.decorators import action, permission_classes
 from rest_framework.generics import RetrieveUpdateAPIView
-from rest_framework.permissions import IsAuthenticated, AllowAny, BasePermission
+from rest_framework.permissions import IsAuthenticated, AllowAny, BasePermission, SAFE_METHODS, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
@@ -56,6 +56,144 @@ from .filters import (
 )
 
 
+class ActionBasedPermission(AllowAny):
+    """
+    Grant or deny access to a view, based on a mapping in view.action_permissions
+    """
+
+    def has_permission(self, request, view):
+        for klass, actions in getattr(view, 'action_permissions', {}).items():
+            if view.action in actions:
+                if klass().has_permission(request, view):
+                    return True
+        return False
+
+    def has_object_permission(self, request, view, obj):
+        for klass, actions in getattr(view, 'action_object_permissions', {}).items():
+            if view.action in actions:
+                if klass().has_object_permission(request, view, obj):
+                    return True
+        return False
+
+
+class IsDoctor(BasePermission):
+    def has_permission(self, request, view):
+        user = request.user
+        try:
+            return bool(user.doctor)
+        except AttributeError:
+            return False
+
+
+class IsHCWorker(BasePermission):
+    def has_permission(self, request, view):
+        user = request.user
+        try:
+            return bool(user.healthcareworker)
+        except AttributeError:
+            return False
+
+
+class IsOwner(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if type(obj) == User:
+            return obj == request.user
+        else:
+            return bool(obj.user and obj.user == request.user)
+
+
+class IsAboutPatient(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        permission = False
+
+        if type(obj) == HealthConcern:
+            try:
+                user = obj.patient.user
+                permission = bool(user and user == request.user)
+            except AttributeError:
+                pass
+        elif type(obj) == DoctorReport:
+            try:
+                user = obj.about_concern.patient.user
+                permission = bool(user and user == request.user)
+            except AttributeError:
+                pass
+        elif type(obj) == ExaminationRequest:
+            try:
+                user = obj.concern.patient.user
+                permission = bool(user and user == request.user)
+            except AttributeError:
+                pass
+        elif type(obj) == Examination:
+            try:
+                user = obj.concern.patient.user
+                permission = bool(user and user == request.user)
+            except AttributeError:
+                pass
+        elif type(obj) == TransactionRequest:
+            try:
+                user = obj.related_to_patient.patient.user
+                permission = bool(user and user == request.user)
+            except AttributeError:
+                pass
+
+        return permission
+
+
+class IsFromDoctor(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        permission = False
+
+        if type(obj) == HealthConcern:
+            try:
+                user = obj.doctor.user
+                permission = bool(user and user == request.user)
+            except Exception as exc:
+                print(exc, file=sys.stderr)
+        elif type(obj) == DoctorReport:
+            try:
+                user = obj.created_by.user
+                permission = bool(user and user == request.user)
+            except Exception as exc:
+                print(exc, file=sys.stderr)
+        elif type(obj) == ExaminationRequest:
+            try:
+                assigned = obj.assigned_to.user
+                created = obj.created_by.user
+                permission = bool(created and created == request.user) \
+                             or bool(assigned and assigned == request.user)
+            except Exception as exc:
+                print(exc, file=sys.stderr)
+        elif type(obj) == Examination:
+            try:
+                examinating = obj.examinating_doctor.user
+                assigned = obj.request_based_on.assigned_to.user
+                from_user = obj.concern.patient.main_doctor.user
+
+                permission = bool(examinating and examinating == request.user) \
+                             or bool(assigned and assigned == request.user) \
+                             or bool(from_user and from_user == request.user)
+
+            except Exception as exc:
+                print(exc, file=sys.stderr)
+        elif type(obj) == TransactionRequest:
+            try:
+                user = obj.related_to_patient.main_doctor.user
+                permission = bool(user and user == request.user)
+            except Exception as exc:
+                print(exc, file=sys.stderr)
+
+        return permission
+
+
+class IsAdmin(BasePermission):
+    def has_permission(self, request, view):
+        return bool(request.user and request.user.is_staff)
+
+    def has_object_permission(self, request, view, obj):
+        return bool(request.user and request.user.is_staff)
+
+
 class IsCreationOrIsAuthenticated(BasePermission):
     def has_permission(self, request, view):
         # anonymous user can create an account (POST --> view action 'create')
@@ -63,10 +201,27 @@ class IsCreationOrIsAuthenticated(BasePermission):
         return view.action == 'create' or request.user.is_authenticated
 
 
+# not a ViewSet
+class MyObtainTokenPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+    permission_classes = (AllowAny,)
+
+
 class UserViewSet(ModelViewSet):
     serializer_class = UserSerializer
     queryset = User.objects.all()
-    permission_classes = [IsCreationOrIsAuthenticated]
+    permission_classes = (ActionBasedPermission,)
+    action_permissions = {
+        AllowAny: ['create'],
+        IsAuthenticated: ['me'],
+        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update', ],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+    }
+
+    action_object_permissions = {
+        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update', ],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+    }
 
     @staticmethod
     def create_user_internal(request):
@@ -80,31 +235,35 @@ class UserViewSet(ModelViewSet):
         return reg_user, user
 
     def create(self, request, *args, **kwargs):
-        # different serializer used
         reg_user, user = self.__class__.create_user_internal(request)
-
         return Response(reg_user.data, status=status.HTTP_201_CREATED)
 
-    # allows for GET /api/users/me/
+    # GET /api/users/me/
     @action(methods=['get'], detail=False)
     def me(self, request, *args, **kwargs):
         user = get_user_model()
-        self.object = get_object_or_404(user, pk=request.user.id)
-        retrieve_me = self.get_serializer(self.object)
+        obj = get_object_or_404(user, pk=request.user.id)
+        retrieve_me = self.get_serializer(obj)
         return Response(retrieve_me.data)
-
-
-# not a ViewSet
-class MyObtainTokenPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
-    permission_classes = (AllowAny,)
 
 
 class PatientsViewSet(ModelViewSet):
     queryset = Patient.objects.all()
     serializer_class = PatientSerializer
     filter_class = PatientsFilter
-    permission_classes = [IsCreationOrIsAuthenticated]
+    permission_classes = (ActionBasedPermission,)
+    action_permissions = {
+        AllowAny: ['create'],
+        IsDoctor: ['list', 'retrieve', 'partial_update', 'update', ],
+        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update', ],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+    }
+
+    action_object_permissions = {
+        IsDoctor: ['list', 'retrieve', 'partial_update', 'update', ],
+        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update', ],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+    }
 
     def create(self, request, *args, **kwargs):
         # prevent FE from setting any role info
@@ -134,7 +293,19 @@ class PatientsViewSet(ModelViewSet):
 class DoctorsViewSet(ModelViewSet):
     queryset = Doctor.objects.all()
     serializer_class = DoctorSerializer
-    permission_classes = [IsCreationOrIsAuthenticated]
+    permission_classes = (ActionBasedPermission,)
+    action_permissions = {
+        IsDoctor: ['list', 'retrieve', ],
+        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update', ],
+        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+    }
+
+    action_object_permissions = {
+        IsDoctor: ['list', 'retrieve', ],
+        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update', ],
+        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        # does 'create' make sense here?
+    }
 
     def create(self, request, *args, **kwargs):
         # prevent FE from setting any role info
@@ -164,7 +335,16 @@ class DoctorsViewSet(ModelViewSet):
 class HealthcareWorkerViewSet(ModelViewSet):
     queryset = HealthcareWorker.objects.all()
     serializer_class = HealthcareWorkerSerializer
-    permission_classes = [IsCreationOrIsAuthenticated]
+    permission_classes = (ActionBasedPermission,)
+    action_permissions = {
+        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update', ],
+        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+    }
+
+    action_object_permissions = {
+        IsOwner: ['destroy', 'partial_update', 'retrieve', 'update', ],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+    }
 
     def create(self, request, *args, **kwargs):
         # prevent FE from setting any role info
@@ -195,39 +375,112 @@ class HealthConcernViewSet(ModelViewSet):
     queryset = HealthConcern.objects.all()
     serializer_class = HealthConcernSerializer
     # filter = HealthConcernFilter
-    permission_classes = [IsAuthenticated]
     filter_class = HealthConcernFilter
+    permission_classes = (ActionBasedPermission,)
+    action_permissions = {
+        IsAboutPatient: ['retrieve'],
+        IsDoctor: ['create'],
+        IsFromDoctor: ['destroy', 'partial_update', 'retrieve', 'update', ],
+        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+    }
+
+    action_object_permissions = {
+        IsAboutPatient: ['retrieve'],
+        IsFromDoctor: ['destroy', 'partial_update', 'retrieve', 'update', ],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+    }
 
 
 class DoctorReportViewSet(ModelViewSet):
     queryset = DoctorReport.objects.all()
     serializer_class = DoctorReportSerializer
     filter_class = DoctorReportFilter
-    permission_classes = [IsAuthenticated]
+    permission_classes = (ActionBasedPermission,)
+    action_permissions = {
+        IsAboutPatient: ['retrieve'],
+        IsDoctor: ['create'],
+        IsFromDoctor: ['destroy', 'partial_update', 'retrieve', 'update', ],
+        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+    }
+
+    action_object_permissions = {
+        IsAboutPatient: ['retrieve'],
+        IsFromDoctor: ['destroy', 'partial_update', 'retrieve', 'update', ],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+    }
 
 
 class ExaminationRequestViewSet(ModelViewSet):
     queryset = ExaminationRequest.objects.all()
     serializer_class = ExaminationRequestSerializer
     filter_class = ExaminationRequestFilter
-    permission_classes = [IsAuthenticated]
+    permission_classes = (ActionBasedPermission,)
+    action_permissions = {
+        IsAboutPatient: ['retrieve'],
+        IsDoctor: ['create'],
+        IsFromDoctor: ['destroy', 'partial_update', 'retrieve', 'update', ],
+        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+    }
+
+    action_object_permissions = {
+        IsAboutPatient: ['retrieve'],
+        IsFromDoctor: ['destroy', 'partial_update', 'retrieve', 'update', ],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+    }
 
 
 class ExaminationActionViewSet(ModelViewSet):
     queryset = ExaminationAction.objects.all()
     serializer_class = ExaminationActionSerializer
     filter_class = ExaminationActionFilter
-    permission_classes = [IsAuthenticated]
+    permission_classes = (ActionBasedPermission,)
+    action_permissions = {
+        IsDoctor: ['list', 'retrieve', ],
+        IsHCWorker: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+    }
+
+    action_object_permissions = {
+        IsDoctor: ['list', 'retrieve', ],
+        IsHCWorker: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+    }
 
 
 class ExaminationViewSet(ModelViewSet):
     queryset = Examination.objects.all()
     serializer_class = ExaminationSerializer
     filter_class = ExaminationFilter
-    permission_classes = [IsAuthenticated]
+    permission_classes = (ActionBasedPermission,)
+    action_permissions = {
+        IsAboutPatient: ['retrieve', ],
+        IsDoctor: ['create', ],
+        IsFromDoctor: ['retrieve', 'destroy', 'partial_update', 'retrieve', 'update', ],
+        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+    }
+
+    action_object_permissions = {
+        IsAboutPatient: ['retrieve', ],
+        IsFromDoctor: ['retrieve', 'destroy', 'partial_update', 'retrieve', 'update', ],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+    }
 
 
 class TransactionRequestViewSet(ModelViewSet):
     queryset = TransactionRequest.objects.all()
     serializer_class = TransactionRequestSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = (ActionBasedPermission,)
+    action_permissions = {
+        IsAboutPatient: ['retrieve', ],
+        IsDoctor: ['create', ],
+        IsFromDoctor: ['retrieve', 'destroy', 'partial_update', 'retrieve', 'update', ],
+        IsHCWorker: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+    }
+
+    action_object_permissions = {
+        IsAboutPatient: ['retrieve', ],
+        IsFromDoctor: ['retrieve', 'destroy', 'partial_update', 'retrieve', 'update', ],
+        IsHCWorker: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update', ],
+    }

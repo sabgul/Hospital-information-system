@@ -93,7 +93,6 @@ class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     # class Meta:
     #     ordering = ['name']
-    #     # permission = [()]     TODO: permission group
 
 
 class Patient(models.Model):
@@ -102,7 +101,6 @@ class Patient(models.Model):
 
     # class Meta:
     #     ordering = ['name']
-    #     # permission = [()]     TODO: permission group
 
 
 class HealthcareWorker(models.Model):
@@ -111,7 +109,6 @@ class HealthcareWorker(models.Model):
 
     # class Meta:
     #     ordering = ['name']
-    #     permission = [()]     TODO: permission group
 
 
 # Zdravotny problem
@@ -140,7 +137,6 @@ class HealthConcern(models.Model):
 
     class Meta:
         ordering = ['name']
-        # permission = [()]     TODO: permission group
 
 
 # Lekarska sprava
@@ -153,7 +149,6 @@ class DoctorReport(models.Model):
 
     class Meta:
         ordering = ['date_of_created']
-        # permission = [()]     TODO: permission group
 
 
 # Ziadost o lekarske vysetrenie
@@ -180,7 +175,6 @@ class ExaminationRequest(models.Model):
 
     class Meta:
         ordering = ['created_timestamp']
-        # permission = [()]     TODO: permission group
 
 
 # Ukon vramci lekarskeho vysetrenia
@@ -197,7 +191,6 @@ class ExaminationAction(models.Model):
 
     class Meta:
         ordering = ['name']
-        # permission = [()]     TODO: permission group
 
 
 # Lekarske vysetrenie
@@ -211,7 +204,6 @@ class Examination(models.Model):
 
     class Meta:
         ordering = ['date_of_examination']
-        # permission = [()]     TODO: permission group
 
 
 # Ziadost o zaplatenie jedneho ukonu vramci lekarskeho vysetrenia
@@ -234,5 +226,3 @@ class TransactionRequest(models.Model):
         default=UNPAID,
     )
 
-    # class Meta:
-    # permission = [()]     TODO: permission group
