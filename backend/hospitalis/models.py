@@ -71,7 +71,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
     date_of_birth = models.DateField(max_length=8, default=datetime.date.today, blank=True)
-    phone_number = models.CharField(max_length=13, default='')
+    phone_number = models.CharField(max_length=13, default='', blank=True)
 
     # Foreign keys:
     # doctor

@@ -21,6 +21,14 @@ class DoctorsService {
     return http.delete(`doctors/${id}/`);
   }
 
+  deleteWithNewResponsible(idToDelete, newResponsibleId) {
+    return http.delete(`doctors/${idToDelete}`, {
+      'params': {
+        ...({'alt': newResponsibleId}),
+      }
+    })
+  }
+
   deleteAll() {
     return http.delete(`doctors`);
   }

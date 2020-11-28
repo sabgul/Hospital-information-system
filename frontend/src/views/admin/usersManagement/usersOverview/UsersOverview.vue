@@ -138,7 +138,7 @@
                                         </template>
                                     </vs-tooltip>
 
-                                    <vs-tooltip v-if="user.role !== 'Doctor'">
+                                    <vs-tooltip>
                                         <vs-button danger icon @click="deleteUserDialog(user)">
                                             <box-icon
                                                 name='trash'
@@ -175,13 +175,45 @@
                 </h5>
             </template>
 
-          <br>
-          <br>
+            <br>
+
+
+            <p v-if="userToDelete.role === 'Doctor'">
+                Please choose a new doctor who will be responsible for <br> patients, examinations and other responsibilities of doctor who is currently being removed:
+            </p>
+
+            <vs-select
+                v-if="userToDelete.role === 'Doctor'"
+                v-model="doctorToReplace"
+                class="popup__center"
+                label="Choose responsible doctor"
+                color="primary"
+            >
+                <template
+                    #message-warn
+                    v-if="doctorToReplace === -1"
+                >
+                    Required
+                </template>
+
+                <vs-option
+                    v-for="doctor in availableWithoutDeleted"
+                    :key="doctor.user.id"
+                    :label="doctor.user.first_name"
+                    :value="doctor.user.id"
+                >
+                    {{ doctor.user.first_name }}
+                </vs-option>
+            </vs-select>
+
+            <br>
+
             <template #footer>
                 <div class="popup__right">
                     <vs-button
                         danger
                         border
+                        :disabled="doctorToReplace === -1 && userToDelete.role === 'Doctor'"
                         @click="deleteUser()"
                     >
                         Delete
@@ -215,6 +247,9 @@ export default {
         userToDelete: {},
         activeDelete: false,
 
+        availableDoctors: [],
+        doctorToReplace: -1,
+
         filter: {
             user_role: -1,
             user_state: -1,  // active, inactive
@@ -224,7 +259,14 @@ export default {
     async created() {
         await this.getAllUsers();
     },
-    
+
+    computed: {
+        // Array of all doctor except of the one being deleted
+        availableWithoutDeleted() {
+            return this.availableDoctors.filter((doctor) => doctor.user.id !== this.userToDelete.userData.user.id);
+        }
+    },
+
     methods: {
         getDate(date) {
           return DateUtils.getDateForFrontend(date);
@@ -240,6 +282,7 @@ export default {
             DoctorsService.getAll()
             .then(response => {
                 response.data.forEach(doctor => this.users.push({userData: doctor, role: 'Doctor'}));
+                this.availableDoctors = response.data;
             })
 
             HealthcareWorkersService.getAll()
@@ -305,6 +348,23 @@ export default {
 
                     this.$forceUpdate();
                 })
+          }
+
+          if(this.userToDelete.role === 'Doctor') {
+              DoctorsService.deleteWithNewResponsible(this.userToDelete.userData.user.id, this.doctorToReplace)
+                  .then(response => {
+                      console.log(response);
+                      NotificationsUtils.successPopup('Health insurance worker successfully deleted.', this.$vs);
+                      this.getAllUsers();
+                      this.activeDelete = false;
+
+                      UsersService.delete(this.userToDelete.userData.user.id)
+                        .then(response => {
+                            console.log(response);
+                        })
+
+                      this.$forceUpdate();
+                  })
           }
         }
     },
