@@ -17,6 +17,10 @@ class UsersService {
     return http.put(`users/${id}/`, data);
   }
 
+  updateSelected(id, data) {
+    return http.patch(`users/${id}/`, data);
+  }
+
   delete(id) {
     return http.delete(`users/${id}`);
   }

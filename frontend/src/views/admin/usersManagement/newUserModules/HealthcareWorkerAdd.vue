@@ -27,6 +27,13 @@
                       >
                           Required
                       </template>
+
+                      <template
+                          #message-danger
+                          v-if="newWorker.first_name.length >= 30"
+                      >
+                          Name too long
+                      </template>
                   </vs-input>
 
                   <vs-input
@@ -41,6 +48,13 @@
                           v-if="newWorker.last_name.length === 0"
                       >
                           Required
+                      </template>
+
+                      <template
+                          #message-danger
+                          v-if="newWorker.last_name.length >= 30"
+                      >
+                          Name too long
                       </template>
                   </vs-input>
 
@@ -81,17 +95,17 @@
                       class="input__items"
                   >
                       <template
-                          v-if="validEmail"
+                          v-if="validEmail && newWorker.email_field.length < 40"
                           #message-success
                       >
                           Valid email
                       </template>
 
                       <template
-                          v-if="!validEmail && newWorker.email_field !== ''"
+                          v-if="(!validEmail && newWorker.email_field !== '') || newWorker.email_field.length >= 40"
                           #message-danger
                       >
-                          Invalid email
+                          Invalid or too long email
                       </template>
 
                       <template
@@ -117,6 +131,13 @@
                       >
                           Required
                       </template>
+
+                      <template
+                          v-if="newWorker.password.length >= 128"
+                          #message-danger
+                      >
+                          Password too long
+                      </template>
                   </vs-input>
 
                   <vs-input
@@ -126,10 +147,10 @@
                       class="input__items"
                   >
                       <template
-                          v-if="newWorker.works_for_company.length >= 250"
+                          v-if="newWorker.works_for_company.length >= 254"
                           #message-danger
                       >
-                          Text too long
+                          Company name too long
                       </template>
                   </vs-input>
               </div>
@@ -152,7 +173,7 @@
                     <vs-input
                         v-model="newWorker.phone_number"
                         label="Phone number"
-                        placeholder="Type phone number"
+                        placeholder="Eg +42012312313"
                         class="input__items"
                     >
                         <template
@@ -163,10 +184,10 @@
                         </template>
 
                         <template
-                            v-if="!validNumber && newWorker.phone_number !== ''"
+                            v-if="(!validNumber && newWorker.phone_number !== '') || newWorker.phone_number.length > 13"
                             #message-danger
                         >
-                            Invalid phone number
+                            Invalid or too long phone number
                         </template>
                     </vs-input>
               </div>
@@ -175,11 +196,17 @@
                   <vs-button
                       @click="createWorker()"
                       :disabled=" newWorker.first_name.length === 0 ||
+                                  newWorker.first_name.length >= 30 ||
                                   newWorker.last_name.length === 0 ||
+                                  newWorker.last_name.length >= 30 ||
                                   newWorker.main_doctor_id === -1 ||
                                   newWorker.date_of_birth === '' ||
                                   (!validEmail && newWorker.email_field.length !== 0) ||
-                                  (!validNumber && newWorker.phone_number.length !== 0)"
+                                  (!validNumber && newWorker.phone_number.length !== 0) ||
+                                  newWorker.password.length >= 128 ||
+                                  newWorker.phone_number.length > 13 ||
+                                  newWorker.email_field.length >= 40 ||
+                                  newWorker.works_for_company.length >= 254"
                   >
                       Submit
                   </vs-button>

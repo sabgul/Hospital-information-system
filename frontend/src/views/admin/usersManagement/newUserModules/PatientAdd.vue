@@ -26,6 +26,13 @@
                     >
                         Required
                     </template>
+
+                    <template
+                        #message-danger
+                        v-if="newPatient.first_name.length >= 30"
+                    >
+                        Name too long
+                    </template>
                 </vs-input>
 
                 <vs-input
@@ -40,6 +47,13 @@
                         v-if="newPatient.last_name.length === 0"
                     >
                         Required
+                    </template>
+
+                    <template
+                        #message-danger
+                        v-if="newPatient.last_name.length >= 30"
+                    >
+                        Name too long
                     </template>
                 </vs-input>
 
@@ -79,17 +93,17 @@
                     class="input__items"
                 >
                     <template
-                        v-if="validEmail"
+                        v-if="validEmail && newPatient.email_field.length < 40"
                         #message-success
                     >
                         Valid email
                     </template>
 
                     <template
-                        v-if="!validEmail && newPatient.email_field !== ''"
+                        v-if="(!validEmail && newPatient.email_field !== '') || newPatient.email_field.length >= 40"
                         #message-danger
                     >
-                        Invalid email
+                        Invalid or too long email
                     </template>
 
                     <template
@@ -114,6 +128,13 @@
                         #message-warn
                     >
                         Required
+                    </template>
+
+                    <template
+                        v-if="newPatient.password.length >= 128"
+                        #message-danger
+                    >
+                        Password too long
                     </template>
                 </vs-input>
 
@@ -159,6 +180,7 @@
                 <vs-input
                   v-model="newPatient.phone_number"
                   label="Phone number"
+                  placeholder="Eg +42012312313"
                   class="input__items"
                 >
                   <template
@@ -169,10 +191,10 @@
                   </template>
 
                   <template
-                      v-if="!validNumber && newPatient.phone_number !== ''"
+                      v-if="(!validNumber && newPatient.phone_number !== '') || newPatient.phone_number.length > 13"
                       #message-danger
                   >
-                      Invalid phone number
+                      Invalid or too long phone number
                   </template>
                 </vs-input>
             </div>
@@ -181,11 +203,16 @@
                   <vs-button
                       @click="createPatient()"
                       :disabled=" newPatient.first_name.length === 0 ||
+                                  newPatient.first_name.length >= 30 ||
                                   newPatient.last_name.length === 0 ||
+                                  newPatient.last_name.length >= 30 ||
                                   newPatient.main_doctor_id === -1 ||
                                   !validDateOfBirth ||
                                   (!validEmail && newPatient.email_field.length !== 0) ||
-                                  (!validNumber && newPatient.phone_number.length !== 0)"
+                                  (!validNumber && newPatient.phone_number.length !== 0) ||
+                                  newPatient.password.length >= 128 ||
+                                  newPatient.phone_number.length > 13 ||
+                                  newPatient.email_field.length >= 40"
                   >
                       Submit
                   </vs-button>
@@ -222,15 +249,15 @@ export default {
 
     computed: {
         validEmail() {
-          return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.newPatient.email_field);
+            return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.newPatient.email_field);
         },
 
         validNumber() {
-          return /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im.test(this.newPatient.phone_number);
+            return /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im.test(this.newPatient.phone_number);
         },
 
         validDateOfBirth() {
-          return this.newPatient.date_of_birth.length !== 0;
+            return this.newPatient.date_of_birth.length !== 0;
         }
     },
 

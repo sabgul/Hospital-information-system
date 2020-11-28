@@ -22,7 +22,7 @@ class PatientsService {
   }
 
   update(id, data) {
-    return http.put(`patients/${id}`, data);
+    return http.put(`patients/${id}/`, data);
   }
 
   delete(id) {

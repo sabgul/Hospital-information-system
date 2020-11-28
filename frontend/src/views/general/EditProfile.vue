@@ -70,7 +70,7 @@
 
                     <vs-select
                         v-if="role === 'patient'"
-                        v-model="newUserData.main_doctor"
+                        v-model="newPatientMainDoc"
                         label="Main doctor"
                     >
   <!--                    TODO: DOES NOT WORK!-->
@@ -129,6 +129,9 @@ export default {
 
         doctorSpecialization: '',
         newDoctorSpecialisation: '',
+
+        patientMainDoc: '',
+        newPatientMainDoc: '',
     }),
 
     computed: {
@@ -154,8 +157,8 @@ export default {
         if(this.role === 'patient') {
             PatientsService.get(this.id)
             .then(response => {
-                this.userData = response.data;
-                this.newUserData = {...this.userData};
+                this.patientMainDoc = response.data.main_doctor.user.id;
+                this.newPatientMainDoc = this.patientMainDoc;
             })
         }
 
@@ -189,20 +192,28 @@ export default {
             this.newUserData = {...this.userData};
             this.newWorkerCompany = this.workerCompany;
             this.newDoctorSpecialisation = this.doctorSpecialization;
+            this.newPatientMainDoc = this.patientMainDoc;
         },
 
         saveChanges() {
-            if(this.role === 'doctor') {
-                UsersService.update(this.id, this.newUserData)
-                .then(response => {
-                    console.log(response);
-                    NotificationsUtils.successPopup('User data successfully edited.', this.$vs);
-                    this.userData = {...this.newUserData};
-                })
-                .catch(e => {
-                    NotificationsUtils.failPopup(e, this.$vs);
-                });
+            let newData = {
+                first_name: this.newUserData.first_name,
+                last_name: this.newUserData.last_name,
+                date_of_birth: this.newUserData.date_of_birth,
+                phone_number: this.newUserData.phone_number
+            }
 
+            UsersService.updateSelected(this.id, newData)
+            .then(response => {
+                console.log(response);
+                NotificationsUtils.successPopup('User data successfully edited.', this.$vs);
+                this.userData = {...this.newUserData};
+            })
+            .catch(e => {
+                NotificationsUtils.failPopup(e, this.$vs);
+            });
+
+            if(this.role === 'doctor') {
                 let doctorDetail = {
                     user: this.id,
                     specializes_in: this.newDoctorSpecialisation,
@@ -218,17 +229,6 @@ export default {
             }
 
             if(this.role === 'health-insurance-worker') {
-                // Updating user general
-                UsersService.update(this.id, this.newUserData)
-                .then(response => {
-                    console.log(response);
-                    NotificationsUtils.successPopup('User data successfully edited.', this.$vs);
-                    this.userData = {...this.newUserData};
-                })
-                .catch(e => {
-                    NotificationsUtils.failPopup(e, this.$vs);
-                });
-
                 // Updating worker specific -> insurance company
                 let workerDetail = {
                     user: this.id,
@@ -238,6 +238,21 @@ export default {
                 .then(response => {
                     console.log(response);
                     this.workerCompany = this.newWorkerCompany;
+                })
+                .catch(e => {
+                    NotificationsUtils.failPopup(e, this.$vs);
+                });
+            }
+
+            if(this.role === 'patient') {
+                let patientDetail = {
+                    user: this.id,
+                    main_doctor: this.newPatientMainDoc,
+                }
+                PatientsService.update(this.id, patientDetail)
+                .then(response => {
+                    console.log(response);
+                    this.patientMainDoc = this.newPatientMainDoc;
                 })
                 .catch(e => {
                     NotificationsUtils.failPopup(e, this.$vs);

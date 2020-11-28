@@ -37,7 +37,7 @@
 
                 <template
                   #message-danger
-                  v-if="newConcern.name.length > 250"
+                  v-if="newConcern.name.length > 254"
                 >
                  Too many characters
                 </template>
@@ -78,9 +78,9 @@
               >
                 <template
                     #message-danger
-                    v-if="newConcern.description.length > 2000"
+                    v-if="newConcern.description.length > 2046"
                 >
-                    Too many characters
+                    Description too long
                 </template>
               </vs-input>
 
@@ -143,10 +143,10 @@
               <vs-button
                   @click="addNewExamination()"
                   :disabled=" newConcern.name.length === 0 ||
-                              newConcern.name.length > 250 ||
+                              newConcern.name.length > 254 ||
                               newConcern.doctor === -1 ||
                               newConcern.patient === -1 ||
-                              newConcern.description.length > 2000"
+                              newConcern.description.length > 2046"
               >
                   Submit
               </vs-button>

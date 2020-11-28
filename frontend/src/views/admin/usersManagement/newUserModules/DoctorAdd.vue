@@ -28,6 +28,13 @@
                         >
                             Required
                         </template>
+
+                        <template
+                            #message-danger
+                            v-if="newDoctor.first_name.length >= 30"
+                        >
+                            Name too long
+                        </template>
                     </vs-input>
 
                     <vs-input
@@ -42,6 +49,13 @@
                             v-if="newDoctor.last_name.length === 0"
                         >
                             Required
+                        </template>
+
+                        <template
+                            #message-danger
+                            v-if="newDoctor.last_name.length >= 30"
+                        >
+                            Name too long
                         </template>
                     </vs-input>
 
@@ -83,17 +97,17 @@
                         primary
                     >
                         <template
-                            v-if="validEmail"
+                            v-if="validEmail && newDoctor.email_field.length < 40"
                             #message-success
                         >
                             Valid email
                         </template>
 
                         <template
-                            v-if="!validEmail && newDoctor.email_field !== ''"
+                            v-if="(!validEmail && newDoctor.email_field !== '') || newDoctor.email_field.length >= 40"
                             #message-danger
                         >
-                            Invalid email
+                            Invalid or too long email
                         </template>
 
                         <template
@@ -119,6 +133,13 @@
                         >
                             Required
                         </template>
+
+                        <template
+                            v-if="newDoctor.password.length >= 128"
+                            #message-danger
+                        >
+                            Password too long
+                        </template>
                     </vs-input>
 
                     <vs-input
@@ -128,10 +149,10 @@
                         class="input__items"
                     >
                         <template
-                            v-if="newDoctor.specializes_in.length >= 250"
+                            v-if="newDoctor.specializes_in.length >= 254"
                             #message-danger
                         >
-                            Text too long
+                            Specialization too long
                         </template>
                     </vs-input>
                 </div>
@@ -155,7 +176,7 @@
                       <vs-input
                           v-model="newDoctor.phone_number"
                           label="Phone number"
-                          placeholder="Type phone number"
+                          placeholder="Eg +42012312313"
                           class="input__items"
                       >
                           <template
@@ -166,10 +187,10 @@
                           </template>
 
                           <template
-                              v-if="!validNumber && newDoctor.phone_number !== ''"
+                              v-if="(!validNumber && newDoctor.phone_number !== '') || newDoctor.phone_number.length > 13"
                               #message-danger
                           >
-                              Invalid phone number
+                              Invalid or too long phone number
                           </template>
                       </vs-input>
                 </div>
@@ -178,12 +199,18 @@
                     <vs-button
                         @click="createDoctor()"
                         :disabled=" newDoctor.first_name.length === 0 ||
+                                    newDoctor.first_name.length >= 30 ||
                                     newDoctor.last_name.length === 0 ||
+                                    newDoctor.last_name.length >= 30 ||
                                     newDoctor.main_doctor_id === -1 ||
                                     newDoctor.date_of_birth === '' ||
                                     newDoctor.password.length === 0 ||
                                     (!validEmail && newDoctor.email_field.length !== 0) ||
-                                    (!validNumber && newDoctor.phone_number.length !== 0)"
+                                    (!validNumber && newDoctor.phone_number.length !== 0) ||
+                                    newDoctor.password.length >= 128 ||
+                                    newDoctor.phone_number.length > 13 ||
+                                    newDoctor.email_field.length >= 40 ||
+                                    newDoctor.specializes_in.length >= 254"
                     >
                         Submit
                     </vs-button>

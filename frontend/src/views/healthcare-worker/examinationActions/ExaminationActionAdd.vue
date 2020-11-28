@@ -27,6 +27,13 @@
                         >
                             Required
                         </template>
+
+                        <template
+                            #message-danger
+                            v-if="newAction.name.length > 254"
+                        >
+                            Action name too long
+                        </template>
                     </vs-input>
                 </div>
 
@@ -73,7 +80,9 @@
                 <div class="submit__row">
                      <vs-button
                          @click="addNewExamination()"
-                         :disabled="newAction.name.length === 0 || newAction.action_manager_id === -1"
+                         :disabled="newAction.name.length === 0 ||
+                                    newAction.action_manager_id === -1 ||
+                                    newAction.name.length > 254"
                      >
                          Submit
                      </vs-button>
@@ -81,13 +90,7 @@
             </div>
         </div>
 
-<!--        <div>-->
-<!--            <img-->
-<!--                class="background__img"-->
-<!--                src="@/assets/add-action.svg"-->
-<!--                alt=""-->
-<!--            >-->
-<!--        </div>-->
+        <img src="@/assets/add-action.svg" alt="" class="background__img">
     </div>
 </template>
 
@@ -153,5 +156,12 @@ export default {
     .vs-button {
         float: right;
         padding: 5px 30px;
+    }
+
+    .background__img {
+        position: absolute;
+        right: 5em;
+        bottom: 0;
+        width: 30%;
     }
 </style>
