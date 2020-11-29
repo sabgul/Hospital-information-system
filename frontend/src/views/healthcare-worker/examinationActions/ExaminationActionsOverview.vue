@@ -59,7 +59,7 @@
                 <div class="submit__row" style="margin-top: 2em; margin-bottom: 4em;">
                     <vs-button
                         @click="clearFilter()"
-                        style="padding: 3px 25px;"
+                        style="padding: 3px 42px;"
                         border
                     >
                         Clear filter
