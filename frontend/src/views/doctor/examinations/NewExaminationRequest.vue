@@ -72,7 +72,7 @@ export default {
     },
 
     data:() => ({
-        chosenDoctor: this.user.id,
+        chosenDoctor: -1,
 
         relatedConcern: {},
         availableDoctors: [],
@@ -81,12 +81,12 @@ export default {
     async created() {
         DoctorsService.getAll()
             .then(response => {
-            this.availableDoctors = response.data;
+                this.availableDoctors = response.data;
             })
 
         HealthConcernsService.get(this.id)
             .then(response => {
-              this.relatedConcern = response.data;
+                this.relatedConcern = response.data;
             })
     },
 
