@@ -72,7 +72,7 @@ export default {
     },
 
     data:() => ({
-        chosenDoctor: user.id,
+        chosenDoctor: this.user.id,
 
         relatedConcern: {},
         availableDoctors: [],
