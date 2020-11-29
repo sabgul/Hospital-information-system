@@ -11,7 +11,7 @@
                 <h5><b>Sex</b>: {{ getGender(userData.user.gender) }}</h5>
                 <h5><b>Email address</b>: {{ userData.user.email ? userData.user.email : 'Email not stated' }}</h5>
                 <h5><b>Phone number</b>:
-                  {{ userData.user.phone_number ? '+' + userData.user.phone_number : 'Phone number not stated' }}</h5>
+                  {{ userData.user.phone_number ? userData.user.phone_number : 'Phone number not stated' }}</h5>
             </div>
 
             <div class="user__pic">
