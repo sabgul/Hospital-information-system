@@ -138,6 +138,7 @@
                 </vs-input>
 
                 <vs-select
+                    v-if="userRole === 'admin'"
                     v-model="newPatient.main_doctor_id"
                     class="input__items"
                     label="Main doctor"
@@ -205,7 +206,7 @@
                                 newPatient.first_name.length >= 30 ||
                                 newPatient.last_name.length === 0 ||
                                 newPatient.last_name.length >= 30 ||
-                                newPatient.main_doctor_id === -1 ||
+                                (newPatient.main_doctor_id === -1  && userRole === 'admin') ||
                                 !validDateOfBirth ||
                                 (!validEmail && newPatient.email_field.length !== 0) ||
                                 (!validNumber && newPatient.phone_number.length !== 0) ||
@@ -227,6 +228,7 @@ import DoctorsService from "@/services/doctorsService";
 
 import NotificationsUtils from "@/utils/notificationsUtils";
 import DateUtils from "@/utils/dateUtils";
+import {mapState} from "vuex";
 
 export default {
     name: 'PatientAdd',    
@@ -257,14 +259,23 @@ export default {
 
         validDateOfBirth() {
             return this.newPatient.date_of_birth.length !== 0;
-        }
+        },
+
+        ...mapState([
+            'user',
+            'userRole',
+        ]),
     },
 
     async created() {
-        DoctorsService.getAll()
-        .then(response => {
-            this.availableDoctors = response.data;
-        })
+        if(this.userRole === 'admin') {
+            DoctorsService.getAll()
+            .then(response => {
+                this.availableDoctors = response.data;
+            })
+        } else {
+          this.newPatient.main_doctor_id = this.user.id;
+        }
     },
 
     methods: {
@@ -300,7 +311,7 @@ export default {
                 'first_name': '',
                 'last_name': '',
                 'gender': 'O',
-                'main_doctor_id': -1,
+                'main_doctor_id': this.userRole === 'admin' ? -1 : this.user.id,
                 'date_of_birth': '',
                 'email_field': '',
                 'phone_number': '',
