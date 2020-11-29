@@ -289,7 +289,7 @@
                             {{ getState(concern.state) }}
                         </vs-td>
 
-                        <vs-td>
+                        <vs-td v-if="concern.state !== 'ED'">
                             <vs-button
                                 border
                                 class="buttons"
@@ -313,6 +313,10 @@
                             >
                                 Assign to another doctor
                             </vs-button>
+                        </vs-td>
+
+                        <vs-td v-else>
+                            Concern is ended. <br> No more actions provided.
                         </vs-td>
 
                         <template #expand>

@@ -441,8 +441,8 @@ box-icon {
 }
 
 .expand__sidebar {
-  margin-left: 1em;
-  margin-top: 1em;
+  position: absolute;
+  margin-left: 1.3em;
 }
 
 .center {

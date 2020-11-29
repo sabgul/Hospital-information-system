@@ -104,6 +104,10 @@
 
       <div class="main__content">
           <vs-checkbox v-model="markTicketResolved" class="ticket__checkbox">
+            Mark concern as ended
+          </vs-checkbox>
+
+          <vs-checkbox v-model="markConcernEnded" class="ticket__checkbox">
             Mark ticket as resolved
           </vs-checkbox>
 
@@ -196,6 +200,8 @@ export default {
         availableActions: [],
 
         markTicketResolved: true,
+        markConcernEnded: false,
+
         askToCover: true,     // if false, patient pays it on his own
     }),
 
@@ -322,11 +328,10 @@ export default {
                 });
             }
 
-            // state of concern is set to be Ongoing
             const newConcern = {
                 name: this.examinationAboutTicket.concern.name,
                 description: this.examinationAboutTicket.concern.description,
-                state: 'ON',
+                state: this.markConcernEnded ? 'ED' : 'ON',
                 patient: this.examinationAboutTicket.concern.patient.user.id,
                 doctor: this.examinationAboutTicket.concern.doctor.user.id
             }
@@ -339,7 +344,7 @@ export default {
                     NotificationsUtils.failPopup(e, this.$vs);
                 });
 
-            await this.$router.push('/assigned-tickets');
+            await this.$router.go(-1);
         }
     }
 }

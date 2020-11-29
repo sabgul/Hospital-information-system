@@ -111,6 +111,10 @@
         </div>
 
         <div class="main__content">
+            <vs-checkbox v-model="markConcernEnded" class="ticket__checkbox">
+                Mark concern as ended
+            </vs-checkbox>
+
             <vs-button success @click="saveExamination()">
                 Save
             </vs-button>
@@ -190,6 +194,8 @@ export default {
 
         examinationDescription: '',
         reportDescription: '',
+
+        markConcernEnded: false,
 
         chosenActions: [],
         availableActions: [],
@@ -311,12 +317,10 @@ export default {
                 NotificationsUtils.failPopup(e, this.$vs);
             });
 
-
-            // state of concern is set to be Ongoing
             const newConcern = {
                 name: this.aboutConcern.name,
                 description: this.aboutConcern.description,
-                state: 'ON',
+                state: this.markConcernEnded ? 'ED' : 'ON',
                 patient: this.aboutConcern.patient.user.id,
                 doctor: this.aboutConcern.doctor.user.id
             }
@@ -328,6 +332,8 @@ export default {
             .catch(e => {
                 NotificationsUtils.failPopup(e, this.$vs);
             });
+
+            await this.$router.go(-1);
         },
 
         thumbUrl (file) {
@@ -368,6 +374,11 @@ export default {
         display: inline-block;
         width: 15em;
         padding-right: 1em;
+    }
+
+    .ticket__checkbox {
+        float: left;
+        margin-right: 2em;
     }
 
     textarea {
