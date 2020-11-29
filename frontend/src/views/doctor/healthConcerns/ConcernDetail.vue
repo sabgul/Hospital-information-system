@@ -32,7 +32,7 @@
               </div>
 
               <div
-                  v-if="userRole === 'admin' || userRole === 'doctor'"
+                  v-if="(userRole === 'admin' || userRole === 'doctor') && concern.state !== 'ED'"
                   class="submit__row"
                   style="margin-top: 1em; margin-right: 4em;"
               >

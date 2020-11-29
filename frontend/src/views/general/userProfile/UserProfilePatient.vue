@@ -71,7 +71,7 @@
 
                       <vs-td>
                           <vs-button
-                              v-if="userRole === 'admin' || userRole === 'doctor'"
+                              v-if="(userRole === 'admin' || userRole === 'doctor') && concern.state !== 'ED'"
                               border
                               @click="redirectToExamination(concern.id)"
                               style="width: 170px;"
@@ -80,7 +80,7 @@
                           </vs-button>
 
                           <vs-button
-                              v-if="userRole === 'admin' || userRole === 'doctor'"
+                              v-if="(userRole === 'admin' || userRole === 'doctor') && concern.state !== 'ED'"
                               class="buttons"
                               @click="redirectToNewRequest(concern.id)"
                               style="width: 170px;"
@@ -89,7 +89,7 @@
                           </vs-button>
 
                           <vs-button
-                              v-if="userRole === 'admin' || userRole === 'doctor'"
+                              v-if="(userRole === 'admin' || userRole === 'doctor') && concern.state !== 'ED'"
                               danger
                               class="buttons"
                               @click="reassign(concern)"
@@ -99,7 +99,7 @@
                           </vs-button>
 
                           <vs-button
-                              v-if="userRole === 'patient'"
+                              v-if="userRole === 'patient' || concern.state === 'ED'"
                               class="buttons"
                               border
                               @click="redirectToConcernDetail(concern.id)"
