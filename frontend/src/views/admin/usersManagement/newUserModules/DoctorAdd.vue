@@ -10,9 +10,7 @@
                 Some fields are required. Profile details can be edited later.
             </p>
 
-
             <br>
-
 
             <div class="wrapper">
                 <div class="first__row">
@@ -127,7 +125,6 @@
                         type="password"
                         primary
                     >
-
                         <template
                             v-if="newDoctor.password.length === 0"
                             #message-warn

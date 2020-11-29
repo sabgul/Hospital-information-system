@@ -32,39 +32,41 @@
 
           <div class="actions">
               <h5>Examination actions made during this examination: </h5>
+
               <span v-if="chosenActions.length === 0">No actions selected</span>
+
               <div
                   v-for="(action, index) in chosenActions"
                   v-bind:key="index"
                   class="action__within__examination"
               >
-                <div>
-                    <span><b>{{ action.actionData.name }}</b> <br> ({{getPricing(action.actionData.is_action_paid)}})</span>
-                </div>
+                  <div>
+                      <span><b>{{ action.actionData.name }}</b> <br> ({{getPricing(action.actionData.is_action_paid)}})</span>
+                  </div>
 
-                <div class="buttons__action">
-                    <div class="overpay__switch" v-if="action.is_action_paid">
-                       <vs-switch v-model="askToCover" success style="bottom: 7px;">
-                          <template #off>
-                          Paid by patient
-                          </template>
+                  <div class="buttons__action">
+                      <div class="overpay__switch" v-if="action.is_action_paid">
+                         <vs-switch v-model="askToCover" success style="bottom: 7px;">
+                            <template #off>
+                            Paid by patient
+                            </template>
 
-                          <template #on>
-                          Paid by insurance company
-                          </template>
-                       </vs-switch>
-                    </div>
+                            <template #on>
+                            Paid by insurance company
+                            </template>
+                         </vs-switch>
+                      </div>
 
-                    <div style="display: inline-block">
-                       <vs-button
-                          icon
-                          danger
-                          @click="deleteAction(index)"
-                       >
-                          <box-icon name='trash' style="fill: #fff"/>
-                       </vs-button>
-                    </div>
-                </div>
+                      <div style="display: inline-block">
+                         <vs-button
+                            icon
+                            danger
+                            @click="deleteAction(index)"
+                         >
+                            <box-icon name='trash' style="fill: #fff"/>
+                         </vs-button>
+                      </div>
+                  </div>
               </div>
 
               <vs-button
@@ -90,12 +92,15 @@
           <br>
 
           <h5>Author: <b>{{ currentUserName }}</b></h5>
+
           <h5>About concern: <b>{{ examinationAboutTicket.concern.name }}</b></h5>
+
           <h5>Based on ticket number <b>{{ examinationAboutTicket.id }}</b></h5>
 
           <br>
 
           <h6>Report text</h6>
+
           <textarea
               v-model="reportDescription"
               placeholder="Put text of report here.."
@@ -103,15 +108,24 @@
       </div>
 
       <div class="main__content">
-          <vs-checkbox v-model="markTicketResolved" class="ticket__checkbox">
-            Mark concern as ended
+          <vs-checkbox
+              v-model="markTicketResolved"
+              class="ticket__checkbox"
+          >
+              Mark concern as ended
           </vs-checkbox>
 
-          <vs-checkbox v-model="markConcernEnded" class="ticket__checkbox">
-            Mark ticket as resolved
+          <vs-checkbox
+              v-model="markConcernEnded"
+              class="ticket__checkbox"
+          >
+              Mark ticket as resolved
           </vs-checkbox>
 
-          <vs-button success @click="saveExamination()">
+          <vs-button
+              success
+              @click="saveExamination()"
+          >
               Save
           </vs-button>
       </div>
@@ -207,20 +221,20 @@ export default {
 
     async created() {
         ExaminationRequestsService.get(this.id)
-            .then(response => {
+        .then(response => {
             this.examinationAboutTicket = response.data;
-            })
-            .catch(e => {
+        })
+        .catch(e => {
             console.log(e);
-            });
+        });
 
         ExaminationActionsService.getAll()
-            .then(response => {
+        .then(response => {
             this.availableActions = response.data;
-            })
-            .catch(e => {
+        })
+        .catch(e => {
             console.log(e);
-            });
+        });
 
         const date = new Date();
         let day = date.getDate();
@@ -238,12 +252,12 @@ export default {
 
         async addActionFinal() {
             ExaminationActionsService.get(this.actionToAdd)
-                .then(response => {
-                     this.chosenActions.push({ actionData: response.data, cover: true });
-                })
-                .catch(e => {
-                    NotificationsUtils.failPopup(e, this.$vs);
-                });
+            .then(response => {
+                 this.chosenActions.push({ actionData: response.data, cover: true });
+            })
+            .catch(e => {
+                NotificationsUtils.failPopup(e, this.$vs);
+            });
         },
 
         getPricing(value) {

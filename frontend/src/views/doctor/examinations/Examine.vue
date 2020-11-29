@@ -29,40 +29,53 @@
             />
 
             <div class="actions">
-                <h5>Examination actions made during this examination: </h5>
-                <span v-if="chosenActions.length === 0">No actions selected</span>
+                <h5>
+                    Examination actions made during this examination:
+                </h5>
+
+                <span v-if="chosenActions.length === 0">
+                    No actions selected
+                </span>
+
                 <div
                     v-for="(action, index) in chosenActions"
                     v-bind:key="index"
                     class="action__within__examination"
                 >
-                  <div>
-                      <span><b>{{ action.actionData.name }}</b> <br> ({{getPricing(action.actionData.is_action_paid)}})</span>
-                  </div>
+                    <div>
+                        <span><b>{{ action.actionData.name }}</b> <br> ({{getPricing(action.actionData.is_action_paid)}})</span>
+                    </div>
 
-                  <div class="buttons__action">
-                      <div class="overpay__switch" v-if="action.actionData.is_action_paid">
-                         <vs-switch v-model="action.cover" success style="bottom: 7px;">
-                              <template #off>
-                                  Paid by patient
-                              </template>
+                    <div class="buttons__action">
+                        <div
+                            class="overpay__switch"
+                            v-if="action.actionData.is_action_paid"
+                        >
+                            <vs-switch
+                                v-model="action.cover"
+                                success
+                                style="bottom: 7px;"
+                            >
+                                <template #off>
+                                    Paid by patient
+                                </template>
 
-                              <template #on>
-                                  Paid by insurance company
-                              </template>
-                         </vs-switch>
-                      </div>
+                                <template #on>
+                                    Paid by insurance company
+                                </template>
+                            </vs-switch>
+                        </div>
 
-                      <div style="display: inline-block">
-                         <vs-button
-                            icon
-                            danger
-                            @click="deleteAction(index)"
-                         >
-                            <box-icon name='trash' style="fill: #fff"/>
-                         </vs-button>
-                      </div>
-                  </div>
+                        <div style="display: inline-block">
+                            <vs-button
+                                icon
+                                danger
+                                @click="deleteAction(index)"
+                            >
+                                <box-icon name='trash' style="fill: #fff"/>
+                            </vs-button>
+                        </div>
+                    </div>
                 </div>
 
                 <vs-button
@@ -72,13 +85,14 @@
                     @click="addAction()"
                 >
                     <box-icon name='message-square-add' type='solid' style="fill: #fff"/>
-                    <span style="margin-left: 1em">Add new action</span>
+                    <span style="margin-left: 1em">
+                        Add new action
+                    </span>
                 </vs-button>
 
-              <br>
-              <br>
+                <br>
 
-
+                <br>
             </div>
         </div>
 
@@ -93,29 +107,36 @@
             <br>
 
             <h6>Report text</h6>
+
             <textarea
                 v-model="reportDescription"
                 placeholder="Put text of report here.."
             />
 
-<!--             <file-upload-->
-<!--                :url='url'-->
-<!--                :thumb-url='thumbUrl'-->
-<!--                :headers="headers"-->
-<!--                @change="onFileChange"-->
-<!--              />-->
+            <label>
+                File
 
-              <label>File
-                <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
-              </label>
+                <input
+                    type="file"
+                    id="file"
+                    ref="file"
+                    v-on:change="handleFileUpload()"
+                />
+            </label>
         </div>
 
         <div class="main__content">
-            <vs-checkbox v-model="markConcernEnded" class="ticket__checkbox">
+            <vs-checkbox
+                v-model="markConcernEnded"
+                class="ticket__checkbox"
+            >
                 Mark concern as ended
             </vs-checkbox>
 
-            <vs-button success @click="saveExamination()">
+            <vs-button
+                success
+                @click="saveExamination()"
+            >
                 Save
             </vs-button>
         </div>
@@ -135,6 +156,7 @@
                 class="popup__center"
                 label="Actions"
                 color="primary"
+                style="width: 300px !important;"
                 >
                     <vs-option
                         v-for="action in availableActions"
@@ -209,17 +231,17 @@ export default {
 
     async created() {
         HealthConcernsService.get(this.id)
-            .then(response => {
-                this.aboutConcern = response.data;
-            })
-            .catch(e => {
-                NotificationsUtils.failPopup(e, this.$vs);
-            });
+        .then(response => {
+            this.aboutConcern = response.data;
+        })
+        .catch(e => {
+            NotificationsUtils.failPopup(e, this.$vs);
+        });
 
         ExaminationActionsService.getAll()
-            .then(response => {
+        .then(response => {
             this.availableActions = response.data;
-            })
+        })
 
         const date = new Date();
         let day = date.getDate();
@@ -241,12 +263,12 @@ export default {
 
         async addActionFinal() {
             ExaminationActionsService.get(this.actionToAdd)
-                .then(response => {
-                    this.chosenActions.push({ actionData: response.data, cover: true });
-                })
-                .catch(e => {
-                    NotificationsUtils.failPopup(e, this.$vs);
-                });
+            .then(response => {
+                this.chosenActions.push({ actionData: response.data, cover: true });
+            })
+            .catch(e => {
+                NotificationsUtils.failPopup(e, this.$vs);
+            });
         },
 
         getPricing(value) {

@@ -17,6 +17,7 @@
                           {{ concern.patient.user.first_name }} {{ concern.patient.user.last_name }}
                       </span>
                   </h5>
+
                   <h5>
                       <b>Doctor</b>
                       :
@@ -24,10 +25,12 @@
                           class="redirect__profile"
                           @click="showUserProfile(concern.doctor.user.id, 'doctor')"
                       >
-                        {{ concern.doctor.user.first_name }} {{ concern.doctor.user.last_name }}
+                          {{ concern.doctor.user.first_name }} {{ concern.doctor.user.last_name }}
                       </span>
                   </h5>
+
                   <h5><b>State</b>: {{ getState(concern.state) }}</h5>
+
                   <h5><b>Description</b>: {{ concern.description.length ? concern.description : '-' }}</h5>
               </div>
 
@@ -62,45 +65,44 @@
           </h5>
 
           <vs-card-group>
-            <vs-card v-for="examination in examinations" v-bind:key="examination.id"  @click="showExaminationDialog(examination)">
-                <template #title>
-                    <h3>{{ getDate(examination.date_of_examination) }}</h3>
-                </template>
+              <vs-card v-for="examination in examinations" v-bind:key="examination.id"  @click="showExaminationDialog(examination)">
+                  <template #title>
+                      <h3>{{ getDate(examination.date_of_examination) }}</h3>
+                  </template>
 
-                <template #img>
-                  <img src="../../../assets/examination.svg" alt="" width="200px;height=150px;">
-                </template>
+                  <template #img>
+                      <img src="../../../assets/examination.svg" alt="" width="200px;height=150px;">
+                  </template>
 
-                <template #text>
-                    <p>
-                    </p>
-                </template>
+                  <template #text>
+                      <p/>
+                  </template>
 
-                <template #interactions>
-                    <vs-button class="btn-chat" shadow primary icon @click="showExaminationDialog(examination)">
-                        <box-icon style="fill: #000; margin-right: 0.5em;" name='message-square-detail'/>
-                        <span class="span">
-                            Show actions and description
-                        </span>
-                    </vs-button>
-                </template>
-            </vs-card>
+                  <template #interactions>
+                      <vs-button class="btn-chat" shadow primary icon @click="showExaminationDialog(examination)">
+                          <box-icon style="fill: #000; margin-right: 0.5em;" name='message-square-detail'/>
+                          <span class="span">
+                              Show actions and description
+                          </span>
+                      </vs-button>
+                  </template>
+              </vs-card>
 
-            <vs-card @click="redirectToExamination(id)">
-                <template #title>
-                    <h3>Examine</h3>
-                </template>
+              <vs-card @click="redirectToExamination(id)">
+                  <template #title>
+                      <h3>Examine</h3>
+                  </template>
 
-                <template #img>
-                  <img src="../../../assets/new-examination-request.svg" alt="" style="width:200px;height:150px;">
-                </template>
+                  <template #img>
+                      <img src="../../../assets/new-examination-request.svg" alt="" style="width:200px;height:150px;">
+                  </template>
 
-               <template #text>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    </p>
-                </template>
-            </vs-card>
+                 <template #text>
+                      <p>
+                          Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                      </p>
+                  </template>
+              </vs-card>
         </vs-card-group>
       </div>
 
@@ -110,38 +112,38 @@
           </h5>
 
           <vs-card-group>
-            <vs-card v-for="report in reports" v-bind:key="report.id" @click="showReportDialog(report)">
-                <template #img>
-                  <img src="../../../assets/missing-image.svg" alt="">
-                </template>
+              <vs-card v-for="report in reports" v-bind:key="report.id" @click="showReportDialog(report)">
+                  <template #img>
+                    <img src="../../../assets/missing-image.svg" alt="">
+                  </template>
 
-                <template #text>
-                    <p style="margin-top: 1em;">
-                      {{ report.description }}
-                    </p>
-                </template>
+                  <template #text>
+                      <p style="margin-top: 1em;">
+                          {{ report.description }}
+                      </p>
+                  </template>
 
-                <template #interactions>
-                    <vs-button class="btn-chat" shadow primary icon @click="showReportDialog(report)">
-                        <box-icon style="fill: #000; margin-right: 0.5em;" name='message-square-detail'/>
-                        <span class="span">
-                            Show attached files
-                        </span>
-                    </vs-button>
-                </template>
-            </vs-card>
+                  <template #interactions>
+                      <vs-button class="btn-chat" shadow primary icon @click="showReportDialog(report)">
+                          <box-icon style="fill: #000; margin-right: 0.5em;" name='message-square-detail'/>
+                          <span class="span">
+                              Show attached files
+                          </span>
+                      </vs-button>
+                  </template>
+              </vs-card>
 
-            <vs-card v-if="!reports.length" style="cursor: default !important;">
-                <template #img>
-                  <img src="../../../assets/empty.svg" alt="" style="width:200px;height:150px;">
-                </template>
+              <vs-card v-if="!reports.length" style="cursor: default !important;">
+                  <template #img>
+                    <img src="../../../assets/empty.svg" alt="" style="width:200px;height:150px;">
+                  </template>
 
-                <template #text>
-                    <p style="text-align: center; margin-top: 1em;">
-                        <b>No reports</b>
-                    </p>
-                </template>
-            </vs-card>
+                  <template #text>
+                      <p style="text-align: center; margin-top: 1em;">
+                          <b>No reports</b>
+                      </p>
+                  </template>
+              </vs-card>
         </vs-card-group>
       </div>
     
@@ -195,20 +197,20 @@
             </template>
 
             <div style="padding-left: 1em;">
-              <h6>Brief description of examination:</h6>
+                <h6>Brief description of examination:</h6>
 
-              <p> {{ detailExamination.description }} </p>
+                <p> {{ detailExamination.description }} </p>
 
-              <h6>Actions made during this examination:</h6>
+                <h6>Actions made during this examination:</h6>
 
-              <div
-                  v-for="(action, index) in detailExamination.actions"
-                  v-bind:key="index"
-              >
-                <div>
-                    <span>{{ index+1 }}. <b>{{ action }}</b></span>
+                <div
+                    v-for="(action, index) in detailExamination.actions"
+                    v-bind:key="index"
+                >
+                    <div>
+                        <span>{{ index+1 }}. <b>{{ action }}</b></span>
+                    </div>
                 </div>
-              </div>
             </div>
         </vs-dialog>
 
@@ -277,36 +279,36 @@ export default {
 
   async created() {
       HealthConcernsService.get(this.id)
-          .then(response => {
-              this.concern = response.data;
-          })
-          .catch(e => {
-              console.log(e);
-          });
+      .then(response => {
+          this.concern = response.data;
+      })
+      .catch(e => {
+          console.log(e);
+      });
 
       DoctorsService.getAll()
-            .then(response => {
-            this.availableDoctors = response.data;
-            })
-            .catch(e => {
-            console.log(e);
-            });
+      .then(response => {
+          this.availableDoctors = response.data;
+      })
+      .catch(e => {
+          console.log(e);
+      });
 
       ExaminationsService.getByConcern(this.id)
-            .then(response => {
-                this.examinations = response.data;
-            })
-            .catch(e => {
-                console.log(e);
-            });
+      .then(response => {
+          this.examinations = response.data;
+      })
+      .catch(e => {
+          console.log(e);
+      });
 
       DoctorsReportsService.getByConcern(this.id)
-            .then(response => {
-                this.reports = response.data;
-            })
-            .catch(e => {
-                console.log(e);
-            });
+      .then(response => {
+          this.reports = response.data;
+      })
+      .catch(e => {
+          console.log(e);
+      });
   },
 
   methods: {
@@ -352,13 +354,13 @@ export default {
           newConcern.patient = this.toReassign.patient.id;
 
           HealthConcernsService.update(this.toReassign.id, newConcern)
-              .then(response => {
-                console.log(response);
-                NotificationsUtils.successPopup('Manager of ' + newConcern.name + ' successfully changed.', this.$vs);
-              })
-              .catch(e => {
-                NotificationsUtils.failPopup(e, this.$vs);
-              });
+          .then(response => {
+              console.log(response);
+              NotificationsUtils.successPopup('Manager of ' + newConcern.name + ' successfully changed.', this.$vs);
+          })
+          .catch(e => {
+              NotificationsUtils.failPopup(e, this.$vs);
+          });
       }
   }
 }

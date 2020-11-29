@@ -11,52 +11,52 @@
 
         <br>
 
-      <div class="wrapper">
-        <div class="first__row">
-            <vs-select
-              v-model="chosenDoctor"
-              class="input__items"
-              label="Assign a doctor for ticket"
-              placeholder="Assign a doctor for ticket"
-              color="primary"
+        <div class="wrapper">
+            <div class="first__row">
+                <vs-select
+                    v-model="chosenDoctor"
+                    class="input__items"
+                    label="Assign a doctor for ticket"
+                    placeholder="Assign a doctor for ticket"
+                    color="primary"
+                >
+                    <template
+                        #message-warn
+                        v-if="chosenDoctor === -1"
+                    >
+                        Required
+                    </template>
+
+                    <vs-option
+                        v-for="doctor in availableDoctors"
+                        :key="doctor.user.id"
+                        :label="doctor.user.first_name"
+                        :value="doctor.user.id"
+                    >
+                        {{ doctor.user.first_name }}
+                    </vs-option>
+              </vs-select>
+            </div>
+
+            <vs-button
+                @click="addNewExamination()"
+                :disabled=" chosenDoctor === -1"
+                class="submit__row"
             >
-              <template
-                  #message-warn
-                  v-if="chosenDoctor === -1"
-              >
-                  Required
-              </template>
-
-              <vs-option
-                  v-for="doctor in availableDoctors"
-                  :key="doctor.user.id"
-                  :label="doctor.user.first_name"
-                  :value="doctor.user.id"
-              >
-                  {{ doctor.user.first_name }}
-              </vs-option>
-          </vs-select>
+                Submit
+            </vs-button>
         </div>
-
-        <vs-button
-            @click="addNewExamination()"
-            :disabled=" chosenDoctor === -1"
-            class="submit__row"
-        >
-            Submit
-        </vs-button>
-      </div>
     </div>
 </template>
-
 
 <script>
 import HealthConcernsService from "@/services/healthConcernsService";
 import DoctorsService from "@/services/doctorsService";
 import ExaminationRequestsService from "@/services/examinationRequestsService";
 
-import NotificationsUtils from "@/utils/notificationsUtils";
-import {mapState} from "vuex";
+import NotificationsUtils from "@/utils/notificationsUtils"
+
+import { mapState } from "vuex";
 
 export default {
     name: 'NewExaminationRequest',
@@ -72,7 +72,7 @@ export default {
     },
 
     data:() => ({
-        chosenDoctor: -1, // TODO tu bude id current usera
+        chosenDoctor: user.id,
 
         relatedConcern: {},
         availableDoctors: [],
@@ -93,20 +93,20 @@ export default {
     methods: {
         async addNewExamination() {
             const newTicket = {
-              state: 'PD',
-              concern: this.id,
-              assigned_to: this.chosenDoctor,
-              created_by: this.user.id, // TODO toto bude current user!!
+                state: 'PD',
+                concern: this.id,
+                assigned_to: this.chosenDoctor,
+                created_by: this.user.id,
             }
 
             ExaminationRequestsService.create(newTicket)
-                .then(response => {
-                    console.log(response);
-                    NotificationsUtils.successPopup('Examination request was successfully added into database.', this.$vs);
-                })
-                .catch(e => {
-                    NotificationsUtils.failPopup(e, this.$vs);
-                });
+            .then(response => {
+                console.log(response);
+                NotificationsUtils.successPopup('Examination request was successfully added into database.', this.$vs);
+            })
+            .catch(e => {
+                NotificationsUtils.failPopup(e, this.$vs);
+            });
         }
     },
 }

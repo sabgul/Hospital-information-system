@@ -73,7 +73,7 @@
             <img src="../../../assets/relax.svg" alt="">
         </div>
 
-      <div
+        <div
             v-else
             class="main__content"
             v-for="ticket in tickets"
@@ -90,12 +90,12 @@
 
                 <h5>
                     Patient:
-                  <span @click="redirectToProfile(ticket.concern.patient.user.id, 'patient')" class="redirect__profile">{{ ticket.concern.patient.user.first_name }} {{ ticket.concern.patient.user.last_name }}</span>
+                    <span @click="redirectToProfile(ticket.concern.patient.user.id, 'patient')" class="redirect__profile">{{ ticket.concern.patient.user.first_name }} {{ ticket.concern.patient.user.last_name }}</span>
                 </h5>
 
                 <h5>
                     Concern:
-                <span @click="showConcernDetail(ticket.concern.id)" class="redirect__profile">{{ ticket.concern.name }}</span>
+                    <span @click="showConcernDetail(ticket.concern.id)" class="redirect__profile">{{ ticket.concern.name }}</span>
                 </h5>
 
                 <h5>
@@ -140,7 +140,7 @@ import ExaminationRequestsService from "@/services/examinationRequestsService";
 import DateUtils from "@/utils/dateUtils";
 import StateUtils from "@/utils/stateUtils";
 
-import {mapState} from "vuex";
+import { mapState } from "vuex";
 
 export default {
     name: "ManageAssignedTickets",
@@ -167,14 +167,14 @@ export default {
     async created() {
         if(this.userRole === 'admin') {
             ExaminationRequestsService.getAll()
-                .then(response => {
+            .then(response => {
                 this.tickets = response.data;
-                })
+            })
         } else {
             ExaminationRequestsService.getAllByCurrentUser(this.user.id)
-                .then(response => {
+            .then(response => {
                 this.tickets = response.data;
-                })
+            })
         }
 
     },
@@ -189,7 +189,7 @@ export default {
         },
 
         redirectToProfile(userId, role) {
-        this.$router.push({ name: 'profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }});
+            this.$router.push({ name: 'profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }});
         },
 
         showConcernDetail(concernId) {
@@ -198,54 +198,54 @@ export default {
 
         async cancelRequest(ticket, ticketId) {
             const newTicket = {
-              id: ticketId,
-              created_timestamp: ticket.created_timestamp,
-              state: 'CD',
-              concern: ticket.concern.id,
-              assigned_to: ticket.assigned_to.user.id,
-              created_by: ticket.created_by.user.id
+                id: ticketId,
+                created_timestamp: ticket.created_timestamp,
+                state: 'CD',
+                concern: ticket.concern.id,
+                assigned_to: ticket.assigned_to.user.id,
+                created_by: ticket.created_by.user.id
             }
 
             ExaminationRequestsService.update(ticketId, newTicket)
-                .then(response => {
-                  console.log(response);
+            .then(response => {
+                console.log(response);
 
-                  ExaminationRequestsService.getFiltered(this.filter)
-                      .then(response => {
-                      this.tickets = response.data;
-                      })
+                ExaminationRequestsService.getFiltered(this.filter)
+                .then(response => {
+                    this.tickets = response.data;
                 })
+            })
         },
 
         async removeTicket(ticketId) {
-          ExaminationRequestsService.delete(ticketId)
-                .then(response => {
-                  console.log(response);
+            ExaminationRequestsService.delete(ticketId)
+            .then(response => {
+                console.log(response);
 
-                  ExaminationRequestsService.getFiltered(this.filter)
-                      .then(response => {
-                      this.tickets = response.data;
-                      })
-                      .catch(e => {
-                      console.log(e);
-                      });
+                ExaminationRequestsService.getFiltered(this.filter)
+                .then(response => {
+                    this.tickets = response.data;
                 })
+                .catch(e => {
+                    console.log(e);
+                });
+            })
         },
 
         async clearFilter() {
             this.filter.state = '';
 
             ExaminationRequestsService.getAll()
-                .then(response => {
+            .then(response => {
                 this.tickets = response.data;
-                })
+            })
         },
 
         async getFiltered() {
             ExaminationRequestsService.getFiltered(this.filter)
-                .then(response => {
+            .then(response => {
                 this.tickets = response.data;
-                })
+            })
         },
 
         examine(ticketId) {

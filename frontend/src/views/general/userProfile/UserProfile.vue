@@ -70,7 +70,6 @@
 import PatientsService from "@/services/patientsService.js";
 import DoctorsService from "@/services/doctorsService.js";
 import HealthcareWorkersService from "@/services/healthcareWorkersService.js";
-import UsersService from "@/services/usersService";
 
 import UserProfileDoctor from "@/views/general/userProfile/UserProfileDoctor";
 import UserProfileHcWorker from "@/views/general/userProfile/UserProfileHcWorker";
@@ -119,9 +118,9 @@ export default {
         }
 
         if(this.role === 'admin') {
-            UsersService.get(this.id)
+            DoctorsService.get(this.id)
             .then(response => {
-                  this.userData.user = response.data;
+                  this.userData = response.data;
               })
         }
     },

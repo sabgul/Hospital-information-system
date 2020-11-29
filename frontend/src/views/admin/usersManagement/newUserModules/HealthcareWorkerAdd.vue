@@ -1,217 +1,216 @@
 <template>
     <div>
-      <div class="main__content">
-          <h1>
-              Add new healthcare worker
-          </h1>
+        <div class="main__content">
+            <h1>
+                Add new healthcare worker
+            </h1>
 
-          <p>
-              Create new healthcare worker.<br>
-            Some fields are required. Profile details can be edited later.
-          </p>
+            <p>
+                Create new healthcare worker.<br>
+                Some fields are required. Profile details can be edited later.
+            </p>
 
-          <br>
+            <br>
 
-          <div class="wrapper">
-              <div class="first__row">
-                  <vs-input
-                      v-model="newWorker.first_name"
-                      label="First name of worker"
-                      placeholder="Type first name"
-                      class="input__items"
-                      primary
-                  >
-                      <template
-                          #message-warn
-                          v-if="newWorker.first_name.length === 0"
-                      >
-                          Required
-                      </template>
-
-                      <template
-                          #message-danger
-                          v-if="newWorker.first_name.length >= 30"
-                      >
-                          Name too long
-                      </template>
-                  </vs-input>
-
-                  <vs-input
-                      v-model="newWorker.last_name"
-                      label="Last name of worker"
-                      placeholder="Type last name"
-                      class="input__items"
-                      primary
-                  >
-                      <template
-                          #message-warn
-                          v-if="newWorker.last_name.length === 0"
-                      >
-                          Required
-                      </template>
-
-                      <template
-                          #message-danger
-                          v-if="newWorker.last_name.length >= 30"
-                      >
-                          Name too long
-                      </template>
-                  </vs-input>
-
-                  <vs-select
-                      v-model="newWorker.gender"
-                      label="Sex"
-                      color="primary"
-                      class="input__items"
-                  >
-                      <vs-option
-                          value="M"
-                          label="Male"
-                      >
-                          Male
-                      </vs-option>
-
-                      <vs-option
-                          value="F"
-                          label="Female"
-                      >
-                         Female
-                      </vs-option>
-
-                      <vs-option
-                          value="O"
-                          label="Other"
-                      >
-                          Other
-                      </vs-option>
-                  </vs-select>
-              </div>
-
-              <div class="second__row">
-                  <vs-input
-                      v-model="newWorker.email_field"
-                      label="Email address"
-                      placeholder="Type email"
-                      class="input__items"
-                  >
-                      <template
-                          v-if="validEmail && newWorker.email_field.length < 40"
-                          #message-success
-                      >
-                          Valid email
-                      </template>
-
-                      <template
-                          v-if="(!validEmail && newWorker.email_field !== '') || newWorker.email_field.length >= 40"
-                          #message-danger
-                      >
-                          Invalid or too long email
-                      </template>
-
-                      <template
-                          #message-warn
-                          v-if="newWorker.email_field.length === 0"
-                      >
-                          Required
-                      </template>
-                  </vs-input>
-
-                  <vs-input
-                      v-model="newWorker.password"
-                      label="Password"
-                      placeholder="Type password"
-                      class="input__items"
-                      type="password"
-                      primary
-                  >
-
-                      <template
-                          v-if="newWorker.password.length === 0"
-                          #message-warn
-                      >
-                          Required
-                      </template>
-
-                      <template
-                          v-if="newWorker.password.length >= 128"
-                          #message-danger
-                      >
-                          Password too long
-                      </template>
-                  </vs-input>
-
-                  <vs-input
-                      v-model="newWorker.works_for_company"
-                      label="Works for company"
-                      placeholder="Name of company"
-                      class="input__items"
-                  >
-                      <template
-                          v-if="newWorker.works_for_company.length >= 254"
-                          #message-danger
-                      >
-                          Company name too long
-                      </template>
-                  </vs-input>
-              </div>
-
-              <div class="third__row">
+            <div class="wrapper">
+                <div class="first__row">
                     <vs-input
-                        type="date"
-                        v-model="newWorker.date_of_birth"
-                        label="Date of birth"
+                        v-model="newWorker.first_name"
+                        label="First name of worker"
+                        placeholder="Type first name"
                         class="input__items"
+                        primary
                     >
                         <template
                             #message-warn
-                            v-if="newWorker.date_of_birth === ''"
+                            v-if="newWorker.first_name.length === 0"
                         >
-                            Required field
+                            Required
+                        </template>
+
+                        <template
+                            #message-danger
+                            v-if="newWorker.first_name.length >= 30"
+                        >
+                            Name too long
                         </template>
                     </vs-input>
 
                     <vs-input
-                        v-model="newWorker.phone_number"
-                        label="Phone number"
-                        placeholder="Eg +42012312313"
+                        v-model="newWorker.last_name"
+                        label="Last name of worker"
+                        placeholder="Type last name"
+                        class="input__items"
+                        primary
+                    >
+                        <template
+                            #message-warn
+                            v-if="newWorker.last_name.length === 0"
+                        >
+                            Required
+                        </template>
+
+                        <template
+                            #message-danger
+                            v-if="newWorker.last_name.length >= 30"
+                        >
+                            Name too long
+                        </template>
+                    </vs-input>
+
+                    <vs-select
+                        v-model="newWorker.gender"
+                        label="Sex"
+                        color="primary"
+                        class="input__items"
+                    >
+                        <vs-option
+                            value="M"
+                            label="Male"
+                        >
+                            Male
+                        </vs-option>
+
+                        <vs-option
+                            value="F"
+                            label="Female"
+                        >
+                           Female
+                        </vs-option>
+
+                        <vs-option
+                            value="O"
+                            label="Other"
+                        >
+                            Other
+                        </vs-option>
+                    </vs-select>
+                </div>
+
+                <div class="second__row">
+                    <vs-input
+                        v-model="newWorker.email_field"
+                        label="Email address"
+                        placeholder="Type email"
                         class="input__items"
                     >
                         <template
-                            v-if="validNumber"
+                            v-if="validEmail && newWorker.email_field.length < 40"
                             #message-success
                         >
-                            Valid phone number
+                            Valid email
                         </template>
 
                         <template
-                            v-if="(!validNumber && newWorker.phone_number !== '') || newWorker.phone_number.length > 13"
+                            v-if="(!validEmail && newWorker.email_field !== '') || newWorker.email_field.length >= 40"
                             #message-danger
                         >
-                            Invalid or too long phone number
+                            Invalid or too long email
+                        </template>
+
+                        <template
+                            #message-warn
+                            v-if="newWorker.email_field.length === 0"
+                        >
+                            Required
                         </template>
                     </vs-input>
-              </div>
 
-              <div class="submit__row">
-                  <vs-button
-                      @click="createWorker()"
-                      :disabled=" newWorker.first_name.length === 0 ||
-                                  newWorker.first_name.length >= 30 ||
-                                  newWorker.last_name.length === 0 ||
-                                  newWorker.last_name.length >= 30 ||
-                                  newWorker.main_doctor_id === -1 ||
-                                  newWorker.date_of_birth === '' ||
-                                  (!validEmail && newWorker.email_field.length !== 0) ||
-                                  (!validNumber && newWorker.phone_number.length !== 0) ||
-                                  newWorker.password.length >= 128 ||
-                                  newWorker.phone_number.length > 13 ||
-                                  newWorker.email_field.length >= 40 ||
-                                  newWorker.works_for_company.length >= 254"
-                  >
-                      Submit
-                  </vs-button>
-              </div>
-          </div>
+                    <vs-input
+                        v-model="newWorker.password"
+                        label="Password"
+                        placeholder="Type password"
+                        class="input__items"
+                        type="password"
+                        primary
+                    >
+                        <template
+                            v-if="newWorker.password.length === 0"
+                            #message-warn
+                        >
+                            Required
+                        </template>
+
+                        <template
+                            v-if="newWorker.password.length >= 128"
+                            #message-danger
+                        >
+                            Password too long
+                        </template>
+                    </vs-input>
+
+                    <vs-input
+                        v-model="newWorker.works_for_company"
+                        label="Works for company"
+                        placeholder="Name of company"
+                        class="input__items"
+                    >
+                        <template
+                            v-if="newWorker.works_for_company.length >= 254"
+                            #message-danger
+                        >
+                            Company name too long
+                        </template>
+                    </vs-input>
+                </div>
+
+                <div class="third__row">
+                      <vs-input
+                          type="date"
+                          v-model="newWorker.date_of_birth"
+                          label="Date of birth"
+                          class="input__items"
+                      >
+                          <template
+                              #message-warn
+                              v-if="newWorker.date_of_birth === ''"
+                          >
+                              Required field
+                          </template>
+                      </vs-input>
+
+                      <vs-input
+                          v-model="newWorker.phone_number"
+                          label="Phone number"
+                          placeholder="Eg +42012312313"
+                          class="input__items"
+                      >
+                          <template
+                              v-if="validNumber"
+                              #message-success
+                          >
+                              Valid phone number
+                          </template>
+
+                          <template
+                              v-if="(!validNumber && newWorker.phone_number !== '') || newWorker.phone_number.length > 13"
+                              #message-danger
+                          >
+                              Invalid or too long phone number
+                          </template>
+                      </vs-input>
+                </div>
+
+                <div class="submit__row">
+                    <vs-button
+                        @click="createWorker()"
+                        :disabled=" newWorker.first_name.length === 0 ||
+                                    newWorker.first_name.length >= 30 ||
+                                    newWorker.last_name.length === 0 ||
+                                    newWorker.last_name.length >= 30 ||
+                                    newWorker.main_doctor_id === -1 ||
+                                    newWorker.date_of_birth === '' ||
+                                    (!validEmail && newWorker.email_field.length !== 0) ||
+                                    (!validNumber && newWorker.phone_number.length !== 0) ||
+                                    newWorker.password.length >= 128 ||
+                                    newWorker.phone_number.length > 13 ||
+                                    newWorker.email_field.length >= 40 ||
+                                    newWorker.works_for_company.length >= 254"
+                    >
+                        Submit
+                    </vs-button>
+                </div>
+            </div>
       </div>
     </div>
 </template>

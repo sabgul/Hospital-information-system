@@ -38,26 +38,26 @@ class StateUtils {
     getTransactionState(rawState) {
         if(rawState === 'CD') {
             return 'Covered';
-          }
+        }
 
-          if(rawState === 'UD') {
+        if(rawState === 'UD') {
             return 'Unpaid';
-          }
+        }
 
-          return 'Undefined state';
+        return 'Undefined state';
     }
 
     getGenderState(rawGender) {
         if(rawGender === 'M') {
-          return 'Male';
+            return 'Male';
         }
 
         if(rawGender === 'F') {
-          return 'Female';
+            return 'Female';
         }
 
         if(rawGender === 'O') {
-          return 'Other';
+            return 'Other';
         }
 
         return 'Undefined gender';

@@ -62,7 +62,7 @@
                     label="Sex"
                     color="primary"
                     class="input__items"
-                 >
+                >
                    <vs-option
                       value="M"
                       label="Male"
@@ -83,7 +83,7 @@
                    >
                      Other
                    </vs-option>
-                 </vs-select>
+                </vs-select>
             </div>
 
             <div class="second__row">
@@ -91,7 +91,7 @@
                     v-model="newPatient.email_field"
                     label="Email address"
                     class="input__items"
-                >
+                 >
                     <template
                         v-if="validEmail && newPatient.email_field.length < 40"
                         #message-success
@@ -122,7 +122,6 @@
                     type="password"
                     primary
                 >
-
                     <template
                         v-if="newPatient.password.length === 0"
                         #message-warn
@@ -169,53 +168,53 @@
                     label="Date of birth"
                     class="input__items"
                 >
-                  <template
-                      #message-warn
-                      v-if="!validDateOfBirth"
-                  >
-                      Required field
-                   </template>
+                    <template
+                        #message-warn
+                        v-if="!validDateOfBirth"
+                    >
+                        Required field
+                    </template>
                 </vs-input>
 
                 <vs-input
-                  v-model="newPatient.phone_number"
-                  label="Phone number"
-                  placeholder="Eg +42012312313"
-                  class="input__items"
+                    v-model="newPatient.phone_number"
+                    label="Phone number"
+                    placeholder="Eg +42012312313"
+                    class="input__items"
                 >
-                  <template
-                      v-if="validNumber"
-                      #message-success
-                  >
-                      Valid phone number
-                  </template>
+                    <template
+                        v-if="validNumber"
+                        #message-success
+                    >
+                        Valid phone number
+                    </template>
 
-                  <template
-                      v-if="(!validNumber && newPatient.phone_number !== '') || newPatient.phone_number.length > 13"
-                      #message-danger
-                  >
-                      Invalid or too long phone number
-                  </template>
+                    <template
+                        v-if="(!validNumber && newPatient.phone_number !== '') || newPatient.phone_number.length > 13"
+                        #message-danger
+                    >
+                        Invalid or too long phone number
+                    </template>
                 </vs-input>
             </div>
 
             <div class="submit__row">
-                  <vs-button
-                      @click="createPatient()"
-                      :disabled=" newPatient.first_name.length === 0 ||
-                                  newPatient.first_name.length >= 30 ||
-                                  newPatient.last_name.length === 0 ||
-                                  newPatient.last_name.length >= 30 ||
-                                  newPatient.main_doctor_id === -1 ||
-                                  !validDateOfBirth ||
-                                  (!validEmail && newPatient.email_field.length !== 0) ||
-                                  (!validNumber && newPatient.phone_number.length !== 0) ||
-                                  newPatient.password.length >= 128 ||
-                                  newPatient.phone_number.length > 13 ||
-                                  newPatient.email_field.length >= 40"
-                  >
-                      Submit
-                  </vs-button>
+                <vs-button
+                    @click="createPatient()"
+                    :disabled=" newPatient.first_name.length === 0 ||
+                                newPatient.first_name.length >= 30 ||
+                                newPatient.last_name.length === 0 ||
+                                newPatient.last_name.length >= 30 ||
+                                newPatient.main_doctor_id === -1 ||
+                                !validDateOfBirth ||
+                                (!validEmail && newPatient.email_field.length !== 0) ||
+                                (!validNumber && newPatient.phone_number.length !== 0) ||
+                                newPatient.password.length >= 128 ||
+                                newPatient.phone_number.length > 13 ||
+                                newPatient.email_field.length >= 40"
+                >
+                    Submit
+                </vs-button>
             </div>
         </div>
     </div>
@@ -263,9 +262,9 @@ export default {
 
     async created() {
         DoctorsService.getAll()
-            .then(response => {
+        .then(response => {
             this.availableDoctors = response.data;
-            })
+        })
     },
 
     methods: {
@@ -286,13 +285,13 @@ export default {
             }
 
             PatientsService.create(data)
-                .then(response => {
-                    console.log(response);
-                    NotificationsUtils.successPopup('New patient was added to the database.', this.$vs);
-                })
-                .catch(e => {
-                    NotificationsUtils.failPopup(e, this.$vs);
-                });
+            .then(response => {
+                console.log(response);
+                NotificationsUtils.successPopup('New patient was added to the database.', this.$vs);
+            })
+            .catch(e => {
+                NotificationsUtils.failPopup(e, this.$vs);
+            });
         },
     },
 }

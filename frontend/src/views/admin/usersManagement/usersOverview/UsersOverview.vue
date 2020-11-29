@@ -10,38 +10,6 @@
         </div>
 
         <div class="main__content">
-          <h4>
-            Filter results
-          </h4>
-
-          <div class="wrapper">
-            <div class="left__filter__row">
-              <vs-select
-                v-model="filter.user_role"
-                label="Role"
-                color="primary"
-              >
-                <vs-option
-                  v-for="user in users"
-                  :key="user.id"
-                  label="meno"
-                  :value="user.id"
-                >
-                  {{ "ajoj" }}
-                </vs-option>
-              </vs-select>
-<!--              HERE I AM DOING THE ROLE FILTER-->
-            </div>
-
-            <div class="right__filter__row">
-<!--              HERE I AM DOING THE STATE FILTER-->
-
-            </div>
-
-          </div>
-        </div>
-
-        <div class="main__content">
             <vs-table
                 striped
                 class="users__table"
@@ -126,7 +94,10 @@
 
                                 <div class="expanded__item right">
                                     <vs-tooltip>
-                                        <vs-button icon @click="editUserProfile(user.userData.user.id, user.role)">
+                                        <vs-button
+                                            icon
+                                            @click="editUserProfile(user.userData.user.id, user.role)"
+                                        >
                                             <box-icon
                                                 name='comment-edit'
                                                 animation='tada-hover'
@@ -139,7 +110,11 @@
                                     </vs-tooltip>
 
                                     <vs-tooltip>
-                                        <vs-button danger icon @click="deleteUserDialog(user)">
+                                        <vs-button
+                                            danger
+                                            icon
+                                            @click="deleteUserDialog(user)"
+                                        >
                                             <box-icon
                                                 name='trash'
                                                 animation='tada-hover'
@@ -176,7 +151,6 @@
             </template>
 
             <br>
-
 
             <p v-if="userToDelete.role === 'Doctor'">
                 Please choose a new doctor who will be responsible for <br> patients, examinations and other responsibilities of doctor who is currently being removed:
@@ -229,10 +203,9 @@
 import PatientsService from '@/services/patientsService.js';
 import DoctorsService from '@/services/doctorsService.js';
 import HealthcareWorkersService from '@/services/healthcareWorkersService.js';
-import NotificationsUtils from "@/utils/notificationsUtils";
-import HealthConcernsService from "@/services/healthConcernsService";
 import UsersService from "@/services/usersService";
 
+import NotificationsUtils from "@/utils/notificationsUtils";
 import DateUtils from "@/utils/dateUtils";
 
 export default {
@@ -249,11 +222,6 @@ export default {
 
         availableDoctors: [],
         doctorToReplace: -1,
-
-        filter: {
-            user_role: -1,
-            user_state: -1,  // active, inactive
-        }
     }),
 
     async created() {
@@ -303,21 +271,14 @@ export default {
             this.$router.push({ name: 'edit-profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }})
         },
 
-        async getFiltered() {
-          HealthConcernsService.getFiltered(this.filter)
-              .then(response => {
-                  this.users = response.data;
-              })
-        },
-
         deleteUserDialog(user) {
-          this.activeDelete = true;
-          this.userToDelete = user;
+            this.activeDelete = true;
+            this.userToDelete = user;
         },
 
         async deleteUser() {
-          if(this.userToDelete.role === 'Patient') {
-            PatientsService.delete(this.userToDelete.userData.user.id)
+            if(this.userToDelete.role === 'Patient') {
+                PatientsService.delete(this.userToDelete.userData.user.id)
                 .then(response => {
                     console.log(response);
                     NotificationsUtils.successPopup('Patient successfully deleted.', this.$vs);
@@ -325,16 +286,16 @@ export default {
                     this.activeDelete = false;
 
                     UsersService.delete(this.userToDelete.userData.user.id)
-                      .then(response => {
-                          console.log(response);
-                      })
+                    .then(response => {
+                        console.log(response);
+                    })
 
                     this.$forceUpdate();
                 })
-          }
+            }
 
-          if(this.userToDelete.role === 'Health insurance worker') {
-            HealthcareWorkersService.delete(this.userToDelete.userData.user.id)
+            if(this.userToDelete.role === 'Health insurance worker') {
+                HealthcareWorkersService.delete(this.userToDelete.userData.user.id)
                 .then(response => {
                     console.log(response);
                     NotificationsUtils.successPopup('Health insurance worker successfully deleted.', this.$vs);
@@ -342,30 +303,30 @@ export default {
                     this.activeDelete = false;
 
                     UsersService.delete(this.userToDelete.userData.user.id)
-                      .then(response => {
-                          console.log(response);
-                      })
+                    .then(response => {
+                        console.log(response);
+                    })
 
                     this.$forceUpdate();
                 })
-          }
+            }
 
-          if(this.userToDelete.role === 'Doctor') {
-              DoctorsService.deleteWithNewResponsible(this.userToDelete.userData.user.id, this.doctorToReplace)
-                  .then(response => {
-                      console.log(response);
-                      NotificationsUtils.successPopup('Health insurance worker successfully deleted.', this.$vs);
-                      this.getAllUsers();
-                      this.activeDelete = false;
+            if(this.userToDelete.role === 'Doctor') {
+                DoctorsService.deleteWithNewResponsible(this.userToDelete.userData.user.id, this.doctorToReplace)
+                .then(response => {
+                    console.log(response);
+                    NotificationsUtils.successPopup('Health insurance worker successfully deleted.', this.$vs);
+                    this.getAllUsers();
+                    this.activeDelete = false;
 
-                      UsersService.delete(this.userToDelete.userData.user.id)
-                        .then(response => {
-                            console.log(response);
-                        })
+                    UsersService.delete(this.userToDelete.userData.user.id)
+                    .then(response => {
+                        console.log(response);
+                    })
 
-                      this.$forceUpdate();
-                  })
-          }
+                    this.$forceUpdate();
+                })
+            }
         }
     },
 }

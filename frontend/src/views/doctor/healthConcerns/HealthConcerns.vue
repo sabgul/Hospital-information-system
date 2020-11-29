@@ -1,387 +1,393 @@
 <template>
   <div>
-    <div class="main__content">
-                <h1>
-          Health concerns
-        </h1>
-    </div>
-
-    <div class="main__content">
-        <h4>Add health concern</h4>
-
-        <br>
-
-        <p>
-            If you were contacted by your patient about a new health concern, add the information here. <br>
-            <b>If it is a new patient, create an account for them<span @click="redirectToNewPatient()" class="redirect__profile"> HERE </span>first!</b>
-        </p>
-
-        <br>
-
-      <div class="wrapper">
-          <div class="first__row">
-              <vs-input
-                  v-model="newConcern.name"
-                  label="Type of health concern"
-                  placeholder="Type name"
-                  class="input__items"
-                  primary
-              >
-                <template
-                  #message-warn
-                  v-if="newConcern.name.length === 0"
-                >
-                  Required field
-                </template>
-
-                <template
-                  #message-danger
-                  v-if="newConcern.name.length > 254"
-                >
-                 Too many characters
-                </template>
-              </vs-input>
-
-              <vs-select
-                v-model="newConcern.patient"
-                class="input__items"
-                label="Patient"
-                placeholder="Choose a patient"
-                color="primary"
-                filter
-              >
-                  <template
-                    #message-warn
-                    v-if="newConcern.patient === -1"
-                  >
-                      Required field
-                  </template>
-
-                  <vs-option
-                    v-for="(patient, id) in availablePatients"
-                    :key="id"
-                    :label="patient.user.first_name"
-                    :value="patient.user.id"
-                  >
-                    {{ patient.user.first_name }}
-                  </vs-option>
-              </vs-select>
-          </div>
-
-          <div class="second__row">
-              <vs-input
-                  v-model="newConcern.description"
-                  label="Description"
-                  placeholder="Type brief description"
-                  class="input__items"
-              >
-                <template
-                    #message-danger
-                    v-if="newConcern.description.length > 2046"
-                >
-                    Description too long
-                </template>
-              </vs-input>
-
-              <vs-select
-                v-model="newConcern.doctor"
-                class="input__items"
-                label="Doctor"
-                placeholder="Choose a doctor"
-                color="primary"
-                filter
-              >
-                <template
-                    #message-warn
-                    v-if="newConcern.doctor === -1"
-                >
-                    Required field
-                </template>
-
-                <vs-option
-                    v-for="(doc, id) in availableDoctors"
-                    :key="id"
-                    :label="doc.user.first_name"
-                    :value="doc.user.id"
-                >
-                    {{ doc.user.first_name }}
-                </vs-option>
-              </vs-select>
-          </div>
-
-          <div class="third__row__single">
-              <vs-select
-                v-model="newConcern.state"
-                label="State of examination"
-                color="primary"
-              >
-                <vs-option
-                    value="WT"
-                    label="Waiting"
-                >
-                    Waiting for examination
-                </vs-option>
-
-                <vs-option
-                    value="ON"
-                    label="Ongoing"
-                >
-                    Ongoing
-                </vs-option>
-
-                <vs-option
-                    value="ED"
-                    label="Ended"
-                >
-                    Ended
-                </vs-option>
-              </vs-select>
-          </div>
-
-          <div class="submit__row">
-              <vs-button
-                  @click="addNewExamination()"
-                  :disabled=" newConcern.name.length === 0 ||
-                              newConcern.name.length > 254 ||
-                              newConcern.doctor === -1 ||
-                              newConcern.patient === -1 ||
-                              newConcern.description.length > 2046"
-              >
-                  Submit
-              </vs-button>
-          </div>
+      <div class="main__content">
+                  <h1>
+            Health concerns
+          </h1>
       </div>
-    </div>
 
-    <div class="main__content">
-        <h4>Health concerns overview</h4>
+      <div class="main__content">
+          <h4>Add health concern</h4>
 
-        <br>
+          <br>
 
-        <p>
-           Here you can see all the health concerns you manage. <br>
-           You can filter the results by <b>patient</b> and/or <b>examination state</b>. You can also use the search bar in the table. <br>
-        </p>
-    </div>
+          <p>
+              If you were contacted by your patient about a new health concern, add the information here. <br>
+              <b>If it is a new patient, create an account for them<span @click="redirectToNewPatient()" class="redirect__profile"> HERE </span>first!</b>
+          </p>
 
-    <div class="main__content">
-      <h4>
-        Filter results
-      </h4>
+          <br>
 
-      <div class="wrapper" style="height: 130px;">
-        <div class="left__filter__row">
-          <vs-select
-            v-model="filter.patient_name"
-            label="Patient"
-            color="primary"
-          >
-            <vs-option
-              v-for="patient in availablePatients"
-              :key="patient.user.id"
-              :label="patient.user.first_name"
-              :value="patient.user.id"
-            >
-              {{ patient.user.first_name }}
+          <div class="wrapper">
+              <div class="first__row">
+                  <vs-input
+                      v-model="newConcern.name"
+                      label="Name of health concern"
+                      placeholder="Type name"
+                      class="input__items"
+                      primary
+                  >
+                      <template
+                          #message-warn
+                          v-if="newConcern.name.length === 0"
+                      >
+                          Required field
+                      </template>
 
-            </vs-option>
+                      <template
+                          #message-danger
+                          v-if="newConcern.name.length > 254"
+                      >
+                          Too many characters
+                      </template>
+                  </vs-input>
 
-          </vs-select>
-        </div>
+                  <vs-select
+                      v-model="newConcern.patient"
+                      class="input__items"
+                      label="Patient"
+                      placeholder="Choose a patient"
+                      color="primary"
+                      filter
+                  >
+                      <template
+                          #message-warn
+                          v-if="newConcern.patient === -1"
+                      >
+                          Required field
+                      </template>
 
-        <div class="right__filter__row">
-          <vs-select
-            v-model="filter.state_of_concern"
-            label="Examination state"
-            color="primary"
-          >
-            <vs-option
-              value="WT"
-              label="Waiting"
-            >
-              Waiting
-            </vs-option>
-            <vs-option
-              value="ON"
-              label="Ongoing"
-            >
-              Ongoing
-            </vs-option>
-            <vs-option
-              value="ED"
-              label="Ended"
-            >
-              Ended
-            </vs-option>
-          </vs-select>
-        </div>
+                      <vs-option
+                          v-for="(patient, id) in availablePatients"
+                          :key="id"
+                          :label="patient.user.first_name"
+                          :value="patient.user.id"
+                      >
+                          {{ patient.user.first_name }}
+                      </vs-option>
+                  </vs-select>
+              </div>
 
-        <div
-            class="submit__row"
-            style="margin-top: -60px;"
-        >
-            <vs-button
-                @click="clearFilter()"
-                border
-            >
-                Clear filter
-            </vs-button>
+              <div class="second__row">
+                  <vs-input
+                      v-model="newConcern.description"
+                      label="Description"
+                      placeholder="Type brief description"
+                      class="input__items"
+                  >
+                      <template
+                          #message-danger
+                          v-if="newConcern.description.length > 2046"
+                      >
+                          Description too long
+                      </template>
+                  </vs-input>
 
-            <vs-button
-                @click="getFiltered()"
-            >
-                Apply filter
-            </vs-button>
-        </div>
-      </div>
-    </div>
-
-    <div class="main__content">
-
-        <vs-table
-                striped
-                class="actions__table"
-            >
-                <template #header>
-                    <vs-input
-                        v-model="searchValue"
-                        border
-                        placeholder="Search"
-                    />
-                </template>
-
-                <template #thead>
-                    <vs-tr>
-                        <vs-th>
-                            Type of health concern
-                        </vs-th>
-
-                        <vs-th>
-                            Patient
-                        </vs-th>
-
-                        <vs-th>
-                            State
-                        </vs-th>
-
-                        <vs-th>
-                            Actions
-                        </vs-th>
-
-                    </vs-tr>
-                </template>
-
-                <template #tbody>
-                    <vs-tr
-                        :key="i"
-                        v-for="(concern, i) in $vs.getPage($vs.getSearch(concerns, searchValue), page, max)"
-                        :data="concern"
+                  <vs-select
+                      v-model="newConcern.doctor"
+                      class="input__items"
+                      label="Doctor"
+                      placeholder="Choose a doctor"
+                      color="primary"
+                      filter
+                  >
+                    <template
+                        #message-warn
+                        v-if="newConcern.doctor === -1"
                     >
-                        <vs-td>
-                          <span @click="showConcernDetail(concern.id)" class="redirect__profile">{{ concern.name }}</span>
-                        </vs-td>
+                        Required field
+                    </template>
 
-                        <vs-td>
-                           <span @click="redirectToPatientProfile(concern.patient.user.id, 'patient')" class="redirect__profile">{{ concern.patient.user.first_name }} {{ concern.patient.user.last_name }}</span>
-                        </vs-td>
+                    <vs-option
+                        v-for="(doc, id) in availableDoctors"
+                        :key="id"
+                        :label="doc.user.first_name"
+                        :value="doc.user.id"
+                    >
+                        {{ doc.user.first_name }}
+                    </vs-option>
+                  </vs-select>
+              </div>
 
-                        <vs-td>
-                            {{ getState(concern.state) }}
-                        </vs-td>
+              <div class="third__row__single">
+                  <vs-select
+                      v-model="newConcern.state"
+                      label="State of examination"
+                      color="primary"
+                  >
+                      <vs-option
+                          value="WT"
+                          label="Waiting"
+                      >
+                          Waiting for examination
+                      </vs-option>
 
-                        <vs-td v-if="concern.state !== 'ED'">
-                            <vs-button
-                                border
-                                class="buttons"
-                                @click="redirectToExamine(concern.id)"
-                                style="width: 120px;"
-                            >
-                                Examine
-                            </vs-button>
+                      <vs-option
+                          value="ON"
+                          label="Ongoing"
+                      >
+                          Ongoing
+                      </vs-option>
 
-                            <vs-button
-                                class="buttons"
-                                @click="redirectToNewRequest(concern.id)"
-                            >
-                                New examination request
-                            </vs-button>
+                      <vs-option
+                          value="ED"
+                          label="Ended"
+                      >
+                          Ended
+                      </vs-option>
+                  </vs-select>
+              </div>
 
-                            <vs-button
-                                danger
-                                class="buttons"
-                                @click="reassign(concern)"
-                            >
-                                Assign to another doctor
-                            </vs-button>
-                        </vs-td>
+              <div class="submit__row">
+                  <vs-button
+                      @click="addNewExamination()"
+                      :disabled=" newConcern.name.length === 0 ||
+                                  newConcern.name.length > 254 ||
+                                  newConcern.doctor === -1 ||
+                                  newConcern.patient === -1 ||
+                                  newConcern.description.length > 2046"
+                  >
+                      Submit
+                  </vs-button>
+              </div>
+          </div>
+      </div>
 
-                        <vs-td v-else>
-                            Concern is ended. <br> No more actions provided.
-                        </vs-td>
+      <div class="main__content">
+          <h4>Health concerns overview</h4>
 
-                        <template #expand>
+          <br>
+
+          <p>
+               Here you can see all the health concerns you manage. <br>
+               You can filter the results by <b>patient</b> and/or <b>examination state</b>. You can also use the search bar in the table. <br>
+          </p>
+      </div>
+
+      <div class="main__content">
+          <h4>
+              Filter results
+          </h4>
+
+          <div class="wrapper" style="height: 130px;">
+              <div class="left__filter__row">
+                  <vs-select
+                      v-model="filter.patient_name"
+                      label="Patient"
+                      color="primary"
+                  >
+                      <vs-option
+                          v-for="patient in availablePatients"
+                          :key="patient.user.id"
+                          :label="patient.user.first_name"
+                          :value="patient.user.id"
+                      >
+                          {{ patient.user.first_name }}
+                      </vs-option>
+                  </vs-select>
+              </div>
+
+              <div class="right__filter__row">
+                  <vs-select
+                      v-model="filter.state_of_concern"
+                      label="Examination state"
+                      color="primary"
+                  >
+                      <vs-option
+                          value="WT"
+                          label="Waiting"
+                      >
+                          Waiting
+                      </vs-option>
+
+                      <vs-option
+                          value="ON"
+                          label="Ongoing"
+                      >
+                          Ongoing
+                      </vs-option>
+
+                      <vs-option
+                          value="ED"
+                          label="Ended"
+                      >
+                          Ended
+                      </vs-option>
+                  </vs-select>
+              </div>
+
+              <div
+                  class="submit__row"
+                  style="margin-top: -60px;"
+              >
+                  <vs-button
+                      @click="clearFilter()"
+                      border
+                  >
+                      Clear filter
+                  </vs-button>
+
+                  <vs-button
+                      @click="getFiltered()"
+                  >
+                      Apply filter
+                  </vs-button>
+              </div>
+          </div>
+      </div>
+
+      <div class="main__content">
+          <vs-table
+              striped
+              class="actions__table"
+          >
+              <template #header>
+                  <vs-input
+                      v-model="searchValue"
+                      border
+                      placeholder="Search"
+                  />
+              </template>
+
+              <template #thead>
+                  <vs-tr>
+                      <vs-th>
+                          Type of health concern
+                      </vs-th>
+
+                      <vs-th>
+                          Patient
+                      </vs-th>
+
+                      <vs-th>
+                          State
+                      </vs-th>
+
+                      <vs-th>
+                          Actions
+                      </vs-th>
+
+                  </vs-tr>
+              </template>
+
+              <template #tbody>
+                  <vs-tr
+                      :key="i"
+                      v-for="(concern, i) in $vs.getPage($vs.getSearch(concerns, searchValue), page, max)"
+                      :data="concern"
+                  >
+                      <vs-td>
+                          <span @click="showConcernDetail(concern.id)" class="redirect__profile">
+                              {{ concern.name }}
+                          </span>
+                      </vs-td>
+
+                      <vs-td>
+                          <span
+                              @click="redirectToPatientProfile(concern.patient.user.id, 'patient')"
+                              class="redirect__profile"
+                          >
+                              {{ concern.patient.user.first_name }} {{ concern.patient.user.last_name }}
+                          </span>
+                      </vs-td>
+
+                      <vs-td>
+                          {{ getState(concern.state) }}
+                      </vs-td>
+
+                      <vs-td v-if="concern.state !== 'ED'">
+                          <vs-button
+                              border
+                              class="buttons"
+                              @click="redirectToExamine(concern.id)"
+                              style="width: 120px;"
+                          >
+                              Examine
+                          </vs-button>
+
+                          <vs-button
+                              class="buttons"
+                              @click="redirectToNewRequest(concern.id)"
+                          >
+                              New examination request
+                          </vs-button>
+
+                          <vs-button
+                              danger
+                              class="buttons"
+                              @click="reassign(concern)"
+                          >
+                              Assign to another doctor
+                          </vs-button>
+                      </vs-td>
+
+                      <vs-td v-else>
+                          Concern is ended. <br> No more actions provided.
+                      </vs-td>
+
+                      <template #expand>
                           <div style="width: 80%;">
-                          <p><b>Description: </b>{{ concern.description }}</p>
+                              <p><b>Description: </b>{{ concern.description }}</p>
                           </div>
+
                           <vs-button
                               class="right__part"
                               border
                               @click="showConcernDetail(concern.id)"
                           >
                                 Show more details
-                            </vs-button>
-                        </template>
-
-                    </vs-tr>
-                </template>
-
-                <template #footer>
-                    <vs-pagination
-                        v-model="page"
-                        :length="$vs.getLength(concerns, max)"
-                    />
-                </template>
-            </vs-table>
-    </div>
-
-    <vs-dialog
-              width="500px"
-              v-model="activeAssign"
-          >
-              <template #header>
-                  <h5>
-                      Select new manager of <b>{{ toReassign.name }}</b>
-                  </h5>
+                          </vs-button>
+                      </template>
+                  </vs-tr>
               </template>
-
-              <vs-select
-                  v-model="newDoc"
-                  class="popup__center"
-                  label="Doctor"
-                  placeholder="Choose a doctor"
-                  color="primary"
-                  >
-                      <vs-option
-                          v-for="doctor in availableDoctors"
-                          :key="doctor.user.id"
-                          :label="doctor.user.first_name"
-                          :value="doctor.user.id"
-                      >
-                          {{ doctor.user.first_name }}
-                      </vs-option>
-              </vs-select>
 
               <template #footer>
-                  <div class="popup__right">
-                      <vs-button
-                          success
-                          @click="finishReassign()"
-                      >
-                          Save
-                      </vs-button>
-                  </div>
+                  <vs-pagination
+                      v-model="page"
+                      :length="$vs.getLength(concerns, max)"
+                  />
               </template>
-          </vs-dialog>
+          </vs-table>
+      </div>
+
+      <vs-dialog
+          width="500px"
+          v-model="activeAssign"
+      >
+          <template #header>
+              <h5>
+                  Select new manager of <b>{{ toReassign.name }}</b>
+              </h5>
+          </template>
+
+          <vs-select
+              v-model="newDoc"
+              class="popup__center"
+              label="Doctor"
+              placeholder="Choose a doctor"
+              color="primary"
+              >
+                  <vs-option
+                      v-for="doctor in availableDoctors"
+                      :key="doctor.user.id"
+                      :label="doctor.user.first_name"
+                      :value="doctor.user.id"
+                  >
+                      {{ doctor.user.first_name }}
+                  </vs-option>
+          </vs-select>
+
+          <template #footer>
+              <div class="popup__right">
+                  <vs-button
+                      success
+                      @click="finishReassign()"
+                  >
+                      Save
+                  </vs-button>
+              </div>
+          </template>
+      </vs-dialog>
    </div>
 </template>
 
@@ -436,54 +442,54 @@ export default {
 
     async created() {
         PatientsService.getAll()
-            .then(response => {
+        .then(response => {
             this.availablePatients = response.data;
-            })
+        })
 
         DoctorsService.getAll()
-            .then(response => {
+        .then(response => {
             this.availableDoctors = response.data;
-            })
+        })
 
         if(this.userRole === 'admin') {
             HealthConcernsService.getAll()
-              .then(response => {
-              this.concerns = response.data;
-              })
+            .then(response => {
+                this.concerns = response.data;
+            })
         }
 
         if(this.userRole === 'doctor') {
             HealthConcernsService.getAllByCurrentUser(this.user.id)
-              .then(response => {
-              this.concerns = response.data;
-              })
+            .then(response => {
+                this.concerns = response.data;
+            })
         }
     },
 
     methods: {
         async addNewExamination() {
             HealthConcernsService.create(this.newConcern)
-                .then(response => {
-                    console.log(response);
-                    NotificationsUtils.successPopup('Health concern added to database.', this.$vs);
+            .then(response => {
+                console.log(response);
+                NotificationsUtils.successPopup('Health concern added to database.', this.$vs);
 
-                    if(this.userRole === 'admin') {
-                        HealthConcernsService.getAll()
-                          .then(response => {
-                          this.concerns = response.data;
-                          })
-                    }
+                if(this.userRole === 'admin') {
+                    HealthConcernsService.getAll()
+                    .then(response => {
+                        this.concerns = response.data;
+                    })
+                }
 
-                    if(this.userRole === 'doctor') {
-                        HealthConcernsService.getAllByCurrentUser(this.user.id)
-                          .then(response => {
-                          this.concerns = response.data;
-                          })
-                    }
-                })
-                .catch(e => {
-                    NotificationsUtils.failPopup(e, this.$vs);
-                });
+                if(this.userRole === 'doctor') {
+                    HealthConcernsService.getAllByCurrentUser(this.user.id)
+                    .then(response => {
+                        this.concerns = response.data;
+                    })
+                }
+            })
+            .catch(e => {
+                NotificationsUtils.failPopup(e, this.$vs);
+            });
         },
 
         redirectToPatientProfile(userId, role) {
@@ -496,9 +502,9 @@ export default {
 
         async getFiltered() {
             HealthConcernsService.getFiltered(this.filter, this.user.id, this.userRole)
-                .then(response => {
-                    this.concerns = response.data;
-                })
+            .then(response => {
+                this.concerns = response.data;
+            })
         },
 
         async clearFilter() {
@@ -507,16 +513,16 @@ export default {
 
             if(this.userRole === 'admin') {
                 HealthConcernsService.getAll()
-                  .then(response => {
-                  this.concerns = response.data;
-                  })
+                .then(response => {
+                    this.concerns = response.data;
+                })
             }
 
             if(this.userRole === 'doctor') {
                 HealthConcernsService.getAllByCurrentUser(this.user.id)
-                  .then(response => {
-                  this.concerns = response.data;
-                  })
+                .then(response => {
+                    this.concerns = response.data;
+                })
             }
         },
 
@@ -545,9 +551,9 @@ export default {
                 NotificationsUtils.successPopup('Manager of ' + newConcern.name + ' successfully changed.', this.$vs);
 
                 HealthConcernsService.getAll()
-                    .then(response => {
+                .then(response => {
                     this.concerns = response.data;
-                    })
+                })
             })
             .catch(e => {
                 NotificationsUtils.failPopup(e, this.$vs);
