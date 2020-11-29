@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import { store } from '@/store/store';
+import {store} from '@/store/store';
 
 Vue.use(Router);
 
@@ -19,7 +19,8 @@ const router = new Router({
             name: 'patients',
             component: () => import('@/views/doctor/patientsOverview/PatientsOverview'),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                allowsDoctor: true,
             }
         },
         // // //
@@ -31,7 +32,8 @@ const router = new Router({
             name: 'healthReportCard',
             component: () => import('@/views/patient/healthReportCard/HealthReportCard'),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                allowsPatient: true,
             }
         },
         // // //
@@ -43,7 +45,8 @@ const router = new Router({
             name: 'patientAdd',
             component: () => import('@/views/admin/usersManagement/newUserModules/PatientAdd'),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                allowsDoctor: true,
             }
         },
         {
@@ -52,7 +55,8 @@ const router = new Router({
             props: true,
             component: () => import('@/views/doctor/healthConcerns/ConcernDetail'),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                allowsDoctor: true,
             }
         },
         {
@@ -61,7 +65,8 @@ const router = new Router({
             props: true,
             component: () => import('@/views/doctor/examinations/NewExaminationRequest'),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                allowsDoctor: true,
             }
         },
         {
@@ -70,7 +75,8 @@ const router = new Router({
             props: true,
             component: () => import('@/views/doctor/examinations/NewExamination'),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                allowsDoctor: true,
             }
         },
         {
@@ -79,7 +85,8 @@ const router = new Router({
             props: true,
             component: () => import('@/views/doctor/examinations/Examine'),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                allowsDoctor: true,
             }
         },
         {
@@ -87,7 +94,8 @@ const router = new Router({
             name: 'assignedTickets',
             component: () => import('@/views/doctor/examinations/ManageAssignedTickets'),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                allowsDoctor: true,
             }
         },
         {
@@ -95,7 +103,8 @@ const router = new Router({
             name: 'healthConcerns',
             component: () => import('@/views/doctor/healthConcerns/HealthConcerns'),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                allowsDoctor: true,
             }
         },
         // // //
@@ -107,7 +116,8 @@ const router = new Router({
             name: 'examinationActionsOverview',
             component: () => import('@/views/healthcare-worker/examinationActions/ExaminationActionsOverview'),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                allowsHealthcareworker: true,
             }
         },
         {
@@ -115,7 +125,8 @@ const router = new Router({
             name: 'examinationActionAdd',
             component: () => import('@/views/healthcare-worker/examinationActions/ExaminationActionAdd'),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                allowsHealthcareworker: true,
             }
         },
         {
@@ -123,7 +134,8 @@ const router = new Router({
             name: 'manageTransactionsRequests',
             component: () => import('@/views/healthcare-worker/transactionRequests/TransactionsManager'),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                allowsHealthcareworker: true,
             }
         },
         // // //
@@ -135,7 +147,7 @@ const router = new Router({
             name: 'usersOverview',
             component: () => import('@/views/admin/usersManagement/usersOverview/UsersOverview'),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
             }
         },
         // // //
@@ -147,7 +159,10 @@ const router = new Router({
             props: true,
             component: () => import('@/views/general/userProfile/UserProfile'),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                allowsPatient: true,
+                allowsDoctor: true,
+                allowsHealthcareworker: true,
             }
         },
         {
@@ -155,7 +170,7 @@ const router = new Router({
             name: 'doctorAdd',
             component: () => import('@/views/admin/usersManagement/newUserModules/DoctorAdd'),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
             }
         },
         {
@@ -163,7 +178,7 @@ const router = new Router({
             name: 'healthcareWorkerAdd',
             component: () => import('@/views/admin/usersManagement/newUserModules/HealthcareWorkerAdd'),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
             }
         },
         // // //
@@ -175,7 +190,10 @@ const router = new Router({
             props: true,
             component: () => import('@/views/general/EditProfile'),
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
+                allowsPatient: true,
+                allowsDoctor: true,
+                allowsHealthcareworker: true,
             }
         },
         // // //
@@ -198,6 +216,25 @@ router.beforeEach((to, from, next) => {
         if (!store.getters.isAuthenticated) {
             next('/');
             return;
+        }
+
+        // admin case missing intentionally - they are allowed everywhere
+
+        if (store.state.userRole === 'patient') {
+            if (!to.matched.some((record) => record.meta.allowsPatient)) {
+                next('/');
+                return;
+            }
+        } else if (store.state.userRole === 'doctor') {
+            if (!to.matched.some((record) => record.meta.allowsDoctor)) {
+                next('/');
+                return;
+            }
+        } else if (store.state.userRole === 'healthcareworker') {
+            if (!to.matched.some((record) => record.meta.allowsHealthcareworker)) {
+                next('/');
+                return;
+            }
         }
     }
     next();

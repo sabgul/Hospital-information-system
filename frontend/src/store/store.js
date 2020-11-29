@@ -142,16 +142,7 @@ export const store = new Vuex.Store({
         },
 
         getters: {
-            user_full_name: state => {
-                if (state.user) {
-                    return `${state.user.first_name} ${state.user.last_name}`
-                }
-                else {
-                    return "Name Surname"
-                }
-            },
             isAuthenticated: state => {
-                console.log('.')
                 return !!state.access_token
             }
         },
