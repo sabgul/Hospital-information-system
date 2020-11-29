@@ -354,11 +354,13 @@ class HealthcareWorkerViewSet(ModelViewSet):
     action_permissions = {
         IsOwner: ['destroy', 'partial_update', 'retrieve', 'update'],
         IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update'],
+        IsHCWorker: ['list'],
     }
 
     action_object_permissions = {
         IsOwner: ['destroy', 'partial_update', 'retrieve', 'update'],
         IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
+        IsHCWorker: ['list'],
     }
 
     def create(self, request, *args, **kwargs):
