@@ -149,7 +149,7 @@
                 class="popup__center"
             >
                     <option
-                        v-for="doctor in availableDoctors"
+                        v-for="doctor in availableWithoutCurrent"
                         :key="doctor.user.id"
                         :label="doctor.user.first_name"
                         :value="doctor.user.id"
@@ -206,7 +206,11 @@ export default {
       ...mapState([
           'user',
           'userRole',
-      ])
+      ]),
+
+      availableWithoutCurrent() {
+          return this.availableDoctors.filter((doctor) => doctor.user.id !== this.user.id);
+      }
   },
 
   async created() {
@@ -286,5 +290,16 @@ export default {
     .actions__table {
         width: 70%;
         margin: 1em auto 0;
+    }
+
+    .popup__center {
+        font-family: 'Roboto', sans-serif;
+        border-radius:10px;
+        border:1px solid #f9fcfd;
+        background-color: #eef5f8;
+        display: block;
+        padding-bottom: 1em;
+        width: 40%;
+        margin: 2em auto 5em;
     }
 </style>

@@ -157,22 +157,19 @@
               </h5>
           </template>
 
-          <vs-select
+          <select
               v-model="newDoc"
               class="popup__center"
-              label="Doctor"
-              placeholder="Choose a doctor"
-              color="primary"
+          >
+              <option
+                  v-for="doctor in availableWithoutCurrent"
+                  :key="doctor.user.id"
+                  :label="doctor.user.first_name"
+                  :value="doctor.user.id"
               >
-                  <vs-option
-                      v-for="doctor in availableDoctors"
-                      :key="doctor.id"
-                      :label="doctor.name"
-                      :value="doctor.id"
-                  >
-                      {{ doctor.name }}
-                  </vs-option>
-          </vs-select>
+                  {{ doctor.user.first_name }}
+              </option>
+          </select>
 
           <template #footer>
               <div class="popup__right">
@@ -273,8 +270,13 @@ export default {
 
   computed: {
       ...mapState([
+          'user',
           'userRole',
-      ])
+      ]),
+
+      availableWithoutCurrent() {
+          return this.availableDoctors.filter((doctor) => doctor.user.id !== this.user.id);
+      }
   },
 
   async created() {
@@ -282,33 +284,21 @@ export default {
       .then(response => {
           this.concern = response.data;
       })
-      .catch(e => {
-          console.log(e);
-      });
 
       DoctorsService.getAll()
       .then(response => {
           this.availableDoctors = response.data;
       })
-      .catch(e => {
-          console.log(e);
-      });
 
       ExaminationsService.getByConcern(this.id)
       .then(response => {
           this.examinations = response.data;
       })
-      .catch(e => {
-          console.log(e);
-      });
 
       DoctorsReportsService.getByConcern(this.id)
       .then(response => {
           this.reports = response.data;
       })
-      .catch(e => {
-          console.log(e);
-      });
   },
 
   methods: {
@@ -351,12 +341,20 @@ export default {
       async finishReassign() {
           let newConcern = {...this.toReassign}
           newConcern.doctor = this.newDoc;
-          newConcern.patient = this.toReassign.patient.id;
+          newConcern.patient = this.toReassign.patient.user.id;
 
           HealthConcernsService.update(this.toReassign.id, newConcern)
           .then(response => {
               console.log(response);
               NotificationsUtils.successPopup('Manager of ' + newConcern.name + ' successfully changed.', this.$vs);
+              if(this.userRole !== 'admin') {
+                this.$router.back();
+              }
+
+              HealthConcernsService.get(this.id)
+              .then(response => {
+                  this.concern = response.data;
+              })
           })
           .catch(e => {
               NotificationsUtils.failPopup(e, this.$vs);
@@ -376,6 +374,17 @@ export default {
         cursor: pointer;
         font-weight: 600;
         text-decoration: underline;
+    }
+
+    .popup__center {
+        font-family: 'Roboto', sans-serif;
+        border-radius:10px;
+        border:1px solid #f9fcfd;
+        background-color: #eef5f8;
+        display: block;
+        padding-bottom: 1em;
+        width: 40%;
+        margin: 2em auto 5em;
     }
 
     box-icon {

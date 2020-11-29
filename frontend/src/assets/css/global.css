@@ -112,3 +112,7 @@ h1 {
     margin-top: auto;
     margin-bottom: 1em;
 }
+
+select {
+   padding: 12px 0 0 20px;
+}
