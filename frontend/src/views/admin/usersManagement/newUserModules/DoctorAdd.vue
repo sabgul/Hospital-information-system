@@ -271,10 +271,24 @@ export default {
             .then(response => {
                 console.log(response);
                 NotificationsUtils.successPopup('New doctor was added to the database.', this.$vs);
+                this.clearFields();
             })
             .catch(e => {
                     NotificationsUtils.failPopup(e, this.$vs);
             });
+        },
+
+        clearFields() {
+            this.newDoctor = {
+                'first_name': '',
+                'last_name': '',
+                'gender': 'O',
+                'date_of_birth': '',
+                'email_field': '',
+                'phone_number': '',
+                'specializes_in': '',
+                'password': '',
+            }
         }
     },
 }

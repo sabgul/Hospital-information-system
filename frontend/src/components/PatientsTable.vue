@@ -75,6 +75,8 @@ export default {
   methods: {
     redirectToPatientProfile(userId, role) {
         this.$router.push({ name: 'profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }});
+        // if(this.$route.path. == '/'")
+        this.$router.go();
     },
 
     getDate(date) {

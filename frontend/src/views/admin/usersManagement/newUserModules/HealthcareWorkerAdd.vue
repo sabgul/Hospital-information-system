@@ -267,11 +267,25 @@ export default {
             .then(response => {
                 console.log(response);
                 NotificationsUtils.successPopup('New healthcare worker was added to the database.', this.$vs);
+                this.clearFields();
             })
             .catch(e => {
                     NotificationsUtils.failPopup(e, this.$vs);
             });
         },
+
+        clearFields() {
+            this.newWorker = {
+                'first_name': '',
+                'last_name': '',
+                'gender': 'O',
+                'date_of_birth': '',
+                'email_field': '',
+                'phone_number': '',
+                'works_for_company': '',
+                'password': '',
+            }
+        }
     },
 }
 </script>

@@ -288,10 +288,24 @@ export default {
             .then(response => {
                 console.log(response);
                 NotificationsUtils.successPopup('New patient was added to the database.', this.$vs);
+                this.clearFields();
             })
             .catch(e => {
                 NotificationsUtils.failPopup(e, this.$vs);
             });
+        },
+
+        clearFields() {
+            this.newPatient = {
+                'first_name': '',
+                'last_name': '',
+                'gender': 'O',
+                'main_doctor_id': -1,
+                'date_of_birth': '',
+                'email_field': '',
+                'phone_number': '',
+                'password': '',
+            }
         },
     },
 }

@@ -44,7 +44,7 @@ export default {
     },
 
     async created() {
-        PatientsService.getAllByDoctor(this.doctor.id)
+        PatientsService.getAllByDoctor(this.doctor.user.id)
         .then(response => {
             this.assignedPatients = response.data;
         })
