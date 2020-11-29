@@ -253,78 +253,81 @@ export default {
 
         async saveExamination() {
           // adding new examination into DB
-          const newExamination = {
-              date_of_examination: DateUtils.getDateForBackend(this.examinationDate),
-              examinating_doctor: this.user.id,    // TODO current user
-              concern: this.aboutConcern.id,
-              request_based_on: null,
-              actions: this.chosenActions.map(action => action.actionData.name),
-              description: this.examinationDescription,
-          }
+            const newExamination = {
+                date_of_examination: DateUtils.getDateForBackend(this.examinationDate),
+                examinating_doctor: this.user.id,    // TODO current user
+                concern: this.aboutConcern.id,
+                request_based_on: null,
+                actions: this.chosenActions.map(action => action.actionData.name),
+                description: this.examinationDescription,
+            }
 
-          ExaminationsService.create(newExamination)
-              .then(response => {
-                  console.log(response);
-                  NotificationsUtils.successPopup('Examination created.', this.$vs);
-              })
-              .catch(e => {
-                  NotificationsUtils.failPopup(e, this.$vs);
-              });
+            ExaminationsService.create(newExamination)
+            .then(response => {
+                NotificationsUtils.successPopup('Examination created.', this.$vs);
 
+                let idOfNewExamination = response.data.id;
 
-          let formData = new FormData();
-          formData.append('file', this.file, this.file.name);
+                let formData = new FormData();
+                formData.append('file', this.file, this.file.name);
 
-          const newReport = {
-            created_by: this.user.id,
-            about_concern: this.aboutConcern.id,
-            description: this.reportDescription,
-            file: formData,
-          }
+                const newReport = {
+                    created_by: this.user.id,
+                    about_concern: this.aboutConcern.id,
+                    description: this.reportDescription,
+                    during_examination: idOfNewExamination,
+                    // file: formData,
+                }
 
-          DoctorsReportsService.create(newReport)
-              .then(response => {
-                  console.log(response);
-              })
-              .catch(e => {
-                  NotificationsUtils.failPopup(e, this.$vs);
-              });
-
-          // state of concern is set to be Ongoing
-          const newConcern = {
-            name: this.aboutConcern.name,
-            description: this.aboutConcern.description,
-            state: 'ON',
-            patient: this.aboutConcern.patient.user.id,
-            doctor: this.aboutConcern.doctor.user.id
-          }
-
-          HealthConcernsService.update(this.aboutConcern.id, newConcern)
-              .then(response => {
-                  console.log(response);
-              })
-              .catch(e => {
-                  NotificationsUtils.failPopup(e, this.$vs);
-              });
-
-          this.chosenActions.forEach(action => {
-              if(action.cover) {
-                  const newRequest = {
-                    examination_action: action.actionData.name,
-                    request_state: 'UD',
-                    related_to_patient: this.aboutConcern.patient.user.id,
-                    transaction_approver: action.actionData.action_manager.user.id,
-                  }
-
-                  TransactionRequestsService.create(newRequest)
+                DoctorsReportsService.create(newReport)
                     .then(response => {
-                          console.log(response);
+                        console.log(response);
                     })
                     .catch(e => {
                         NotificationsUtils.failPopup(e, this.$vs);
                     });
-              }
-        });
+
+                this.chosenActions.forEach(action => {
+                    if(action.cover) {
+                        const newRequest = {
+                            examination_action: action.actionData.name,
+                            request_state: 'UD',
+                            related_to_patient: this.aboutConcern.patient.user.id,
+                            during_examination: idOfNewExamination,
+                            transaction_approver: action.actionData.action_manager.user.id,
+                        }
+
+                        TransactionRequestsService.create(newRequest)
+                        .then(response => {
+                              console.log(response);
+                        })
+                        .catch(e => {
+                            NotificationsUtils.failPopup(e, this.$vs);
+                        });
+                    }
+                })
+            })
+            .catch(e => {
+                NotificationsUtils.failPopup(e, this.$vs);
+            });
+
+
+            // state of concern is set to be Ongoing
+            const newConcern = {
+                name: this.aboutConcern.name,
+                description: this.aboutConcern.description,
+                state: 'ON',
+                patient: this.aboutConcern.patient.user.id,
+                doctor: this.aboutConcern.doctor.user.id
+            }
+
+            HealthConcernsService.update(this.aboutConcern.id, newConcern)
+            .then(response => {
+                console.log(response);
+            })
+            .catch(e => {
+                NotificationsUtils.failPopup(e, this.$vs);
+            });
         },
 
         thumbUrl (file) {

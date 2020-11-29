@@ -123,6 +123,7 @@ export default {
                 examination_action: this.requestToCover.examination_action.name,
                 related_to_patient: this.requestToCover.related_to_patient.user.id,
                 transaction_approver: this.requestToCover.transaction_approver.user.id,
+                during_examination: this.requestToCover.during_examination,
                 request_state: 'CD',
             };
 

@@ -39,7 +39,7 @@
                   class="action__within__examination"
               >
                 <div>
-                    <span><b>{{ action.name }}</b> <br> ({{getPricing(action.is_action_paid)}})</span>
+                    <span><b>{{ action.actionData.name }}</b> <br> ({{getPricing(action.actionData.is_action_paid)}})</span>
                 </div>
 
                 <div class="buttons__action">
@@ -233,8 +233,7 @@ export default {
         async addActionFinal() {
             ExaminationActionsService.get(this.actionToAdd)
                 .then(response => {
-                    this.chosenActions.push(response.data);
-                    NotificationsUtils.successPopup('Action successfully added into examination.', this.$vs);
+                     this.chosenActions.push({ actionData: response.data, cover: true });
                 })
                 .catch(e => {
                     NotificationsUtils.failPopup(e, this.$vs);
@@ -249,90 +248,98 @@ export default {
           this.chosenActions.splice(index, 1);
         },
 
-        async overpayQuery(name) {
-            const newRequest = {
-                examination: 1,
-                examination_action: name,
-                request_state: 'UD'
-            }
-
-            TransactionRequestsService.create(newRequest)
-                .then(response => {
-                      console.log(response);
-                      NotificationsUtils.successPopup('Request to cover this action was sent to insurance company.', this.$vs);
-                  })
-                  .catch(e => {
-                      NotificationsUtils.failPopup(e, this.$vs);
-                  });
-        },
-
         async saveExamination() {
           // adding new examination into DB
-          const newExamination = {
-              date_of_examination: DateUtils.getDateForBackend(this.examinationDate),
-              examinating_doctor: this.examinationAboutTicket.created_by.user.id,
-              request_based_on: this.examinationAboutTicket.id,
-              concern: this.examinationAboutTicket.concern.id,
-              actions: this.chosenActions.map(action => action.name),
-              description: this.examinationDescription,
-          }
-
-          ExaminationsService.create(newExamination)
-              .then(response => {
-                  console.log(response);
-                  NotificationsUtils.successPopup('Examination created.', this.$vs);
-              })
-              .catch(e => {
-                  NotificationsUtils.failPopup(e, this.$vs);
-              });
-
-          const newReport = {
-            created_by: this.user.id, // TODO current user
-            about_concern: this.examinationAboutTicket.concern.id,
-            description: this.reportDescription,
-          }
-
-          DoctorsReportsService.create(newReport)
-              .then(response => {
-                  console.log(response);
-              })
-              .catch(e => {
-                  NotificationsUtils.failPopup(e, this.$vs);
-              });
-
-          // Ticket is set to be resolved
-          if(this.markTicketResolved) {
-            const newTicketData = {
+            const newExamination = {
+                date_of_examination: DateUtils.getDateForBackend(this.examinationDate),
+                examinating_doctor: this.user.id,
+                request_based_on: this.examinationAboutTicket.id,
                 concern: this.examinationAboutTicket.concern.id,
-                created_by: this.examinationAboutTicket.created_by.user.id,
-                assigned_to: this.user.id,
-                state: 'RD'
-            };
-            ExaminationRequestsService.update(this.examinationAboutTicket.id, newTicketData)
-              .then(response => {
-                  console.log(response);
-              })
-              .catch(e => {
-                  NotificationsUtils.failPopup(e, this.$vs);
-              });
-          }
+                actions: this.chosenActions.map(action => action.actionData.name),
+                description: this.examinationDescription,
+            }
 
-          // state of concern is set to be Ongoing
-          const newConcern = {
-            name: this.examinationAboutTicket.concern.name,
-            description: this.examinationAboutTicket.concern.description,
-            state: 'ON',
-            patient: this.examinationAboutTicket.concern.patient.user.id,
-            doctor: this.examinationAboutTicket.concern.doctor.user.id
-          }
+            ExaminationsService.create(newExamination)
+            .then(response => {
+                NotificationsUtils.successPopup('Examination created.', this.$vs);
 
-          HealthConcernsService.update(this.examinationAboutTicket.concern.id, newConcern)
-              .then(response => {
-                  console.log(response);
-              })
-              .catch(e => {
-                  NotificationsUtils.failPopup(e, this.$vs);
-              });
+                let idOfNewExamination = response.data.id;
+                const newReport = {
+                    created_by: this.user.id,
+                    about_concern: this.examinationAboutTicket.concern.id,
+                    description: this.reportDescription,
+                    during_examination: idOfNewExamination,
+                    // file: formData,
+                }
+
+                DoctorsReportsService.create(newReport)
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(e => {
+                    NotificationsUtils.failPopup(e, this.$vs);
+                });
+
+                this.chosenActions.forEach(action => {
+                    if(action.cover) {
+                        const newRequest = {
+                            examination_action: action.actionData.name,
+                            request_state: 'UD',
+                            related_to_patient: this.examinationAboutTicket.concern.patient.user.id,
+                            during_examination: idOfNewExamination,
+                            transaction_approver: action.actionData.action_manager.user.id,
+                        }
+
+                        TransactionRequestsService.create(newRequest)
+                        .then(response => {
+                              console.log(response);
+                        })
+                        .catch(e => {
+                            NotificationsUtils.failPopup(e, this.$vs);
+                        });
+                    }
+                })
+            })
+            .catch(e => {
+                NotificationsUtils.failPopup(e, this.$vs);
+            });
+
+            // Ticket is set to be resolved
+            if(this.markTicketResolved) {
+                const newTicketData = {
+                    concern: this.examinationAboutTicket.concern.id,
+                    created_by: this.examinationAboutTicket.created_by.user.id,
+                    assigned_to: this.user.id,
+                    state: 'RD'
+                };
+
+                ExaminationRequestsService.update(this.examinationAboutTicket.id, newTicketData)
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(e => {
+                    NotificationsUtils.failPopup(e, this.$vs);
+                });
+            }
+
+            // state of concern is set to be Ongoing
+            const newConcern = {
+                name: this.examinationAboutTicket.concern.name,
+                description: this.examinationAboutTicket.concern.description,
+                state: 'ON',
+                patient: this.examinationAboutTicket.concern.patient.user.id,
+                doctor: this.examinationAboutTicket.concern.doctor.user.id
+            }
+
+            HealthConcernsService.update(this.examinationAboutTicket.concern.id, newConcern)
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(e => {
+                    NotificationsUtils.failPopup(e, this.$vs);
+                });
+
+            await this.$router.push('/assigned-tickets');
         }
     }
 }

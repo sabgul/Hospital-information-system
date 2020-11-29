@@ -140,18 +140,6 @@ class HealthConcern(models.Model):
         ordering = ['name']
 
 
-# Lekarska sprava
-class DoctorReport(models.Model):
-    created_by = models.ForeignKey(Doctor, on_delete=models.CASCADE)
-    about_concern = models.ForeignKey(HealthConcern, on_delete=models.CASCADE)
-    date_of_created = models.DateField(auto_now_add=True)
-    description = models.CharField(max_length=2046, blank=True)
-    file = models.FileField(blank=True, null=True)
-
-    class Meta:
-        ordering = ['date_of_created']
-
-
 # Ziadost o lekarske vysetrenie
 class ExaminationRequest(models.Model):
     # Examination request states
@@ -207,6 +195,20 @@ class Examination(models.Model):
         ordering = ['date_of_examination']
 
 
+# Lekarska sprava
+class DoctorReport(models.Model):
+    created_by = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    about_concern = models.ForeignKey(HealthConcern, on_delete=models.CASCADE)
+    during_examination = models.ForeignKey(Examination, on_delete=models.CASCADE)
+
+    date_of_created = models.DateField(auto_now_add=True)
+    description = models.CharField(max_length=2046, blank=True)
+    file = models.FileField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['date_of_created']
+
+
 # Ziadost o zaplatenie jedneho ukonu vramci lekarskeho vysetrenia
 class TransactionRequest(models.Model):
     COVERED = 'CD'
@@ -218,7 +220,9 @@ class TransactionRequest(models.Model):
 
     examination_action = models.ForeignKey(ExaminationAction, on_delete=models.CASCADE)
 
+    during_examination = models.ForeignKey(Examination, on_delete=models.CASCADE)
     related_to_patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+
     transaction_approver = models.ForeignKey(HealthcareWorker, null=True, on_delete=models.SET_NULL)
 
     request_state = models.CharField(
