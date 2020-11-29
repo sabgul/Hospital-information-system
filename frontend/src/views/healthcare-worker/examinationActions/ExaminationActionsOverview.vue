@@ -22,14 +22,15 @@
                         v-model="filter.action_manager"
                         label="Action manager"
                         color="primary"
+                        :key="availableWorkers.length"
                     >   
                         <vs-option
                             v-for="worker in availableWorkers"
                             :key="worker.user.id"
-                            :label="worker.user.first_name"
+                            :label="getFullName(worker.user)"
                             :value="worker.user.id"
                         >
-                            {{ worker.user.first_name }}
+                            {{ worker.user.first_name }} {{ worker.user.last_name }}
                         </vs-option>
                     </vs-select>
                 </div>
@@ -302,6 +303,10 @@ export default {
         cancelDeletion() {
             this.activeDelete = false;
             this.toDelete = '';
+        },
+
+        getFullName(usr) {
+          return usr.first_name + ' ' + usr.last_name;
         },
 
         async finalDeletion() {

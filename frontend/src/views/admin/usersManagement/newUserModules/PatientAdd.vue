@@ -143,6 +143,7 @@
                     class="input__items"
                     label="Main doctor"
                     color="primary"
+                    :key="availableDoctors.length"
                 >
                     <template
                         #message-warn
@@ -154,10 +155,10 @@
                     <vs-option
                         v-for="doctor in availableDoctors"
                         :key="doctor.user.id"
-                        :label="doctor.user.first_name"
+                        :label="getFullName(doctor.user)"
                         :value="doctor.user.id"
                     >
-                        {{ doctor.user.first_name }}
+                        {{ doctor.user.first_name }} {{ doctor.user.last_name }}
                     </vs-option>
                 </vs-select>
             </div>
@@ -304,6 +305,10 @@ export default {
             .catch(e => {
                 NotificationsUtils.failPopup(e, this.$vs);
             });
+        },
+
+        getFullName(usr) {
+          return usr.first_name + ' ' + usr.last_name;
         },
 
         clearFields() {

@@ -48,6 +48,7 @@
                       label="Patient"
                       placeholder="Choose a patient"
                       color="primary"
+                      :key="availablePatients.length"
                       filter
                   >
                       <template
@@ -60,10 +61,10 @@
                       <vs-option
                           v-for="(patient, id) in availablePatients"
                           :key="id"
-                          :label="patient.user.first_name"
+                          :label="getFullName(patient.user)"
                           :value="patient.user.id"
                       >
-                          {{ patient.user.first_name }}
+                          {{ patient.user.first_name }} {{ patient.user.last_name }}
                       </vs-option>
                   </vs-select>
               </div>
@@ -90,6 +91,7 @@
                       label="Doctor"
                       placeholder="Choose a doctor"
                       color="primary"
+                      :key="availableDoctors.length"
                       filter
                   >
                     <template
@@ -102,10 +104,10 @@
                     <vs-option
                         v-for="(doc, id) in availableDoctors"
                         :key="id"
-                        :label="doc.user.first_name"
+                        :label="getFullName(doc.user)"
                         :value="doc.user.id"
                     >
-                        {{ doc.user.first_name }}
+                        {{ doc.user.first_name}} {{ doc.user.last_name }}
                     </vs-option>
                   </vs-select>
               </div>
@@ -177,6 +179,7 @@
                       v-model="filter.patient_name"
                       label="Patient"
                       color="primary"
+                      :key="availablePatients.length"
                   >
                       <vs-option
                           v-for="patient in availablePatients"
@@ -184,7 +187,7 @@
                           :label="patient.user.first_name"
                           :value="patient.user.id"
                       >
-                          {{ patient.user.first_name }}
+                          {{ patient.user.first_name }} {{ patient.user.last_name }}
                       </vs-option>
                   </vs-select>
               </div>
@@ -502,6 +505,10 @@ export default {
             .catch(e => {
                 NotificationsUtils.failPopup(e, this.$vs);
             });
+        },
+
+        getFullName(usr) {
+          return usr.first_name + ' ' + usr.last_name;
         },
 
         redirectToPatientProfile(userId, role) {

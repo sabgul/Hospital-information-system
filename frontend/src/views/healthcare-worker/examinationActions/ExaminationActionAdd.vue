@@ -43,6 +43,7 @@
                         class="input__items"
                         label="Action manager"
                         color="primary"
+                        :key="availableWorkers.length"
                     >
                         <template
                             #message-warn
@@ -54,10 +55,10 @@
                         <vs-option
                             v-for="worker in availableWorkers"
                             :key="worker.user.id"
-                            :label="worker.user.first_name"
+                            :label="getFullName(worker.user)"
                             :value="worker.user.id"
                         >
-                            {{ worker.user.first_name }}
+                            {{ worker.user.first_name }} {{ worker.user.last_name }}
                         </vs-option>
                     </vs-select>
                 </div>
@@ -137,6 +138,10 @@ export default {
                 .catch(e => {
                     NotificationsUtils.failPopup(e, this.$vs);
                 });
+        },
+
+        getFullName(usr) {
+          return usr.first_name + ' ' + usr.last_name;
         },
 
         clearFields() {

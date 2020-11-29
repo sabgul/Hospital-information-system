@@ -442,7 +442,7 @@ box-icon {
 }
 
 .expand__sidebar {
-  position: absolute;
+  position: sticky;
   margin-left: 1.3em;
 }
 
