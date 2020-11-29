@@ -1,136 +1,138 @@
 <template>
-  <div>
-    <h3>Health report card</h3>
-    <br>
-    <h5>
-        <b>Main doctor: </b>
+    <div>
+        <h3>Health report card</h3>
 
-        <span
-            @click="redirectToDocProfile(patient.main_doctor.user.id, 'doctor')"
-            class="redirect__profile"
+        <br>
+
+        <h5>
+            <b>Main doctor: </b>
+
+            <span
+                @click="redirectToDocProfile(patient.main_doctor.user.id, 'doctor')"
+                class="redirect__profile"
+            >
+                {{ patient.main_doctor.user.first_name }} {{ patient.main_doctor.user.last_name }}
+            </span>
+        </h5>
+
+        <br>
+
+        <h5><b>Patient's health concerns:</b></h5>
+
+        <vs-table
+            striped
+            class="actions__table"
         >
-            {{ patient.main_doctor.user.first_name }} {{ patient.main_doctor.user.last_name }}
-        </span>
-    </h5>
+            <template #header>
+                <vs-input
+                    v-model="searchValue"
+                    border
+                    placeholder="Search"
+                />
+            </template>
 
-    <br>
+            <template #thead>
+                <vs-tr>
+                    <vs-th>
+                        Name of health concern
+                    </vs-th>
 
-    <h5><b>Patient's health concerns:</b></h5>
+                    <vs-th>
+                        State
+                    </vs-th>
 
-    <vs-table
-              striped
-              class="actions__table"
-          >
-              <template #header>
-                  <vs-input
-                      v-model="searchValue"
-                      border
-                      placeholder="Search"
-                  />
-              </template>
+                    <vs-th v-if="userRole === 'patient'">
+                        Description
+                    </vs-th>
 
-              <template #thead>
-                  <vs-tr>
-                      <vs-th>
-                          Name of health concern
-                      </vs-th>
+                    <vs-th>
+                        Actions
+                    </vs-th>
+                </vs-tr>
+            </template>
 
-                      <vs-th>
-                          State
-                      </vs-th>
+            <template #tbody>
+                <vs-tr
+                    :key="i"
+                    v-for="(concern, i) in $vs.getPage($vs.getSearch(healthConcerns, searchValue), page, max)"
+                    :data="concern"
+                >
+                    <vs-td>
+                        <span @click="redirectToConcernDetail(concern.id)" class="concern__name">
+                            <b>{{ concern.name }}</b>
+                        </span>
+                    </vs-td>
 
-                      <vs-th v-if="userRole === 'patient'">
-                          Description
-                      </vs-th>
+                    <vs-td>
+                        {{ getState(concern.state) }}
+                    </vs-td>
 
-                      <vs-th>
-                          Actions
-                      </vs-th>
-                  </vs-tr>
-              </template>
+                    <vs-td v-if="userRole === 'patient'">
+                        {{ concern.description.length ? concern.description : '-' }}
+                    </vs-td>
 
-              <template #tbody>
-                  <vs-tr
-                      :key="i"
-                      v-for="(concern, i) in $vs.getPage($vs.getSearch(healthConcerns, searchValue), page, max)"
-                      :data="concern"
-                  >
-                      <vs-td>
-                          <span @click="redirectToConcernDetail(concern.id)" class="concern__name">
-                              <b>{{ concern.name }}</b>
-                          </span>
-                      </vs-td>
-
-                      <vs-td>
-                          {{ getState(concern.state) }}
-                      </vs-td>
-
-                      <vs-td v-if="userRole === 'patient'">
-                          {{ concern.description.length ? concern.description : '-' }}
-                      </vs-td>
-
-                      <vs-td>
-                          <vs-button
-                              v-if="(userRole === 'admin' || userRole === 'doctor') && concern.state !== 'ED'"
-                              border
-                              @click="redirectToExamination(concern.id)"
-                              style="width: 170px;"
-                          >
-                              Examine
-                          </vs-button>
-
-                          <vs-button
-                              v-if="(userRole === 'admin' || userRole === 'doctor') && concern.state !== 'ED'"
-                              class="buttons"
-                              @click="redirectToNewRequest(concern.id)"
-                              style="width: 170px;"
-                          >
-                              New examination request
-                          </vs-button>
-
-                          <vs-button
-                              v-if="(userRole === 'admin' || userRole === 'doctor') && concern.state !== 'ED'"
-                              danger
-                              class="buttons"
-                              @click="reassign(concern)"
-                              style="width: 170px;"
-                          >
-                              Assign to another doctor
-                          </vs-button>
-
-                          <vs-button
-                              v-if="userRole === 'patient' || concern.state === 'ED'"
-                              class="buttons"
-                              border
-                              @click="redirectToConcernDetail(concern.id)"
-                          >
-                                Show more details
-                          </vs-button>
-                      </vs-td>
-
-                      <template #expand v-if="userRole === 'admin' || userRole === 'doctor'">
-                        <div style="width: 80%;">
-                        <p><b>Description: </b>{{ concern.description }}</p>
-                        </div>
+                    <vs-td>
                         <vs-button
-                            class="right__part"
+                            v-if="(userRole === 'admin' || userRole === 'doctor') && concern.state !== 'ED'"
+                            border
+                            @click="redirectToExamination(concern.id)"
+                            style="width: 170px;"
+                        >
+                            Examine
+                        </vs-button>
+
+                        <vs-button
+                            v-if="(userRole === 'admin' || userRole === 'doctor') && concern.state !== 'ED'"
+                            class="buttons"
+                            @click="redirectToNewRequest(concern.id)"
+                            style="width: 170px;"
+                        >
+                            New examination request
+                        </vs-button>
+
+                        <vs-button
+                            v-if="(userRole === 'admin' || userRole === 'doctor') && concern.state !== 'ED'"
+                            danger
+                            class="buttons"
+                            @click="reassign(concern)"
+                            style="width: 170px;"
+                        >
+                            Assign to another doctor
+                        </vs-button>
+
+                        <vs-button
+                            v-if="userRole === 'patient' || concern.state === 'ED'"
+                            class="buttons"
                             border
                             @click="redirectToConcernDetail(concern.id)"
                         >
                               Show more details
                         </vs-button>
-                      </template>
+                    </vs-td>
 
-                  </vs-tr>
-              </template>
+                    <template #expand v-if="userRole === 'admin' || userRole === 'doctor'">
+                      <div style="width: 80%;">
+                      <p><b>Description: </b>{{ concern.description }}</p>
+                      </div>
+                      <vs-button
+                          class="right__part"
+                          border
+                          @click="redirectToConcernDetail(concern.id)"
+                      >
+                            Show more details
+                      </vs-button>
+                    </template>
 
-              <template #footer>
-                  <vs-pagination
-                      v-model="page"
-                      :length="$vs.getLength(healthConcerns, max)"
-                  />
-              </template>
-          </vs-table>
+                </vs-tr>
+            </template>
+
+            <template #footer>
+                <vs-pagination
+                    v-model="page"
+                    :length="$vs.getLength(healthConcerns, max)"
+                />
+            </template>
+        </vs-table>
 
         <vs-dialog
             width="500px"
@@ -167,7 +169,7 @@
                 </div>
             </template>
         </vs-dialog>
-  </div>
+    </div>
 </template>
 
 <script>
@@ -209,14 +211,14 @@ export default {
 
   async created() {
       HealthConcernsService.getAllByPatient(this.patient.user.id)
-          .then(response => {
-              this.healthConcerns = response.data;
-          })
+      .then(response => {
+          this.healthConcerns = response.data;
+      })
 
       DoctorsService.getAll()
-          .then(response => {
-              this.availableDoctors = response.data;
-          })
+      .then(response => {
+          this.availableDoctors = response.data;
+      })
   },
 
   methods: {
@@ -272,12 +274,17 @@ export default {
 
 <style scoped>
     .right__part {
-      position: absolute;
-      right: 10px;
-      top: 0;
+        position: absolute;
+        right: 10px;
+        top: 0;
     }
 
     select {
-      padding-top: 0;
+        padding-top: 0;
+    }
+
+    .actions__table {
+        width: 70%;
+        margin: 1em auto 0;
     }
 </style>

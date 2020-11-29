@@ -84,6 +84,7 @@
                   </vs-input>
 
                   <vs-select
+                      v-if="userRole === 'admin'"
                       v-model="newConcern.doctor"
                       class="input__items"
                       label="Doctor"
@@ -109,8 +110,9 @@
                   </vs-select>
               </div>
 
-              <div class="third__row__single">
+              <div class="third__row">
                   <vs-select
+                      class="input__items"
                       v-model="newConcern.state"
                       label="State of examination"
                       color="primary"
@@ -170,7 +172,7 @@
           </h4>
 
           <div class="wrapper" style="height: 130px;">
-              <div class="left__filter__row">
+              <div class="first__row">
                   <vs-select
                       v-model="filter.patient_name"
                       label="Patient"
@@ -421,11 +423,11 @@ export default {
         newDoc: -1,
 
         newConcern: {
-          name: '',
-          description: '',
-          state: 'WT',
-          patient: -1,
-          doctor: -1, // TODO tu bude id current usera
+            name: '',
+            description: '',
+            state: 'WT',
+            patient: -1,
+            doctor: -1,
         },
 
         availablePatients: [],
@@ -433,25 +435,25 @@ export default {
 
         concerns: [],
 
-      filter: {
-          patient_name: -1,
-          state_of_concern: -1,
-      }
+        filter: {
+            patient_name: -1,
+            state_of_concern: -1,
+        }
 
     }),
 
     async created() {
-        PatientsService.getAll()
-        .then(response => {
-            this.availablePatients = response.data;
-        })
-
-        DoctorsService.getAll()
-        .then(response => {
-            this.availableDoctors = response.data;
-        })
-
         if(this.userRole === 'admin') {
+            DoctorsService.getAll()
+            .then(response => {
+                this.availableDoctors = response.data;
+            })
+
+            PatientsService.getAll()
+            .then(response => {
+                this.availablePatients = response.data;
+            })
+
             HealthConcernsService.getAll()
             .then(response => {
                 this.concerns = response.data;
@@ -459,9 +461,16 @@ export default {
         }
 
         if(this.userRole === 'doctor') {
+            this.newConcern.doctor = this.user.id;
+
             HealthConcernsService.getAllByCurrentUser(this.user.id)
             .then(response => {
                 this.concerns = response.data;
+            })
+
+            PatientsService.getAllByDoctor(this.user.id)
+            .then(response => {
+                this.availablePatients = response.data;
             })
         }
     },
@@ -477,6 +486,7 @@ export default {
                     HealthConcernsService.getAll()
                     .then(response => {
                         this.concerns = response.data;
+                        this.clearFields();
                     })
                 }
 
@@ -484,6 +494,7 @@ export default {
                     HealthConcernsService.getAllByCurrentUser(this.user.id)
                     .then(response => {
                         this.concerns = response.data;
+                        this.clearFields();
                     })
                 }
             })
@@ -567,6 +578,16 @@ export default {
         redirectToExamine(healthConcernId) {
             this.$router.push({ name: 'examine', params: { id: healthConcernId }});
         },
+
+        clearFields() {
+            this.newConcern = {
+                name: '',
+                description: '',
+                state: 'WT',
+                patient: -1,
+                doctor: -1,
+            }
+        }
     }
 }
 </script>

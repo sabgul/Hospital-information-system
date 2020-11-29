@@ -1,23 +1,24 @@
 <template>
-  <div>
-    <div class="main__content">
-      <h1>All patients</h1>
+    <div>
+        <div class="main__content">
+            <h1>All patients</h1>
 
-      <p>
-          TODO nejaky text
-      </p>
-    </div>
+            <p>
+                TODO nejaky text
+            </p>
+        </div>
 
-    <div class="main__content">
-      <patients-table :patients="patients"/>
+        <div class="main__content">
+            <patients-table :patients="patients"/>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
 import PatientsService from "@/services/patientsService";
 import PatientsTable from "@/components/PatientsTable";
-import {mapState} from "vuex";
+
+import { mapState } from "vuex";
 
 export default {
     name: 'PatientsOverview',    
@@ -43,20 +44,17 @@ export default {
     async created() {
         if(this.userRole === 'admin') {
             PatientsService.getAll()
-              .then(response => {
-              this.patients = response.data;
-              })
+            .then(response => {
+                this.patients = response.data;
+            })
         }
 
         if(this.userRole === 'doctor') {
             PatientsService.getAllByDoctor(this.user.id)
-              .then(response => {
-              this.patients = response.data;
-              })
+            .then(response => {
+                this.patients = response.data;
+            })
         }
     },
 }
 </script>
-
-<style scoped>
-</style>

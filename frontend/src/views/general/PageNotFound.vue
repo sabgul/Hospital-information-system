@@ -1,14 +1,14 @@
 <template>
     <div class="main__content">
-          <h1>Oops 😪! That page couldn't be found</h1>
+        <h1>Oops 😪! That page couldn't be found</h1>
 
-          <h5>It looks like the page was moved or Demogorgan took it to The Upside Down.</h5>
+        <h5>It looks like the page was moved or Demogorgan took it to The Upside Down.</h5>
 
-          <br>
+        <br>
 
-          <img src="../../assets/page-not-found.svg" alt="">
+        <img src="../../assets/page-not-found.svg" alt="">
 
-          <br>
+        <br>
     </div>
 </template>
 

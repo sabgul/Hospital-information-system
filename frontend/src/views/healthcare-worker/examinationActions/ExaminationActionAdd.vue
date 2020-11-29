@@ -132,10 +132,19 @@ export default {
                 .then(response => {
                     console.log(response);
                     NotificationsUtils.successPopup('Examination action added to database.', this.$vs);
+                    this.clearFields();
                 })
                 .catch(e => {
                     NotificationsUtils.failPopup(e, this.$vs);
                 });
+        },
+
+        clearFields() {
+            this.newAction = {
+                name: '',
+                is_action_paid: false,
+                action_manager_id: -1,
+            }
         }
     },
 }

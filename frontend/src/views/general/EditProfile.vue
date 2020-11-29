@@ -1,22 +1,22 @@
 <template>
     <div>
         <div class="main__content">
-          <h1>
-            Editing <b>{{ userData.first_name }} {{ userData.last_name }}</b>'s profile
-          </h1>
+            <h1>
+                Editing <b>{{ userData.first_name }} {{ userData.last_name }}</b>'s profile
+            </h1>
         </div>
 
         <div class="main__content">
-          <div class="wrapper">
+            <div class="wrapper">
                 <div class="first__row">
                     <vs-input
                         label="First name"
                         color="primary"
                         v-model="newUserData.first_name"
                     >
-                      <template #message-warn v-if="newUserData.first_name.length === 0">
-                        Required
-                      </template>
+                        <template #message-warn v-if="newUserData.first_name.length === 0">
+                            Required
+                        </template>
                     </vs-input>
 
                     <br>
@@ -73,7 +73,6 @@
                         v-model="newPatientMainDoc"
                         label="Main doctor"
                     >
-  <!--                    TODO: DOES NOT WORK!-->
                          <vs-option v-for="doctor in doctors" :key="doctor.user.id" :label="doctor.user.first_name" :value="doctor.user.id">
                             {{ doctor.user.first_name }}
                          </vs-option>
@@ -142,17 +141,17 @@ export default {
 
     async mounted() {
         DoctorsService.getAll()
-            .then(response => {
+        .then(response => {
             this.doctors = response.data;
-            })
+        })
     },
 
     async created() {
         UsersService.get(this.id)
-            .then(response => {
-                this.userData = response.data;
-                this.newUserData = {...this.userData};
-              })
+        .then(response => {
+            this.userData = response.data;
+            this.newUserData = {...this.userData};
+        })
 
         if(this.role === 'patient') {
             PatientsService.get(this.id)
