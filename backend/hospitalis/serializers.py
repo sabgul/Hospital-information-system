@@ -53,40 +53,35 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
     def validate(self, attrs):
         data = super().validate(attrs)
-
+        role = '-'
         try:
-            if 'role' in self.initial_data:
-                role = self.initial_data['role']
-                if role == 'patient':
-                    if self.user.patient is None:
-                        raise AuthenticationFailed()
+            role = self.initial_data['role']
+            if role == 'patient':
+                if self.user.patient is None:
+                    raise AuthenticationFailed()
 
-                elif role == 'doctor':
-                    if self.user.doctor is None:
-                        raise AuthenticationFailed()
+            elif role == 'doctor':
+                if self.user.doctor is None:
+                    raise AuthenticationFailed()
 
-                elif role == 'healthcare-worker':
-                    if self.user.healthcareworker is None:
-                        raise AuthenticationFailed()
+            elif role == 'healthcare-worker':
+                if self.user.healthcareworker is None:
+                    raise AuthenticationFailed()
 
-                elif role == 'admin':
-                    if self.user.is_superuser is None:
-                        raise AuthenticationFailed()
+            elif role == 'admin':
+                if not self.user.is_superuser:
+                    raise AuthenticationFailed()
 
-                else:
-                    raise AuthenticationFailed(f'Role \'{role}\' does not exist')
+            else:
+                raise AuthenticationFailed('Role \'{}\' does not exist'.format(role))
 
-        except (AuthenticationFailed, KeyError, AttributeError) as exc:
-            raise AuthenticationFailed('Invalid role: ' + str(exc))
+        except (AuthenticationFailed, KeyError, AttributeError):
+            raise AuthenticationFailed('Invalid role \'{}\' for user'.format(role))
 
         refresh = self.get_token(self.user)
 
         data['refresh'] = str(refresh)
         data['access'] = str(refresh.access_token)
-
-        # todo investigate what this does
-        # if api_settings.UPDATE_LAST_LOGIN:
-        #     update_last_login(None, self.user)
 
         return data
 

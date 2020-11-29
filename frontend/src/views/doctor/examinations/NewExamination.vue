@@ -216,7 +216,7 @@ export default {
         markTicketResolved: true,
         markConcernEnded: false,
 
-        askToCover: true,     // if false, patient pays it on his own
+        askToCover: true,     // if false, patient pays it on their own
     }),
 
     async created() {

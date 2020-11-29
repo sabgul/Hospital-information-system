@@ -306,7 +306,8 @@
       </div>
 
       <div @click="hideSideBar()">
-          <router-view />
+        <router-view :key="$route.fullPath"/>
+
       </div>
     </div>
 

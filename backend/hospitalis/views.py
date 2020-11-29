@@ -58,7 +58,14 @@ from .filters import (
 
 class ActionBasedPermission(AllowAny):
     """
-    Grant or deny access to a view, based on a mapping in view.action_permissions
+    Manage permissions based on lists in ViewSets.
+
+    Used fields
+        .action_permissions for checking permissions on the action/method
+            (Doctors can list patients)
+
+        .action_object_permissions for checking permissions on the target object
+            (Doctor can retrieve examination requests assigned to them)
     """
 
     def has_permission(self, request, view):
@@ -262,7 +269,7 @@ class PatientsViewSet(ModelViewSet):
     action_object_permissions = {
         IsDoctor: ['list', 'retrieve', 'partial_update', 'update'],
         IsOwner: ['destroy', 'partial_update', 'retrieve', 'update'],
-        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['destroy', 'partial_update', 'retrieve', 'update'],
     }
 
     def create(self, request, *args, **kwargs):
@@ -289,6 +296,16 @@ class PatientsViewSet(ModelViewSet):
             # propagate error from creating patient instance
             return Response(str(exc), status=status.HTTP_400_BAD_REQUEST)
 
+    # filter LIST results based on role/identity
+    def get_queryset(self):
+        queryset = self.queryset
+        try:
+            if self.request.user.doctor and not self.request.user.is_superuser:
+                query_set = queryset.filter(main_doctor=self.request.user.doctor)
+                return query_set
+        except AttributeError:
+            return queryset
+
 
 class DoctorsViewSet(ModelViewSet):
     queryset = Doctor.objects.all()
@@ -303,7 +320,7 @@ class DoctorsViewSet(ModelViewSet):
     action_object_permissions = {
         IsDoctor: ['list', 'retrieve'],
         IsOwner: ['destroy', 'partial_update', 'retrieve', 'update'],
-        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['destroy', 'partial_update', 'retrieve', 'update'],
     }
 
     def create(self, request, *args, **kwargs):
@@ -359,8 +376,7 @@ class HealthcareWorkerViewSet(ModelViewSet):
 
     action_object_permissions = {
         IsOwner: ['destroy', 'partial_update', 'retrieve', 'update'],
-        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
-        IsHCWorker: ['list'],
+        IsAdmin: ['destroy', 'partial_update', 'retrieve', 'update'],
     }
 
     def create(self, request, *args, **kwargs):
@@ -391,11 +407,30 @@ class HealthcareWorkerViewSet(ModelViewSet):
 class HealthConcernViewSet(ModelViewSet):
     queryset = HealthConcern.objects.all()
     serializer_class = HealthConcernSerializer
-    # filter = HealthConcernFilter
     filter_class = HealthConcernFilter
+
+    # filter LIST results based on role/identity
+    def get_queryset(self):
+        queryset = self.queryset
+
+        try:
+            if self.request.user.patient and not self.request.user.is_superuser:
+                query_set = queryset.filter(patient=self.request.user.patient)
+                return query_set
+        except AttributeError:
+            return queryset
+
+        try:
+            if self.request.user.doctor and not self.request.user.is_superuser:
+                query_set = queryset.filter(doctor=self.request.user.doctor)
+                return query_set
+        except AttributeError:
+            return queryset
+
     permission_classes = (ActionBasedPermission,)
     action_permissions = {
-        IsAboutPatient: ['retrieve'],
+        # IsPatient: ['retrieve'],
+        IsAboutPatient: ['list', 'retrieve'],
         IsDoctor: ['create', 'list', 'retrieve'],
         IsFromDoctor: ['destroy', 'partial_update', 'update'],
         IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update'],
@@ -405,7 +440,7 @@ class HealthConcernViewSet(ModelViewSet):
         IsAboutPatient: ['retrieve'],
         IsDoctor: ['retrieve'],
         IsFromDoctor: ['destroy', 'partial_update', 'update'],
-        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['destroy', 'partial_update', 'retrieve', 'update'],
     }
 
 
@@ -418,13 +453,13 @@ class DoctorReportViewSet(ModelViewSet):
         IsAboutPatient: ['retrieve'],
         IsDoctor: ['create', 'list'],
         IsFromDoctor: ['destroy', 'partial_update', 'retrieve', 'update'],
-        IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['create', 'destroy', 'partial_update', 'retrieve', 'update'],
     }
 
     action_object_permissions = {
         IsAboutPatient: ['retrieve'],
         IsFromDoctor: ['destroy', 'partial_update', 'retrieve', 'update'],
-        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['destroy', 'partial_update', 'retrieve', 'update'],
     }
 
 
@@ -435,7 +470,7 @@ class ExaminationRequestViewSet(ModelViewSet):
     permission_classes = (ActionBasedPermission,)
     action_permissions = {
         IsAboutPatient: ['retrieve'],
-        IsDoctor: ['create'],
+        IsDoctor: ['create', 'list'],
         IsFromDoctor: ['destroy', 'partial_update', 'retrieve', 'update'],
         IsAdmin: ['create', 'destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
@@ -443,8 +478,18 @@ class ExaminationRequestViewSet(ModelViewSet):
     action_object_permissions = {
         IsAboutPatient: ['retrieve'],
         IsFromDoctor: ['destroy', 'partial_update', 'retrieve', 'update'],
-        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['destroy', 'partial_update', 'retrieve', 'update'],
     }
+
+    # filter LIST results based on role/identity
+    def get_queryset(self):
+        queryset = self.queryset
+        try:
+            if self.request.user.doctor and not self.request.user.is_superuser:
+                query_set = queryset.filter(assigned_to=self.request.user.doctor)
+                return query_set
+        except AttributeError:
+            return queryset
 
 
 class ExaminationActionViewSet(ModelViewSet):
@@ -461,7 +506,7 @@ class ExaminationActionViewSet(ModelViewSet):
     action_object_permissions = {
         IsDoctor: ['list', 'retrieve'],
         IsHCWorker: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
-        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['destroy', 'partial_update', 'retrieve', 'update'],
     }
 
 
@@ -480,8 +525,18 @@ class ExaminationViewSet(ModelViewSet):
     action_object_permissions = {
         IsAboutPatient: ['retrieve'],
         IsFromDoctor: ['retrieve', 'destroy', 'partial_update', 'retrieve', 'update'],
-        IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
+        IsAdmin: ['destroy', 'partial_update', 'retrieve', 'update'],
     }
+
+    # filter LIST results based on role/identity
+    def get_queryset(self):
+        queryset = self.queryset
+        try:
+            if self.request.user.doctor and not self.request.user.is_superuser:
+                query_set = queryset.filter(examinating_doctor=self.request.user.doctor)
+                return query_set
+        except AttributeError:
+            return queryset
 
 
 class TransactionRequestViewSet(ModelViewSet):
@@ -502,3 +557,16 @@ class TransactionRequestViewSet(ModelViewSet):
         IsHCWorker: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
         IsAdmin: ['destroy', 'list', 'partial_update', 'retrieve', 'update'],
     }
+
+    # filter LIST results based on role/identity
+    def get_queryset(self):
+        queryset = self.queryset
+        try:
+            if self.request.user.doctor and not self.request.user.is_superuser:
+                query_set = queryset.filter(examinating_doctor=self.request.user.doctor)
+                print('filtered', query_set)
+                return query_set
+        except AttributeError:
+            return queryset
+
+
