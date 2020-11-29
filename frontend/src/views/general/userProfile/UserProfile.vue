@@ -120,8 +120,8 @@ export default {
         if(this.role === 'admin') {
             DoctorsService.get(this.id)
             .then(response => {
-                  this.userData = response.data;
-              })
+                this.userData = response.data;
+            })
         }
     },
     
@@ -142,14 +142,16 @@ export default {
             if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
                   age--;
             }
+
             if(age === 0) {
                 return m + ' months';
             }
+
             return age + ' years';
         },
 
         redirectToEdit(id, role) {
-          this.$router.push({ name: 'edit-profile', params: { id: id, role: role }});
+            this.$router.push({ name: 'edit-profile', params: { id: id, role: role }});
         },
 
         getGender(rawGender) {
