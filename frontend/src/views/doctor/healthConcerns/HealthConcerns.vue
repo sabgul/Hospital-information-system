@@ -84,6 +84,7 @@
                   </vs-input>
 
                   <vs-select
+                      v-if="userRole === 'admin'"
                       v-model="newConcern.doctor"
                       class="input__items"
                       label="Doctor"
@@ -441,17 +442,17 @@ export default {
     }),
 
     async created() {
-        PatientsService.getAll()
-        .then(response => {
-            this.availablePatients = response.data;
-        })
-
-        DoctorsService.getAll()
-        .then(response => {
-            this.availableDoctors = response.data;
-        })
-
         if(this.userRole === 'admin') {
+            DoctorsService.getAll()
+            .then(response => {
+                this.availableDoctors = response.data;
+            })
+
+            PatientsService.getAll()
+            .then(response => {
+                this.availablePatients = response.data;
+            })
+
             HealthConcernsService.getAll()
             .then(response => {
                 this.concerns = response.data;
@@ -459,9 +460,16 @@ export default {
         }
 
         if(this.userRole === 'doctor') {
+            this.newConcern.doctor = this.user.id;
+
             HealthConcernsService.getAllByCurrentUser(this.user.id)
             .then(response => {
                 this.concerns = response.data;
+            })
+
+            PatientsService.getAllByDoctor(this.user.id)
+            .then(response => {
+                this.availablePatients = response.data;
             })
         }
     },
