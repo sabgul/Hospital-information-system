@@ -314,6 +314,7 @@
     <vs-dialog
         width="600px"
         v-model="activeLogout"
+        blur
     >
         <template #header>
         <h5>

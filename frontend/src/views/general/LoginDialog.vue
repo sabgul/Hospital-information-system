@@ -2,6 +2,7 @@
   <vs-dialog
       v-model="userLoginActive"
       @close="loginDialogClosed()"
+      blur
   >
     <template #header>
       <h4 class="not-margin">
@@ -16,6 +17,7 @@
             v-model="email"
             label-placeholder="Email"
             ref="email_field"
+            block
         >
 
           <template #icon>
@@ -29,6 +31,7 @@
             :visiblePassword="hasVisiblePassword"
             v-model="password"
             label-placeholder="Password"
+            block
             @click-icon="hasVisiblePassword = !hasVisiblePassword">
           >
           <template #icon>
@@ -44,7 +47,6 @@
         <vs-button
             type="submit"
             block
-
         >
           Sign In
         </vs-button>
@@ -177,6 +179,12 @@ export default {
 <style scoped>
     .con-form-item {
       padding-bottom: 24px;
-      padding-left: 20%;
+      margin-left: auto;
+      margin-right: auto;
+      width: 70%;
+    }
+
+    .not-margin {
+      margin: 1em 3em;
     }
 </style>
