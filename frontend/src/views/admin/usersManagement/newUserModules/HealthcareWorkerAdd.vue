@@ -9,10 +9,14 @@
                 Create new healthcare worker.<br>
                 Some fields are required. Profile details can be edited later.
             </p>
+        </div>
 
-            <br>
+        <form action="#" v-on:submit.prevent="createWorker">
+            <div class="main__content">
+                <h5>
+                    Basic information
+                </h5>
 
-            <form action="#" v-on:submit.prevent="createWorker">
                 <div class="wrapper">
                     <div class="first__row">
                         <vs-input
@@ -58,7 +62,9 @@
                                 Name too long
                             </template>
                         </vs-input>
+                    </div>
 
+                    <div class="second__row">
                         <vs-select
                             v-model="newWorker.gender"
                             label="Sex"
@@ -86,9 +92,54 @@
                                 Other
                             </vs-option>
                         </vs-select>
+
+                        <vs-input
+                              type="date"
+                              v-model="newWorker.date_of_birth"
+                              label="Date of birth"
+                              class="input__items"
+                        >
+                            <template
+                                #message-warn
+                                v-if="newWorker.date_of_birth === ''"
+                            >
+                                Required field
+                            </template>
+                        </vs-input>
                     </div>
 
-                    <div class="second__row">
+                    <div class="third__row">
+                        <vs-input
+                              v-model="newWorker.phone_number"
+                              label="Phone number"
+                              placeholder="Eg +42012312313"
+                              class="input__items"
+                        >
+                            <template
+                                v-if="validNumber"
+                                #message-success
+                            >
+                                Valid phone number
+                            </template>
+
+                            <template
+                                v-if="(!validNumber && newWorker.phone_number !== '') || newWorker.phone_number.length > 13"
+                                #message-danger
+                            >
+                                Invalid or too long phone number
+                            </template>
+                        </vs-input>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main__content">
+                <h5>
+                    System access information
+                </h5>
+
+                <div class="wrapper">
+                    <div class="first__row">
                         <vs-input
                             v-model="newWorker.email_field"
                             label="Email address"
@@ -116,7 +167,9 @@
                                 Required
                             </template>
                         </vs-input>
+                    </div>
 
+                    <div class="second__row">
                         <vs-input
                             v-model="newWorker.password"
                             label="Password"
@@ -152,7 +205,17 @@
                                 Password too long
                             </template>
                         </vs-input>
+                    </div>
+                </div>
+            </div>
 
+            <div class="main__content">
+                <h5>
+                    Health insurance worker specific information
+                </h5>
+
+                <div class="wrapper">
+                    <div class="first__row">
                         <vs-input
                             v-model="newWorker.works_for_company"
                             label="Works for company"
@@ -167,65 +230,34 @@
                             </template>
                         </vs-input>
                     </div>
-
-                    <div class="third__row">
-                          <vs-input
-                              type="date"
-                              v-model="newWorker.date_of_birth"
-                              label="Date of birth"
-                              class="input__items"
-                          >
-                              <template
-                                  #message-warn
-                                  v-if="newWorker.date_of_birth === ''"
-                              >
-                                  Required field
-                              </template>
-                          </vs-input>
-
-                          <vs-input
-                              v-model="newWorker.phone_number"
-                              label="Phone number"
-                              placeholder="Eg +42012312313"
-                              class="input__items"
-                          >
-                              <template
-                                  v-if="validNumber"
-                                  #message-success
-                              >
-                                  Valid phone number
-                              </template>
-
-                              <template
-                                  v-if="(!validNumber && newWorker.phone_number !== '') || newWorker.phone_number.length > 13"
-                                  #message-danger
-                              >
-                                  Invalid or too long phone number
-                              </template>
-                          </vs-input>
-                    </div>
-
-                    <div class="submit__row">
-                        <vs-button
-                            :disabled=" newWorker.first_name.length === 0 ||
-                                        newWorker.first_name.length >= 30 ||
-                                        newWorker.last_name.length === 0 ||
-                                        newWorker.last_name.length >= 30 ||
-                                        newWorker.main_doctor_id === -1 ||
-                                        newWorker.date_of_birth === '' ||
-                                        (!validEmail && newWorker.email_field.length !== 0) ||
-                                        (!validNumber && newWorker.phone_number.length !== 0) ||
-                                        newWorker.password.length >= 128 ||
-                                        newWorker.phone_number.length > 13 ||
-                                        newWorker.email_field.length >= 40 ||
-                                        newWorker.works_for_company.length >= 254"
-                        >
-                            Submit
-                        </vs-button>
-                    </div>
                 </div>
-            </form>
-      </div>
+            </div>
+
+            <div class="main__content">
+                <h5>
+                    Submit
+                </h5>
+
+                <div class="submit__row">
+                    <vs-button
+                        :disabled=" newWorker.first_name.length === 0 ||
+                                    newWorker.first_name.length >= 30 ||
+                                    newWorker.last_name.length === 0 ||
+                                    newWorker.last_name.length >= 30 ||
+                                    newWorker.main_doctor_id === -1 ||
+                                    newWorker.date_of_birth === '' ||
+                                    (!validEmail && newWorker.email_field.length !== 0) ||
+                                    (!validNumber && newWorker.phone_number.length !== 0) ||
+                                    newWorker.password.length >= 128 ||
+                                    newWorker.phone_number.length > 13 ||
+                                    newWorker.email_field.length >= 40 ||
+                                    newWorker.works_for_company.length >= 254"
+                    >
+                        Submit
+                    </vs-button>
+                </div>
+            </div>
+        </form>
     </div>
 </template>
 
@@ -345,6 +377,10 @@ export default {
     .input__items {
         padding: 16px 0;
         margin-left: 6px;
+    }
+
+    .submit__row {
+      margin-top: 1em;
     }
 
     .vs-button {

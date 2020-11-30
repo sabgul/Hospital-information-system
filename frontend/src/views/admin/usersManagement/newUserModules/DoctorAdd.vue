@@ -9,10 +9,14 @@
                 Create a new doctor in the database of doctors.<br>
                 Some fields are required. Profile details can be edited later.
             </p>
+        </div>
 
-            <br>
+        <form action="#" v-on:submit.prevent="createDoctor">
+            <div class="main__content">
+                <h5>
+                    Basic information
+                </h5>
 
-            <form action="#" v-on:submit.prevent="createDoctor">
                 <div class="wrapper">
                     <div class="first__row">
                         <vs-input
@@ -58,7 +62,9 @@
                                 Name too long
                             </template>
                         </vs-input>
+                    </div>
 
+                    <div class="second__row">
                         <vs-select
                             v-model="newDoctor.gender"
                             label="Sex"
@@ -86,9 +92,55 @@
                                 Other
                             </vs-option>
                         </vs-select>
+
+                        <vs-input
+                            type="date"
+                            v-model="newDoctor.date_of_birth"
+                            label="Date of birth"
+                            class="input__items"
+                            primary
+                        >
+                            <template
+                                #message-warn
+                                v-if="newDoctor.date_of_birth === ''"
+                            >
+                                Required field
+                            </template>
+                        </vs-input>
                     </div>
 
-                    <div class="second__row">
+                    <div class="third__row">
+                        <vs-input
+                            v-model="newDoctor.phone_number"
+                            label="Phone number"
+                            placeholder="Eg +42012312313"
+                            class="input__items"
+                        >
+                            <template
+                                v-if="validNumber"
+                                #message-success
+                            >
+                                Valid phone number
+                            </template>
+
+                            <template
+                                v-if="(!validNumber && newDoctor.phone_number !== '') || newDoctor.phone_number.length > 13"
+                                #message-danger
+                            >
+                                Invalid or too long phone number
+                            </template>
+                        </vs-input>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main__content">
+                <h5>
+                    System access information
+                </h5>
+
+                <div class="wrapper">
+                    <div class="first__row">
                         <vs-input
                             v-model="newDoctor.email_field"
                             label="Email address"
@@ -117,7 +169,9 @@
                                 Required
                             </template>
                         </vs-input>
+                    </div>
 
+                    <div class="second__row">
                         <vs-input
                             v-model="newDoctor.password"
                             label="Password"
@@ -153,82 +207,60 @@
                                 Password too long
                             </template>
                         </vs-input>
-
-                        <vs-input
-                            v-model="newDoctor.specializes_in"
-                            label="Specializes in"
-                            placeholder="Type specialization"
-                            class="input__items"
-                        >
-                            <template
-                                v-if="newDoctor.specializes_in.length >= 254"
-                                #message-danger
-                            >
-                                Specialization too long
-                            </template>
-                        </vs-input>
-                    </div>
-
-                    <div class="third__row">
-                          <vs-input
-                              type="date"
-                              v-model="newDoctor.date_of_birth"
-                              label="Date of birth"
-                              class="input__items"
-                              primary
-                          >
-                              <template
-                                  #message-warn
-                                  v-if="newDoctor.date_of_birth === ''"
-                              >
-                                  Required field
-                              </template>
-                          </vs-input>
-
-                          <vs-input
-                              v-model="newDoctor.phone_number"
-                              label="Phone number"
-                              placeholder="Eg +42012312313"
-                              class="input__items"
-                          >
-                              <template
-                                  v-if="validNumber"
-                                  #message-success
-                              >
-                                  Valid phone number
-                              </template>
-
-                              <template
-                                  v-if="(!validNumber && newDoctor.phone_number !== '') || newDoctor.phone_number.length > 13"
-                                  #message-danger
-                              >
-                                  Invalid or too long phone number
-                              </template>
-                          </vs-input>
-                    </div>
-
-                    <div class="submit__row">
-                        <vs-button
-                            :disabled=" newDoctor.first_name.length === 0 ||
-                                        newDoctor.first_name.length >= 30 ||
-                                        newDoctor.last_name.length === 0 ||
-                                        newDoctor.last_name.length >= 30 ||
-                                        newDoctor.main_doctor_id === -1 ||
-                                        newDoctor.date_of_birth === '' ||
-                                        newDoctor.password.length === 0 ||
-                                        (!validEmail && newDoctor.email_field.length !== 0) ||
-                                        (!validNumber && newDoctor.phone_number.length !== 0) ||
-                                        newDoctor.password.length >= 128 ||
-                                        newDoctor.phone_number.length > 13 ||
-                                        newDoctor.email_field.length >= 40 ||
-                                        newDoctor.specializes_in.length >= 254"
-                        >
-                            Submit
-                        </vs-button>
                     </div>
                 </div>
-            </form>
-        </div>
+            </div>
+
+            <div class="main__content">
+                <h5>
+                    Doctor specific information
+                </h5>
+
+                <div class="wrapper">
+                    <div class="first__row">
+                         <vs-input
+                              v-model="newDoctor.specializes_in"
+                              label="Specializes in"
+                              placeholder="Type specialization"
+                              class="input__items"
+                         >
+                              <template
+                                  v-if="newDoctor.specializes_in.length >= 254"
+                                  #message-danger
+                              >
+                                  Specialization too long
+                              </template>
+                         </vs-input>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main__content">
+                <h5>
+                    Submit
+                </h5>
+
+                <div class="submit__row">
+                    <vs-button
+                        :disabled=" newDoctor.first_name.length === 0 ||
+                                    newDoctor.first_name.length >= 30 ||
+                                    newDoctor.last_name.length === 0 ||
+                                    newDoctor.last_name.length >= 30 ||
+                                    newDoctor.main_doctor_id === -1 ||
+                                    newDoctor.date_of_birth === '' ||
+                                    newDoctor.password.length === 0 ||
+                                    (!validEmail && newDoctor.email_field.length !== 0) ||
+                                    (!validNumber && newDoctor.phone_number.length !== 0) ||
+                                    newDoctor.password.length >= 128 ||
+                                    newDoctor.phone_number.length > 13 ||
+                                    newDoctor.email_field.length >= 40 ||
+                                    newDoctor.specializes_in.length >= 254"
+                    >
+                        Submit
+                    </vs-button>
+                </div>
+            </div>
+        </form>
     </div>
 </template>
 
@@ -350,6 +382,10 @@ export default {
     .input__items {
         padding: 16px 0;
         margin-left: 6px;
+    }
+
+    .submit__row {
+        margin-top: 1em;
     }
 
     .vs-button {
