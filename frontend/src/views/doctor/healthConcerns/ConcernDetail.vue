@@ -88,7 +88,10 @@
                   </template>
               </vs-card>
 
-              <vs-card @click="redirectToExamination(id)">
+              <vs-card
+                  @click="redirectToExamination(id)"
+                  v-if="userRole !== 'patient'"
+              >
                   <template #title>
                       <h3>Examine</h3>
                   </template>
@@ -99,7 +102,19 @@
 
                  <template #text>
                       <p>
-                          Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                          Click here to create new examination.
+                      </p>
+                  </template>
+              </vs-card>
+
+               <vs-card v-if="!examinations.length && userRole === 'patient'" style="cursor: default !important;">
+                  <template #img>
+                    <img src="../../../assets/empty.svg" alt="" style="width:200px;height:150px;">
+                  </template>
+
+                  <template #text>
+                      <p style="text-align: center; margin-top: 1em;">
+                          <b>No examinations</b>
                       </p>
                   </template>
               </vs-card>
