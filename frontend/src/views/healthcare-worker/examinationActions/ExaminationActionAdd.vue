@@ -12,6 +12,7 @@
                 Thanks to that, you will be able to track unpaid examinations of patients.
             </p>
 
+          <form action="#" v-on:submit.prevent="addNewExamination">
             <div class="wrapper">
                 <div class="first__row">
                     <vs-input
@@ -80,7 +81,6 @@
 
                 <div class="submit__row">
                      <vs-button
-                         @click="addNewExamination()"
                          :disabled="newAction.name.length === 0 ||
                                     newAction.action_manager_id === -1 ||
                                     newAction.name.length > 254"
@@ -89,6 +89,7 @@
                      </vs-button>
                 </div>
             </div>
+          </form>
         </div>
 
         <img src="@/assets/add-action.svg" alt="" class="background__img">

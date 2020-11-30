@@ -15,6 +15,7 @@
                 Filter results
             </h4>
 
+          <form action="#" v-on:submit.prevent="getFiltered">
             <div class="wrapper">
                 <div class="first__row">
                     <vs-select
@@ -56,12 +57,12 @@
 
                     <vs-button
                         style="padding: 3px 42px;"
-                        @click="getFiltered()"
                     >
                         Apply filter
                     </vs-button>
                 </div>
             </div>
+          </form>
         </div>
 
         <div

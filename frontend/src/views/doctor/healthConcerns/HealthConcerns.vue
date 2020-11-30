@@ -18,143 +18,144 @@
 
           <br>
 
-          <div class="wrapper">
-              <div class="first__row">
-                  <vs-input
-                      v-model="newConcern.name"
-                      label="Name of health concern"
-                      placeholder="Type name"
-                      class="input__items"
-                      primary
-                  >
-                      <template
-                          #message-warn
-                          v-if="newConcern.name.length === 0"
+          <form action="#" v-on:submit.prevent="addNewExamination">
+              <div class="wrapper">
+                  <div class="first__row">
+                      <vs-input
+                          v-model="newConcern.name"
+                          label="Name of health concern"
+                          placeholder="Type name"
+                          class="input__items"
+                          primary
                       >
-                          Required field
-                      </template>
+                          <template
+                              #message-warn
+                              v-if="newConcern.name.length === 0"
+                          >
+                              Required field
+                          </template>
 
-                      <template
-                          #message-danger
-                          v-if="newConcern.name.length > 254"
-                      >
-                          Too many characters
-                      </template>
-                  </vs-input>
+                          <template
+                              #message-danger
+                              v-if="newConcern.name.length > 254"
+                          >
+                              Too many characters
+                          </template>
+                      </vs-input>
 
-                  <vs-select
-                      v-model="newConcern.patient"
-                      class="input__items"
-                      label="Patient"
-                      placeholder="Choose a patient"
-                      color="primary"
-                      :key="availablePatients.length"
-                      filter
-                  >
-                      <template
-                          #message-warn
-                          v-if="newConcern.patient === -1"
+                      <vs-select
+                          v-model="newConcern.patient"
+                          class="input__items"
+                          label="Patient"
+                          placeholder="Choose a patient"
+                          color="primary"
+                          :key="availablePatients.length"
+                          filter
                       >
-                          Required field
-                      </template>
+                          <template
+                              #message-warn
+                              v-if="newConcern.patient === -1"
+                          >
+                              Required field
+                          </template>
 
-                      <vs-option
-                          v-for="(patient, id) in availablePatients"
-                          :key="id"
-                          :label="getFullName(patient.user)"
-                          :value="patient.user.id"
+                          <vs-option
+                              v-for="(patient, id) in availablePatients"
+                              :key="id"
+                              :label="getFullName(patient.user)"
+                              :value="patient.user.id"
+                          >
+                              {{ patient.user.first_name }} {{ patient.user.last_name }}
+                          </vs-option>
+                      </vs-select>
+                  </div>
+
+                  <div class="second__row">
+                      <vs-input
+                          v-model="newConcern.description"
+                          label="Description"
+                          placeholder="Type brief description"
+                          class="input__items"
                       >
-                          {{ patient.user.first_name }} {{ patient.user.last_name }}
-                      </vs-option>
-                  </vs-select>
+                          <template
+                              #message-danger
+                              v-if="newConcern.description.length > 2046"
+                          >
+                              Description too long
+                          </template>
+                      </vs-input>
+
+                      <vs-select
+                          v-if="userRole === 'admin'"
+                          v-model="newConcern.doctor"
+                          class="input__items"
+                          label="Doctor"
+                          placeholder="Choose a doctor"
+                          color="primary"
+                          :key="availableDoctors.length"
+                          filter
+                      >
+                        <template
+                            #message-warn
+                            v-if="newConcern.doctor === -1"
+                        >
+                            Required field
+                        </template>
+
+                        <vs-option
+                            v-for="(doc, id) in availableDoctors"
+                            :key="id"
+                            :label="getFullName(doc.user)"
+                            :value="doc.user.id"
+                        >
+                            {{ doc.user.first_name}} {{ doc.user.last_name }}
+                        </vs-option>
+                      </vs-select>
+                  </div>
+
+                  <div class="third__row">
+                      <vs-select
+                          class="input__items"
+                          v-model="newConcern.state"
+                          label="State of examination"
+                          color="primary"
+                      >
+                          <vs-option
+                              value="WT"
+                              label="Waiting"
+                          >
+                              Waiting for examination
+                          </vs-option>
+
+                          <vs-option
+                              value="ON"
+                              label="Ongoing"
+                          >
+                              Ongoing
+                          </vs-option>
+
+                          <vs-option
+                              value="ED"
+                              label="Ended"
+                          >
+                              Ended
+                          </vs-option>
+                      </vs-select>
+                  </div>
+
+                  <div class="submit__row">
+                      <vs-button
+                          :disabled=" newConcern.name.length === 0 ||
+                                      newConcern.name.length > 254 ||
+                                      newConcern.doctor === -1 ||
+                                      newConcern.patient === -1 ||
+                                      newConcern.description.length > 2046"
+                      >
+                          Submit
+                      </vs-button>
+                  </div>
               </div>
-
-              <div class="second__row">
-                  <vs-input
-                      v-model="newConcern.description"
-                      label="Description"
-                      placeholder="Type brief description"
-                      class="input__items"
-                  >
-                      <template
-                          #message-danger
-                          v-if="newConcern.description.length > 2046"
-                      >
-                          Description too long
-                      </template>
-                  </vs-input>
-
-                  <vs-select
-                      v-if="userRole === 'admin'"
-                      v-model="newConcern.doctor"
-                      class="input__items"
-                      label="Doctor"
-                      placeholder="Choose a doctor"
-                      color="primary"
-                      :key="availableDoctors.length"
-                      filter
-                  >
-                    <template
-                        #message-warn
-                        v-if="newConcern.doctor === -1"
-                    >
-                        Required field
-                    </template>
-
-                    <vs-option
-                        v-for="(doc, id) in availableDoctors"
-                        :key="id"
-                        :label="getFullName(doc.user)"
-                        :value="doc.user.id"
-                    >
-                        {{ doc.user.first_name}} {{ doc.user.last_name }}
-                    </vs-option>
-                  </vs-select>
-              </div>
-
-              <div class="third__row">
-                  <vs-select
-                      class="input__items"
-                      v-model="newConcern.state"
-                      label="State of examination"
-                      color="primary"
-                  >
-                      <vs-option
-                          value="WT"
-                          label="Waiting"
-                      >
-                          Waiting for examination
-                      </vs-option>
-
-                      <vs-option
-                          value="ON"
-                          label="Ongoing"
-                      >
-                          Ongoing
-                      </vs-option>
-
-                      <vs-option
-                          value="ED"
-                          label="Ended"
-                      >
-                          Ended
-                      </vs-option>
-                  </vs-select>
-              </div>
-
-              <div class="submit__row">
-                  <vs-button
-                      @click="addNewExamination()"
-                      :disabled=" newConcern.name.length === 0 ||
-                                  newConcern.name.length > 254 ||
-                                  newConcern.doctor === -1 ||
-                                  newConcern.patient === -1 ||
-                                  newConcern.description.length > 2046"
-                  >
-                      Submit
-                  </vs-button>
-              </div>
-          </div>
+          </form>
       </div>
 
       <div class="main__content">
@@ -173,6 +174,7 @@
               Filter results
           </h4>
 
+        <form action="#" v-on:submit.prevent="getFiltered">
           <div class="wrapper" style="height: 130px;">
               <div class="first__row">
                   <vs-select
@@ -232,13 +234,12 @@
                       Clear filter
                   </vs-button>
 
-                  <vs-button
-                      @click="getFiltered()"
-                  >
+                  <vs-button>
                       Apply filter
                   </vs-button>
               </div>
           </div>
+        </form>
       </div>
 
       <div class="main__content">

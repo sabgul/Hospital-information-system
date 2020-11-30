@@ -132,7 +132,7 @@
                             <template #icon>
                               <box-icon v-if="!hasVisiblePassword" name="hide"/>
                               <box-icon v-else name="show"/>
-                            </template>>
+                            </template>
 
                             <template v-if="getProgress >= 100" #message-success>
                               Secure password
