@@ -192,7 +192,7 @@
                   </vs-select>
               </div>
 
-              <div class="right__filter__row">
+              <div class="second__row">
                   <vs-select
                       v-model="filter.state_of_concern"
                       label="Examination state"
