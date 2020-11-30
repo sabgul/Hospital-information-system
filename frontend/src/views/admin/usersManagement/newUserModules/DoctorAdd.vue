@@ -123,6 +123,7 @@
                         placeholder="Type password"
                         class="input__items"
                         type="password"
+                        :progress="getProgress"
                         :visible-password="hasVisiblePassword"
                         @click-icon="hasVisiblePassword = !hasVisiblePassword"
                         icon-after
@@ -131,6 +132,10 @@
                         <template #icon>
                           <box-icon v-if="!hasVisiblePassword" name="hide"/>
                           <box-icon v-else name="show"/>
+                        </template>
+
+                        <template v-if="getProgress >= 100" #message-success>
+                          Secure password
                         </template>
 
                         <template
@@ -250,6 +255,42 @@ export default {
     }),
 
     computed: {
+        getProgress() {
+          let progress = 0
+
+          // at least one number
+
+          if (/\d/.test(this.newDoctor.password)) {
+            progress += 20
+          }
+
+          // at least one capital letter
+
+          if (/(.*[A-Z].*)/.test(this.newDoctor.password)) {
+            progress += 20
+          }
+
+          // at least one lowercase
+
+          if (/(.*[a-z].*)/.test(this.newDoctor.password)) {
+            progress += 20
+          }
+
+          // more than 5 digits
+
+          if (this.newDoctor.password.length >= 6) {
+            progress += 20
+          }
+
+          // at least one special character
+
+          if (/[^A-Za-z0-9]/.test(this.newDoctor.password)) {
+            progress += 20
+          }
+
+          return progress
+        },
+
         validEmail() {
           return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.newDoctor.email_field);
         },
