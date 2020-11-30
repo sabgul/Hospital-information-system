@@ -99,27 +99,12 @@ export const store = new Vuex.Store({
                 })
             },
             logoutUser(context) {
-                if (context.getters.isAuthenticated) {
-                    return new Promise((resolve,) => {  // removed second param 'reject'
-                        axios_instance.post('/token/logout/')
-                            .then(() => {
-                                localStorage.removeItem('access_token');
-                                localStorage.removeItem('refresh_token');
-                                context.commit('SET_ACCESS_TOKEN', null);
-                                context.commit('SET_REFRESH_TOKEN', null);
-                                this.window.sessionStorage.clear();
-                            })
-                            .catch(err => {
-                                localStorage.removeItem('access_token');
-                                localStorage.removeItem('refresh_token');
-                                context.commit('SET_ACCESS_TOKEN', null);
-                                context.commit('SET_REFRESH_TOKEN', null);
-                                resolve(err);
-                                this.window.sessionStorage.clear();
-                            })
-                    });
-
-                }
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                context.commit('SET_ACCESS_TOKEN', null);
+                context.commit('SET_REFRESH_TOKEN', null);
+                if (this.window && this.window.sessionStorage)
+                    this.window.sessionStorage.clear();
             },
 
             refreshToken() {
@@ -134,7 +119,6 @@ export const store = new Vuex.Store({
                                 resolve(response.data.access)
                             })
                             .catch(err => {
-                                console.log('failed refresh', err)
                                 reject(err)
                             })
                     }

@@ -15,11 +15,8 @@ axios_instance.interceptors.response.use((response) => { return response; }, (er
     }
 
     // Logout user if token refresh didn't work
-    if (error.config.url === '/token/refresh') {
-        console.log('logging user out')
+    if (error.config.url === '/token/refresh/') {
         return store.dispatch('logoutUser')
-
-        // return Promise.reject(error);
     }
 
     return store.dispatch('refreshToken')

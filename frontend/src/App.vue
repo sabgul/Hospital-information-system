@@ -406,6 +406,10 @@ export default {
               this.$router.push('/');
               this.window.sessionStorage.clear();
             })
+            .catch(() => {
+              this.$router.push('/');
+              this.window.sessionStorage.clear();
+            })
       },
   }
 }
@@ -442,7 +446,7 @@ box-icon {
 }
 
 .expand__sidebar {
-  position: sticky;
+  position: fixed;
   margin-left: 1.3em;
 }
 
