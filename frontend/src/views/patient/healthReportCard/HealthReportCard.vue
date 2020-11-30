@@ -184,6 +184,7 @@ export default {
         },
 
         redirectToConcernDetail(concernId) {
+          console.log(concernId)
            this.$router.push({ name: 'healthConcernDetail', params: {id: concernId }});
         },
 

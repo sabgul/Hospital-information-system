@@ -8,7 +8,7 @@
 
         <br>
 
-        <div v-if="userRole === 'admin' || user.id === doctor.user.id">
+        <div v-if="userRole === 'admin' || (userRole === 'doctor' && user.id === doctor.user.id)">
             <h5><b>Assigned patients:</b></h5>
 
             <patients-table :patients="assignedPatients"/>

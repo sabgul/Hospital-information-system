@@ -150,3 +150,7 @@ select {
     position: absolute;
     top: 9px;
 }
+
+.vs-sidebar__item.hasIcon {
+    cursor: default !important;
+}

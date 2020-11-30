@@ -57,6 +57,7 @@ const router = new Router({
             meta: {
                 requiresAuth: true,
                 allowsDoctor: true,
+                allowsPatient: true,
             }
         },
         {
