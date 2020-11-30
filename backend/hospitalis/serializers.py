@@ -107,7 +107,7 @@ class DoctorSerializer(ModelSerializer):
 class PatientRegSerializer(ModelSerializer):
     class Meta:
         model = Patient
-        fields = ['main_doctor', 'user']
+        fields = '__all__'
 
 
 class PatientSerializer(ModelSerializer):

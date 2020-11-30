@@ -100,6 +100,18 @@ class Patient(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     main_doctor = models.ForeignKey(Doctor, on_delete=models.DO_NOTHING)
 
+    # ec stands for Emergency Contact
+    ec_first_name = models.CharField(max_length=30, blank=True)
+    ec_last_name = models.CharField(max_length=30, blank=True)
+    ec_relationship = models.CharField(max_length=30, blank=True)
+    ec_contact_number = models.CharField(max_length=13, default='', blank=True)
+
+    weight = models.IntegerField(default=0, blank=True)
+    height = models.IntegerField(default=0, blank=True)
+
+    taking_medications = models.BooleanField(default=False)
+    medications = models.CharField(max_length=2046, blank=True)
+
     # class Meta:
     #     ordering = ['name']
 

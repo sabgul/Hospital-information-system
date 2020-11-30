@@ -17,6 +17,52 @@
 
         <br>
 
+        <h5>
+          <b>Height:</b> {{ patient.height }} cm
+        </h5>
+
+        <h5>
+          <b>Weight:</b> {{ patient.weight }} kg
+        </h5>
+
+        <br>
+
+        <h5 v-if="patient.taking_medications">
+            <b>Medications:</b> {{ patient.medications }}
+        </h5>
+
+        <h5 v-else>
+            <b>No medications taken</b>
+        </h5>
+
+        <br>
+
+        <div>
+            <h5>
+                <b>Emergency contact person:</b>
+
+                <br>
+
+                <span v-if="patient.ec_first_name.length || patient.ec_last_name">
+                    Name: {{ patient.ec_first_name }} {{patient.ec_last_name }}
+                </span>
+
+                <br>
+
+                <span v-if="patient.ec_relationship.length">
+                    Relation: {{ patient.ec_relationship }}
+                </span>
+
+                <br>
+
+                <span v-if="patient.ec_contact_number.length">
+                    Contact number: <b>{{ patient.ec_contact_number }}</b>
+                </span>
+            </h5>
+        </div>
+
+        <br>
+
         <h5><b>Patient's health concerns:</b></h5>
 
         <vs-table
