@@ -19,8 +19,7 @@
         >
 
           <template #icon>
-            @
-            <!--            <box-icon name='user'></box-icon>-->
+           <box-icon name="user"></box-icon>
           </template>
         </vs-input>
 
@@ -33,19 +32,8 @@
             @click-icon="hasVisiblePassword = !hasVisiblePassword">
           >
           <template #icon>
-            <i
-                v-if="!hasVisiblePassword"
-                class="material-icons"
-            >
-              search
-            </i>
-
-            <i
-                v-else
-                class="material-icons"
-            >
-              remove_red_eye
-            </i>
+            <box-icon v-if="!hasVisiblePassword" name="hide"></box-icon>
+            <box-icon v-else name="show"></box-icon>
           </template>
         </vs-input>
       </div>

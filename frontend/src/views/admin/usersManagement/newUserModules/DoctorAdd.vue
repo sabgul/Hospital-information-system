@@ -123,8 +123,16 @@
                         placeholder="Type password"
                         class="input__items"
                         type="password"
+                        :visible-password="hasVisiblePassword"
+                        @click-icon="hasVisiblePassword = !hasVisiblePassword"
+                        icon-after
                         primary
                     >
+                        <template #icon>
+                          <box-icon v-if="!hasVisiblePassword" name="hide"></box-icon>
+                          <box-icon v-else name="show"></box-icon>
+                        </template>
+
                         <template
                             v-if="newDoctor.password.length === 0"
                             #message-warn
@@ -228,6 +236,7 @@ export default {
     name: "DoctorAdd",
 
     data:() => ({
+        hasVisiblePassword: false,
         newDoctor: {
             'first_name': '',
             'last_name': '',
@@ -279,6 +288,7 @@ export default {
         },
 
         clearFields() {
+
             this.newDoctor = {
                 'first_name': '',
                 'last_name': '',
