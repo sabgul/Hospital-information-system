@@ -130,7 +130,7 @@
                 v-model="markConcernEnded"
                 class="ticket__checkbox"
             >
-                Mark concern as ended
+                Mark health problem as resolved
             </vs-checkbox>
 
             <vs-button
@@ -265,6 +265,7 @@ export default {
             ExaminationActionsService.get(this.actionToAdd)
             .then(response => {
                 this.chosenActions.push({ actionData: response.data, cover: true });
+                this.activeActionAdd = false;
             })
             .catch(e => {
                 NotificationsUtils.failPopup(e, this.$vs);

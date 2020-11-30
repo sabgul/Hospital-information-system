@@ -372,7 +372,7 @@
               <option
                   v-for="doctor in availableWithoutCurrent"
                   :key="doctor.user.id"
-                  :label="doctor.user.first_name"
+                  :label="getFullName(doctor.user)"
                   :value="doctor.user.id"
               >
                   {{ doctor.user.first_name }} {{ doctor.user.last_name }}
@@ -584,6 +584,7 @@ export default {
                         this.clearFields();
                     })
                 }
+                this.activeAssign = false;
             })
             .catch(e => {
                 NotificationsUtils.failPopup(e, this.$vs);

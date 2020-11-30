@@ -135,7 +135,8 @@ export default {
                     TransactionRequestsService.getAll()
                       .then(response => {
                           this.requests = response.data;
-                      })
+                      });
+                    this.confirmationWindowActive = false;
                 })
                 .catch(e => {
                     NotificationsUtils.failPopup(e, this.$vs);
