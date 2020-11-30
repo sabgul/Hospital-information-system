@@ -425,6 +425,7 @@ html, body {
   background-color: #fafafa !important;
 }
 
+
 .hidden {
     position: fixed;
 }
