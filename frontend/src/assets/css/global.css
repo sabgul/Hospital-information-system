@@ -32,6 +32,21 @@ h1 {
 .wrapper {
     display: flex;
     padding-top: 2em;
+    flex-wrap: wrap;
+}
+
+@media only screen and (max-width: 700px) {
+  .wrapper {
+    flex-direction: column;
+  }
+
+    .first__row, .second__row, .third__row, .filter__submit {
+        padding-left: 0 !important;
+
+        display: block;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
 }
 
 .first__row {
