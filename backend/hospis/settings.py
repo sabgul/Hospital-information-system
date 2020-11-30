@@ -154,7 +154,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  # todo debugging only
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(seconds=10),  # todo debugging only
+    'REFRESH_TOKEN_LIFETIME': timedelta(seconds=20),
     'ROTATE_REFRESH_TOKENS': True,
 }
