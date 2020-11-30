@@ -184,7 +184,7 @@
                       <vs-option
                           v-for="patient in availablePatients"
                           :key="patient.user.id"
-                          :label="patient.user.first_name"
+                          :label="getFullName(patient.user)"
                           :value="patient.user.id"
                       >
                           {{ patient.user.first_name }} {{ patient.user.last_name }}
@@ -375,7 +375,7 @@
                   :label="doctor.user.first_name"
                   :value="doctor.user.id"
               >
-                  {{ doctor.user.first_name }}
+                  {{ doctor.user.first_name }} {{ doctor.user.last_name }}
               </option>
           </select>
 
