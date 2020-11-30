@@ -126,8 +126,8 @@
                     primary
                 >
                     <template #icon>
-                       <box-icon v-if="!hasVisiblePassword" name="hide"></box-icon>
-                       <box-icon v-else name="show"></box-icon>
+                       <box-icon v-if="!hasVisiblePassword" name="hide" />
+                       <box-icon v-else name="show" />
                     </template>
 
                     <template
@@ -345,5 +345,9 @@ export default {
     .vs-button {
         float: right;
         padding: 5px 30px;
+    }
+
+    box-icon {
+        fill: #000;
     }
 </style>

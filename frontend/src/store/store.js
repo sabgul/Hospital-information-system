@@ -81,6 +81,7 @@ export const store = new Vuex.Store({
                         })
                 })
             },
+
             registerUser(context, data) {  // not used yet
                 return new Promise((resolve, reject) => {
                     axios_instance.post('/users/', {
@@ -98,6 +99,7 @@ export const store = new Vuex.Store({
                         })
                 })
             },
+
             logoutUser(context) {
                 localStorage.removeItem('access_token');
                 localStorage.removeItem('refresh_token');

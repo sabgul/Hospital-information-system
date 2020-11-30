@@ -57,14 +57,15 @@ h1 {
 
 .second__row {
     padding-left: 2em;
-    flex-grow: 1;
+    padding-right: 2em;
+    flex-grow: 0;
     margin-top: auto;
     margin-bottom: 1em;
 }
 
 .third__row {
     padding-left: 0;
-    flex-grow: 5;
+    flex-grow: 2;
     margin-top: auto;
     margin-bottom: 1em;
 }
