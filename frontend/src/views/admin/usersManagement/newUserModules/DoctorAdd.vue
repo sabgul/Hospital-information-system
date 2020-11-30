@@ -12,221 +12,222 @@
 
             <br>
 
-            <div class="wrapper">
-                <div class="first__row">
-                    <vs-input
-                        v-model="newDoctor.first_name"
-                        label="First name of doctor"
-                        placeholder="Type first name of new doctor"
-                        class="input__items"
-                        primary
-                    >
-                        <template
-                            #message-warn
-                            v-if="newDoctor.first_name.length === 0"
+            <form action="#" v-on:submit.prevent="createDoctor">
+                <div class="wrapper">
+                    <div class="first__row">
+                        <vs-input
+                            v-model="newDoctor.first_name"
+                            label="First name of doctor"
+                            placeholder="Type first name of new doctor"
+                            class="input__items"
+                            primary
                         >
-                            Required
-                        </template>
+                            <template
+                                #message-warn
+                                v-if="newDoctor.first_name.length === 0"
+                            >
+                                Required
+                            </template>
 
-                        <template
-                            #message-danger
-                            v-if="newDoctor.first_name.length >= 30"
+                            <template
+                                #message-danger
+                                v-if="newDoctor.first_name.length >= 30"
+                            >
+                                Name too long
+                            </template>
+                        </vs-input>
+
+                        <vs-input
+                            v-model="newDoctor.last_name"
+                            label="Last name of doctor"
+                            placeholder="Type last name of new doctor"
+                            class="input__items"
+                            primary
                         >
-                            Name too long
-                        </template>
-                    </vs-input>
+                            <template
+                                #message-warn
+                                v-if="newDoctor.last_name.length === 0"
+                            >
+                                Required
+                            </template>
 
-                    <vs-input
-                        v-model="newDoctor.last_name"
-                        label="Last name of doctor"
-                        placeholder="Type last name of new doctor"
-                        class="input__items"
-                        primary
-                    >
-                        <template
-                            #message-warn
-                            v-if="newDoctor.last_name.length === 0"
+                            <template
+                                #message-danger
+                                v-if="newDoctor.last_name.length >= 30"
+                            >
+                                Name too long
+                            </template>
+                        </vs-input>
+
+                        <vs-select
+                            v-model="newDoctor.gender"
+                            label="Sex"
+                            color="primary"
+                            class="input__items"
                         >
-                            Required
-                        </template>
+                            <vs-option
+                                value="M"
+                                label="Male"
+                            >
+                                Male
+                            </vs-option>
 
-                        <template
-                            #message-danger
-                            v-if="newDoctor.last_name.length >= 30"
+                            <vs-option
+                                value="F"
+                                label="Female"
+                            >
+                               Female
+                            </vs-option>
+
+                            <vs-option
+                                value="O"
+                                label="Other"
+                            >
+                                Other
+                            </vs-option>
+                        </vs-select>
+                    </div>
+
+                    <div class="second__row">
+                        <vs-input
+                            v-model="newDoctor.email_field"
+                            label="Email address"
+                            placeholder="Type email"
+                            class="input__items"
+                            primary
                         >
-                            Name too long
-                        </template>
-                    </vs-input>
+                            <template
+                                v-if="validEmail && newDoctor.email_field.length < 40"
+                                #message-success
+                            >
+                                Valid email
+                            </template>
 
-                    <vs-select
-                        v-model="newDoctor.gender"
-                        label="Sex"
-                        color="primary"
-                        class="input__items"
-                    >
-                        <vs-option
-                            value="M"
-                            label="Male"
+                            <template
+                                v-if="(!validEmail && newDoctor.email_field !== '') || newDoctor.email_field.length >= 40"
+                                #message-danger
+                            >
+                                Invalid or too long email
+                            </template>
+
+                            <template
+                                #message-warn
+                                v-if="newDoctor.email_field.length === 0"
+                            >
+                                Required
+                            </template>
+                        </vs-input>
+
+                        <vs-input
+                            v-model="newDoctor.password"
+                            label="Password"
+                            placeholder="Type password"
+                            class="input__items"
+                            type="password"
+                            :progress="getProgress"
+                            :visible-password="hasVisiblePassword"
+                            @click-icon="hasVisiblePassword = !hasVisiblePassword"
+                            icon-after
+                            primary
                         >
-                            Male
-                        </vs-option>
+                            <template #icon>
+                              <box-icon v-if="!hasVisiblePassword" name="hide"/>
+                              <box-icon v-else name="show"/>
+                            </template>
 
-                        <vs-option
-                            value="F"
-                            label="Female"
+                            <template v-if="getProgress >= 100" #message-success>
+                              Secure password
+                            </template>
+
+                            <template
+                                v-if="newDoctor.password.length === 0"
+                                #message-warn
+                            >
+                                Required
+                            </template>
+
+                            <template
+                                v-if="newDoctor.password.length >= 128"
+                                #message-danger
+                            >
+                                Password too long
+                            </template>
+                        </vs-input>
+
+                        <vs-input
+                            v-model="newDoctor.specializes_in"
+                            label="Specializes in"
+                            placeholder="Type specialization"
+                            class="input__items"
                         >
-                           Female
-                        </vs-option>
+                            <template
+                                v-if="newDoctor.specializes_in.length >= 254"
+                                #message-danger
+                            >
+                                Specialization too long
+                            </template>
+                        </vs-input>
+                    </div>
 
-                        <vs-option
-                            value="O"
-                            label="Other"
-                        >
-                            Other
-                        </vs-option>
-                    </vs-select>
-                </div>
-
-                <div class="second__row">
-                    <vs-input
-                        v-model="newDoctor.email_field"
-                        label="Email address"
-                        placeholder="Type email"
-                        class="input__items"
-                        primary
-                    >
-                        <template
-                            v-if="validEmail && newDoctor.email_field.length < 40"
-                            #message-success
-                        >
-                            Valid email
-                        </template>
-
-                        <template
-                            v-if="(!validEmail && newDoctor.email_field !== '') || newDoctor.email_field.length >= 40"
-                            #message-danger
-                        >
-                            Invalid or too long email
-                        </template>
-
-                        <template
-                            #message-warn
-                            v-if="newDoctor.email_field.length === 0"
-                        >
-                            Required
-                        </template>
-                    </vs-input>
-
-                    <vs-input
-                        v-model="newDoctor.password"
-                        label="Password"
-                        placeholder="Type password"
-                        class="input__items"
-                        type="password"
-                        :progress="getProgress"
-                        :visible-password="hasVisiblePassword"
-                        @click-icon="hasVisiblePassword = !hasVisiblePassword"
-                        icon-after
-                        primary
-                    >
-                        <template #icon>
-                          <box-icon v-if="!hasVisiblePassword" name="hide"/>
-                          <box-icon v-else name="show"/>
-                        </template>
-
-                        <template v-if="getProgress >= 100" #message-success>
-                          Secure password
-                        </template>
-
-                        <template
-                            v-if="newDoctor.password.length === 0"
-                            #message-warn
-                        >
-                            Required
-                        </template>
-
-                        <template
-                            v-if="newDoctor.password.length >= 128"
-                            #message-danger
-                        >
-                            Password too long
-                        </template>
-                    </vs-input>
-
-                    <vs-input
-                        v-model="newDoctor.specializes_in"
-                        label="Specializes in"
-                        placeholder="Type specialization"
-                        class="input__items"
-                    >
-                        <template
-                            v-if="newDoctor.specializes_in.length >= 254"
-                            #message-danger
-                        >
-                            Specialization too long
-                        </template>
-                    </vs-input>
-                </div>
-
-                <div class="third__row">
-                      <vs-input
-                          type="date"
-                          v-model="newDoctor.date_of_birth"
-                          label="Date of birth"
-                          class="input__items"
-                          primary
-                      >
-                          <template
-                              #message-warn
-                              v-if="newDoctor.date_of_birth === ''"
+                    <div class="third__row">
+                          <vs-input
+                              type="date"
+                              v-model="newDoctor.date_of_birth"
+                              label="Date of birth"
+                              class="input__items"
+                              primary
                           >
-                              Required field
-                          </template>
-                      </vs-input>
+                              <template
+                                  #message-warn
+                                  v-if="newDoctor.date_of_birth === ''"
+                              >
+                                  Required field
+                              </template>
+                          </vs-input>
 
-                      <vs-input
-                          v-model="newDoctor.phone_number"
-                          label="Phone number"
-                          placeholder="Eg +42012312313"
-                          class="input__items"
-                      >
-                          <template
-                              v-if="validNumber"
-                              #message-success
+                          <vs-input
+                              v-model="newDoctor.phone_number"
+                              label="Phone number"
+                              placeholder="Eg +42012312313"
+                              class="input__items"
                           >
-                              Valid phone number
-                          </template>
+                              <template
+                                  v-if="validNumber"
+                                  #message-success
+                              >
+                                  Valid phone number
+                              </template>
 
-                          <template
-                              v-if="(!validNumber && newDoctor.phone_number !== '') || newDoctor.phone_number.length > 13"
-                              #message-danger
-                          >
-                              Invalid or too long phone number
-                          </template>
-                      </vs-input>
-                </div>
+                              <template
+                                  v-if="(!validNumber && newDoctor.phone_number !== '') || newDoctor.phone_number.length > 13"
+                                  #message-danger
+                              >
+                                  Invalid or too long phone number
+                              </template>
+                          </vs-input>
+                    </div>
 
-                <div class="submit__row">
-                    <vs-button
-                        @click="createDoctor()"
-                        :disabled=" newDoctor.first_name.length === 0 ||
-                                    newDoctor.first_name.length >= 30 ||
-                                    newDoctor.last_name.length === 0 ||
-                                    newDoctor.last_name.length >= 30 ||
-                                    newDoctor.main_doctor_id === -1 ||
-                                    newDoctor.date_of_birth === '' ||
-                                    newDoctor.password.length === 0 ||
-                                    (!validEmail && newDoctor.email_field.length !== 0) ||
-                                    (!validNumber && newDoctor.phone_number.length !== 0) ||
-                                    newDoctor.password.length >= 128 ||
-                                    newDoctor.phone_number.length > 13 ||
-                                    newDoctor.email_field.length >= 40 ||
-                                    newDoctor.specializes_in.length >= 254"
-                    >
-                        Submit
-                    </vs-button>
+                    <div class="submit__row">
+                        <vs-button
+                            :disabled=" newDoctor.first_name.length === 0 ||
+                                        newDoctor.first_name.length >= 30 ||
+                                        newDoctor.last_name.length === 0 ||
+                                        newDoctor.last_name.length >= 30 ||
+                                        newDoctor.main_doctor_id === -1 ||
+                                        newDoctor.date_of_birth === '' ||
+                                        newDoctor.password.length === 0 ||
+                                        (!validEmail && newDoctor.email_field.length !== 0) ||
+                                        (!validNumber && newDoctor.phone_number.length !== 0) ||
+                                        newDoctor.password.length >= 128 ||
+                                        newDoctor.phone_number.length > 13 ||
+                                        newDoctor.email_field.length >= 40 ||
+                                        newDoctor.specializes_in.length >= 254"
+                        >
+                            Submit
+                        </vs-button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </template>
