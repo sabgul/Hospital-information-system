@@ -170,9 +170,9 @@
       </div>
 
       <div class="main__content">
-          <h4>
+          <h5>
               Filter results
-          </h4>
+          </h5>
 
         <form action="#" v-on:submit.prevent="getFiltered">
           <div class="wrapper" style="height: 130px;">
@@ -243,6 +243,12 @@
       </div>
 
       <div class="main__content">
+          <h5>
+              Concerns overview result
+          </h5>
+
+          <br>
+
           <vs-table
               striped
               class="actions__table"

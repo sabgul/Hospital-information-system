@@ -243,9 +243,9 @@
                   </template>
 
                   <template #img>
-                      <img v-if="(userRole === 'doctor') && (userRole.gender === 'F')" src="./assets/female_doctor_avtr.png" alt="" width="200" height="200">
-                      <img v-else-if="(userRole === 'doctor') && (userRole.gender !== 'F') " src="./assets/male_doctor_avtr.png" alt="" width="200" height="200">
-                      <img v-else-if="(userRole !== 'doctor') && (userRole.gender === 'F')" src="./assets/female_user1_sans_kruh.png" alt="" width="200" height="200">
+                      <img v-if="(userRole === 'doctor') && (user.gender === 'F')" src="./assets/female_doctor_avtr.png" alt="" width="200" height="200">
+                      <img v-else-if="(userRole === 'doctor') && (user.gender !== 'F') " src="./assets/male_doctor_avtr.png" alt="" width="200" height="200">
+                      <img v-else-if="(userRole !== 'doctor') && (user.gender === 'F')" src="./assets/female_user1_sans_kruh.png" alt="" width="200" height="200">
                       <img v-else src="./assets/male_usr_sans_kruh.png" alt="" width="200" height="200">
                   </template>
 
@@ -423,7 +423,7 @@ box-icon {
   fill: #195bff;
 }
 
-.content {
+.`content {
   max-height: 100vh;
   background-color: #fafafa !important;
 }

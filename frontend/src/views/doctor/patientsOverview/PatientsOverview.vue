@@ -13,6 +13,12 @@
         </div>
 
         <div class="main__content">
+            <h5>
+                Patients overview
+            </h5>
+
+            <br>
+
             <patients-table :patients="patients"/>
         </div>
     </div>

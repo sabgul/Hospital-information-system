@@ -12,9 +12,9 @@
         </div>
 
         <div class="main__content">
-            <h4>
+            <h5>
                 Filter results
-            </h4>
+            </h5>
 
           <form action="#" v-on:submit.prevent="getFiltered">
             <div class="wrapper">
@@ -78,6 +78,12 @@
         </div>
 
         <div class="main__content">
+            <h5>
+                Results
+            </h5>
+
+            <br>
+
             <vs-table
                 striped
                 class="actions__table"
