@@ -168,7 +168,6 @@ export default {
         name: this.name,
         email: this.email,
         password: this.password,
-        // confirm: this.confirm  // manually verify matching passwords?
       })
     },
 

@@ -12,20 +12,6 @@
         <vs-tooltip right>
           <vs-sidebar-item>
               <template #icon>
-                <box-icon name='home' ></box-icon>
-              </template>
-
-              <router-link to="/">Home</router-link>
-          </vs-sidebar-item>
-
-          <template #tooltip>
-            Home
-          </template>
-        </vs-tooltip>
-
-        <vs-tooltip right>
-          <vs-sidebar-item>
-              <template #icon>
                 <box-icon name='user' ></box-icon>
               </template>
 

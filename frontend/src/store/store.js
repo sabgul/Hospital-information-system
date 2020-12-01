@@ -71,7 +71,7 @@ export const store = new Vuex.Store({
                                 .then(response => {
                                     context.commit('SET_USER', response.data)
                                 })
-                            // todo handle errors
+                            // errors handled in loginDialog
 
                             resolve()
                         })
