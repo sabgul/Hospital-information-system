@@ -18,7 +18,6 @@ from os.path import join as pathjoin
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -57,12 +56,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# local_settings.py
-# CORS_ORIGIN_WHITELIST = [
-#     'https://localhost:8080',
-#     'https://localhost:8000',
-# ]
-
 # allow all requests containing any of the default headers(as in django docs) or content-type header
 CORS_ALLOW_HEADERS = default_headers + (
     'contenttype',
@@ -90,16 +83,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hospis.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {
-            'read_default_file': '/etc/mysql/my.cnf',
-        },
+        'NAME': 'heroku_4f5f8f8240f3c61',
+        'USER': 'bf26e9b8afd619',
+        'PASSWORD': 'a27ffea2',
+        'HOST': 'mysql://bf26e9b8afd619:a27ffea2@eu-cdbr-west-03.cleardb.net/heroku_4f5f8f8240f3c61?reconnect=true',
+        # 'PORT': '',
     }
 }
 
