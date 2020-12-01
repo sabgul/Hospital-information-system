@@ -1,20 +1,7 @@
-## local:
+#!/usr/bin/bash
 
-# prep
-
-# todo system packages
-sudo apt install mysql-server
-
-# todo db setup
-
-# db start
-sudo service mysql start
-
-sudo mysql -u root -p
-
-# db creation
-CREATE DATABASE IF NOT EXISTS hospitalis;
-QUIT;
+# Run script
+# # # Prerequisite: Empty table hospitalis is on your local mysql server -> read Documentary for more information.
 
 # Frontend setup and run -> installs npm and all dependencies that are needed for the project.
 cd frontend
