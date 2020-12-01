@@ -28,7 +28,7 @@ SECRET_KEY = '_&%ym+jb*y0%=88p0o$h33rtwfx*ki(tg))-r69=_1^phj=qd5'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True  # todo remove on deploy
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://iis-hospitalis.herokuapp.com/']
 
 # Application definition
 
