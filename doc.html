@@ -31,36 +31,45 @@
 		popis cinnosti
 	</dd>
 	<dt>URL aplikace</dt>
-	<dd><a href="http://www.stud.fit.vutbr.cz/~xautor01/IIS">http://www.stud.fit.vutbr.cz/~xautor01/IIS</a></dd>
-	<dd>(pokud má aplikace více vstupních stránek, napište obdobne další URL)</dd>
+	<dd><a href="https://hospitalis.herokuapp.com/">https://hospitalis.herokuapp.com/</a></dd>
 </dl>
 
 <h2>Premade users for testing</h2>
 <p>Uveďte prosím existující zástupce <strong>všech rolí uživatelu</strong>.</p>
 <table>
 <tbody><tr><th>Login</th><th>Password</th><th>Role</th></tr>
-<tr><td>admin</td><td>admin</td><td>Administrator</td></tr>
-<tr><td>doctor</td><td>prodavac</td><td>Doctor</td></tr>
-<tr><td>patient</td><td>franta</td><td>Patient</td></tr>
-<tr><td>insurance worker</td><td>franta</td><td>Insurance worker</td></tr>
+<tr><td>admin@fit.vutbr.cz</td><td>prestiz++</td><td>Administrator</td></tr>
+<tr><td>doctor@fit.vutbr.cz</td><td>doctor++</td><td>Doctor</td></tr>
+<tr><td>patient@fit.vutbr.cz</td><td>patient++</td><td>Patient</td></tr>
+<tr><td>insurance@fit.vutbr.cz</td><td>insurance++</td><td>Insurance worker</td></tr>
 </tbody></table>
 
-<p>(Diagram prípadù užití není nutné vkládat, pokud IS implementuje role a prípady užití definované zadáním.)</p>
 <h2>Implementation</h2>
 <ul>
-	<li><h4>Frontend</h4></li>
-	<li><h4>Backend</h4></li>
-	<li><h4>Database system</h4></li>
+	<li><h3>Frontend</h3></li>
+	<p>
+		The creation of fronted was based on initially created wireframes, laying the guidelines for successful implementation of user friendly information system.<br>
+		The main goal of the design was to create simple and easy to navigate system. It was necessary to let user to focus on actual purpose of the system, instead of getting lost in the interface while looking for desired functionalities.<br>
+		<img src="doc_images/wireframe_2.jpg" alt="Wireframe 1" width="600">
+		<img src="doc_images/wireframe_1.jpg" alt="Wireframe 2" width="600">
+	</p>
+	<p>
+		The implementation of frontend was done    is a progressive framework for building user interfaces. A supporting library Vuesax.
+	</p>
+	<li><h3>Backend</h3></li>
+	<li><h3>Database system</h3></li>
+	<p>
+		Design of implemented relational database: <br><br>
+		<img src="doc_images/hospisdb.png" alt="Hospitalis database" width="2000">
+	</p>
 </ul>
 <p>Stručná dokumentace k implementaci, která popisuje, které části projektu (např. PHP skripty) implementují jednotlivé případy použití.</p>
 
-<h3>Database</h3>
 
-Design of implemented relational database:
 
 <h2>Installation</h2>
 
-Stručnr popište:
+Stručne popište:
 <ul>
 <li>postup instalace na server,</li>
 <li>softwarové požadavky (verze PHP apod.),</li>
