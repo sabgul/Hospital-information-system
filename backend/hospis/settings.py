@@ -89,8 +89,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
-            'read_default_file': pathjoin(BASE_DIR, 'mysql_config_local.cnf'),  # LOCAL database
-            # 'read_default_file': pathjoin(BASE_DIR, 'mysql_config_heroku.cnf'),  # Heroku hosted database
+            # 'read_default_file': pathjoin(BASE_DIR, 'mysql_config_local.cnf'),  # LOCAL database
+            'read_default_file': pathjoin(BASE_DIR, 'mysql_config_heroku.cnf'),  # Heroku hosted database
         },
     }
 }
