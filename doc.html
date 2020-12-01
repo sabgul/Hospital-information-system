@@ -1,84 +1,99 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!-- saved from url=(0070)https://www.fit.vutbr.cz/study/courses/IIS/private/projekt/doc.html.cs -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    
-    <title>Project IIS</title>
-    <style type="text/css">
-    	table { border-collapse: collapse; }
-    	td, th { border: 1px solid black; padding: 0.3em 0.5em; text-align: left; }
-    	dt { font-weight: bold; margin-top: 0.5em; }
-    </style>
-</head>
-<body data-new-gr-c-s-check-loaded="14.984.0" data-gr-ext-installed="">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-<!-- Zkontrolujte prosím nastavení kódování v hlavièce dokumentu 
-     podle pouŸitého editoru -->
+		<title>Project IIS</title>
 
-<h1>Hospital: electronic health report card</h1> <!-- Nahradte názvem svého zadání -->
+		<style type="text/css">
+			table { border-collapse: collapse; }
+			td, th { border: 1px solid black; padding: 0.3em 0.5em; text-align: left; }
+			dt { font-weight: bold; margin-top: 0.5em; }
+		</style>
+	</head>
 
-<dl>
-	<dt>Authors</dt>
-	<dd>Tibor Kubík <!-- Nahraïte skuteèným jménem a e-mailem autora a popisem èinnosti -->
-	    <a href="mailto:xkubik34@stud.fit.vutbr.cz">xkubik34@stud.fit.vutbr.cz</a> -
-		popis činnosti
-	</dd>
-	<dd>Petr Mičulek <!-- Nahraïte skuteèným jménem a e-mailem autora a popisem èinnosti -->
-	    <a href="mailto:xmicul08@stud.fit.vutbr.cz">xmicul08@stud.fit.vutbr.cz</a> -
-		popis činnosti
-	</dd>
-  <dd>Sabína Gulčíková <!-- Nahraïte skuteèným jménem a e-mailem autora a popisem èinnosti -->
-	    <a href="mailto:xgulci00@stud.fit.vutbr.cz">xgulci00@stud.fit.vutbr.cz</a> -
-		popis cinnosti
-	</dd>
-	<dt>URL aplikace</dt>
-	<dd><a href="https://hospitalis.herokuapp.com/">https://hospitalis.herokuapp.com/</a></dd>
-</dl>
+	<body data-new-gr-c-s-check-loaded="14.984.0" data-gr-ext-installed="">
 
-<h2>Premade users for testing</h2>
-<p>Uveďte prosím existující zástupce <strong>všech rolí uživatelu</strong>.</p>
-<table>
-<tbody><tr><th>Login</th><th>Password</th><th>Role</th></tr>
-<tr><td>admin@fit.vutbr.cz</td><td>prestiz++</td><td>Administrator</td></tr>
-<tr><td>doctor@fit.vutbr.cz</td><td>doctor++</td><td>Doctor</td></tr>
-<tr><td>patient@fit.vutbr.cz</td><td>patient++</td><td>Patient</td></tr>
-<tr><td>insurance@fit.vutbr.cz</td><td>insurance++</td><td>Insurance worker</td></tr>
-</tbody></table>
+		<h1>Hospital: electronic health report card</h1>
 
-<h2>Implementation</h2>
-<ul>
-	<li><h3>Frontend</h3></li>
-	<p>
-		The creation of fronted was based on initially created wireframes, laying the guidelines for successful implementation of user friendly information system.<br>
-		The main goal of the design was to create simple and easy to navigate system. It was necessary to let user to focus on actual purpose of the system, instead of getting lost in the interface while looking for desired functionalities.<br>
-		<img src="doc_assets/wireframe_2.jpg" alt="Wireframe 1" width="600">
-		<img src="doc_assets/wireframe_1.jpg" alt="Wireframe 2" width="600">
-	</p>
-	<p>
-		The implementation of frontend was done    is a progressive framework for building user interfaces. A supporting library Vuesax.
-	</p>
-	<li><h3>Backend</h3></li>
-	<li><h3>Database system</h3></li>
-	<p>
-		Design of implemented relational database: <br><br>
-		<img src="doc_images/hospisdb.png" alt="Hospitalis database" width="2000">
-	</p>
-</ul>
-<p>Stručná dokumentace k implementaci, která popisuje, které části projektu (např. PHP skripty) implementují jednotlivé případy použití.</p>
+		<dl>
+			<dt>Authors</dt>
+			<dd>Tibor Kubík
+				<a href="mailto:xkubik34@stud.fit.vutbr.cz">xkubik34@stud.fit.vutbr.cz</a> -
+				Frontend - modules creation and styling; services, routing, django models, data serialization, manual interface testing
+			</dd>
 
+			<dd>Petr Mičulek
+				<a href="mailto:xmicul08@stud.fit.vutbr.cz">xmicul08@stud.fit.vutbr.cz</a> -
+				<h1><b>TODO Petr</b></h1> popis činnosti
+			</dd>
 
+		  	<dd>Sabína Gulčíková
+				<a href="mailto:xgulci00@stud.fit.vutbr.cz">xgulci00@stud.fit.vutbr.cz</a> -
+				Frontend - modules creation, styling, responsive design; interface design, data model design, manual interface testing
+			</dd>
+			<dt>URL aplikace</dt>
+			<dd><a href="https://hospitalis.herokuapp.com/">https://hospitalis.herokuapp.com/</a></dd>
+		</dl>
 
-<h2>Installation</h2>
+		<h2>Premade users for testing</h2>
+		<table>
+		<tbody><tr><th>Login</th><th>Password</th><th>Role</th></tr>
+		<tr><td>admin@fit.vutbr.cz</td><td>prestiz++</td><td>Administrator</td></tr>
+		<tr><td>doctor@fit.vutbr.cz</td><td>doctor++</td><td>Doctor</td></tr>
+		<tr><td>patient@fit.vutbr.cz</td><td>patient++</td><td>Patient</td></tr>
+		<tr><td>insurance@fit.vutbr.cz</td><td>insurance++</td><td>Insurance worker</td></tr>
+		</tbody></table>
 
-Stručne popište:
-<ul>
-<li>postup instalace na server,</li>
-<li>softwarové požadavky (verze PHP apod.),</li>
-<li>jak rozbalit, konfigurovat, inicializovat databázi, ...</li>
-</ul>
+		<h2>Implementation</h2>
+		<ul>
+			<li><h3>Frontend</h3></li>
+			<p>
+				The creation of fronted was based on initially created wireframes, laying the guidelines for successful implementation of user friendly information system.<br>
+				The main goal of the design was to create simple and easy to navigate system. It was necessary to let user to focus on actual purpose of the system, instead of getting lost in the interface while looking for desired functionalities.<br>
+				<img src="doc_assets/wireframe_2.jpg" alt="Wireframe 1" width="600">
+				<img src="doc_assets/wireframe_1.jpg" alt="Wireframe 2" width="600">
+			</p>
+			<p>
+				The implementation of frontend was done is a progressive Javascript framework <a href="https://vuejs.org/">Vue.JS</a> for building user interfaces. A supporting components library <a href="https://vuesax.com/">Vuesax</a> was used as well.
+				<br>
+				<br>
+				<a href="https://router.vuejs.org/">Official Vue.JS router</a> was used to route between system components in a Single Page App manner. Routing is handled in <b>frontend/src/router/router.js</b>.
+				<br>
+				<br>
+				To communicate with our API, service for each logical unit was created. This endpoints querying can be found in <b>frontend/src/services/</b>.
+				<br>
+				<br>
+				To handle current user information as well as tokens for authentication, <a href="https://vuex.vuejs.org/">Vuesax</a> - centralized store for all the components was used. Source file can be found in <b>frontend/src/store/</b>.
+				<br>
+				<br>
+				Views are modeling all use cases from your use case diagram modelled according to the requirements. All views are located in <b>frontend/src/views/</b> and structured in folders according to user roles.
+				<br>
+				For each user role, several subfolders were created, each containing Vue files modeling specific use case. For example module for creation of new patient is located in <b>frontend/src/views/admin/newUserModules/</b>.
 
-<h2>Acknowledged issues</h2>
-<p>Every use case and feature required by the assignment was implemented.</p>
+			</p>
+			<li><h3>Backend</h3></li>
 
+			<h1><b>TODO Petr</b></h1>
 
+			<li><h3>Database system</h3></li>
+			<p>
+				Schema of implemented relational database: <br><br>
+				<img src="doc_assets/hospisdb.png" alt="Hospitalis database" width="100%">
+			</p>
+		</ul>
 
-</body></html>
+		<h2>Installation</h2>
+		<h1><b>TODO Petr</b></h1>
+		Stručne popište:
+		<ul>
+		<li>postup instalace na server,</li>
+		<li>softwarové požadavky (verze PHP apod.),</li>
+		<li>jak rozbalit, konfigurovat, inicializovat databázi, ...</li>
+		</ul>
+
+		<h2>Acknowledged issues</h2>
+		<p>Every use case and feature required by the assignment was implemented.</p>
+	</body>
+</html>
