@@ -84,16 +84,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'hospis.wsgi.application'
 
 # Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'heroku_4f5f8f8240f3c61',
-        'USER': 'bf26e9b8afd619',
-        'PASSWORD': 'a27ffea2',
-        'HOST': 'eu-cdbr-west-03.cleardb.net',
-        'PORT': '3306',
+        'OPTIONS': {
+            'read_default_file': pathjoin(BASE_DIR, 'mysql_config_local.cnf'),
+        },
     }
 }
 
@@ -101,7 +98,6 @@ AUTH_USER_MODEL = 'hospitalis.User'
 
 
 # Password validation
-# https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
