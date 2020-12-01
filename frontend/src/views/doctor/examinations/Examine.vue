@@ -294,7 +294,7 @@ export default {
       // adding new examination into DB
       const newExamination = {
         date_of_examination: DateUtils.getDateForBackend(this.examinationDate),
-        examinating_doctor: this.user.id,    // TODO current user
+        examinating_doctor: this.user.id,
         concern: this.aboutConcern.id,
         request_based_on: null,
         actions: this.chosenActions.map(action => action.actionData.name),
