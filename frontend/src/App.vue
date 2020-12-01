@@ -243,7 +243,10 @@
                   </template>
 
                   <template #img>
-                      <img src="./assets/user-illu.jpg" alt="" width="200" height="200">
+                      <img v-if="(userRole === 'doctor') && (userRole.gender === 'F')" src="./assets/female_doctor_avtr.png" alt="" width="200" height="200">
+                      <img v-else-if="(userRole === 'doctor') && (userRole.gender !== 'F') " src="./assets/male_doctor_avtr.png" alt="" width="200" height="200">
+                      <img v-else-if="(userRole !== 'doctor') && (userRole.gender === 'F')" src="./assets/female_user1_sans_kruh.png" alt="" width="200" height="200">
+                      <img v-else src="./assets/male_usr_sans_kruh.png" alt="" width="200" height="200">
                   </template>
 
                   <template #text>
