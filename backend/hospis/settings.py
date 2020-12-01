@@ -26,10 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '_&%ym+jb*y0%=88p0o$h33rtwfx*ki(tg))-r69=_1^phj=qd5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True  # todo remove on deploy
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -37,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',  # db stored session
+    'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_filters',
@@ -157,7 +156,7 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = pathjoin(BASE_DIR, 'media')
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(seconds=500),  # todo debugging only
-    'REFRESH_TOKEN_LIFETIME': timedelta(seconds=2000),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(hours=1),
     'ROTATE_REFRESH_TOKENS': True,
 }

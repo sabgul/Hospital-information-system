@@ -13,15 +13,11 @@ from hospitalis.views import (
 )
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    # Submit your refresh token to obtain a new access token
+    # JWT Authentification
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    # Obtain a new access and refresh token
     path('api/token/', MyObtainTokenPairView.as_view(), name='token_obtain_pair'),
     # App data
     path('api/', include('hospitalis.urls')),
-    # also works as a login page, currently unused
-    path('api-auth/', include('rest_framework.urls')),
 ]
 
 if DEBUG:
