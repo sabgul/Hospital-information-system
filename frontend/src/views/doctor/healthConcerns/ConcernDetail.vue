@@ -129,7 +129,8 @@
           <vs-card-group>
               <vs-card v-for="report in reports" v-bind:key="report.id" @click="showReportDialog(report)">
                   <template #img>
-                    <img src="../../../assets/missing-image.svg" alt="">
+                    <img v-if="report.photo === null" src="../../../assets/missing-image.svg" alt="">
+                    <img v-else :src="report.photo" alt="">
                   </template>
 
                   <template #text>
@@ -142,7 +143,7 @@
                       <vs-button class="btn-chat" shadow primary icon @click="showReportDialog(report)">
                           <box-icon style="fill: #000; margin-right: 0.5em;" name='message-square-detail'/>
                           <span class="span">
-                              Show attached files
+                              <b>Show more details</b>
                           </span>
                       </vs-button>
                   </template>
@@ -227,7 +228,7 @@
         </vs-dialog>
 
         <vs-dialog
-            width="500px"
+            :width="detailReport.photo === null ? '500px' : '800px'"
             v-model="activeReportDetail"
         >
             <div style="padding: 1.5em;">
@@ -239,7 +240,9 @@
 
               <br>
 
-              <h6><b>Attached files</b>: No attached files</h6>
+              <h6><b>Attached file</b>: <span v-if="detailReport.photo === null">No attached files</span></h6>
+
+              <img v-if="detailReport.photo !== null" :src="detailReport.photo" alt="" width="700">
             </div>
 
         </vs-dialog>

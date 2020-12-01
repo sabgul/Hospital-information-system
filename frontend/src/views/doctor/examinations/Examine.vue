@@ -113,19 +113,26 @@
           placeholder="Put text of report here.."
       />
 
-      <label>
-        File
+      <br>
+      <br>
+
+      <h6>Add image to report</h6>
+
+      <div class="upload__wrapper">
+        <button class="upload__btn">
+            Choose an image
+        </button>
 
         <input
             type="file"
             id="file"
             ref="file"
+            accept="image/*"
             v-on:change="handleFileUpload()"
         />
 
-        <!--              <input type="file" multiple :name="uploadFieldName" :disabled="isSaving" @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length"-->
-        <!--            accept="image/*" class="input-file">-->
-      </label>
+        <span id="file__chosen">{{ fileName ? fileName : 'No file Chosen' }}</span>
+      </div>
     </div>
 
     <div class="main__content">
@@ -227,9 +234,8 @@ export default {
 
     askToCover: true,     // if false, patient pays it on their own
 
-    url: 'http://your-post.url',
-    headers: {'access-token': '<your-token>'},
     file: '',
+    fileName: '',
   }),
 
   async created() {
@@ -258,6 +264,7 @@ export default {
   methods: {
     handleFileUpload() {
       this.file = this.$refs.file.files[0];
+      this.fileName = this.$refs.file.files[0].name;
     },
 
     addAction() {
@@ -357,15 +364,6 @@ export default {
 
       await this.$router.go(-1);
     },
-
-    thumbUrl(file) {
-      return file.myThumbUrlProperty;
-    },
-
-    onFileChange(file) {
-      // Handle files like:
-      this.filesUploaded = file;
-    },
   }
 }
 </script>
@@ -406,5 +404,33 @@ export default {
 textarea {
   border-radius: 12px;
   width: 60%;
+}
+
+.upload__wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.upload__btn {
+  border: 2px solid gray;
+  color: gray;
+  background-color: white;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.upload__wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+#file__chosen {
+  margin-left: 0.5em;
 }
 </style>

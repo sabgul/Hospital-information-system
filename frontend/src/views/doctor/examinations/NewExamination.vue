@@ -105,6 +105,27 @@
               v-model="reportDescription"
               placeholder="Put text of report here.."
           />
+
+          <br>
+          <br>
+
+          <h6>Add image to report</h6>
+
+          <div class="upload__wrapper">
+              <button class="upload__btn">
+                  Choose an image
+              </button>
+
+              <input
+                  type="file"
+                  id="file"
+                  ref="file"
+                  accept="image/*"
+                  v-on:change="handleFileUpload()"
+              />
+
+              <span id="file__chosen">{{ fileName ? fileName : 'No file Chosen' }}</span>
+          </div>
       </div>
 
       <div class="main__content">
@@ -217,6 +238,9 @@ export default {
         markConcernEnded: false,
 
         askToCover: true,     // if false, patient pays it on their own
+
+        file: '',
+        fileName: '',
     }),
 
     async created() {
@@ -246,6 +270,11 @@ export default {
     },
 
     methods: {
+        handleFileUpload() {
+          this.file = this.$refs.file.files[0];
+          this.fileName = this.$refs.file.files[0].name;
+        },
+
         addAction() {
             this.activeActionAdd = true;
         },
@@ -285,15 +314,15 @@ export default {
                 NotificationsUtils.successPopup('Examination created.', this.$vs);
 
                 let idOfNewExamination = response.data.id;
-                const newReport = {
-                    created_by: this.user.id,
-                    about_concern: this.examinationAboutTicket.concern.id,
-                    description: this.reportDescription,
-                    during_examination: idOfNewExamination,
-                    // file: formData,
-                }
 
-                DoctorsReportsService.create(newReport)
+                let formData = new FormData();
+                formData.append('photo', this.file, this.file.name);
+                formData.append('created_by', this.user.id);
+                formData.append('about_concern', this.examinationAboutTicket.concern.id);
+                formData.append('description', this.reportDescription);
+                formData.append('during_examination', idOfNewExamination);
+
+                DoctorsReportsService.create(formData)
                 .then(response => {
                     console.log(response);
                 })
@@ -410,5 +439,33 @@ export default {
     textarea {
       border-radius: 12px;
       width: 60%;
+    }
+
+    .upload__wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+    }
+
+    .upload__btn {
+      border: 2px solid gray;
+      color: gray;
+      background-color: white;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .upload__wrapper input[type=file] {
+      font-size: 100px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+    }
+
+    #file__chosen {
+      margin-left: 0.5em;
     }
 </style>
