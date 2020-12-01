@@ -88,10 +88,11 @@ WSGI_APPLICATION = 'hospis.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {
-            # 'read_default_file': pathjoin(BASE_DIR, 'mysql_config_local.cnf'),  # LOCAL database
-            'read_default_file': pathjoin(BASE_DIR, 'mysql_config_heroku.cnf'),  # Heroku hosted database
-        },
+        'NAME': 'heroku_4f5f8f8240f3c61',
+        'USER': 'bf26e9b8afd619',
+        'PASSWORD': 'a27ffea2',
+        'HOST': 'eu-cdbr-west-03.cleardb.net',
+        'PORT': '3306',
     }
 }
 
