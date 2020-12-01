@@ -1,102 +1,180 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!-- saved from url=(0070)https://www.fit.vutbr.cz/study/courses/IIS/private/projekt/doc.html.cs -->
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-		<title>Project IIS</title>
+    <title>Project IIS</title>
 
-		<style type="text/css">
-			table { border-collapse: collapse; }
-			td, th { border: 1px solid black; padding: 0.3em 0.5em; text-align: left; }
-			dt { font-weight: bold; margin-top: 0.5em; }
-		</style>
-	</head>
+    <style type="text/css">
+        table {
+            border-collapse: collapse;
+        }
 
-	<body data-new-gr-c-s-check-loaded="14.984.0" data-gr-ext-installed="">
+        td, th {
+            border: 1px solid black;
+            padding: 0.3em 0.5em;
+            text-align: left;
+        }
 
-		<h1>Hospital: electronic health report card</h1>
+        dt {
+            font-weight: bold;
+            margin-top: 0.5em;
+        }
+    </style>
+</head>
 
-		<dl>
-			<dt>Authors</dt>
-			<dd>Tibor Kubík
-				<a href="mailto:xkubik34@stud.fit.vutbr.cz">xkubik34@stud.fit.vutbr.cz</a> -
-				Frontend - modules creation and styling; services, routing, django models, data serialization, manual interface testing
-			</dd>
+<body data-new-gr-c-s-check-loaded="14.984.0" data-gr-ext-installed="">
 
-			<dd>Petr Mičulek
-				<a href="mailto:xmicul08@stud.fit.vutbr.cz">xmicul08@stud.fit.vutbr.cz</a> -
-				<h1><b>TODO Petr</b></h1> popis činnosti
-			</dd>
+<h1>Hospital: electronic health report card</h1>
 
-		  	<dd>Sabína Gulčíková
-				<a href="mailto:xgulci00@stud.fit.vutbr.cz">xgulci00@stud.fit.vutbr.cz</a> -
-				Frontend - modules creation, styling, responsive design; interface design, data model design, manual interface testing
-			</dd>
-			<dt>URL aplikace</dt>
-			<dd><a href="https://hospitalis.herokuapp.com/">https://hospitalis.herokuapp.com/</a></dd>
-		</dl>
+<dl>
+    <dt>Authors</dt>
+    <dd>Tibor Kubík
+        <a href="mailto:xkubik34@stud.fit.vutbr.cz">xkubik34@stud.fit.vutbr.cz</a> -
+        Frontend - modules creation and styling; services, routing, Django models, data serialization, manual interface
+        testing
+    </dd>
 
-		<h2>Premade users for testing</h2>
-		<table>
-		<tbody><tr><th>Login</th><th>Password</th><th>Role</th></tr>
-		<tr><td>admin@fit.vutbr.cz</td><td>prestiz++</td><td>Administrator</td></tr>
-		<tr><td>doctor@fit.vutbr.cz</td><td>doctor++</td><td>Doctor</td></tr>
-		<tr><td>patient@fit.vutbr.cz</td><td>patient++</td><td>Patient</td></tr>
-		<tr><td>insurance@fit.vutbr.cz</td><td>insurance++</td><td>Insurance worker</td></tr>
-		</tbody></table>
+    <dd>Petr Mičulek
+        <a href="mailto:xmicul08@stud.fit.vutbr.cz">xmicul08@stud.fit.vutbr.cz</a> -
+        Backend - Django: models, ViewSets, permissions, filtering; requirements, Heroku deploy, Amazon S3, JWT Token
+        handling
+    </dd>
 
-		<h2>Implementation</h2>
-		<ul>
-			<li><h3>Frontend</h3></li>
-			<p>
-				The creation of fronted was based on initially created wireframes, laying the guidelines for successful implementation of user friendly information system.<br>
-				The main goal of the design was to create simple and easy to navigate system. It was necessary to let user to focus on actual purpose of the system, instead of getting lost in the interface while looking for desired functionalities.<br>
-				<img src="doc_assets/wireframe_2.jpg" alt="Wireframe 1" width="600">
-				<img src="doc_assets/wireframe_1.jpg" alt="Wireframe 2" width="600">
-			</p>
-			<p>
-				The implementation of frontend was done is a progressive Javascript framework <a href="https://vuejs.org/">Vue.JS</a> for building user interfaces. A supporting components library <a href="https://vuesax.com/">Vuesax</a> was used as well.
-				<br>
-				<br>
-				<a href="https://router.vuejs.org/">Official Vue.JS router</a> was used to route between system components in a Single Page App manner. Routing is handled in <b>frontend/src/router/router.js</b>.
-				<br>
-				<br>
-				To communicate with our API, service for each logical unit was created. This endpoints querying can be found in <b>frontend/src/services/</b>.
-				<br>
-				<br>
-				To handle current user information as well as tokens for authentication, <a href="https://vuex.vuejs.org/">Vuesax</a> - centralized store for all the components was used. Source file can be found in <b>frontend/src/store/</b>.
-				<br>
-				<br>
-				Views are modeling all use cases from your use case diagram modelled according to the requirements. All views are located in <b>frontend/src/views/</b> and structured in folders according to user roles.
-				<br>
-				For each user role, several subfolders were created, each containing Vue files modeling specific use case. For example module for creation of new patient is located in <b>frontend/src/views/admin/newUserModules/</b>.
+    <dd>Sabína Gulčíková
+        <a href="mailto:xgulci00@stud.fit.vutbr.cz">xgulci00@stud.fit.vutbr.cz</a> -
+        Frontend - modules creation, styling, responsive design; interface design, data model design, manual interface
+        testing
+    </dd>
+    <dt>App URL</dt>
+    <dd><a href="https://hospitalis.herokuapp.com/">https://hospitalis.herokuapp.com/</a></dd>
+</dl>
 
-			</p>
-			<li><h3>Backend</h3></li>
+<h2>Premade users for testing</h2>
+<table>
+    <tbody>
+    <tr>
+        <th>Login</th>
+        <th>Password</th>
+        <th>Role</th>
+    </tr>
+    <tr>
+        <td>admin@fit.vutbr.cz</td>
+        <td>prestiz++</td>
+        <td>Administrator</td>
+    </tr>
+    <tr>
+        <td>doctor@fit.vutbr.cz</td>
+        <td>doctor++</td>
+        <td>Doctor</td>
+    </tr>
+    <tr>
+        <td>patient@fit.vutbr.cz</td>
+        <td>patient++</td>
+        <td>Patient</td>
+    </tr>
+    <tr>
+        <td>insurance@fit.vutbr.cz</td>
+        <td>insurance++</td>
+        <td>Insurance worker</td>
+    </tr>
+    </tbody>
+</table>
 
-			<h1><b>TODO Petr</b></h1>
+<h2>Implementation</h2>
+<ul>
+    <li><h3>Frontend</h3></li>
+    <p>
+        The creation of fronted was based on initially created wireframes, laying the guidelines for successful
+        implementation of user-friendly information system.<br>
+        The main goal of the design was to create a simple and easy way to navigate the system. It was necessary to let
+        user
+        focus on their task, instead of getting lost in the interface while looking for desired functionalities.<br>
+        <img src="doc_assets/wireframe_2.jpg" alt="Wireframe 1" width="600">
+        <img src="doc_assets/wireframe_1.jpg" alt="Wireframe 2" width="600">
+    </p>
+    <p>
+        The implementation of frontend was done in a progressive Javascript framework <a href="https://vuejs.org/">Vue.JS</a>
+        for building user interfaces. A supporting components library <a href="https://vuesax.com/">Vuesax</a> was used
+        as well.
+        <br>
+        <br>
+        <a href="https://router.vuejs.org/">Official Vue.JS router</a> was used to route between system components in a
+        Single Page App manner. Routing is handled in <b>frontend/src/router/router.js</b>.
+        <br>
+        <br>
+        To communicate with our API, service for each logical unit was created. Querying of these endpoints can be found
+        in
+        <b>frontend/src/services/</b>.
+        <br>
+        <br>
+        To handle current user information as well as tokens for authentication, <a href="https://vuex.vuejs.org/">Vuesax</a>
+        - centralized store for all the components was used. The source file can be found in <b>frontend/src/store/</b>.
+        <br>
+        <br>
+        The views model all the required use cases and they fulfil all the requirements. All views
+        are located in <b>frontend/src/views/</b> and structured in folders according to user roles.
+        <br>
+        For each user role, several subfolders were created, each containing Vue files modelling a specific use case.
+        For
+        example module for creation of new patient is located in <b>frontend/src/views/admin/newUserModules/</b>.
 
-			<li><h3>Database system</h3></li>
-			<p>
-				Scheme of implemented relational database: <br><br>
-				<img src="doc_assets/hospisdb.png" alt="Hospitalis database" width="100%">
-			</p>
-		</ul>
+    </p>
+    <li><h3>Backend</h3></li>
 
-		<h2>Installation</h2>
-		<h1><b>TODO Petr</b></h1>
-		Stručne popište:
-		<ul>
-		<li>postup instalace na server,</li>
-		<li>softwarové požadavky (verze PHP apod.),</li>
-		<li>jak rozbalit, konfigurovat, inicializovat databázi, ...</li>
-		</ul>
+    The backend layer uses the Django framework for Python. <br>
+    It handles API requests from the frontend, potentially allowing for multiple frontend implementations (such as a
+    mobile app). <br>
+    The API handles requests based on currently logged user and the permissions based on their roles. (e. g. A doctor
+    can only access their patient's data) <br>
+    The backend layer fetches data from a MySQL database.
+    For uploading user media files, an Amazon S3 storage server is used. <br>
+    User authentication uses JWT tokens.
 
-		<h2>Acknowledged issues</h2>
-		<p>Every use case and feature required by the assignment was implemented. <br>
-			The implementation of the manipulation with assigned tickets was implemented contrary to the assignment. We do not consider this an issue. <br>
-			The assignment states that doctor who was assigned with ticket is not supposed to see the record of the entire health concern. In our opinion, it is necessary to let him see all the previous measures and examinations <br>
-			that were performed on behalf of the given medical problem. It is important for him to be able to compare the previous and current treatment, in order to decide whether the provided treatments are sufficient. </p>
-	</body>
+    <li><h3>Database system</h3></li>
+    <p>
+        Scheme of implemented relational database: <br><br>
+        <img src="doc_assets/hospisdb.png" alt="Hospitalis database" width="100%">
+    </p>
+
+    <h2>Installation</h2>
+    The system was developed on machines running Ubuntu Linux and macOS. The installation script is targetted at the
+    Ubuntu Linux platform.
+    <ul>
+        <li>Software requirements and installation</li>
+        <br>
+        All requirements are satisfied by running the run.sh file.
+        In case of compatibility issues, look for alternatives of these packages:
+        System-wide packages: python3.8 mysql-server mysql npm
+        Python pip packages: (see backend/requirements.txt or backend/Pipfile)
+        NPM packages: (see frontend/package.json)
+        <br>
+        <br>
+        <li>Database preparation</li>
+        <br>
+        If the user wishes to use a local MySQL server, they must install it themself. User should sync the connection
+        names of the database user and the database with the backend/mysql_config_local.cnf.
+
+        A Heroku hosted database can be also used. To do so, swap out the DATABASES.default.read_default_file entry in
+        settings.py for the Heroku hosted database connection.
+
+        <br>
+        <br>
+        <li>Installation process</li>
+        <br>
+        Install and setup the database before running the run.sh script.
+        <br>
+    </ul>
+
+    <h2>Acknowledged issues</h2>
+    <p>Every use case and feature required by the assignment has been implemented.
+        The implementation of the manipulation with assigned tickets was implemented contrary to the assignment. We do
+        not consider this an issue. <br>
+        The assignment states that doctor who was assigned with ticket is not supposed to see the record of the entire
+        health concern. In our opinion, it is necessary to let him see all the previous measures and examinations <br>
+        that were performed on behalf of the given medical problem. It is important for him to be able to compare the
+        previous and current treatment, in order to decide whether the provided treatments are sufficient. </p>
+    </p>
+</body>
 </html>

@@ -89,7 +89,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
-            'read_default_file': pathjoin(BASE_DIR, 'mysql_config_local.cnf'),
+            'read_default_file': pathjoin(BASE_DIR, 'mysql_config_local.cnf'),  # LOCAL database
+            # 'read_default_file': pathjoin(BASE_DIR, 'mysql_config_heroku.cnf'),  # Heroku hosted database
         },
     }
 }
@@ -157,10 +158,3 @@ AWS_SECRET_ACCESS_KEY = '6n1ewGQX0osjZ8dddGgt8CnqW1XmoJrjQjqNriLd'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_STORAGE_BUCKET_NAME = 'hospitalis-images'
 AWS_S3_REGION_NAME = 'eu-central-1'
-
-
-# Overwrite with local settings
-try:
-    from local_settings import *
-except:
-    pass
