@@ -215,7 +215,7 @@ class DoctorReport(models.Model):
 
     date_of_created = models.DateField(auto_now_add=True)
     description = models.CharField(max_length=2046, blank=True)
-    file = models.FileField(blank=True, null=True)
+    photo = models.ImageField(blank=True, null=True, upload_to='reports')
 
     class Meta:
         ordering = ['date_of_created']

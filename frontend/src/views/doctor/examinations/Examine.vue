@@ -1,186 +1,189 @@
 <template>
-    <div>
-        <div class="main__content">
-            <h1>
-              Creating examination for health concern {{ aboutConcern.name }}
-              of patient {{ aboutConcern.patient.user.first_name }} {{ aboutConcern.patient.user.last_name }}
-          </h1>
-        </div>
+  <div>
+    <div class="main__content">
+      <h1>
+        Creating examination for health concern {{ aboutConcern.name }}
+        of patient {{ aboutConcern.patient.user.first_name }} {{ aboutConcern.patient.user.last_name }}
+      </h1>
+    </div>
 
-        <div class="main__content">
-            <h3>Date of examination & actions</h3>
+    <div class="main__content">
+      <h3>Date of examination & actions</h3>
 
-            <br>
+      <br>
 
-            <vs-input
-                label="Date of examination"
-                v-model="examinationDate"
-                type="date"
-                class="input"
-            />
+      <vs-input
+          label="Date of examination"
+          v-model="examinationDate"
+          type="date"
+          class="input"
+      />
 
-            <br>
+      <br>
 
-            <h5>Brief description of examination</h5>
+      <h5>Brief description of examination</h5>
 
-            <textarea
-                v-model="examinationDescription"
-                placeholder="Briefly describe this examination.."
-            />
+      <textarea
+          v-model="examinationDescription"
+          placeholder="Briefly describe this examination.."
+      />
 
-            <div class="actions">
-                <h5>
-                    Examination actions made during this examination:
-                </h5>
+      <div class="actions">
+        <h5>
+          Examination actions made during this examination:
+        </h5>
 
-                <span v-if="chosenActions.length === 0">
+        <span v-if="chosenActions.length === 0">
                     No actions selected
                 </span>
 
-                <div
-                    v-for="(action, index) in chosenActions"
-                    v-bind:key="index"
-                    class="action__within__examination"
-                >
-                    <div>
-                        <span><b>{{ action.actionData.name }}</b> <br> ({{getPricing(action.actionData.is_action_paid)}})</span>
-                    </div>
+        <div
+            v-for="(action, index) in chosenActions"
+            v-bind:key="index"
+            class="action__within__examination"
+        >
+          <div>
+            <span><b>{{ action.actionData.name }}</b> <br> ({{ getPricing(action.actionData.is_action_paid) }})</span>
+          </div>
 
-                    <div class="buttons__action">
-                        <div
-                            class="overpay__switch"
-                            v-if="action.actionData.is_action_paid"
-                        >
-                            <vs-switch
-                                v-model="action.cover"
-                                success
-                                style="bottom: 7px;"
-                            >
-                                <template #off>
-                                    Paid by patient
-                                </template>
+          <div class="buttons__action">
+            <div
+                class="overpay__switch"
+                v-if="action.actionData.is_action_paid"
+            >
+              <vs-switch
+                  v-model="action.cover"
+                  success
+                  style="bottom: 7px;"
+              >
+                <template #off>
+                  Paid by patient
+                </template>
 
-                                <template #on>
-                                    Paid by insurance company
-                                </template>
-                            </vs-switch>
-                        </div>
+                <template #on>
+                  Paid by insurance company
+                </template>
+              </vs-switch>
+            </div>
 
-                        <div style="display: inline-block">
-                            <vs-button
-                                icon
-                                danger
-                                @click="deleteAction(index)"
-                            >
-                                <box-icon name='trash' style="fill: #fff"/>
-                            </vs-button>
-                        </div>
-                    </div>
-                </div>
+            <div style="display: inline-block">
+              <vs-button
+                  icon
+                  danger
+                  @click="deleteAction(index)"
+              >
+                <box-icon name='trash' style="fill: #fff"/>
+              </vs-button>
+            </div>
+          </div>
+        </div>
 
-                <vs-button
-                    gradient
-                    icon
-                    class="button"
-                    @click="addAction()"
-                >
-                    <box-icon name='message-square-add' type='solid' style="fill: #fff"/>
-                    <span style="margin-left: 1em">
+        <vs-button
+            gradient
+            icon
+            class="button"
+            @click="addAction()"
+        >
+          <box-icon name='message-square-add' type='solid' style="fill: #fff"/>
+          <span style="margin-left: 1em">
                         Add new action
                     </span>
-                </vs-button>
+        </vs-button>
 
-                <br>
+        <br>
 
-                <br>
-            </div>
-        </div>
-
-        <div class="main__content">
-            <h3>Attach Doctor report</h3>
-
-            <br>
-
-            <h5>Author: <b>{{ user.first_name }} {{ user.last_name }}</b></h5>
-            <h5>About concern: <b>{{ aboutConcern.name }}</b></h5>
-
-            <br>
-
-            <h6>Report text</h6>
-
-            <textarea
-                v-model="reportDescription"
-                placeholder="Put text of report here.."
-            />
-
-            <label>
-                File
-
-                <input
-                    type="file"
-                    id="file"
-                    ref="file"
-                    v-on:change="handleFileUpload()"
-                />
-            </label>
-        </div>
-
-        <div class="main__content">
-            <vs-checkbox
-                v-model="markConcernEnded"
-                class="ticket__checkbox"
-            >
-                Mark health problem as resolved
-            </vs-checkbox>
-
-            <vs-button
-                success
-                @click="saveExamination()"
-            >
-                Save
-            </vs-button>
-        </div>
-
-        <vs-dialog
-            width="500px"
-            v-model="activeActionAdd"
-        >
-            <template #header>
-                <h5 class="popup__headline">
-                    Select actions performed during examination
-                </h5>
-            </template>
-
-            <vs-select
-                v-model="actionToAdd"
-                class="popup__center"
-                label="Actions"
-                color="primary"
-                style="width: 300px !important;"
-                >
-                    <vs-option
-                        v-for="action in availableActions"
-                        :key="action.id"
-                        :label="`[${getPricing(action.is_action_paid)}] ${action.name}`"
-                        :value="action.name"
-                    >
-                        [{{ getPricing(action.is_action_paid) }}] {{ action.name }}
-                    </vs-option>
-            </vs-select>
-
-            <template #footer>
-                <div class="popup__right">
-                    <vs-button
-                        success
-                        :disabled="actionToAdd.length === 0"
-                        @click="addActionFinal()"
-                    >
-                        Add
-                    </vs-button>
-                </div>
-            </template>
-        </vs-dialog>
+        <br>
+      </div>
     </div>
+
+    <div class="main__content">
+      <h3>Attach Doctor report</h3>
+
+      <br>
+
+      <h5>Author: <b>{{ user.first_name }} {{ user.last_name }}</b></h5>
+      <h5>About concern: <b>{{ aboutConcern.name }}</b></h5>
+
+      <br>
+
+      <h6>Report text</h6>
+
+      <textarea
+          v-model="reportDescription"
+          placeholder="Put text of report here.."
+      />
+
+      <label>
+        File
+
+        <input
+            type="file"
+            id="file"
+            ref="file"
+            v-on:change="handleFileUpload()"
+        />
+
+        <!--              <input type="file" multiple :name="uploadFieldName" :disabled="isSaving" @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length"-->
+        <!--            accept="image/*" class="input-file">-->
+      </label>
+    </div>
+
+    <div class="main__content">
+      <vs-checkbox
+          v-model="markConcernEnded"
+          class="ticket__checkbox"
+      >
+        Mark health problem as resolved
+      </vs-checkbox>
+
+      <vs-button
+          success
+          @click="saveExamination()"
+      >
+        Save
+      </vs-button>
+    </div>
+
+    <vs-dialog
+        width="500px"
+        v-model="activeActionAdd"
+    >
+      <template #header>
+        <h5 class="popup__headline">
+          Select actions performed during examination
+        </h5>
+      </template>
+
+      <vs-select
+          v-model="actionToAdd"
+          class="popup__center"
+          label="Actions"
+          color="primary"
+          style="width: 300px !important;"
+      >
+        <vs-option
+            v-for="action in availableActions"
+            :key="action.id"
+            :label="`[${getPricing(action.is_action_paid)}] ${action.name}`"
+            :value="action.name"
+        >
+          [{{ getPricing(action.is_action_paid) }}] {{ action.name }}
+        </vs-option>
+      </vs-select>
+
+      <template #footer>
+        <div class="popup__right">
+          <vs-button
+              success
+              :disabled="actionToAdd.length === 0"
+              @click="addActionFinal()"
+          >
+            Add
+          </vs-button>
+        </div>
+      </template>
+    </vs-dialog>
+  </div>
 </template>
 
 <script>
@@ -191,221 +194,217 @@ import TransactionRequestsService from "@/services/transactionRequestsService";
 import DateUtils from "@/utils/dateUtils";
 import ExaminationsService from "@/services/examinationsService";
 import DoctorsReportsService from "@/services/doctorsReportsService";
-import { mapState } from "vuex";
+import {mapState} from "vuex";
 
 export default {
-    name: "Examine",
+  name: "Examine",
 
-    computed: {
-        ...mapState([
-            'user',
-        ])
-    },
+  computed: {
+    ...mapState([
+      'user',
+    ])
+  },
 
-    props: {
-        id: String,
-    },
+  props: {
+    id: String,
+  },
 
-    data:() => ({
-        aboutConcern: {},
+  data: () => ({
+    aboutConcern: {},
 
-        examinationDate: '',
+    examinationDate: '',
 
-        activeActionAdd: false,
-        actionToAdd: '',
+    activeActionAdd: false,
+    actionToAdd: '',
 
-        examinationDescription: '',
-        reportDescription: '',
+    examinationDescription: '',
+    reportDescription: '',
 
-        markConcernEnded: false,
+    markConcernEnded: false,
 
-        chosenActions: [],
-        availableActions: [],
+    chosenActions: [],
+    availableActions: [],
 
-        askToCover: true,     // if false, patient pays it on their own
+    askToCover: true,     // if false, patient pays it on their own
 
-        url: 'http://your-post.url',
-        headers: {'access-token': '<your-token>'},
-        file: '',
-    }),
+    url: 'http://your-post.url',
+    headers: {'access-token': '<your-token>'},
+    file: '',
+  }),
 
-    async created() {
-        HealthConcernsService.get(this.id)
+  async created() {
+    HealthConcernsService.get(this.id)
         .then(response => {
-            this.aboutConcern = response.data;
+          this.aboutConcern = response.data;
         })
         .catch(e => {
-            NotificationsUtils.failPopup(e, this.$vs);
+          NotificationsUtils.failPopup(e, this.$vs);
         });
 
-        ExaminationActionsService.getAll()
+    ExaminationActionsService.getAll()
         .then(response => {
-            this.availableActions = response.data;
+          this.availableActions = response.data;
         })
 
-        const date = new Date();
-        let day = date.getDate();
-        let month = date.getMonth();
-        month += 1;
-        const year = date.getFullYear();
+    const date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth();
+    month += 1;
+    const year = date.getFullYear();
 
-        this.examinationDate = year + '-' + month + '-' + day;
+    this.examinationDate = year + '-' + month + '-' + day;
+  },
+
+  methods: {
+    handleFileUpload() {
+      this.file = this.$refs.file.files[0];
     },
 
-    methods: {
-        handleFileUpload() {
-          this.file = this.$refs.file.files[0];
-        },
+    addAction() {
+      this.activeActionAdd = true;
+    },
 
-        addAction() {
-            this.activeActionAdd = true;
-        },
+    async addActionFinal() {
+      ExaminationActionsService.get(this.actionToAdd)
+          .then(response => {
+            this.chosenActions.push({actionData: response.data, cover: true});
+            this.activeActionAdd = false;
+          })
+          .catch(e => {
+            NotificationsUtils.failPopup(e, this.$vs);
+          });
+    },
 
-        async addActionFinal() {
-            ExaminationActionsService.get(this.actionToAdd)
-            .then(response => {
-                this.chosenActions.push({ actionData: response.data, cover: true });
-                this.activeActionAdd = false;
-            })
-            .catch(e => {
-                NotificationsUtils.failPopup(e, this.$vs);
-            });
-        },
+    getPricing(value) {
+      return value ? 'PAID' : 'FREE';
+    },
 
-        getPricing(value) {
-            return value ? 'PAID' : 'FREE';
-        },
+    deleteAction(index) {
+      this.chosenActions.splice(index, 1);
+    },
 
-        deleteAction(index) {
-          this.chosenActions.splice(index, 1);
-        },
+    async saveExamination() {
+      // adding new examination into DB
+      const newExamination = {
+        date_of_examination: DateUtils.getDateForBackend(this.examinationDate),
+        examinating_doctor: this.user.id,    // TODO current user
+        concern: this.aboutConcern.id,
+        request_based_on: null,
+        actions: this.chosenActions.map(action => action.actionData.name),
+        description: this.examinationDescription,
+      }
 
-        async saveExamination() {
-          // adding new examination into DB
-            const newExamination = {
-                date_of_examination: DateUtils.getDateForBackend(this.examinationDate),
-                examinating_doctor: this.user.id,    // TODO current user
-                concern: this.aboutConcern.id,
-                request_based_on: null,
-                actions: this.chosenActions.map(action => action.actionData.name),
-                description: this.examinationDescription,
-            }
+      ExaminationsService.create(newExamination)
+          .then(response => {
+            NotificationsUtils.successPopup('Examination created.', this.$vs);
 
-            ExaminationsService.create(newExamination)
-            .then(response => {
-                NotificationsUtils.successPopup('Examination created.', this.$vs);
+            let idOfNewExamination = response.data.id;
 
-                let idOfNewExamination = response.data.id;
+            let formData = new FormData();
+            formData.append('photo', this.file, this.file.name);
+            formData.append('created_by', this.user.id);
+            formData.append('about_concern', this.aboutConcern.id);
+            formData.append('description', this.reportDescription);
+            formData.append('during_examination', idOfNewExamination);
 
-                let formData = new FormData();
-                formData.append('file', this.file, this.file.name);
+            DoctorsReportsService.create(formData)
+                .then(response => {
+                  console.log(response);
+                })
+                .catch(e => {
+                  NotificationsUtils.failPopup(e, this.$vs);
+                });
 
-                const newReport = {
-                    created_by: this.user.id,
-                    about_concern: this.aboutConcern.id,
-                    description: this.reportDescription,
-                    during_examination: idOfNewExamination,
-                    // file: formData,
+            this.chosenActions.forEach(action => {
+              if (action.cover) {
+                const newRequest = {
+                  examination_action: action.actionData.name,
+                  request_state: 'UD',
+                  related_to_patient: this.aboutConcern.patient.user.id,
+                  during_examination: idOfNewExamination,
+                  transaction_approver: action.actionData.action_manager.user.id,
                 }
 
-                DoctorsReportsService.create(newReport)
+                TransactionRequestsService.create(newRequest)
                     .then(response => {
-                        console.log(response);
+                      console.log(response);
                     })
                     .catch(e => {
-                        NotificationsUtils.failPopup(e, this.$vs);
+                      NotificationsUtils.failPopup(e, this.$vs);
                     });
-
-                this.chosenActions.forEach(action => {
-                    if(action.cover) {
-                        const newRequest = {
-                            examination_action: action.actionData.name,
-                            request_state: 'UD',
-                            related_to_patient: this.aboutConcern.patient.user.id,
-                            during_examination: idOfNewExamination,
-                            transaction_approver: action.actionData.action_manager.user.id,
-                        }
-
-                        TransactionRequestsService.create(newRequest)
-                        .then(response => {
-                              console.log(response);
-                        })
-                        .catch(e => {
-                            NotificationsUtils.failPopup(e, this.$vs);
-                        });
-                    }
-                })
+              }
             })
-            .catch(e => {
-                NotificationsUtils.failPopup(e, this.$vs);
-            });
+          })
+          .catch(e => {
+            NotificationsUtils.failPopup(e, this.$vs);
+          });
 
-            const newConcern = {
-                name: this.aboutConcern.name,
-                description: this.aboutConcern.description,
-                state: this.markConcernEnded ? 'ED' : 'ON',
-                patient: this.aboutConcern.patient.user.id,
-                doctor: this.aboutConcern.doctor.user.id
-            }
+      const newConcern = {
+        name: this.aboutConcern.name,
+        description: this.aboutConcern.description,
+        state: this.markConcernEnded ? 'ED' : 'ON',
+        patient: this.aboutConcern.patient.user.id,
+        doctor: this.aboutConcern.doctor.user.id
+      }
 
-            HealthConcernsService.update(this.aboutConcern.id, newConcern)
-            .then(response => {
-                console.log(response);
-            })
-            .catch(e => {
-                NotificationsUtils.failPopup(e, this.$vs);
-            });
+      HealthConcernsService.update(this.aboutConcern.id, newConcern)
+          .then(response => {
+            console.log(response);
+          })
+          .catch(e => {
+            NotificationsUtils.failPopup(e, this.$vs);
+          });
 
-            await this.$router.go(-1);
-        },
+      await this.$router.go(-1);
+    },
 
-        thumbUrl (file) {
-          return file.myThumbUrlProperty;
-        },
+    thumbUrl(file) {
+      return file.myThumbUrlProperty;
+    },
 
-        onFileChange (file) {
-          // Handle files like:
-          this.filesUploaded = file;
-        },
-    }
+    onFileChange(file) {
+      // Handle files like:
+      this.filesUploaded = file;
+    },
+  }
 }
 </script>
 
 <style scoped>
-    .actions, .button, .input {
-        margin-top: 2em;
-    }
+.actions, .button, .input {
+  margin-top: 2em;
+}
 
-    .action__within__examination {
-        background-color: #195bff;
-        opacity: 0.95;
-        color: white;
-        padding: 1em 2em;
-        border-radius: 10px;
-        margin-bottom: 0.5em;
-        display: flex;
-        justify-content:space-between;
-    }
+.action__within__examination {
+  background-color: #195bff;
+  opacity: 0.95;
+  color: white;
+  padding: 1em 2em;
+  border-radius: 10px;
+  margin-bottom: 0.5em;
+  display: flex;
+  justify-content: space-between;
+}
 
-    .buttons__action {
-        right: 1em;
-        bottom: 1em;
-        display: inline-block;
-    }
+.buttons__action {
+  right: 1em;
+  bottom: 1em;
+  display: inline-block;
+}
 
-    .overpay__switch {
-        display: inline-block;
-        width: 15em;
-        padding-right: 1em;
-    }
+.overpay__switch {
+  display: inline-block;
+  width: 15em;
+  padding-right: 1em;
+}
 
-    .ticket__checkbox {
-        float: left;
-        margin-right: 2em;
-    }
+.ticket__checkbox {
+  float: left;
+  margin-right: 2em;
+}
 
-    textarea {
-        border-radius: 12px;
-        width: 60%;
-    }
+textarea {
+  border-radius: 12px;
+  width: 60%;
+}
 </style>
