@@ -7,21 +7,14 @@ sudo apt install mysql-server
 
 # todo db setup
 
-cat '!includedir /etc/mysql/conf.d/
-!includedir /etc/mysql/mysql.conf.d/
-
-[client]
-database = hospisdb
-user = admin
-password = TsP72w1.wq' > /etc/mysql/my.cnf
-
 # db start
 sudo service mysql start
 
 sudo mysql -u root -p
 
 # db creation
-sudo mysql CREATE DATABASE IF NOT EXISTS hospisdb;
+CREATE DATABASE IF NOT EXISTS hospitalis;
+QUIT;
 
 # Frontend setup and run -> installs npm and all dependencies that are needed for the project.
 cd frontend
