@@ -4,8 +4,8 @@
             <h1>Users overview</h1>
 
             <p>
-                In this module you can see list of all users in this system.<br>
-                By clicking on a given user, you can manage their information.
+                In this module you can see the list of all users in this system.<br>
+                You can manage particular information by clicking on a given user.
             </p>
         </div>
 
@@ -153,7 +153,7 @@
             <br>
 
             <p v-if="userToDelete.role === 'Doctor'">
-                Please choose a new doctor who will be responsible for <br> patients, examinations and other responsibilities of doctor who is currently being removed:
+                Please choose a new doctor who will be responsible for <br> patients, examinations and other responsibilities of doctor currently being removed:
             </p>
 
             <vs-select

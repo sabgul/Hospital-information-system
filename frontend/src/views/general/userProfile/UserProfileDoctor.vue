@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>Specific details for Doctor role</h3>
+        <h3>Specific details for Doctor</h3>
 
         <br>
 

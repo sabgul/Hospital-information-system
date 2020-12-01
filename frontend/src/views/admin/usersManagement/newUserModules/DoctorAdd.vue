@@ -6,8 +6,9 @@
             </h1>
 
             <p>
-                Create a new doctor in the database of doctors.<br>
-                Some fields are required. Profile details can be edited later.
+                In this module profile of a doctor can be created. <br>
+                Please fill in all the required fields. In order to provide the doctor with secure password, you can follow recommended guidelines described by bar appearing above the password field. <br>
+                Any desired modifications can be done in the future, by editing doctor's profile.
             </p>
         </div>
 
@@ -22,7 +23,7 @@
                         <vs-input
                             v-model="newDoctor.first_name"
                             label="First name of doctor"
-                            placeholder="Type first name of new doctor"
+                            placeholder="Type first name"
                             class="input__items"
                             primary
                         >
@@ -44,7 +45,7 @@
                         <vs-input
                             v-model="newDoctor.last_name"
                             label="Last name of doctor"
-                            placeholder="Type last name of new doctor"
+                            placeholder="Type last name "
                             class="input__items"
                             primary
                         >

@@ -4,13 +4,13 @@
         <h1 class="requests__header">Transactions requests management</h1>
 
         <p>
-            During patient examination, there are usually several examination actions.<br>
-            Many of them might be paid by patient's healthcare insurance.<br>
-            You can see overview of all requests made by doctors, which you are able to manage.
+            In this module the requests for coverage of medical actions can be managed. <br>
+            You can see overview of all requests made by doctors, which you are able to modify.<br>
         </p>
     </div>
 
-    <div class="main__content">
+    <div class="main__content"
+         style="text-align: center;">
         <div v-if="requests.length === 0">
             <h4>No requests to manage</h4>
             <img src="../../../assets/relax.svg" alt="">
@@ -60,7 +60,7 @@
         >
             <template #header>
             <h5>
-                Are you sure you want to cover selected request?
+                Are you sure you want to cover the selected request?
             </h5>
             </template>
 
@@ -70,7 +70,7 @@
                         @click="coverRequest()"
                         success
                     >
-                        Yep, cover it
+                        Yes, cover it
                     </vs-button>
 
                     <vs-button

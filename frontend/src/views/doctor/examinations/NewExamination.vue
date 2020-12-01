@@ -2,7 +2,7 @@
   <div>
       <div class="main__content">
           <h1>
-              Creating examination according to ticket related to health concern {{ examinationAboutTicket.concern.name }}
+              Creating examination based on ticket related to health concern {{ examinationAboutTicket.concern.name }}
               of patient {{ examinationAboutTicket.concern.patient.user.first_name }} {{ examinationAboutTicket.concern.patient.user.last_name }}
           </h1>
       </div>
@@ -25,13 +25,13 @@
 
           <textarea
               v-model="examinationDescription"
-              placeholder="Briefly describe examination.."
+              placeholder="Briefly describe the examination.."
           />
 
           <br>
 
           <div class="actions">
-              <h5>Examination actions made during this examination: </h5>
+              <h5>Medical actions made during this examination: </h5>
 
               <span v-if="chosenActions.length === 0">No actions selected</span>
 
@@ -87,23 +87,23 @@
       </div>
 
       <div class="main__content">
-          <h3>Attach Doctor report</h3>
+          <h3>Attach the Doctor's report</h3>
 
           <br>
 
           <h5>Author: <b>{{ currentUserName }}</b></h5>
 
-          <h5>About concern: <b>{{ examinationAboutTicket.concern.name }}</b></h5>
+          <h5>Regarding the concern: <b>{{ examinationAboutTicket.concern.name }}</b></h5>
 
           <h5>Based on ticket number <b>{{ examinationAboutTicket.id }}</b></h5>
 
           <br>
 
-          <h6>Report text</h6>
+          <h6>Text of the report</h6>
 
           <textarea
               v-model="reportDescription"
-              placeholder="Put text of report here.."
+              placeholder="Type the content of report here.."
           />
 
           <br>
@@ -133,7 +133,7 @@
               v-model="markTicketResolved"
               class="ticket__checkbox"
           >
-              Mark concern as ended
+              Mark health concern as resolved
           </vs-checkbox>
 
           <vs-checkbox

@@ -6,8 +6,8 @@
             </h1>
 
             <p>
-                You can see all examinations related to this hospital.<br>
-                You can edit the name of each examination and its pricing.
+                In this module, you can find the overview of all actions that can be performed during the examinations. <br>
+                The names and character in terms of pricing can be edited.
             </p>
         </div>
 
@@ -172,7 +172,7 @@
                         @click="finalDeletion()"
                         danger
                     >
-                        Yep, delete it
+                        Yes, delete it
                     </vs-button>
 
                     <vs-button

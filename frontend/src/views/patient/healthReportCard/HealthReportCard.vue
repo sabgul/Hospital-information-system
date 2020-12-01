@@ -5,9 +5,9 @@
 
             <br>
 
-            <p>This is your health report card. By clicking on the name of a health concern or by clicking on 'Show more details',
+            <p>This is your health report card. It provides you with an overview of your past and current medical difficulties. You can see all the examinations and doctor reports related to a given concern
               <br>
-              you can see all the examinations and doctor reports related to a given concern.
+              by clicking on the name of a health concern or by clicking on 'Show more details'.
             </p>
         </div>
 

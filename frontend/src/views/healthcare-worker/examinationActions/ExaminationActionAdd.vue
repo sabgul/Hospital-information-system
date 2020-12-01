@@ -8,8 +8,11 @@
             <br>
 
             <p>
-                By adding new examination action, doctors can use them when examining their patients. <br>
-                Thanks to that, you will be able to track unpaid examinations of patients.
+                In this module you can list all the medical actions that doctors can perform during their examination.<br>
+                They are registered in forms created by doctors during the physical examination.
+                These can include routine checkups, medical scans, blood sampling, etc.<br>
+                It is necessary to specify whether the action is free of charge, or has to be paid for. According to this information, you will be able to manage payments covered by the insurance company.
+
             </p>
 
           <form action="#" v-on:submit.prevent="addNewExamination">
@@ -17,8 +20,8 @@
                 <div class="first__row">
                     <vs-input
                         v-model="newAction.name"
-                        label="Name of action"
-                        placeholder="Type name of new action"
+                        label="Type of action"
+                        placeholder="Enter type of new action"
                         class="input__items"
                         primary
                     >
@@ -74,7 +77,7 @@
                         </template>
 
                         <template #on>
-                            Paid
+                            Paid for
                         </template>
                     </vs-switch>
                 </div>

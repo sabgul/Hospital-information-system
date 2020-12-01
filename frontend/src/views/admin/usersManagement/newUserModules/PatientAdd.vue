@@ -6,8 +6,9 @@
             </h1>
 
             <p>
-                Create a new patient.<br>
-                  Some fields are required but can be edited later.
+                In this module profile of a new patient can be created. <br>
+                Please fill in all the required fields. In order to provide the patient with secure password, you can follow recommended guidelines described by bar appearing above the password field. <br>
+                Any desired modifications can be done in the future, by editing patient's profile.
             </p>
         </div>
 
@@ -22,7 +23,7 @@
                         <vs-input
                             v-model="newPatient.first_name"
                             label="First name of patient"
-                            placeholder="Type first name of new patient"
+                            placeholder="Type first name"
                             class="input__items"
                             primary
                         >
@@ -44,7 +45,7 @@
                         <vs-input
                             v-model="newPatient.last_name"
                             label="Last name of patient"
-                            placeholder="Type last name of new patient"
+                            placeholder="Type last name"
                             class="input__items"
                             primary
                         >
@@ -143,6 +144,7 @@
                         <vs-input
                           v-model="newPatient.email_field"
                           label="Email address"
+                          placeholder="Type email address"
                           class="input__items"
                         >
                             <template

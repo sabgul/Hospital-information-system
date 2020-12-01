@@ -61,7 +61,7 @@
 
       <div class="main__content">
           <h5>
-              Passed examinations
+              Previous examinations
           </h5>
 
           <vs-card-group>
@@ -123,7 +123,7 @@
 
       <div class="main__content">
           <h5>
-              Doctor reports related to this health concern
+              Doctor's reports for this health concern
           </h5>
 
           <vs-card-group>
@@ -214,7 +214,7 @@
 
                 <p> {{ detailExamination.description }} </p>
 
-                <h6>Actions made during this examination:</h6>
+                <h6>Actions performed during this examination:</h6>
 
                 <div
                     v-for="(action, index) in detailExamination.actions"

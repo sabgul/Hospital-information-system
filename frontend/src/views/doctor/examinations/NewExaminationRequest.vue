@@ -5,8 +5,8 @@
         </h1>
 
         <p>
-            Create new examination request(ticket) for a health concern of your patient. <br>
-            You can assign the ticket either to you or another doctor, usually some specialist.
+            Create new examination request (ticket) for a health concern of your patient. <br>
+            The ticket can be assigned to yourself or another doctor, specialising in the area of concern.
         </p>
 
         <br>

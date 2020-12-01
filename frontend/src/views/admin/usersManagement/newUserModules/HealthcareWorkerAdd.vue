@@ -2,12 +2,13 @@
     <div>
         <div class="main__content">
             <h1>
-                Add new healthcare worker
+                Add new insurance worker
             </h1>
 
             <p>
-                Create new healthcare worker.<br>
-                Some fields are required. Profile details can be edited later.
+                In this module profile of a new insurance worker can be created. <br>
+                Please fill in all the required fields. In order to provide the insurance worker with secure password, you can follow recommended guidelines described by bar appearing above the password field. <br>
+                Any desired modifications can be done in the future, by editing user's profile.
             </p>
         </div>
 

@@ -12,8 +12,8 @@
           <br>
 
           <p>
-              If you were contacted by your patient about a new health concern, add the information here. <br>
-              <b>If it is a new patient, create an account for them<span @click="redirectToNewPatient()" class="redirect__profile"> HERE </span>first!</b>
+               If there is a newly discovered health concern of your patient, pleas add the information below. <br>
+            <b>In order to add health concern of a new patient, please <span @click="redirectToNewPatient()" class="redirect__profile"> create the patient's account </span> at first. </b>
           </p>
 
           <br>
@@ -164,8 +164,8 @@
           <br>
 
           <p>
-               Here you can see all the health concerns you manage. <br>
-               You can filter the results by <b>patient</b> and/or <b>examination state</b>. You can also use the search bar in the table. <br>
+               In this module, you can see the list of all health concerns you have managed. <br>
+               The results can be filtered by <b>patient</b> and/or <b>examination state</b>. Specific record can be found using the search bar in the table. <br>
           </p>
       </div>
 
@@ -197,7 +197,7 @@
               <div class="second__row">
                   <vs-select
                       v-model="filter.state_of_concern"
-                      label="Examination state"
+                      label="State of examination"
                       color="primary"
                   >
                       <vs-option

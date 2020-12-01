@@ -226,11 +226,11 @@
                     <box-icon name='user-plus' type='solid' ></box-icon>
                   </template>
 
-                  <router-link to="/healthcare-worker-add">Add new healthcare worker</router-link>
+                  <router-link to="/healthcare-worker-add">Add new insurance worker</router-link>
               </vs-sidebar-item>
 
               <template #tooltip>
-                    Add new healthcare worker
+                    Add new insurance worker
               </template>
             </vs-tooltip>
         </vs-sidebar-group>
@@ -248,7 +248,7 @@
 
                   <template #text>
                     <p>
-                      Logged as {{ userRole.replace('-', ' ') }}
+                      Logged in as {{ userRole.replace('-', ' ') }}
                     </p>
                   </template>
 
@@ -316,7 +316,7 @@
                     @click="logoutConfirm()"
                     danger
                 >
-                    Yep, leave
+                    Yes, leave
                 </vs-button>
 
                 <vs-button
