@@ -9,6 +9,7 @@ cd frontend
 sudo apt install nodejs
 sudo apt install npm  # installs node package manager
 
+npm install -g @vue/cli @vue/cli-service-global # vue
 npm install # reads package.json and using npm installs all dependencies
 npm run serve & # runs Vue app on localhost:8080
 
