@@ -5,7 +5,7 @@
         <div class="row">
             <div class="column left__part">
                 <h1 class="headline">
-                    HospIS - best solution for your hospital
+                    HospIS - the best solution for your hospital
                 </h1>
 
                 <div class="button__area">
@@ -46,7 +46,7 @@
                         gradient
                         @click="setHealthcareLoginActive()"
                     >
-                        Healthcare worker login
+                        Insurance worker login
                     </vs-button>
 
                     <login-dialog
@@ -89,7 +89,7 @@ export default {
         },
 
         async setHealthcareLoginActive() {
-            await this.$store.commit('SET_HEALTHCARE_LOGIN_WINDOW');
+            await this.$store.commit('SET_HEALTHCARE_LOGIN_WINDOWm  ');
         },
     }
 }

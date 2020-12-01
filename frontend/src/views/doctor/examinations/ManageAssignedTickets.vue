@@ -2,11 +2,13 @@
     <div>
         <div class="main__content">
             <h1>
-              Tickets assigned to me
+              Assigned tickets
             </h1>
 
             <p>
-                You can see all tickets assigned to you right here.
+                You can see all the tickets assigned to you below. Ticket indicates a request for a particular examination issued by another doctor. <br>
+                Please review any new tickets and perform all the necessary actions. The record of the examination based on particular ticket can be added <br>
+                by clicking on <b>Examination based on this ticket</b>. Any necessary reports and detailed information of the examination can be added there.
             </p>
         </div>
 
@@ -34,7 +36,7 @@
                             value="CD"
                             label="Canceled"
                         >
-                            Canceled
+                            Cancelled
                         </vs-option>
 
                         <vs-option
@@ -70,7 +72,7 @@
             v-if="tickets.length === 0"
             style="text-align: center;"
         >
-            <h4>No tickets assigned to you!</h4>
+            <h4>No tickets were assigned to you!</h4>
             <img src="../../../assets/relax.svg" alt="">
         </div>
 
@@ -119,7 +121,7 @@
                         v-if="ticket.state === 'PD'"
                         @click="examine(ticket.id)"
                     >
-                        Examine based on this ticket
+                        Examination based on this ticket
                     </vs-button>
 
                     <vs-button

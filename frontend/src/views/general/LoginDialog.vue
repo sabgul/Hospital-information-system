@@ -5,8 +5,16 @@
       blur
   >
     <template #header>
-      <h4 class="not-margin">
-        Login as <b>{{ userType }}</b>
+      <h4 class="not-margin"
+        v-if="userType === 'Healthcare worker'"
+      >
+        Log in as <b>{{ "Insurance worker" }}</b>
+      </h4>
+
+      <h4 class="not-margin"
+        v-else
+      >
+        Log in as <b>{{ userType }}</b>
       </h4>
     </template>
 

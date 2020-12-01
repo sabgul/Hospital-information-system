@@ -226,11 +226,11 @@
                     <box-icon name='user-plus' type='solid' ></box-icon>
                   </template>
 
-                  <router-link to="/healthcare-worker-add">Add new healthcare worker</router-link>
+                  <router-link to="/healthcare-worker-add">Add new insurance worker</router-link>
               </vs-sidebar-item>
 
               <template #tooltip>
-                    Add new healthcare worker
+                    Add new insurance worker
               </template>
             </vs-tooltip>
         </vs-sidebar-group>
@@ -243,12 +243,15 @@
                   </template>
 
                   <template #img>
-                      <img src="./assets/user-illu.jpg" alt="" width="200" height="200">
+                      <img v-if="(userRole === 'doctor') && (user.gender === 'F')" src="./assets/female_doctor_avtr.png" alt="" width="200" height="200">
+                      <img v-else-if="(userRole === 'doctor') && (user.gender !== 'F') " src="./assets/male_doctor_avtr.png" alt="" width="200" height="200">
+                      <img v-else-if="(userRole !== 'doctor') && (user.gender === 'F')" src="./assets/female_user1_sans_kruh.png" alt="" width="200" height="200">
+                      <img v-else src="./assets/male_usr_sans_kruh.png" alt="" width="200" height="200">
                   </template>
 
                   <template #text>
                     <p>
-                      Logged as {{ userRole.replace('-', ' ') }}
+                      Logged in as {{ userRole.replace('-', ' ') }}
                     </p>
                   </template>
 
@@ -316,7 +319,7 @@
                     @click="logoutConfirm()"
                     danger
                 >
-                    Yep, leave
+                    Yes, leave
                 </vs-button>
 
                 <vs-button
@@ -420,7 +423,7 @@ box-icon {
   fill: #195bff;
 }
 
-.content {
+.`content {
   max-height: 100vh;
   background-color: #fafafa !important;
 }

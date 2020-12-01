@@ -180,6 +180,16 @@
             </template>
         </vs-table>
 
+        <vs-button
+            v-if="userRole === 'doctor' || userRole === 'admin'"
+            warn
+            gradient
+            @click="redirectToNewConcern()"
+            class="add__concern"
+        >
+            <box-icon name="plus" style="fill: #fff"/> Add new health concern
+        </vs-button>
+
         <vs-dialog
             width="500px"
             v-model="activeAssign"
@@ -317,6 +327,10 @@ export default {
 
       redirectToConcernDetail(concernId) {
          this.$router.push({ name: 'healthConcernDetail', params: {id: concernId }});
+      },
+
+      redirectToNewConcern() {
+          this.$router.push({ name: 'healthConcerns' });
       }
   }
 }
@@ -347,5 +361,12 @@ export default {
         padding-bottom: 1em;
         width: 40%;
         margin: 2em auto 5em;
+    }
+
+    .add__concern {
+        position: relative;
+        margin-top: 2em;
+        margin-left: auto;
+        margin-right: auto;
     }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>Specific details for Health insurance worker role</h3>
+        <h3>Specific details for Health insurance worker</h3>
 
         <br>
 

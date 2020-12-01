@@ -21,7 +21,7 @@
 
       <br>
 
-      <h5>Brief description of examination</h5>
+      <h5>Brief description of the examination</h5>
 
       <textarea
           v-model="examinationDescription"
@@ -30,7 +30,7 @@
 
       <div class="actions">
         <h5>
-          Examination actions made during this examination:
+          Medical actions made during this examination:
         </h5>
 
         <span v-if="chosenActions.length === 0">
@@ -97,20 +97,20 @@
     </div>
 
     <div class="main__content">
-      <h3>Attach Doctor report</h3>
+      <h3>Attach the Doctor's report</h3>
 
       <br>
 
       <h5>Author: <b>{{ user.first_name }} {{ user.last_name }}</b></h5>
-      <h5>About concern: <b>{{ aboutConcern.name }}</b></h5>
+      <h5>Regarding the concern: <b>{{ aboutConcern.name }}</b></h5>
 
       <br>
 
-      <h6>Report text</h6>
+      <h6>Text of the report</h6>
 
       <textarea
           v-model="reportDescription"
-          placeholder="Put text of report here.."
+          placeholder="Type the content of report here.."
       />
 
       <br>
@@ -157,7 +157,7 @@
     >
       <template #header>
         <h5 class="popup__headline">
-          Select actions performed during examination
+          Select actions performed during the examination
         </h5>
       </template>
 

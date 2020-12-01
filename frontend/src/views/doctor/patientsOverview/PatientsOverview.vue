@@ -3,12 +3,22 @@
         <div class="main__content">
             <h1>All patients</h1>
 
-            <p>
-                TODO nejaky text
+              <br>
+              <p>
+                This module provides you with an overview of all your patients. More information can be obtained by clicking on the name of patient, which leads to their profile.
+              <br>
+                There you can see detailed description of their health concerns, as well as their personal information.
+
             </p>
         </div>
 
         <div class="main__content">
+            <h5>
+                Patients overview
+            </h5>
+
+            <br>
+
             <patients-table :patients="patients"/>
         </div>
     </div>

@@ -17,12 +17,11 @@
             <div class="user__pic">
                 <vs-card type="2">
                     <template #img>
-                        <img
-                            src="@/assets/user-illu.jpg"
-                            alt=""
-                            style="cursor: default;"
-                        >
-                    </template>
+                      <img v-if="(role === 'doctor') && (userData.user.gender === 'F')" src="@/assets/female_doctor_avtr.png" alt="" width="200" height="300">
+                      <img v-else-if="(role === 'doctor') && (userData.user.gender !== 'F') " src="@/assets/male_doctor_avtr.png" alt="" width="200" height="300">
+                      <img v-else-if="(role !== 'doctor') && (userData.user.gender === 'F')" src="@/assets/female_user1_sans_kruh.png" alt="" width="200" height="300">
+                      <img v-else src="@/assets/male_usr_sans_kruh.png" alt="" width="200" height="300">
+                  </template>
 
                     <template #interactions>
                         <vs-tooltip>
@@ -171,7 +170,6 @@ export default {
         right: 9%;
         top: 5.5em;
         width: 20%;
-        height: 20%;
     }
 
     .info__basic {

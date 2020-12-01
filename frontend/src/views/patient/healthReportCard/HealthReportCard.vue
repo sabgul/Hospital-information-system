@@ -5,16 +5,81 @@
 
             <br>
 
-            <p>This is your health report card. By clicking on the name of a health concern or by clicking on 'Show more details',
+            <p>This is your health report card. It provides you with an overview of your past and current medical difficulties. You can see all the examinations and doctor reports related to a given concern
               <br>
-              you can see all the examinations and doctor reports related to a given concern.
+              by clicking on the name of a health concern or by clicking on 'Show more details'.
             </p>
         </div>
 
         <div class="main__content">
-            <h4>
+            <h5>
+                General health information
+            </h5>
+
+            <br>
+
+            <h6>
+                <b>Main doctor: </b>
+
+                <span
+                    @click="redirectToDocProfile(currentPatient.main_doctor.user.id, 'doctor')"
+                    class="redirect__profile"
+                >
+                    {{ currentPatient.main_doctor.user.first_name }} {{ currentPatient.main_doctor.user.last_name }}
+                </span>
+            </h6>
+
+            <br>
+
+            <h6>
+              <b>Height:</b> {{ currentPatient.height }} cm
+            </h6>
+
+            <h6>
+              <b>Weight:</b> {{ currentPatient.weight }} kg
+            </h6>
+
+            <br>
+
+            <h6 v-if="currentPatient.taking_medications">
+                <b>Medications:</b> {{ currentPatient.medications }}
+            </h6>
+
+            <h6 v-else>
+                <b>No medications taken</b>
+            </h6>
+
+            <br>
+
+            <div>
+                <h6>
+                    <b>Emergency contact person:</b>
+
+                    <br>
+
+                    <span v-if="currentPatient.ec_first_name.length || currentPatient.ec_last_name">
+                        Name: {{ currentPatient.ec_first_name }} {{ currentPatient.ec_last_name }}
+                    </span>
+
+                    <br>
+
+                    <span v-if="currentPatient.ec_relationship.length">
+                        Relation: {{ currentPatient.ec_relationship }}
+                    </span>
+
+                    <br>
+
+                    <span v-if="currentPatient.ec_contact_number.length">
+                        Contact number: <b>{{ currentPatient.ec_contact_number }}</b>
+                    </span>
+                </h6>
+            </div>
+        </div>
+
+        <div class="main__content">
+            <h5>
                 Filter your health concerns
-            </h4>
+            </h5>
 
           <form action="#" v-on:submit.prevent="getFiltered">
             <div class="wrapper">
@@ -67,6 +132,12 @@
         </div>
 
         <div class="main__content">
+            <h5>
+                Your health concerns
+            </h5>
+
+            <br>
+
             <vs-table
                 striped
                 class="actions__table"
@@ -144,6 +215,7 @@
 
 <script>
 import HealthConcernsService from "@/services/healthConcernsService";
+import PatientsService from "@/services/patientsService";
 
 import StateUtils from "@/utils/stateUtils";
 
@@ -158,6 +230,8 @@ export default {
         searchValue: '',
 
         healthConcerns: [],
+
+        currentPatient: {},
 
         filter: {
             state: -1,
@@ -176,6 +250,12 @@ export default {
             .then(response => {
                 this.healthConcerns = response.data;
             })
+
+        PatientsService.get(this.user.patient)
+            .then(response => {
+                this.currentPatient = response.data;
+              console.log(this.currentPatient)
+            })
     },
 
     methods: {
@@ -186,6 +266,10 @@ export default {
         redirectToConcernDetail(concernId) {
           console.log(concernId)
            this.$router.push({ name: 'healthConcernDetail', params: {id: concernId }});
+        },
+
+        redirectToDocProfile(userId, role) {
+            this.$router.push({ name: 'profile', params: {id: userId, role: role.replace(/ /g, '-').toLowerCase() }});
         },
 
         async clearFilter() {
