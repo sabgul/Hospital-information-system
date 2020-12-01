@@ -118,31 +118,35 @@ class IsAboutPatient(BasePermission):
                 user = obj.patient.user
                 permission = bool(user and user == request.user)
             except AttributeError:
-                pass
+                print(exc, file=sys.stderr)
+
         elif type(obj) == DoctorReport:
             try:
                 user = obj.about_concern.patient.user
                 permission = bool(user and user == request.user)
             except AttributeError:
-                pass
+                print(exc, file=sys.stderr)
+
         elif type(obj) == ExaminationRequest:
             try:
                 user = obj.concern.patient.user
                 permission = bool(user and user == request.user)
             except AttributeError:
-                pass
+                print(exc, file=sys.stderr)
+
         elif type(obj) == Examination:
             try:
                 user = obj.concern.patient.user
                 permission = bool(user and user == request.user)
             except AttributeError:
-                pass
+                print(exc, file=sys.stderr)
+
         elif type(obj) == TransactionRequest:
             try:
                 user = obj.related_to_patient.patient.user
                 permission = bool(user and user == request.user)
             except AttributeError:
-                pass
+                print(exc, file=sys.stderr)
 
         return permission
 
@@ -152,11 +156,14 @@ class IsFromDoctor(BasePermission):
         permission = False
 
         if type(obj) == HealthConcern:
+            print('concern')
             try:
-                user = obj.doctor.user
-                permission = bool(user and user == request.user)
+                assigned_doctor_user = obj.doctor.user
+                main_doctor_user = obj.patient.main_doctor.user
+                permission = request.user in {assigned_doctor_user, main_doctor_user}
             except Exception as exc:
                 print(exc, file=sys.stderr)
+
         elif type(obj) == DoctorReport:
             try:
                 user = obj.created_by.user
@@ -429,7 +436,6 @@ class HealthConcernViewSet(ModelViewSet):
 
     permission_classes = (ActionBasedPermission,)
     action_permissions = {
-        # IsPatient: ['retrieve'],
         IsAboutPatient: ['list', 'retrieve'],
         IsDoctor: ['create', 'list', 'retrieve'],
         IsFromDoctor: ['destroy', 'partial_update', 'update'],
