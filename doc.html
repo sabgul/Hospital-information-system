@@ -84,63 +84,71 @@
 
 <h2>Implementation</h2>
 <ul>
-    <li><h3>Frontend</h3></li>
-    <p>
-        The creation of fronted was based on initially created wireframes, laying the guidelines for successful
-        implementation of user-friendly information system.<br>
-        The main goal of the design was to create a simple and easy way to navigate the system. It was necessary to let
-        user
-        focus on their task, instead of getting lost in the interface while looking for desired functionalities.<br>
-        <img src="doc_assets/wireframe_2.jpg" alt="Wireframe 1" width="600">
-        <img src="doc_assets/wireframe_1.jpg" alt="Wireframe 2" width="600">
-    </p>
-    <p>
-        The implementation of frontend was done in a progressive Javascript framework <a href="https://vuejs.org/">Vue.JS</a>
-        for building user interfaces. A supporting components library <a href="https://vuesax.com/">Vuesax</a> was used
-        as well.
-        <br>
-        <br>
-        <a href="https://router.vuejs.org/">Official Vue.JS router</a> was used to route between system components in a
-        Single Page App manner. Routing is handled in <b>frontend/src/router/router.js</b>.
-        <br>
-        <br>
-        To communicate with our API, service for each logical unit was created. Querying of these endpoints can be found
-        in
-        <b>frontend/src/services/</b>.
-        <br>
-        <br>
-        To handle current user information as well as tokens for authentication, <a href="https://vuex.vuejs.org/">Vuesax</a>
-        - centralized store for all the components was used. The source file can be found in <b>frontend/src/store/</b>.
-        <br>
-        <br>
-        The views model all the required use cases and they fulfil all the requirements. All views
-        are located in <b>frontend/src/views/</b> and structured in folders according to user roles.
-        <br>
-        For each user role, several subfolders were created, each containing Vue files modelling a specific use case.
-        For
-        example module for creation of new patient is located in <b>frontend/src/views/admin/newUserModules/</b>.
+    <li>
+        <h3>Frontend</h3>
 
-    </p>
-    <li><h3>Backend</h3></li>
+        <p>
+            The frontend creation was based on initially created wireframes, laying the guidelines for the successful implementation of a user-friendly information system.<br>
+            The main goal of the design was to create a simple and easy way to navigate the system.
+            It was necessary to let the user focus on their task instead of getting lost in the interface while looking for desired functionalities.<br>
+            <img src="doc_assets/wireframe_2.jpg" alt="Wireframe 1" width="600">
+            <img src="doc_assets/wireframe_1.jpg" alt="Wireframe 2" width="600">
+        </p>
+        <p>
+            The implementation of the frontend was done in a progressive Javascript framework <a href="https://vuejs.org/">Vue.JS</a>
+            for building user interfaces. A supporting components library <a href="https://vuesax.com/">Vuesax</a> was used
+            as well.
+            <br>
+            <br>
+            <a href="https://router.vuejs.org/">Official Vue.JS router</a> was used to route between system components in a
+            Single Page App manner. Routing is handled in <b>frontend/src/router/router.js</b>.
+            <br>
+            <br>
+            To communicate with our API, a service for each logical unit was created. Querying of these endpoints can be found
+            in
+            <b>frontend/src/services/</b>.
+            <br>
+            <br>
+            To handle current user information and tokens for authentication, <a href="https://vuex.vuejs.org/">Vuesax</a>
+            - a centralized store for all the components was used. The source file can be found in <b>frontend/src/store/</b>.
+            <br>
+            <br>
+            The views model all the required use cases and they fulfill all the requirements. According to user roles, all views are located in <b>frontend/src/views/</b> and structured in folders.
+            <br>
+            For each user role, several subfolders were created, each containing Vue files modeling a specific use case.
+            For
+            example module for creation of new patient is located in <b>frontend/src/views/admin/newUserModules/</b>.
+        </p>
+    </li>
 
-    The backend layer uses the Django framework for Python. <br>
-    It handles API requests from the frontend, potentially allowing for multiple frontend implementations (such as a
-    mobile app). <br>
-    The API handles requests based on currently logged user and the permissions based on their roles. (e. g. A doctor
-    can only access their patient's data) <br>
-    The backend layer fetches data from a MySQL database.
-    For uploading user media files, an Amazon S3 storage server is used. <br>
-    User authentication uses JWT tokens.
+    <li>
+        <h3>Backend</h3>
 
-    <li><h3>Database system</h3></li>
-    <p>
-        Scheme of implemented relational database: <br><br>
-        <img src="doc_assets/hospisdb.png" alt="Hospitalis database" width="100%">
-    </p>
+        The backend layer uses the Django framework for Python. <br>
+        It handles API requests from the frontend, potentially allowing for multiple frontend implementations (such as a
+        mobile app). <br>
+        The API handles requests based on currently logged user and the permissions based on their roles. (e. g. A doctor
+        can only access their patient's data) <br>
+        The backend layer fetches data from a MySQL database.
+        For uploading user media files, an Amazon S3 storage server is used. <br>
+        User authentication uses JWT tokens.
+    </li>
+
+    <li>
+        <h3>Database system</h3>
+
+        <p>
+            Scheme of implemented relational database: <br><br>
+            <img src="doc_assets/hospisdb.png" alt="Hospitalis database" width="100%">
+        </p>
+    </li>
+
 
     <h2>Installation</h2>
+
     The system was developed on machines running Ubuntu Linux and macOS. The installation script is targetted at the
     Ubuntu Linux platform.
+
     <ul>
         <li>Software requirements and installation</li>
         <br>
@@ -167,11 +175,14 @@
         <br>
     </ul>
 
+
+
     <h2>Acknowledged issues</h2>
+
     <p>Every use case and feature required by the assignment has been implemented.
         The implementation of the manipulation with assigned tickets was implemented contrary to the assignment. We do
         not consider this an issue. <br>
-        The assignment states that doctor who was assigned with ticket is not supposed to see the record of the entire
+        The assignment states that the doctor who was assigned with the ticket is not supposed to see the record of the entire
         health concern. In our opinion, it is necessary to let him see all the previous measures and examinations <br>
         that were performed on behalf of the given medical problem. It is important for him to be able to compare the
         previous and current treatment, in order to decide whether the provided treatments are sufficient. </p>
