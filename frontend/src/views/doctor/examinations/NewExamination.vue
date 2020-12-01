@@ -316,7 +316,9 @@ export default {
                 let idOfNewExamination = response.data.id;
 
                 let formData = new FormData();
-                formData.append('photo', this.file, this.file.name);
+                if(this.file) {
+                  formData.append('photo', this.file, this.file.name);
+                }
                 formData.append('created_by', this.user.id);
                 formData.append('about_concern', this.examinationAboutTicket.concern.id);
                 formData.append('description', this.reportDescription);
