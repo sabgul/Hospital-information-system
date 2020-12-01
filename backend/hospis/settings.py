@@ -89,8 +89,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
-            'read_default_file': pathjoin(BASE_DIR, 'mysql_config_local.cnf'),  # LOCAL database
-            # 'read_default_file': pathjoin(BASE_DIR, 'mysql_config_heroku.cnf'),  # Heroku hosted database
+            # 'read_default_file': pathjoin(BASE_DIR, 'mysql_config_local.cnf'),  # LOCAL database
+            'read_default_file': pathjoin(BASE_DIR, 'mysql_config_azure.cnf'),  # Heroku hosted database
         },
     }
 }
@@ -144,6 +144,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = pathjoin(BASE_DIR, 'media')
+STATIC_ROOT = pathjoin(BASE_DIR, 'static')
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
@@ -151,10 +152,17 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
 }
 
-# AWS S3 service for hosting media files
-AWS_ACCESS_KEY_ID = 'AKIAZ6YJQNNSCMWXXBNG'
-AWS_SECRET_ACCESS_KEY = '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'
+# # AWS S3 service for hosting media files
+# AWS_ACCESS_KEY_ID = 'AKIAZ6YJQNNSCMWXXBNG'
+# AWS_SECRET_ACCESS_KEY = '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'
+#
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# AWS_STORAGE_BUCKET_NAME = 'hospitalis-images'
+# AWS_S3_REGION_NAME = 'eu-central-1'
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_STORAGE_BUCKET_NAME = 'hospitalis-images'
-AWS_S3_REGION_NAME = 'eu-central-1'
+DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+# STATICFILES_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+
+AZURE_ACCOUNT_NAME = "hospitalis"
+AZURE_ACCOUNT_KEY = "38IuGqI4uLSkkIIuStvTCx9VeJONyX9voADYyrWbbrWxc0UFiiUjqYVORhI6eBIrPuaKC6vXlLJODlF8nFvrhQ=="
+# AZURE_CONTAINER = 'hospitalis'
