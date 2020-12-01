@@ -5,7 +5,7 @@
         <div class="row">
             <div class="column left__part">
                 <h1 class="headline">
-                    HospitalIS - the best solution for your hospital
+                    Hospitalis - the best solution for your hospital
                 </h1>
 
                 <div class="button__area">
