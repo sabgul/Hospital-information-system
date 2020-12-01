@@ -89,7 +89,7 @@ export default {
         },
 
         async setHealthcareLoginActive() {
-            await this.$store.commit('SET_HEALTHCARE_LOGIN_WINDOWm  ');
+            await this.$store.commit('SET_HEALTHCARE_LOGIN_WINDOW');
         },
     }
 }
