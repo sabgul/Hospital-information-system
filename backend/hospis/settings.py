@@ -92,7 +92,7 @@ DATABASES = {
         'NAME': 'heroku_4f5f8f8240f3c61',
         'USER': 'bf26e9b8afd619',
         'PASSWORD': 'a27ffea2',
-        'HOST': 'mysql://bf26e9b8afd619:a27ffea2@eu-cdbr-west-03.cleardb.net/heroku_4f5f8f8240f3c61?reconnect=true',
+        'HOST': 'mysql://bf26e9b8afd619:a27ffea2@eu-cdbr-west-03.cleardb.net/heroku_4f5f8f8240f3c61',
         # 'PORT': '',
     }
 }
