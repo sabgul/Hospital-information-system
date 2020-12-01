@@ -10,6 +10,12 @@
         </div>
 
         <div class="main__content">
+            <h5>
+                All system users
+            </h5>
+
+            <br>
+
             <vs-table
                 striped
                 class="users__table"
